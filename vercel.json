@@ -3,7 +3,12 @@
   "builds": [
     {
       "src": "yarn build",
-      "use": "@vercel/static"
+      "use": "@vercel/static",
+      "config": {
+        "includeFiles": {
+          ".prisma/**": true
+        }
+      }
     }
   ],
   "routes": [{ "src": "/(.*)", "dest": "yarn build" }]
