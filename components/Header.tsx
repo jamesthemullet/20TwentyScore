@@ -1,20 +1,19 @@
 // Header.tsx
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { signOut, useSession } from 'next-auth/react';
 
 const Header: React.FC = () => {
   const router = useRouter();
-  const isActive: (pathname: string) => boolean = (pathname) =>
-    router.pathname === pathname;
+  const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
 
   const { data: session, status } = useSession();
 
   let left = (
-    <div className='left'>
-      <Link legacyBehavior href='/'>
-        <a className='bold' data-active={isActive("/")}>
+    <div className="left">
+      <Link legacyBehavior href="/">
+        <a className="bold" data-active={isActive('/')}>
           Feed
         </a>
       </Link>
@@ -29,7 +28,7 @@ const Header: React.FC = () => {
           display: inline-block;
         }
 
-        .left a[data-active="true"] {
+        .left a[data-active='true'] {
           color: gray;
         }
 
@@ -42,11 +41,11 @@ const Header: React.FC = () => {
 
   let right = null;
 
-  if (status === "loading") {
+  if (status === 'loading') {
     left = (
-      <div className='left'>
-        <Link legacyBehavior href='/'>
-          <a className='bold' data-active={isActive("/")}>
+      <div className="left">
+        <Link legacyBehavior href="/">
+          <a className="bold" data-active={isActive('/')}>
             Feed
           </a>
         </Link>
@@ -61,7 +60,7 @@ const Header: React.FC = () => {
             display: inline-block;
           }
 
-          .left a[data-active="true"] {
+          .left a[data-active='true'] {
             color: gray;
           }
 
@@ -72,7 +71,7 @@ const Header: React.FC = () => {
       </div>
     );
     right = (
-      <div className='right'>
+      <div className="right">
         <p>Validating session ...</p>
         <style jsx>{`
           .right {
@@ -85,9 +84,9 @@ const Header: React.FC = () => {
 
   if (!session) {
     right = (
-      <div className='right'>
-        <Link legacyBehavior href='/api/auth/signin'>
-          <a data-active={isActive("/signup")}>Log in</a>
+      <div className="right">
+        <Link legacyBehavior href="/api/auth/signin">
+          <a data-active={isActive('/signup')}>Log in</a>
         </Link>
         <style jsx>{`
           a {
@@ -116,14 +115,14 @@ const Header: React.FC = () => {
 
   if (session) {
     left = (
-      <div className='left'>
-        <Link legacyBehavior href='/'>
-          <a className='bold' data-active={isActive("/")}>
+      <div className="left">
+        <Link legacyBehavior href="/">
+          <a className="bold" data-active={isActive('/')}>
             Feed
           </a>
         </Link>
-        <Link legacyBehavior href='/drafts'>
-          <a data-active={isActive("/drafts")}>My drafts</a>
+        <Link legacyBehavior href="/drafts">
+          <a data-active={isActive('/drafts')}>My drafts</a>
         </Link>
         <style jsx>{`
           .bold {
@@ -136,7 +135,7 @@ const Header: React.FC = () => {
             display: inline-block;
           }
 
-          .left a[data-active="true"] {
+          .left a[data-active='true'] {
             color: gray;
           }
 
@@ -147,11 +146,11 @@ const Header: React.FC = () => {
       </div>
     );
     right = (
-      <div className='right'>
+      <div className="right">
         <p>
           {session.user.name} ({session.user.email})
         </p>
-        <Link legacyBehavior href='/create'>
+        <Link legacyBehavior href="/create">
           <button>
             <a>New post</a>
           </button>
