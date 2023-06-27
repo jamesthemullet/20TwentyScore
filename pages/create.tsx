@@ -8,8 +8,7 @@ import { useSession } from 'next-auth/react';
 const Draft: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const { data: session, status } = useSession();
-  console.log(20, session);
+  const { data: session } = useSession();
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -22,6 +21,7 @@ const Draft: React.FC = () => {
       });
       await Router.push('/drafts');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   };
