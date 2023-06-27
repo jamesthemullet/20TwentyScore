@@ -29,7 +29,7 @@ const Header: React.FC = () => {
         }
 
         .left a[data-active='true'] {
-          color: gray;
+          color: black;
         }
 
         a + a {
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
           }
 
           .left a[data-active='true'] {
-            color: gray;
+            color: black;
           }
 
           a + a {
@@ -136,7 +136,7 @@ const Header: React.FC = () => {
           }
 
           .left a[data-active='true'] {
-            color: gray;
+            color: black;
           }
 
           a + a {
@@ -194,17 +194,20 @@ const Header: React.FC = () => {
   }
 
   return (
-    <nav>
-      {left}
-      {right}
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
-      `}</style>
-    </nav>
+    <>
+      <title>20Twenty Score App</title>
+      <nav>
+        {left}
+        {right}
+        <style jsx>{`
+          nav {
+            display: flex;
+            padding: 2rem;
+            align-items: center;
+          }
+        `}</style>
+      </nav>
+    </>
   );
 };
 
