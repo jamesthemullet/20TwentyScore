@@ -14,16 +14,16 @@ export default authHandler;
 const options = {
   providers: [
     GitHubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET
+      clientId: process.env.GITHUB_ID || '',
+      clientSecret: process.env.GITHUB_SECRET || ''
     }),
     FacebookProvider({
-      clientId: process.env.FACEBOOK_ID,
-      clientSecret: process.env.FACEBOOK_SECRET
+      clientId: process.env.FACEBOOK_ID || '',
+      clientSecret: process.env.FACEBOOK_SECRET || ''
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET
+      clientId: process.env.GOOGLE_ID || '',
+      clientSecret: process.env.GOOGLE_SECRET || ''
     })
   ],
   adapter: PrismaAdapter(prisma),

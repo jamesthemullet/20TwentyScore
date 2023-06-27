@@ -18,6 +18,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       }
     }
   });
+
+  if (!post) {
+    return {
+      notFound: true
+    };
+  }
+
   return {
     props: post
   };

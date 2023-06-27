@@ -7,7 +7,6 @@ import prisma from '../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
-  console.log(2, session);
   if (!session) {
     res.statusCode = 403;
     return { props: { drafts: [] } };
@@ -15,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const drafts = await prisma.post.findMany({
     where: {
-      author: { email: session.user.email },
+      author: { email: session?.user?.email },
       published: false
     },
     include: {

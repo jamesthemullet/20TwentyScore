@@ -20,5 +20,10 @@
     "react/react-in-jsx-scope": "off",
     "no-console": 1,
     "react/no-unknown-property": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
