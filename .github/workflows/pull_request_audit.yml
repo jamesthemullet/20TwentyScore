@@ -7,14 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Vercel Action
-        id: vercel_action
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.TWENTY_VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.TWENTY_PROJECT_ID }}
       - name: Set env as secret
         env:
           MY_VAL: ${{ secrets.TWENTY_VERCEL_TOKEN }}
