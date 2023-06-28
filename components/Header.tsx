@@ -195,19 +195,21 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <title>20Twenty Score App</title>
-      <nav>
-        {left}
-        {right}
-        <style jsx>{`
-          nav {
-            display: flex;
-            padding: 2rem;
-            align-items: center;
-          }
-        `}</style>
-      </nav>
-      <h1>Temporary Title</h1>
+      <header>
+        <title>20Twenty Score App</title>
+        <nav>
+          {left}
+          {right}
+          <style jsx>{`
+            nav {
+              display: flex;
+              padding: 2rem;
+              align-items: center;
+            }
+          `}</style>
+        </nav>
+        <h1>Temporary Title</h1>
+      </header>
     </>
   );
 };

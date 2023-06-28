@@ -47,8 +47,8 @@ const Drafts: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h2>My Drafts</h2>
         <main>
+          <h2>My Drafts</h2>
           {props.drafts.map((post) => (
             <div key={post.id} className="post">
               <Post post={post} />
