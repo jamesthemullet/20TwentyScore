@@ -207,6 +207,7 @@ const Header: React.FC = () => {
           }
         `}</style>
       </nav>
+      <h1>Temporary Title</h1>
     </>
   );
 };
