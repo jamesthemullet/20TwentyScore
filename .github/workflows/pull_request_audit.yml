@@ -46,15 +46,7 @@ jobs:
                 ' ',
             ].join('\n')
              core.setOutput("comment", comment);
-      - name: Add comment to PR
-        id: comment_to_pr
-        uses: marocchino/sticky-pull-request-comment@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ github.event.issue.number }}
-          header: lighthouse
-          message: |
-            ${{ steps.format_lighthouse_score.outputs.comment }}
+
   axe:
     runs-on: ubuntu-latest
     env:
