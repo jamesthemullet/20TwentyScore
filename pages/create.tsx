@@ -30,7 +30,7 @@ const Draft: React.FC = () => {
     <Layout>
       <div>
         <form onSubmit={submitData}>
-          <h1>New Draft</h1>
+          <h2>New Draft</h2>
           <input
             autoFocus
             onChange={(e) => setTitle(e.target.value)}
