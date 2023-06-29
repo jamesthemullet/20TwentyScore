@@ -1,5 +1,3 @@
-import { module } from 'module';
-
 module.exports = {
   compiler: {
     // Enables the styled-components SWC transform
