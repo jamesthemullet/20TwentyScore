@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Scoreboard = () => {
   return (
     <>
-      <h3>Scoreboard</h3>
+      <h2>Scoreboard</h2>
       <ScoreboardLayout>
         <div>
           <div>Team 1</div>
