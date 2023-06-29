@@ -1,6 +1,7 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
 import Layout from '../components/Layout';
+import Scoreboard from '../components/Scoreboard';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
 
@@ -28,6 +29,7 @@ const Blog: React.FC<Props> = (props) => {
     <Layout>
       <div className="page">
         <main>
+          <Scoreboard />
           <h2>Public Feed</h2>
           {props.feed.map((post) => (
             <div key={post.id} className="post">
@@ -36,20 +38,6 @@ const Blog: React.FC<Props> = (props) => {
           ))}
         </main>
       </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
     </Layout>
   );
 };
