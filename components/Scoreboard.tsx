@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Scoreboard = () => {
   return (
-    <>
+    <ScoreboardContainer>
       <h2>Scoreboard</h2>
       <ScoreboardLayout>
         <div>
@@ -15,11 +15,22 @@ const Scoreboard = () => {
           <div>Runs - Wickets (Overs)</div>
         </div>
       </ScoreboardLayout>
-    </>
+    </ScoreboardContainer>
   );
 };
 
 export default Scoreboard;
+
+const ScoreboardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+`;
 
 const ScoreboardLayout = styled.div`
   display: flex;

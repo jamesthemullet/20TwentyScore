@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import Scoreboard from '../components/Scoreboard';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
+import Team from '../components/Team';
+import styled from 'styled-components';
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
@@ -29,7 +31,11 @@ const Blog: React.FC<Props> = (props) => {
     <Layout>
       <div className="page">
         <main>
-          <Scoreboard />
+          <Board>
+            <Team name="Team 1" />
+            <Scoreboard />
+            <Team name="Team 2" />
+          </Board>
           <h2>Public Feed</h2>
           {props.feed.map((post) => (
             <div key={post.id} className="post">
@@ -43,3 +49,9 @@ const Blog: React.FC<Props> = (props) => {
 };
 
 export default Blog;
+
+const Board = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
