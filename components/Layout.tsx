@@ -7,7 +7,6 @@ type Props = {
 };
 
 const Layout: React.FC<Props> = (props) => {
-  console.log(5, props);
   return (
     <Page>
       <Header />
