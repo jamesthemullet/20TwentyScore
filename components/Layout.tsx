@@ -2,18 +2,23 @@ import React, { ReactNode } from 'react';
 import Header from './Header';
 import styled from 'styled-components';
 import Footer from './Footer';
+import Meta from './meta';
 
 type Props = {
   children: ReactNode;
 };
 
 const Layout: React.FC<Props> = (props) => {
+  const seo = null;
   return (
-    <Page>
-      <Header />
-      <div className="layout">{props.children}</div>
-      <Footer />
-    </Page>
+    <>
+      <Meta seo={seo} />
+      <Page>
+        <Header />
+        <div className="layout">{props.children}</div>
+        <Footer />
+      </Page>
+    </>
   );
 };
 
