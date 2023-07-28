@@ -22,6 +22,7 @@ const Team = ({ name }: TeamProps) => {
           <p>Player 9</p>
           <p>Player 10</p>
           <p>Player 11</p>
+          <img width="32px" src="/icons/png/006-cricket-1.png" />
         </div>
       </TeamLayout>
     </TeamContainer>

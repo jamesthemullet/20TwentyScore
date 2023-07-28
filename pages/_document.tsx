@@ -1,17 +1,23 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import styled from '@emotion/styled';
 
 class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
         <Head />
-        <body>
+        <StyledBody>
           <Main />
           <NextScript />
-        </body>
+        </StyledBody>
       </Html>
     );
   }
 }
 
 export default MyDocument;
+
+const StyledBody = styled.body`
+  margin: 0;
+  padding: 0;
+`;

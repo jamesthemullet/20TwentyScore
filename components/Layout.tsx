@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import Header from './Header';
 import styled from 'styled-components';
+import Footer from './Footer';
 
 type Props = {
   children: ReactNode;
@@ -11,6 +12,7 @@ const Layout: React.FC<Props> = (props) => {
     <Page>
       <Header />
       <div className="layout">{props.children}</div>
+      <Footer />
     </Page>
   );
 };
