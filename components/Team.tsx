@@ -1,28 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
 
-type TeamProps = {
+type Player = {
   name: string;
+  runs: number;
+  isBatting: boolean;
+  allActions: string[];
 };
 
-const Team = ({ name }: TeamProps) => {
+type TeamProps = {
+  name: string;
+  players: Player[];
+};
+
+const Team = ({ name, players }: TeamProps) => {
   return (
     <TeamContainer>
       <h2>{name}</h2>
       <TeamLayout>
         <div>
-          <p>Player 1</p>
-          <p>Player 2</p>
-          <p>Player 3</p>
-          <p>Player 4</p>
-          <p>Player 5</p>
-          <p>Player 6</p>
-          <p>Player 7</p>
-          <p>Player 8</p>
-          <p>Player 9</p>
-          <p>Player 10</p>
-          <p>Player 11</p>
-          <img width="32px" src="/icons/png/006-cricket-1.png" />
+          {players.map((player, index) => (
+            <PlayerItem key={index}>
+              <p>{player.name}</p>
+              <p>Runs: {player.runs}</p>
+              {player.isBatting && <img width="32px" src="/icons/png/006-cricket-1.png" />}
+              {
+                // display allActions in a comma separated list
+                player.allActions.length > 0 && <p>{player.allActions.join(', ')}</p>
+              }
+            </PlayerItem>
+          ))}
         </div>
       </TeamLayout>
     </TeamContainer>
@@ -45,4 +52,12 @@ const TeamContainer = styled.div`
 const TeamLayout = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const PlayerItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
 `;
