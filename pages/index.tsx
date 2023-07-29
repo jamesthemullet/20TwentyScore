@@ -43,14 +43,27 @@ const Blog: React.FC<Props> = (props) => {
   const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
   const [currentBattingPlayer, setCurrentBattingPlayer] = useState<Player>(team1Players[0]);
 
+  const updatePlayerName = (teamIndex: number, playerIndex: number, name: string): void => {
+    console.log(20, teamIndex, playerIndex, name);
+    if (teamIndex === 1) {
+      const updatedPlayers = [...team1Players];
+      updatedPlayers[playerIndex].name = name;
+      setTeam1Players(updatedPlayers);
+    } else if (teamIndex === 2) {
+      const updatedPlayers = [...team2Players];
+      updatedPlayers[playerIndex].name = name;
+      setTeam2Players(updatedPlayers);
+    }
+  };
+
   const updatePlayerRuns = (
     teamIndex: number,
     playerIndex: number,
     runs: number,
     action: null | string
   ): void => {
+    console.log(1, teamIndex, playerIndex, runs, action);
     if (teamIndex === 1) {
-      console.log(1, playerIndex, runs, action);
       const updatedPlayers = [...team1Players];
       updatedPlayers[playerIndex].runs += runs;
       if (action) {
@@ -98,10 +111,20 @@ const Blog: React.FC<Props> = (props) => {
       <div className="page">
         <main>
           <Board>
-            <Team name="Team 1" players={team1Players} />
+            <Team
+              teamIndex={1}
+              name="Team 1"
+              players={team1Players}
+              onSetPlayers={updatePlayerName}
+            />
             <Scoreboard />
             <Scoring onScoreUpdate={updatePlayerRuns} currentBattingPlayer={currentBattingPlayer} />
-            <Team name="Team 2" players={team2Players} />
+            <Team
+              teamIndex={2}
+              name="Team 2"
+              players={team2Players}
+              onSetPlayers={updatePlayerName}
+            />
           </Board>
           <h2>Public Feed</h2>
           {props.feed.map((post) => (

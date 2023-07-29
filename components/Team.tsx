@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 type Player = {
@@ -9,25 +9,110 @@ type Player = {
 };
 
 type TeamProps = {
+  teamIndex: number;
   name: string;
   players: Player[];
+  onSetPlayers: (teamIndex: number, playerIndex: number, event: string) => void;
 };
 
-const Team = ({ name, players }: TeamProps) => {
+const Team = ({ teamIndex, name, players, onSetPlayers }: TeamProps) => {
+  const [teamName, setTeamName] = useState(name);
+  const [editTeamName, setEditTeamName] = useState(false);
+  const [editPlayerIndex, setEditPlayerIndex] = useState(-1);
+  const teamNameInputRef = useRef<HTMLInputElement>(null);
+  const playerInputsRef = useRef<HTMLInputElement[]>([]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (teamNameInputRef.current && !teamNameInputRef.current.contains(event.target as Node)) {
+        handleSaveTeamName();
+      }
+      if (
+        editPlayerIndex >= 0 &&
+        playerInputsRef.current[editPlayerIndex] &&
+        !playerInputsRef.current[editPlayerIndex].contains(event.target as Node)
+      ) {
+        handleSavePlayerName();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [editPlayerIndex]);
+
+  const handleTeamNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTeamName(event.target.value);
+  };
+
+  const handlePlayerNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    playerIndex: number
+  ) => {
+    onSetPlayers(teamIndex, playerIndex, event.target.value);
+  };
+
+  const handleEditTeamName = () => {
+    setEditTeamName(true);
+  };
+
+  const handleSaveTeamName = () => {
+    setEditTeamName(false);
+  };
+
+  const handleEditPlayerName = (playerIndex: number) => {
+    setEditPlayerIndex(playerIndex);
+  };
+
+  const handleSavePlayerName = () => {
+    setEditPlayerIndex(-1);
+  };
   return (
     <TeamContainer>
-      <h2>{name}</h2>
+      {editTeamName ? (
+        <>
+          <input
+            type="text"
+            value={teamName}
+            onChange={handleTeamNameChange}
+            ref={teamNameInputRef}
+          />
+          <button onClick={handleSaveTeamName}>Save</button>
+        </>
+      ) : (
+        <>
+          <h2>{teamName}</h2>
+          <button onClick={handleEditTeamName}>Edit</button>
+        </>
+      )}
       <TeamLayout>
         <div>
           {players.map((player, index) => (
             <PlayerItem key={index}>
-              <p>{player.name}</p>
+              {editPlayerIndex === index ? (
+                <>
+                  <input
+                    type="text"
+                    value={player.name}
+                    onChange={(event) => handlePlayerNameChange(event, index)}
+                    ref={(input) => {
+                      if (input) {
+                        playerInputsRef.current[index] = input;
+                      }
+                    }}
+                  />
+                  <button onClick={handleSavePlayerName}>Save</button>
+                </>
+              ) : (
+                <>
+                  <p>{player.name}</p>
+                  <button onClick={() => handleEditPlayerName(index)}>Edit</button>
+                </>
+              )}
               <p>Runs: {player.runs}</p>
               {player.isBatting && <img width="32px" src="/icons/png/006-cricket-1.png" />}
-              {
-                // display allActions in a comma separated list
-                player.allActions.length > 0 && <p>{player.allActions.join(', ')}</p>
-              }
+              {player.allActions.length > 0 && <p>{player.allActions.join(', ')}</p>}
             </PlayerItem>
           ))}
         </div>
