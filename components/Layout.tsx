@@ -12,7 +12,7 @@ const Layout: React.FC<Props> = (props) => {
   const seo = null;
   return (
     <>
-      <Meta seo={seo} />
+      <Meta />
       <Page>
         <Header />
         <div className="layout">{props.children}</div>

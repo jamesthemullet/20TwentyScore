@@ -24,13 +24,11 @@ type seoProps = {
   };
 };
 
-export default function Meta({ seo }: any) {
+export default function Meta() {
   const router = useRouter();
   const currentUrl = router.asPath;
-  // const siteAddress = 'tbc';
+  const siteAddress = 'https://20-twenty-score.vercel.app/';
   // const defaultImageUrl = '/images/tbc.png';
-
-  const { opengraphImage, opengraphTitle, opengraphDescription, opengraphSiteName } = seo || {};
   return (
     <Head>
       <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
@@ -44,26 +42,23 @@ export default function Meta({ seo }: any) {
       <meta name="theme-color" content="#000" />
       <meta property="og:locale" content="en_GB" />
       <meta property="og:type" content="article" />
-      <meta property="og:title" content={opengraphTitle ? opengraphTitle : '20 Twenty Scorecard'} />
+      <meta property="og:title" content={'20 Twenty Scorecard'} />
       <meta
         property="og:description"
-        content={opengraphDescription ? opengraphDescription : '20 Twenty Scorecard'}
+        content={'20 Twenty Scorecard - keep scores of your 20 Twenty games'}
       />
-      <meta
-        property="og:site_name"
-        content={opengraphSiteName ? opengraphSiteName : '20 Twenty Scorecard'}
-      />
-      {/* <meta property="og:url" content={`${siteAddress}${currentUrl}`} /> */}
+      <meta property="og:site_name" content={'20 Twenty Scorecard'} />
+      <meta property="og:url" content={`${siteAddress}${currentUrl}`} />
       {/* <meta
         property="og:image"
         content={opengraphImage?.mediaItemUrl ? opengraphImage?.mediaItemUrl : defaultImageUrl}
       /> */}
-      <meta property="og:image:width" content={opengraphImage?.mediaDetails?.width} />
-      <meta property="og:image:height" content={opengraphImage?.mediaDetails?.height} />
+      {/* <meta property="og:image:width" content={opengraphImage?.mediaDetails?.width} />
+      <meta property="og:image:height" content={opengraphImage?.mediaDetails?.height} /> */}
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={opengraphDescription ? opengraphDescription : '20 Twenty Scorecard'}
+        content={'20 Twenty Scorecard - keep scores of your 20 Twenty games'}
       />
     </Head>
   );
