@@ -41,10 +41,16 @@ type Props = {
 const Blog: React.FC<Props> = (props) => {
   const [team1Players, setTeam1Players] = useState<Player[]>(defaultPlayers());
   const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
-  const [currentBattingPlayer, setCurrentBattingPlayer] = useState<Player>(team1Players[0]);
+  const [currentStriker, setCurrentStriker] = useState<Player>(team1Players[0]);
+  const [currentNonStriker, setCurrentNonStriker] = useState<Player>(team1Players[1]);
+
+  const maxOvers = 20;
+  const [currentOver, setCurrentOver] = useState(1);
+  const [currentBallInOver, setCurrentBallInOver] = useState(1);
+  const [currentExtrasInOver, setCurrentExtrasInOver] = useState(0);
+  const maxBallsInOver = 6 + currentExtrasInOver;
 
   const updatePlayerName = (teamIndex: number, playerIndex: number, name: string): void => {
-    console.log(20, teamIndex, playerIndex, name);
     if (teamIndex === 1) {
       const updatedPlayers = [...team1Players];
       updatedPlayers[playerIndex].name = name;
@@ -62,7 +68,6 @@ const Blog: React.FC<Props> = (props) => {
     runs: number,
     action: null | string
   ): void => {
-    console.log(1, teamIndex, playerIndex, runs, action);
     if (teamIndex === 1) {
       const updatedPlayers = [...team1Players];
       updatedPlayers[playerIndex].runs += runs;
@@ -72,13 +77,12 @@ const Blog: React.FC<Props> = (props) => {
         updatedPlayers[playerIndex].allActions.push(runs.toString());
       }
       if (action === 'Wicket') {
-        console.log(2);
         updatedPlayers[playerIndex].isOnTheCrease = false;
         updatedPlayers[playerIndex].isOut = true;
         const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
         if (nextPlayer) {
           updatedPlayers[nextPlayer.index].isOnTheCrease = true;
-          setCurrentBattingPlayer(updatedPlayers[playerIndex + 1]);
+          setCurrentStriker(updatedPlayers[playerIndex + 1]);
         } else {
           console.log('all out');
         }
@@ -98,12 +102,32 @@ const Blog: React.FC<Props> = (props) => {
         const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
         if (nextPlayer) {
           updatedPlayers[nextPlayer.index].isOnTheCrease = true;
-          setCurrentBattingPlayer(updatedPlayers[playerIndex + 1]);
+          setCurrentStriker(updatedPlayers[playerIndex + 1]);
         } else {
           console.log('all out');
         }
       }
       setTeam2Players(updatedPlayers);
+    }
+  };
+
+  const updateOvers = (action: null | string) => {
+    if (action === 'No Ball' || action === 'Wide') {
+      setCurrentExtrasInOver(currentExtrasInOver + 1);
+    }
+    if (currentBallInOver < maxBallsInOver) {
+      setCurrentBallInOver(currentBallInOver + 1);
+    } else {
+      setCurrentBallInOver(1);
+      setCurrentExtrasInOver(0);
+      setCurrentOver(currentOver + 1);
+      //swap currentStriker with currentNonStriker
+      const temp = currentStriker;
+      setCurrentStriker(currentNonStriker);
+      setCurrentNonStriker(temp);
+    }
+    if (currentOver === maxOvers) {
+      console.log('game over');
     }
   };
   return (
@@ -118,7 +142,11 @@ const Blog: React.FC<Props> = (props) => {
               onSetPlayers={updatePlayerName}
             />
             <Scoreboard />
-            <Scoring onScoreUpdate={updatePlayerRuns} currentBattingPlayer={currentBattingPlayer} />
+            <Scoring
+              onScoreUpdate={updatePlayerRuns}
+              onOverUpdate={updateOvers}
+              currentStriker={currentStriker}
+            />
             <Team
               teamIndex={2}
               name="Team 2"

@@ -17,10 +17,11 @@ type ScoringProps = {
     runs: number,
     action: null | string
   ) => void;
-  currentBattingPlayer: Player;
+  onOverUpdate: (action: null | string) => void;
+  currentStriker: Player;
 };
 
-const Scoring = ({ onScoreUpdate, currentBattingPlayer }: ScoringProps) => {
+const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) => {
   const handleScoreClick = (
     teamIndex: number,
     playerIndex: number,
@@ -28,34 +29,34 @@ const Scoring = ({ onScoreUpdate, currentBattingPlayer }: ScoringProps) => {
     action: null | string
   ) => {
     onScoreUpdate(teamIndex, playerIndex, runs, action);
+    onOverUpdate(action);
   };
   return (
     <div>
       <h2>Scoring</h2>
       <div>
-        <SquareButton onClick={() => handleScoreClick(1, currentBattingPlayer.index, 0, null)}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 0, null)}>
           0
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(1, currentBattingPlayer.index, 1, null)}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, null)}>
           1
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(1, currentBattingPlayer.index, 4, null)}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 4, null)}>
           4
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(1, currentBattingPlayer.index, 6, null)}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 6, null)}>
           6
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(1, currentBattingPlayer.index, 0, 'Wicket')}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 0, 'Wicket')}>
           Wicket
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(1, currentBattingPlayer.index, 1, 'No Ball')}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, 'No Ball')}>
           No Ball
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(1, currentBattingPlayer.index, 1, 'Wide')}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, 'Wide')}>
           Wide
         </SquareButton>
-        <SquareButton
-          onClick={() => handleScoreClick(1, currentBattingPlayer.index, 0, 'Next Ball')}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 0, 'Next Ball')}>
           Next Ball
         </SquareButton>
       </div>
