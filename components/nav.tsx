@@ -10,7 +10,7 @@ export default function Nav() {
   };
 
   return (
-    <StyledNav>
+    <StyledNav aria-label="Navigation Bar">
       <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu">
         <span></span>
         <span></span>
