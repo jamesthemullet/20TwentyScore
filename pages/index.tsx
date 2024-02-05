@@ -133,7 +133,7 @@ const Blog: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <main>
+        <main aria-label="Scoreboard">
           <Board>
             <Team
               teamIndex={1}

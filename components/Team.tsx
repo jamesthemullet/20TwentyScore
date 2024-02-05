@@ -111,7 +111,9 @@ const Team = ({ teamIndex, name, players, onSetPlayers }: TeamProps) => {
                 </>
               )}
               <p>Runs: {player.runs}</p>
-              {player.isBatting && <img width="32px" src="/icons/png/006-cricket-1.png" />}
+              {player.isBatting && (
+                <img alt="logo" width="32px" src="/icons/png/006-cricket-1.png" />
+              )}
               {player.allActions.length > 0 && <p>{player.allActions.join(', ')}</p>}
             </PlayerItem>
           ))}

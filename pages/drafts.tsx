@@ -47,14 +47,12 @@ const Drafts: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <main>
-          <h2>My Drafts</h2>
-          {props.drafts.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
+        <h2>My Drafts</h2>
+        {props.drafts.map((post) => (
+          <div key={post.id} className="post">
+            <Post post={post} />
+          </div>
+        ))}
       </div>
       <style jsx>{`
         .post {

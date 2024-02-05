@@ -197,7 +197,7 @@ const Header: React.FC = () => {
     <>
       <header>
         <title>20Twenty Score App</title>
-        <nav>
+        <nav aria-label="Secondary Navigation">
           {left}
           {right}
           <style jsx>{`
