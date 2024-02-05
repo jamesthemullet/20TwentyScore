@@ -60,6 +60,7 @@ export default function Meta() {
         name="description"
         content={'20 Twenty Scorecard - keep scores of your 20 Twenty games'}
       />
+      <title>20Twenty Scorecard</title>
     </Head>
   );
 }

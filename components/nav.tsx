@@ -11,7 +11,7 @@ export default function Nav() {
 
   return (
     <StyledNav>
-      <BurgerButton onClick={toggleDropdown}>
+      <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu">
         <span></span>
         <span></span>
         <span></span>
