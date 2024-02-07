@@ -31,11 +31,24 @@ type Player = {
   isBatting: boolean;
   isOnTheCrease: boolean;
   isOut: boolean;
-  allActions: string[];
+  allActions: (string | null)[];
 };
 
 type Props = {
   feed: PostProps[];
+};
+
+type TeamScore = {
+  runs: number;
+  balls: number;
+  wickets: number;
+  extras: number;
+  actions: (string | null)[];
+};
+
+type GameScore = {
+  team1Players: TeamScore;
+  team2Players: TeamScore;
 };
 
 const Blog: React.FC<Props> = (props) => {
@@ -43,24 +56,33 @@ const Blog: React.FC<Props> = (props) => {
   const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
   const [currentStriker, setCurrentStriker] = useState<Player>(team1Players[0]);
   const [currentNonStriker, setCurrentNonStriker] = useState<Player>(team1Players[1]);
+  const initialTeamState = {
+    runs: 0,
+    wickets: 0,
+    overs: 0,
+    balls: 0,
+    extras: 0,
+    actions: []
+  };
+
+  const [gameScore, setGameScore] = useState<GameScore>({
+    team1Players: { ...initialTeamState },
+    team2Players: { ...initialTeamState }
+  });
+
+  const [mostRecentAction, setMostRecentAction] = useState<{
+    runs: number;
+    action: string | null;
+  }>({
+    runs: 0,
+    action: null
+  });
 
   const maxOvers = 20;
   const [currentOver, setCurrentOver] = useState(1);
   const [currentBallInOver, setCurrentBallInOver] = useState(1);
   const [currentExtrasInOver, setCurrentExtrasInOver] = useState(0);
   const maxBallsInOver = 6 + currentExtrasInOver;
-
-  const updatePlayerName = (teamIndex: number, playerIndex: number, name: string): void => {
-    if (teamIndex === 1) {
-      const updatedPlayers = [...team1Players];
-      updatedPlayers[playerIndex].name = name;
-      setTeam1Players(updatedPlayers);
-    } else if (teamIndex === 2) {
-      const updatedPlayers = [...team2Players];
-      updatedPlayers[playerIndex].name = name;
-      setTeam2Players(updatedPlayers);
-    }
-  };
 
   const updatePlayerRuns = (
     teamIndex: number,
@@ -130,6 +152,42 @@ const Blog: React.FC<Props> = (props) => {
       console.log('game over');
     }
   };
+
+  const updateTeamScore = (teamPlayers: TeamScore, runs: number, action: string | null) => {
+    return {
+      ...teamPlayers,
+      runs: teamPlayers.runs + runs,
+      balls: teamPlayers.balls + 1,
+      wickets: teamPlayers.wickets + (action === 'Wicket' ? 1 : 0),
+      extras: teamPlayers.extras + (action === 'No Ball' || action === 'Wide' ? 1 : 0),
+      actions: [...teamPlayers.actions, action]
+    };
+  };
+
+  const updateGame = (
+    teamIndex: number,
+    playerIndex: number,
+    runs: number,
+    action: null | string
+  ) => {
+    setGameScore((prevState: GameScore) => {
+      if (teamIndex === 1) {
+        return {
+          ...prevState,
+          team1Players: updateTeamScore(prevState.team1Players, runs, action)
+        };
+      } else if (teamIndex === 2) {
+        return {
+          ...prevState,
+          team2Players: updateTeamScore(prevState.team2Players, runs, action)
+        };
+      } else {
+        return prevState;
+      }
+    });
+    setMostRecentAction({ runs, action });
+  };
+
   return (
     <Layout>
       <div className="page">
@@ -139,11 +197,14 @@ const Blog: React.FC<Props> = (props) => {
               teamIndex={1}
               name="Team 1"
               players={team1Players}
-              onSetPlayers={updatePlayerName}
+              teamScore={gameScore.team1Players}
+              currentStriker={currentStriker}
+              currentNonStriker={currentNonStriker}
+              mostRecentAction={mostRecentAction}
             />
             <Scoreboard />
             <Scoring
-              onScoreUpdate={updatePlayerRuns}
+              onScoreUpdate={updateGame}
               onOverUpdate={updateOvers}
               currentStriker={currentStriker}
             />
@@ -151,7 +212,10 @@ const Blog: React.FC<Props> = (props) => {
               teamIndex={2}
               name="Team 2"
               players={team2Players}
-              onSetPlayers={updatePlayerName}
+              teamScore={gameScore.team2Players}
+              currentStriker={currentStriker}
+              currentNonStriker={currentNonStriker}
+              mostRecentAction={mostRecentAction}
             />
           </Board>
           <h2>Public Feed</h2>

@@ -7,7 +7,7 @@ type Player = {
   isBatting: boolean;
   isOnTheCrease: boolean;
   isOut: boolean;
-  allActions: string[];
+  allActions: (string | null)[];
 };
 
 type ScoringProps = {
