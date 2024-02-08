@@ -206,7 +206,7 @@ const TeamLayout = styled.div`
 
   button {
     padding: 8px 12px;
-    background-color: #007bff;
+    background-color: black;
     color: #fff;
     border: none;
     border-radius: 3px;
