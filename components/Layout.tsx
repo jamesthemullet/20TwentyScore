@@ -14,18 +14,11 @@ const Layout: React.FC<Props> = (props) => {
   return (
     <>
       <Meta />
-      <Page>
-        <Header />
-        {props.children}
-        <Footer />
-      </Page>
+      <Header />
+      {props.children}
+      <Footer />
     </>
   );
 };
 
 export default Layout;
-
-const Page = styled.div`
-  font-family: Arial, sans-serif;
-  width: 100%;
-`;

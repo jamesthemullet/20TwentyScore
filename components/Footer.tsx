@@ -18,7 +18,7 @@ export default function Footer() {
   );
 }
 
-const FooterContainer = styled.div`
+const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: center;
