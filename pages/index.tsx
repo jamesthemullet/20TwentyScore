@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 import Scoreboard from '../components/Scoreboard';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
-import Team from '../components/Team';
+import Team from '../components/team/team';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring';
 import defaultPlayers from '../components/players';
