@@ -1,6 +1,8 @@
+import styled from '@emotion/styled';
+
 export default function Footer() {
   return (
-    <footer>
+    <FooterContainer>
       <p>This is footer</p>
       <div>
         Icons made by{' '}
@@ -12,6 +14,17 @@ export default function Footer() {
           www.flaticon.com
         </a>
       </div>
-    </footer>
+    </FooterContainer>
   );
 }
+
+const FooterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  min-height: 80px;
+`;

@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
 import Header from './Header';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Footer from './Footer';
 import Meta from './meta';
+import Scoreboard from './Scoreboard';
 
 type Props = {
   children: ReactNode;
@@ -15,7 +16,7 @@ const Layout: React.FC<Props> = (props) => {
       <Meta />
       <Page>
         <Header />
-        <div className="layout">{props.children}</div>
+        {props.children}
         <Footer />
       </Page>
     </>
@@ -25,10 +26,6 @@ const Layout: React.FC<Props> = (props) => {
 export default Layout;
 
 const Page = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: Arial, sans-serif;
+  width: 100%;
 `;

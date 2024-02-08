@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const Scoreboard = () => {
   return (
@@ -7,12 +7,12 @@ const Scoreboard = () => {
       <h2>Scoreboard</h2>
       <ScoreboardLayout>
         <div>
-          <div>Team 1</div>
-          <div>Runs - Wickets (Overs)</div>
+          <p>Team 1</p>
+          <p>Runs - Wickets (Overs)</p>
         </div>
         <div>
-          <div>Team 2</div>
-          <div>Runs - Wickets (Overs)</div>
+          <p>Team 2</p>
+          <p>Runs - Wickets (Overs)</p>
         </div>
       </ScoreboardLayout>
     </ScoreboardContainer>
@@ -25,11 +25,17 @@ const ScoreboardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
   border: 1px solid black;
   border-radius: 5px;
   padding: 10px;
-  margin: 10px;
+  flex: 3;
+  width: 100%;
+
+  h2 {
+    margin-bottom: 1rem;
+    height: 2rem;
+    font-size: 1.5rem;
+  }
 `;
 
 const ScoreboardLayout = styled.div`
