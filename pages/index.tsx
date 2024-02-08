@@ -5,7 +5,7 @@ import Scoreboard from '../components/Scoreboard';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
 import Team from '../components/Team';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Scoring from '../components/scoring';
 import defaultPlayers from '../components/players';
 
@@ -190,42 +190,40 @@ const Blog: React.FC<Props> = (props) => {
 
   return (
     <Layout>
-      <div className="page">
-        <main aria-label="Scoreboard">
-          <Board>
-            <Team
-              teamIndex={1}
-              name="Team 1"
-              players={team1Players}
-              teamScore={gameScore.team1Players}
-              currentStriker={currentStriker}
-              currentNonStriker={currentNonStriker}
-              mostRecentAction={mostRecentAction}
-            />
-            <Scoreboard />
-            <Scoring
-              onScoreUpdate={updateGame}
-              onOverUpdate={updateOvers}
-              currentStriker={currentStriker}
-            />
-            <Team
-              teamIndex={2}
-              name="Team 2"
-              players={team2Players}
-              teamScore={gameScore.team2Players}
-              currentStriker={currentStriker}
-              currentNonStriker={currentNonStriker}
-              mostRecentAction={mostRecentAction}
-            />
-          </Board>
-          <h2>Public Feed</h2>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
-      </div>
+      <Main aria-label="Scoreboard">
+        <Board>
+          <Team
+            teamIndex={1}
+            name="Team 1"
+            players={team1Players}
+            teamScore={gameScore.team1Players}
+            currentStriker={currentStriker}
+            currentNonStriker={currentNonStriker}
+            mostRecentAction={mostRecentAction}
+          />
+          <Scoreboard />
+          <Scoring
+            onScoreUpdate={updateGame}
+            onOverUpdate={updateOvers}
+            currentStriker={currentStriker}
+          />
+          <Team
+            teamIndex={2}
+            name="Team 2"
+            players={team2Players}
+            teamScore={gameScore.team2Players}
+            currentStriker={currentStriker}
+            currentNonStriker={currentNonStriker}
+            mostRecentAction={mostRecentAction}
+          />
+        </Board>
+        {/* <h2>Public Feed</h2>
+        {props.feed.map((post) => (
+          <div key={post.id} className="post">
+            <Post post={post} />
+          </div>
+        ))} */}
+      </Main>
     </Layout>
   );
 };
@@ -236,4 +234,12 @@ const Board = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  min-height: 500px;
+  gap: 10px;
+  padding: 20px;
+`;
+
+const Main = styled.main`
+  position: relative;
+  width: 100%;
 `;

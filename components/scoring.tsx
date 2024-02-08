@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { SquareButton } from './core-components';
 
 type Player = {
@@ -32,7 +33,7 @@ const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) 
     onOverUpdate(action);
   };
   return (
-    <div>
+    <ScoringContainer>
       <h2>Scoring</h2>
       <div>
         <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 0, null)}>
@@ -60,8 +61,18 @@ const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) 
           Next Ball
         </SquareButton>
       </div>
-    </div>
+    </ScoringContainer>
   );
 };
+
+const ScoringContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  flex: 3;
+`;
 
 export default Scoring;
