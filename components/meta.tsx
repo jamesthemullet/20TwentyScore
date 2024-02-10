@@ -28,7 +28,7 @@ export default function Meta() {
   const router = useRouter();
   const currentUrl = router.asPath;
   const siteAddress = 'https://20-twenty-score.vercel.app/';
-  // const defaultImageUrl = '/images/tbc.png';
+  const defaultImageUrl = '/images/temp-seo-image.jpg';
   return (
     <Head>
       <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
@@ -49,12 +49,7 @@ export default function Meta() {
       />
       <meta property="og:site_name" content={'20 Twenty Scorecard'} />
       <meta property="og:url" content={`${siteAddress}${currentUrl}`} />
-      {/* <meta
-        property="og:image"
-        content={opengraphImage?.mediaItemUrl ? opengraphImage?.mediaItemUrl : defaultImageUrl}
-      /> */}
-      {/* <meta property="og:image:width" content={opengraphImage?.mediaDetails?.width} />
-      <meta property="og:image:height" content={opengraphImage?.mediaDetails?.height} /> */}
+      <meta property="og:image" content={defaultImageUrl} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
