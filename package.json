@@ -24,7 +24,6 @@
     "@emotion/styled": "^11.11.0",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/client": "^4.15.0",
-    "@types/jest": "^29.5.12",
     "@vercel/postgres": "^0.3.1",
     "husky": "^8.0.3",
     "jest-fetch-mock": "^3.0.3",
@@ -41,7 +40,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
-    "@types/node": "17.0.14",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.17",
     "@types/react": "^18.2.52",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
@@ -53,6 +53,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^2.8.8",
     "prisma": "^4.15.0",
-    "typescript": "4.5.5"
+    "typescript": "^5.3.3"
   }
 }
