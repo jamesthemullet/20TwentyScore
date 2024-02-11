@@ -4,6 +4,7 @@ import { Player } from '../player/player';
 
 type Player = {
   name: string;
+  index: number;
   runs: number;
   isBatting: boolean;
   allActions: (string | null)[];
@@ -31,6 +32,7 @@ type TeamProps = {
 };
 
 type TeamPlayer = {
+  index: number;
   runs: number;
   isBatting: boolean;
   allActions: (string | null)[];
@@ -65,6 +67,7 @@ const Team = ({
   mostRecentAction
 }: TeamProps) => {
   const initialPlayerState = {
+    index: 0,
     runs: 0,
     isBatting: false,
     allActions: []
@@ -86,6 +89,7 @@ const Team = ({
   const updatePlayerScore = (teamPlayers: TeamPlayer, mostRecentAction: RecentAction) => {
     return {
       ...teamPlayers,
+      index: teamPlayers.index,
       runs: teamPlayers.runs + mostRecentAction.runs,
       isBatting: currentStriker.isBatting,
       allActions: [...teamPlayers.allActions, mostRecentAction.action]
@@ -114,7 +118,6 @@ const Team = ({
   };
 
   const handleTeamNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(10, e);
     setTeamName(e.target.value);
   };
 
@@ -143,14 +146,11 @@ const Team = ({
       )}
       <TeamLayout>
         <div>
-          {players.map((player, index) => (
-            <Player
-              key={index}
-              index={index}
-              runs={playersScore[`player${index + 1}` as keyof typeof playersScore].runs}
-              isBatting={playersScore[`player${index + 1}` as keyof typeof playersScore].isBatting}
-            />
-          ))}
+          {players.map((player, index) => {
+            return (
+              <Player key={index} index={index} runs={player.runs} isBatting={player.isBatting} />
+            );
+          })}
         </div>
       </TeamLayout>
     </TeamContainer>
