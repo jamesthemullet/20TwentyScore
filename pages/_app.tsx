@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
-import Nav from '../components/nav';
+import { GameScoreProvider } from '../context/GameScoreContext';
 
 import { css, Global } from '@emotion/react';
 
@@ -29,8 +29,9 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <SessionProvider session={pageProps.session}>
       <GlobalStyles />
-      <Nav />
-      <Component {...pageProps} />
+      <GameScoreProvider>
+        <Component {...pageProps} />
+      </GameScoreProvider>
     </SessionProvider>
   );
 };

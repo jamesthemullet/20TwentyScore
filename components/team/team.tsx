@@ -15,10 +15,10 @@ type TeamProps = {
   name: string;
   players: Player[];
   teamScore: {
-    runs: number;
-    wickets: number;
-    balls: number;
-    extras: number;
+    // runs: number;
+    // wickets: number;
+    // balls: number;
+    // extras: number;
   };
   currentStriker: {
     index: number;
