@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { useGameScore } from '../context/GameScoreContext';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -17,6 +19,11 @@ export default function Nav() {
     localStorage.setItem('gameData', gameData);
     alert('Game saved!');
   };
+
+  const router = useRouter();
+  const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
+
+  const { data: session, status } = useSession();
 
   return (
     <StyledNav aria-label="Navigation Bar">
@@ -36,6 +43,15 @@ export default function Nav() {
           <Link href="/scoreboard">Scoreboard</Link>
         </li>
       </ul>
+      {!session && <Link href="/api/auth/signin">Log in</Link>}
+      {session && (
+        <>
+          <UserAndLogout>
+            ({session?.user?.email})<Link href="/api/auth/signout">Log out</Link>
+          </UserAndLogout>
+        </>
+      )}
+
       <img
         alt="Save Game"
         width="32px"
@@ -46,6 +62,16 @@ export default function Nav() {
     </StyledNav>
   );
 }
+
+const UserAndLogout = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 1rem;
+  a {
+    margin-left: 0.5rem;
+  }
+`;
 
 const StyledNav = styled.nav`
   background-color: #333;
