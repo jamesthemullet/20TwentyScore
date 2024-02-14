@@ -45,7 +45,6 @@ const ScoreboardLayout = styled.div`
   margin-bottom: 1rem;
   gap: 5rem;
 
-  // div last of type
   & > div:last-of-type {
     text-align: right;
   }

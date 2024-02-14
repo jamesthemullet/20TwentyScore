@@ -8,6 +8,7 @@ import Team from '../components/team/team';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring';
 import defaultPlayers from '../components/players';
+import { useGameScore } from '../context/GameScoreContext';
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
@@ -38,37 +39,11 @@ type Props = {
   feed: PostProps[];
 };
 
-type TeamScore = {
-  runs: number;
-  balls: number;
-  wickets: number;
-  extras: number;
-  actions: (string | null)[];
-};
-
-type GameScore = {
-  team1Players: TeamScore;
-  team2Players: TeamScore;
-};
-
 const Blog: React.FC<Props> = (props) => {
   const [team1Players, setTeam1Players] = useState<Player[]>(defaultPlayers());
   const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
   const [currentStriker, setCurrentStriker] = useState<Player>(team1Players[0]);
   const [currentNonStriker, setCurrentNonStriker] = useState<Player>(team1Players[1]);
-  const initialTeamState = {
-    runs: 0,
-    wickets: 0,
-    overs: 0,
-    balls: 0,
-    extras: 0,
-    actions: []
-  };
-
-  const [gameScore, setGameScore] = useState<GameScore>({
-    team1Players: { ...initialTeamState },
-    team2Players: { ...initialTeamState }
-  });
 
   const [mostRecentAction, setMostRecentAction] = useState<{
     runs: number;
@@ -153,16 +128,7 @@ const Blog: React.FC<Props> = (props) => {
     }
   };
 
-  const updateTeamScore = (teamPlayers: TeamScore, runs: number, action: string | null) => {
-    return {
-      ...teamPlayers,
-      runs: teamPlayers.runs + runs,
-      balls: teamPlayers.balls + 1,
-      wickets: teamPlayers.wickets + (action === 'Wicket' ? 1 : 0),
-      extras: teamPlayers.extras + (action === 'No Ball' || action === 'Wide' ? 1 : 0),
-      actions: [...teamPlayers.actions, action]
-    };
-  };
+  const { gameScore, setGameScore } = useGameScore();
 
   const updateGame = (
     teamIndex: number,
@@ -170,21 +136,7 @@ const Blog: React.FC<Props> = (props) => {
     runs: number,
     action: null | string
   ) => {
-    setGameScore((prevState: GameScore) => {
-      if (teamIndex === 1) {
-        return {
-          ...prevState,
-          team1Players: updateTeamScore(prevState.team1Players, runs, action)
-        };
-      } else if (teamIndex === 2) {
-        return {
-          ...prevState,
-          team2Players: updateTeamScore(prevState.team2Players, runs, action)
-        };
-      } else {
-        return prevState;
-      }
-    });
+    setGameScore(teamIndex, playerIndex, runs);
     setMostRecentAction({ runs, action });
   };
 

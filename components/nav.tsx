@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
+import { useGameScore } from '../context/GameScoreContext';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const { gameScore } = useGameScore();
+
+  const saveGame = () => {
+    const gameData = JSON.stringify(gameScore);
+    localStorage.setItem('gameData', gameData);
+    alert('Game saved!');
   };
 
   return (
@@ -27,6 +36,13 @@ export default function Nav() {
           <Link href="/scoreboard">Scoreboard</Link>
         </li>
       </ul>
+      <img
+        alt="Save Game"
+        width="32px"
+        height="32px"
+        src="/icons/png/009-save.png"
+        onClick={() => saveGame()}
+      />
     </StyledNav>
   );
 }
@@ -37,6 +53,10 @@ const StyledNav = styled.nav`
   padding: 1rem;
   font-family: 'Oswald', sans-serif;
   letter-spacing: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   ul {
     display: flex;
     justify-content: center;
