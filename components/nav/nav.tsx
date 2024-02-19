@@ -25,8 +25,6 @@ export default function Nav() {
 
   const { data: session, status } = useSession();
 
-  console.log(10, window?.innerWidth);
-
   return (
     <StyledNav aria-label="Navigation Bar">
       <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu">
