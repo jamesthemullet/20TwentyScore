@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { useGameScore } from '../context/GameScoreContext';
+import { useGameScore } from '../../context/GameScoreContext';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -21,7 +21,7 @@ export default function Nav() {
   };
 
   const router = useRouter();
-  const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
+  // const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
 
   const { data: session, status } = useSession();
 
@@ -32,7 +32,7 @@ export default function Nav() {
         <span></span>
         <span></span>
       </BurgerButton>
-      <ul className={isDropdownOpen ? 'open' : ''}>
+      <ul className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
         <li>
           <Link href="/">Home</Link>
         </li>

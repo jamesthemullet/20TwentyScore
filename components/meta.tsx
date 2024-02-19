@@ -40,6 +40,7 @@ export default function Meta() {
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
       <meta name="theme-color" content="#000" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta property="og:locale" content="en_GB" />
       <meta property="og:type" content="article" />
       <meta property="og:title" content={'20 Twenty Scorecard'} />
