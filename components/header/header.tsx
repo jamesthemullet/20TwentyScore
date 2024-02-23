@@ -1,6 +1,6 @@
 // Header.tsx
 import React from 'react';
-import Nav from './nav/nav';
+import Nav from '../nav/nav';
 
 const Header: React.FC = () => {
   return (
