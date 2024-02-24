@@ -9,9 +9,8 @@ export const SquareButton = styled.button`
   display: inline-block;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
   margin: 0;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
@@ -24,5 +23,28 @@ export const SquareButton = styled.button`
   }
   &:focus {
     outline: 0;
+  }
+`;
+
+export const PrimaryButton = styled.button`
+  background-color: green;
+  border: 1px solid #000;
+  border-radius: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+
+  a {
+    color: #fff;
+    text-decoration: none;
   }
 `;
