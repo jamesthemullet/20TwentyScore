@@ -6,7 +6,7 @@ import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
 import Team from '../components/team/team';
 import styled from '@emotion/styled';
-import Scoring from '../components/scoring';
+import Scoring from '../components/scoring/scoring';
 import defaultPlayers from '../components/players';
 import { useGameScore } from '../context/GameScoreContext';
 
