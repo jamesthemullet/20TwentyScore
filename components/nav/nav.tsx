@@ -45,17 +45,17 @@ export default function Nav() {
         </li>
       </ul>
       {!session && (
-        <PrimaryButton>
-          <Link href="/api/auth/signin">Log in</Link>
-        </PrimaryButton>
+        <Link href="/api/auth/signin">
+          <PrimaryButton>Log in</PrimaryButton>
+        </Link>
       )}
       {session && (
         <>
           <UserAndLogout>
             ({session?.user?.email})
-            <PrimaryButton>
-              <Link href="/api/auth/signout">Log out</Link>
-            </PrimaryButton>
+            <Link href="/api/auth/signout">
+              <PrimaryButton>Log out</PrimaryButton>
+            </Link>
           </UserAndLogout>
         </>
       )}
