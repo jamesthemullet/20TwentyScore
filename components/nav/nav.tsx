@@ -5,6 +5,7 @@ import { useGameScore } from '../../context/GameScoreContext';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { PrimaryButton } from '../core/buttons';
+import defaultPlayers from '../players';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,6 +29,14 @@ export default function Nav() {
     const gameData = JSON.stringify(gameScore);
     localStorage.setItem('gameData', gameData);
     alert('Game saved!');
+  };
+
+  const newGame = () => {
+    localStorage.removeItem('gameData');
+    setGameScore([
+      { team1Players: defaultPlayers(), name: 'Team 1', index: 0 },
+      { team2Players: defaultPlayers(), name: 'Team 2', index: 1 }
+    ]);
   };
 
   const router = useRouter();
@@ -69,6 +78,7 @@ export default function Nav() {
           </UserAndLogout>
         </>
       )}
+      <PrimaryButton onClick={() => newGame()}>New Game</PrimaryButton>
       {session && (
         <SaveButton
           alt="Save Game"

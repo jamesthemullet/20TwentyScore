@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from 'next/router';
 import { SessionContextValue, useSession } from 'next-auth/react';
 import { matchers } from '@emotion/jest';
 import { GameScore, GameScoreContext } from '../../context/GameScoreContext';
+import defaultPlayers from '../players';
 
 expect.extend(matchers);
 
@@ -22,11 +23,18 @@ jest.mock('next-auth/react', () => ({
 const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
-  clear: jest.fn()
+  removeItem: jest.fn()
 };
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock
 });
+
+const setGameScore = jest.fn();
+const gameScore = [
+  { team1Players: [], name: 'Team 1', index: 0 },
+  { team2Players: [], name: 'Team 2', index: 1 }
+] as GameScore;
+const setPlayerScore = jest.fn();
 
 describe('Nav Component', () => {
   beforeEach(() => {
@@ -55,13 +63,6 @@ describe('Nav Component', () => {
   });
 
   describe('when the user is logged in', () => {
-    const setGameScore = jest.fn();
-    const gameScore = [
-      { team1Players: [], name: 'Team 1', index: 0 },
-      { team2Players: [], name: 'Team 2', index: 1 }
-    ] as GameScore;
-    const setPlayerScore = jest.fn();
-
     beforeEach(() => {
       const session: SessionContextValue<boolean> = {
         update: jest.fn(),
@@ -84,6 +85,7 @@ describe('Nav Component', () => {
       expect(screen.getByText('(test@example.com)')).toBeVisible();
       expect(screen.getByAltText('Save Game')).toBeVisible();
       expect(screen.getByRole('button', { name: 'Load Game' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'New Game' })).toBeVisible();
     });
 
     it('should save the game when the save game icon is clicked', () => {
@@ -162,6 +164,7 @@ describe('Nav Component', () => {
       );
       expect(screen.queryByAltText('Save Game')).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: 'Load Game' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'New Game' })).toBeVisible();
     });
   });
 
@@ -191,5 +194,32 @@ describe('Nav Component', () => {
     });
 
     expect(expandedMenu).toHaveClass('open');
+  });
+
+  it('should start a new game when the new game button is clicked', () => {
+    const session: SessionContextValue<boolean> = {
+      update: jest.fn(),
+      data: null,
+      status: 'unauthenticated'
+    };
+    (useSession as jest.Mock).mockReturnValue(session);
+
+    render(
+      <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
+        <Nav />
+      </GameScoreContext.Provider>
+    );
+
+    const newGameButton = screen.getByRole('button', { name: 'New Game' });
+
+    act(() => {
+      fireEvent.click(newGameButton);
+    });
+
+    expect(localStorageMock.removeItem).toHaveBeenCalled();
+    expect(setGameScore).toHaveBeenCalledWith([
+      { team1Players: defaultPlayers(), name: 'Team 1', index: 0 },
+      { team2Players: defaultPlayers(), name: 'Team 2', index: 1 }
+    ]);
   });
 });
