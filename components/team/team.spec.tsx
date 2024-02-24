@@ -36,12 +36,6 @@ const teamProps = {
     { index: 9, name: 'Player 10', runs: 100, isBatting: false, allActions: [] },
     { index: 10, name: 'Player 11', runs: 110, isBatting: false, allActions: [] }
   ],
-  teamScore: {
-    runs: 100,
-    wickets: 5,
-    balls: 200,
-    extras: 10
-  },
   currentStriker: {
     index: 1,
     isBatting: true

@@ -7,7 +7,7 @@ describe('GameScoreProvider', () => {
     const MockChildComponent = () => {
       const { gameScore } = useGameScore();
 
-      return <div>{gameScore.team1Players.length}</div>;
+      return <div>{gameScore[0].team1Players.length}</div>;
     };
     render(
       <GameScoreProvider>
@@ -19,13 +19,24 @@ describe('GameScoreProvider', () => {
   });
   it('should process setGameScore correctly for team 1', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setGameScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 10);
+        setGameScore([
+          {
+            team1Players: [{ name: 'Player 1', index: 0, runs: 10 }],
+            name: 'Team 1',
+            index: 0
+          },
+          {
+            team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+            name: 'Team 2',
+            index: 1
+          }
+        ]);
       }, []);
 
-      return <div>Runs: {gameScore.team1Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[0].team1Players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
@@ -40,17 +51,17 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(2, 0, 4);
+        setPlayerScore(1, 0, 4);
       }, []);
 
-      return <div>Runs: {gameScore.team2Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[1].team2Players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
         <MockChildComponent />
       </GameScoreProvider>
     );
-    expect(screen.getByText('Runs: 4')).toBeInTheDocument();
+    expect(screen.queryByText('Runs: 4')).toBeInTheDocument();
   });
 
   it('should return without updating if the player index is invalid', () => {
@@ -61,7 +72,7 @@ describe('GameScoreProvider', () => {
         setPlayerScore(1, 11, 10);
       }, []);
 
-      return <div>Runs: {gameScore.team1Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[0].team1Players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
@@ -79,7 +90,7 @@ describe('GameScoreProvider', () => {
         setPlayerScore(555, 0, 10);
       }, []);
 
-      return <div>Runs: {gameScore.team1Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[0].team1Players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
@@ -94,15 +105,23 @@ describe('GameScoreProvider', () => {
       const { gameScore, setGameScore } = useGameScore();
 
       React.useEffect(() => {
-        setGameScore({
-          team1Players: [{ name: 'Player 1', index: 0, runs: 22 }],
-          team2Players: [{ name: 'Player 1', index: 0, runs: 0 }]
-        });
+        setGameScore([
+          {
+            team1Players: [{ name: 'Player 1', index: 0, runs: 22 }],
+            name: 'Team 1',
+            index: 0
+          },
+          {
+            team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+            name: 'Team 2',
+            index: 1
+          }
+        ]);
       }, []);
 
       return (
         <div>
-          Runs: {gameScore.team1Players[0]?.runs}, {gameScore.team2Players[0]?.runs}
+          Runs: {gameScore[0].team1Players[0]?.runs}, {gameScore[1].team2Players[0]?.runs}
         </div>
       );
     };
@@ -122,10 +141,18 @@ describe('GameScoreProvider', () => {
     const TestComponent = () => {
       const { setGameScore, setPlayerScore } = React.useContext(GameScoreContext);
 
-      setGameScore({
-        team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
-        team2Players: [{ name: 'Player 1', index: 0, runs: 0 }]
-      });
+      setGameScore([
+        {
+          team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+          name: 'Team 1',
+          index: 0
+        },
+        {
+          team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+          name: 'Team 2',
+          index: 1
+        }
+      ]);
       setPlayerScore(0, 0, 10);
 
       return null;
@@ -133,10 +160,18 @@ describe('GameScoreProvider', () => {
 
     render(<TestComponent />);
 
-    expect(logSpy).toHaveBeenCalledWith('Initial setGameScore called with', {
-      team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
-      team2Players: [{ name: 'Player 1', index: 0, runs: 0 }]
-    });
+    expect(logSpy).toHaveBeenCalledWith('Initial setGameScore called with', [
+      {
+        team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+        name: 'Team 1',
+        index: 0
+      },
+      {
+        team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+        name: 'Team 2',
+        index: 1
+      }
+    ]);
     expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);
 
     logSpy.mockRestore();
