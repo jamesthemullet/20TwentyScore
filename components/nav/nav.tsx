@@ -44,7 +44,11 @@ export default function Nav() {
           <Link href="/scoreboard">Scoreboard</Link>
         </li>
       </ul>
-      {!session && <Link href="/api/auth/signin">Log in</Link>}
+      {!session && (
+        <PrimaryButton>
+          <Link href="/api/auth/signin">Log in</Link>
+        </PrimaryButton>
+      )}
       {session && (
         <>
           <UserAndLogout>
