@@ -4,6 +4,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { NextRouter, useRouter } from 'next/router';
 import { SessionContextValue, useSession } from 'next-auth/react';
 import { matchers } from '@emotion/jest';
+import { GameScoreContext, GameScoreProvider } from '../../context/GameScoreContext';
 
 expect.extend(matchers);
 
@@ -49,40 +50,116 @@ describe('Nav Component', () => {
     } as unknown as NextRouter);
   });
 
-  it('should render a Nav component successfully', () => {
-    const session: SessionContextValue<boolean> = {
-      update: jest.fn(),
-      data: {
-        user: {
-          email: 'test@example.com'
-        },
-        expires: ''
-      },
-      status: 'authenticated'
-    };
-    (useSession as jest.Mock).mockReturnValue(session);
-
-    render(<Nav />);
-
-    expect(screen.getByText('Home')).toBeVisible();
-    expect(screen.getByText('Teams')).toBeVisible();
-    expect(screen.getByText('Scoreboard')).toBeVisible();
-    expect(screen.getByText('(test@example.com)')).toBeVisible();
-    expect(screen.getByAltText('Save Game')).toBeVisible();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should not show the user email if the user is not authenticated', () => {
-    const session: SessionContextValue<boolean> = {
-      update: jest.fn(),
-      data: null,
-      status: 'unauthenticated'
-    };
-    (useSession as jest.Mock).mockReturnValue(session);
+  describe('when the user is logged in', () => {
+    const setGameScore = jest.fn();
+    const gameScore = { team1Players: [], team2Players: [] };
+    const setPlayerScore = jest.fn();
 
-    render(<Nav />);
+    beforeEach(() => {
+      const session: SessionContextValue<boolean> = {
+        update: jest.fn(),
+        data: {
+          user: {
+            email: 'test@example.com'
+          },
+          expires: ''
+        },
+        status: 'authenticated'
+      };
+      (useSession as jest.Mock).mockReturnValue(session);
+    });
+    it('should render a Nav component successfully', () => {
+      render(<Nav />);
 
-    expect(screen.queryByText('(test@example.com)')).not.toBeInTheDocument();
-    expect(screen.getByText('Log in')).toBeVisible();
+      expect(screen.getByText('Home')).toBeVisible();
+      expect(screen.getByText('Teams')).toBeVisible();
+      expect(screen.getByText('Scoreboard')).toBeVisible();
+      expect(screen.getByText('(test@example.com)')).toBeVisible();
+      expect(screen.getByAltText('Save Game')).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Load Game' })).toBeVisible();
+    });
+
+    it('should save the game when the save game icon is clicked', () => {
+      render(<Nav />);
+
+      const saveGameIcon = screen.getByAltText('Save Game');
+
+      act(() => {
+        fireEvent.click(saveGameIcon);
+      });
+
+      expect(localStorageMock.setItem).toHaveBeenCalled();
+    });
+
+    it('should load a game from local storage when the load game button is clicked', () => {
+      localStorageMock.getItem.mockReturnValueOnce(
+        '{"team1Players": [{"name": "Player 1"}], "team2Players": [{"name": "Player 1"}]}'
+      );
+
+      render(
+        <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
+          <Nav />
+        </GameScoreContext.Provider>
+      );
+
+      const loadGameButton = screen.getByRole('button', { name: 'Load Game' });
+
+      act(() => {
+        fireEvent.click(loadGameButton);
+      });
+
+      expect(localStorageMock.getItem).toHaveBeenCalledWith('gameData');
+      expect(setGameScore).toHaveBeenCalledWith(
+        JSON.parse(
+          '{"team1Players": [{"name": "Player 1"}], "team2Players": [{"name": "Player 1"}]}'
+        )
+      );
+    });
+
+    it('should not load a game from local storage when there is no game data', () => {
+      localStorageMock.getItem.mockReturnValueOnce(null);
+
+      render(
+        <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
+          <Nav />
+        </GameScoreContext.Provider>
+      );
+
+      const loadGameButton = screen.getByRole('button', { name: 'Load Game' });
+
+      act(() => {
+        fireEvent.click(loadGameButton);
+      });
+
+      expect(localStorageMock.getItem).toHaveBeenCalledWith('gameData');
+      expect(setGameScore).not.toHaveBeenCalled();
+    });
+  });
+  describe('when the user is not logged in', () => {
+    beforeEach(() => {
+      const session: SessionContextValue<boolean> = {
+        update: jest.fn(),
+        data: null,
+        status: 'unauthenticated'
+      };
+      (useSession as jest.Mock).mockReturnValue(session);
+    });
+    it('should not show the user email if the user is not authenticated', () => {
+      render(<Nav />);
+
+      expect(screen.queryByText('(test@example.com)')).not.toBeInTheDocument();
+      expect(screen.queryByText('Log in')).toBeVisible();
+      expect(screen.queryByRole('link', { name: 'Log in' })).toHaveAttribute(
+        'href',
+        '/api/auth/signin'
+      );
+      expect(screen.queryByAltText('Save Game')).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Load Game' })).not.toBeInTheDocument();
+    });
   });
 
   it('should toggle the dropdown menu when the burger button is clicked', async () => {
@@ -111,24 +188,5 @@ describe('Nav Component', () => {
     });
 
     expect(expandedMenu).toHaveClass('open');
-  });
-
-  it('should save the game when the save game icon is clicked', () => {
-    const session: SessionContextValue<boolean> = {
-      update: jest.fn(),
-      data: null,
-      status: 'unauthenticated'
-    };
-    (useSession as jest.Mock).mockReturnValue(session);
-
-    render(<Nav />);
-
-    const saveGameIcon = screen.getByAltText('Save Game');
-
-    act(() => {
-      fireEvent.click(saveGameIcon);
-    });
-
-    expect(localStorageMock.setItem).toHaveBeenCalled();
   });
 });

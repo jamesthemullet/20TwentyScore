@@ -12,23 +12,32 @@ export type GameScore = {
   team2Players: TeamPlayer[];
 };
 
+export type PlayerScore = {
+  team1Players: TeamPlayer[];
+  team2Players: TeamPlayer[];
+};
+
 type GameScoreContextType = {
   gameScore: GameScore;
-  setGameScore: (teamIndex: number, playerIndex: number, runs: number) => void;
+  setGameScore: (gameScore: GameScore) => void;
+  setPlayerScore: (teamIndex: number, playerIndex: number, runs: number) => void;
 };
 
 type GameScoreProviderProps = {
   children: React.ReactNode;
 };
 
-const GameScoreContext = createContext<GameScoreContextType>({
+export const GameScoreContext = createContext<GameScoreContextType>({
   gameScore: {
     team1Players: [],
     team2Players: []
   },
-  /* istanbul ignore next */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setGameScore: () => {}
+  setGameScore: (gameScore) => {
+    console.log('Initial setGameScore called with', gameScore);
+  },
+  setPlayerScore: (playerScore) => {
+    console.log('Initial setPlayerScore called with', playerScore);
+  }
 });
 
 export const useGameScore = () => useContext(GameScoreContext);
@@ -53,8 +62,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     return updatedTeamPlayers;
   };
 
-  const setGameScore = (teamIndex: number, playerIndex: number, runs: number) => {
-    setGameScoreState((prevState: GameScore) => {
+  const setPlayerScore = (teamIndex: number, playerIndex: number, runs: number) => {
+    setGameScoreState((prevState: PlayerScore) => {
       if (teamIndex === 1) {
         return {
           ...prevState,
@@ -71,8 +80,12 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     });
   };
 
+  const setGameScore = (gameScore: GameScore) => {
+    setGameScoreState(gameScore);
+  };
+
   return (
-    <GameScoreContext.Provider value={{ gameScore, setGameScore }}>
+    <GameScoreContext.Provider value={{ gameScore, setGameScore, setPlayerScore }}>
       {children}
     </GameScoreContext.Provider>
   );

@@ -128,7 +128,7 @@ const Blog: React.FC<Props> = (props) => {
     }
   };
 
-  const { gameScore, setGameScore } = useGameScore();
+  const { gameScore, setPlayerScore } = useGameScore();
 
   const updateGame = (
     teamIndex: number,
@@ -136,7 +136,7 @@ const Blog: React.FC<Props> = (props) => {
     runs: number,
     action: null | string
   ) => {
-    setGameScore(teamIndex, playerIndex, runs);
+    setPlayerScore(teamIndex, playerIndex, runs);
     setMostRecentAction({ runs, action });
   };
 

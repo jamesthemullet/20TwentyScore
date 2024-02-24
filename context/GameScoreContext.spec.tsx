@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { GameScoreProvider, useGameScore } from './GameScoreContext';
+import { GameScoreProvider, useGameScore, GameScoreContext } from './GameScoreContext';
 import React from 'react';
 
 describe('GameScoreProvider', () => {
@@ -19,10 +19,10 @@ describe('GameScoreProvider', () => {
   });
   it('should process setGameScore correctly for team 1', () => {
     const MockChildComponent = () => {
-      const { gameScore, setGameScore } = useGameScore();
+      const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setGameScore(1, 0, 10);
+        setPlayerScore(1, 0, 10);
       }, []);
 
       return <div>Runs: {gameScore.team1Players[0]?.runs}</div>;
@@ -37,10 +37,10 @@ describe('GameScoreProvider', () => {
 
   it('should process setGameScore correctly for team 2', () => {
     const MockChildComponent = () => {
-      const { gameScore, setGameScore } = useGameScore();
+      const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setGameScore(2, 0, 4);
+        setPlayerScore(2, 0, 4);
       }, []);
 
       return <div>Runs: {gameScore.team2Players[0]?.runs}</div>;
@@ -55,10 +55,10 @@ describe('GameScoreProvider', () => {
 
   it('should return without updating if the player index is invalid', () => {
     const MockChildComponent = () => {
-      const { gameScore, setGameScore } = useGameScore();
+      const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setGameScore(1, 11, 10);
+        setPlayerScore(1, 11, 10);
       }, []);
 
       return <div>Runs: {gameScore.team1Players[0]?.runs}</div>;
@@ -70,12 +70,13 @@ describe('GameScoreProvider', () => {
     );
     expect(screen.getByText('Runs: 0')).toBeInTheDocument();
   });
+
   it('should return without updating if the team index is invalid', () => {
     const MockChildComponent = () => {
-      const { gameScore, setGameScore } = useGameScore();
+      const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setGameScore(555, 0, 10);
+        setPlayerScore(555, 0, 10);
       }, []);
 
       return <div>Runs: {gameScore.team1Players[0]?.runs}</div>;
@@ -86,5 +87,58 @@ describe('GameScoreProvider', () => {
       </GameScoreProvider>
     );
     expect(screen.getByText('Runs: 0')).toBeInTheDocument();
+  });
+
+  it('should process setGameScore correctly for team 1 and team 2', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setGameScore } = useGameScore();
+
+      React.useEffect(() => {
+        setGameScore({
+          team1Players: [{ name: 'Player 1', index: 0, runs: 22 }],
+          team2Players: [{ name: 'Player 1', index: 0, runs: 0 }]
+        });
+      }, []);
+
+      return (
+        <div>
+          Runs: {gameScore.team1Players[0]?.runs}, {gameScore.team2Players[0]?.runs}
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('Runs: 22, 0')).toBeInTheDocument();
+  });
+
+  it('should process pointless initial setGameScore correctly', () => {
+    const logSpy = jest.spyOn(console, 'log');
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    logSpy.mockImplementation(() => {});
+
+    const TestComponent = () => {
+      const { setGameScore, setPlayerScore } = React.useContext(GameScoreContext);
+
+      setGameScore({
+        team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+        team2Players: [{ name: 'Player 1', index: 0, runs: 0 }]
+      });
+      setPlayerScore(0, 0, 10);
+
+      return null;
+    };
+
+    render(<TestComponent />);
+
+    expect(logSpy).toHaveBeenCalledWith('Initial setGameScore called with', {
+      team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+      team2Players: [{ name: 'Player 1', index: 0, runs: 0 }]
+    });
+    expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);
+
+    logSpy.mockRestore();
   });
 });
