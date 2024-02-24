@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Player } from '../player/player';
+import { useGameScore } from '../../context/GameScoreContext';
 
 type Player = {
   name: string;
@@ -14,12 +15,6 @@ type TeamProps = {
   teamIndex: number;
   name: string;
   players: Player[];
-  teamScore: {
-    // runs: number;
-    // wickets: number;
-    // balls: number;
-    // extras: number;
-  };
   currentStriker: {
     index: number;
     isBatting: boolean;
@@ -61,55 +56,10 @@ const Team = ({
   teamIndex,
   name,
   players,
-  teamScore,
   currentStriker,
   currentNonStriker,
   mostRecentAction
 }: TeamProps) => {
-  const initialPlayerState = {
-    index: 0,
-    runs: 0,
-    isBatting: false,
-    allActions: []
-  };
-  const [playersScore, setPlayersScore] = useState<PlayersScore>({
-    player1: { ...initialPlayerState },
-    player2: { ...initialPlayerState },
-    player3: { ...initialPlayerState },
-    player4: { ...initialPlayerState },
-    player5: { ...initialPlayerState },
-    player6: { ...initialPlayerState },
-    player7: { ...initialPlayerState },
-    player8: { ...initialPlayerState },
-    player9: { ...initialPlayerState },
-    player10: { ...initialPlayerState },
-    player11: { ...initialPlayerState }
-  });
-
-  const updatePlayerScore = (teamPlayers: TeamPlayer, mostRecentAction: RecentAction) => {
-    return {
-      ...teamPlayers,
-      index: teamPlayers.index,
-      runs: teamPlayers.runs + mostRecentAction.runs,
-      isBatting: currentStriker.isBatting,
-      allActions: [...teamPlayers.allActions, mostRecentAction.action]
-    };
-  };
-
-  useEffect(() => {
-    setPlayersScore((prevState: PlayersScore) => {
-      const updatedPlayers = { ...prevState };
-
-      updatedPlayers[`player${currentStriker.index + 1}` as keyof typeof playersScore] =
-        updatePlayerScore(
-          prevState[`player${currentStriker.index + 1}` as keyof typeof playersScore],
-          mostRecentAction
-        );
-
-      return updatedPlayers;
-    });
-  }, [teamScore]);
-
   const [teamName, setTeamName] = useState('Team ' + teamIndex);
   const [editTeamName, setEditTeamName] = useState(false);
 
@@ -124,6 +74,9 @@ const Team = ({
   const handleSaveTeamName = () => {
     setEditTeamName(false);
   };
+
+  const { gameScore } = useGameScore();
+  // now replace players
 
   return (
     <TeamContainer>

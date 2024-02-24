@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { NextRouter, useRouter } from 'next/router';
 import { SessionContextValue, useSession } from 'next-auth/react';
 import { matchers } from '@emotion/jest';
-import { GameScoreContext, GameScoreProvider } from '../../context/GameScoreContext';
+import { GameScore, GameScoreContext } from '../../context/GameScoreContext';
 
 expect.extend(matchers);
 
@@ -56,7 +56,10 @@ describe('Nav Component', () => {
 
   describe('when the user is logged in', () => {
     const setGameScore = jest.fn();
-    const gameScore = { team1Players: [], team2Players: [] };
+    const gameScore = [
+      { team1Players: [], name: 'Team 1', index: 0 },
+      { team2Players: [], name: 'Team 2', index: 1 }
+    ] as GameScore;
     const setPlayerScore = jest.fn();
 
     beforeEach(() => {
@@ -97,7 +100,7 @@ describe('Nav Component', () => {
 
     it('should load a game from local storage when the load game button is clicked', () => {
       localStorageMock.getItem.mockReturnValueOnce(
-        '{"team1Players": [{"name": "Player 1"}], "team2Players": [{"name": "Player 1"}]}'
+        '[{"team1Players": [{"name": "Player 1"}], "name": "Team 1", "index": 0}, {"team2Players": [{"name": "Player 1"}], "name": "Team 2", "index": 1}]'
       );
 
       render(
@@ -115,7 +118,7 @@ describe('Nav Component', () => {
       expect(localStorageMock.getItem).toHaveBeenCalledWith('gameData');
       expect(setGameScore).toHaveBeenCalledWith(
         JSON.parse(
-          '{"team1Players": [{"name": "Player 1"}], "team2Players": [{"name": "Player 1"}]}'
+          '[{"team1Players": [{"name": "Player 1"}], "name": "Team 1", "index": 0}, {"team2Players": [{"name": "Player 1"}], "name": "Team 2", "index": 1}]'
         )
       );
     });
