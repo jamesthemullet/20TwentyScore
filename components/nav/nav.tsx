@@ -13,7 +13,16 @@ export default function Nav() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const { gameScore } = useGameScore();
+  const { gameScore, setGameScore } = useGameScore();
+
+  const loadGame = () => {
+    const gameData = localStorage.getItem('gameData');
+    if (gameData) {
+      const parsedGameData = JSON.parse(gameData);
+
+      setGameScore(parsedGameData);
+    }
+  };
 
   const saveGame = () => {
     const gameData = JSON.stringify(gameScore);
@@ -56,20 +65,26 @@ export default function Nav() {
             <Link href="/api/auth/signout">
               <PrimaryButton>Log out</PrimaryButton>
             </Link>
+            <PrimaryButton onClick={() => loadGame()}>Load Game</PrimaryButton>
           </UserAndLogout>
         </>
       )}
-
-      <img
-        alt="Save Game"
-        width="32px"
-        height="32px"
-        src="/icons/png/009-save.png"
-        onClick={() => saveGame()}
-      />
+      {session && (
+        <SaveButton
+          alt="Save Game"
+          width="32px"
+          height="32px"
+          src="/icons/png/009-save.png"
+          onClick={() => saveGame()}
+        />
+      )}
     </StyledNav>
   );
 }
+
+const SaveButton = styled.img`
+  cursor: pointer;
+`;
 
 const UserAndLogout = styled.div`
   display: flex;
