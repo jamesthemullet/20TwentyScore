@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useGameScore } from '../../context/GameScoreContext';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { PrimaryButton } from '../core/buttons';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -47,7 +48,10 @@ export default function Nav() {
       {session && (
         <>
           <UserAndLogout>
-            ({session?.user?.email})<Link href="/api/auth/signout">Log out</Link>
+            ({session?.user?.email})
+            <PrimaryButton>
+              <Link href="/api/auth/signout">Log out</Link>
+            </PrimaryButton>
           </UserAndLogout>
         </>
       )}
@@ -67,9 +71,11 @@ const UserAndLogout = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-right: 1rem;
-  a {
-    margin-left: 0.5rem;
+  margin: 1rem 0;
+  justify-content: space-between;
+
+  button {
+    margin-left: 1rem;
   }
 `;
 
@@ -101,11 +107,11 @@ const StyledNav = styled.nav`
   }
   li {
     padding: 0.5rem 2rem;
-  }
-  a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.5rem;
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.5rem;
+    }
   }
 `;
 

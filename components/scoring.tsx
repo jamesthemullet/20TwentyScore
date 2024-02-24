@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { SquareButton } from './core-components';
+import { SquareButton } from './core/buttons';
 
 type Player = {
   index: number;
