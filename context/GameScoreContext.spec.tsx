@@ -133,13 +133,52 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Runs: 22, 0')).toBeInTheDocument();
   });
 
+  describe('setMostRecentAction', () => {
+    it('should process setMostRecentAction correctly when player has scored runs', () => {
+      const MockChildComponent = () => {
+        const { mostRecentAction, setMostRecentAction } = useGameScore();
+
+        React.useEffect(() => {
+          setMostRecentAction({ runs: 1, action: null });
+        }, []);
+
+        return <div>Runs: {mostRecentAction.runs}</div>;
+      };
+      render(
+        <GameScoreProvider>
+          <MockChildComponent />
+        </GameScoreProvider>
+      );
+      expect(screen.queryByText('Runs: 1')).toBeVisible();
+    });
+
+    it('should process setMostRecentAction correctly when player has been out', () => {
+      const MockChildComponent = () => {
+        const { mostRecentAction, setMostRecentAction } = useGameScore();
+
+        React.useEffect(() => {
+          setMostRecentAction({ runs: 0, action: 'Wicket' });
+        }, []);
+
+        return <div>Action: {mostRecentAction.action}</div>;
+      };
+      render(
+        <GameScoreProvider>
+          <MockChildComponent />
+        </GameScoreProvider>
+      );
+      expect(screen.queryByText('Action: Wicket')).toBeVisible();
+    });
+  });
+
   it('should process pointless initial setGameScore correctly', () => {
     const logSpy = jest.spyOn(console, 'log');
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     logSpy.mockImplementation(() => {});
 
     const TestComponent = () => {
-      const { setGameScore, setPlayerScore } = React.useContext(GameScoreContext);
+      const { setGameScore, setPlayerScore, setMostRecentAction } =
+        React.useContext(GameScoreContext);
 
       setGameScore([
         {
@@ -154,6 +193,7 @@ describe('GameScoreProvider', () => {
         }
       ]);
       setPlayerScore(0, 0, 10);
+      setMostRecentAction({ runs: 1, action: null });
 
       return null;
     };

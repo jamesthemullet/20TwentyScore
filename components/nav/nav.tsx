@@ -28,7 +28,7 @@ export default function Nav() {
   const saveGame = () => {
     const gameData = JSON.stringify(gameScore);
     localStorage.setItem('gameData', gameData);
-    alert('Game saved!');
+    console.log('game saved');
   };
 
   const newGame = () => {

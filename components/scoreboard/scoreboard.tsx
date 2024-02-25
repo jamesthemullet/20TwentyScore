@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useGameScore } from '../../context/GameScoreContext';
 
 const Scoreboard = () => {
+  const { mostRecentAction } = useGameScore();
+  const { runs, action } = mostRecentAction;
   return (
     <ScoreboardContainer>
       <h2>Scoreboard</h2>
@@ -15,6 +18,11 @@ const Scoreboard = () => {
           <p>Runs - Wickets (Overs)</p>
         </div>
       </ScoreboardLayout>
+      {mostRecentAction && (
+        <p>
+          Most recent ball: {runs && `${runs} runs`} {action}{' '}
+        </p>
+      )}
     </ScoreboardContainer>
   );
 };
