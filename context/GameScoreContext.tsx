@@ -29,6 +29,8 @@ type GameScoreContextType = {
   gameScore: GameScore;
   setGameScore: (gameScore: GameScore) => void;
   setPlayerScore: (teamIndex: number, playerIndex: number, runs: number) => void;
+  mostRecentAction: { runs: number; action: string | null };
+  setMostRecentAction: (mostRecentAction: { runs: number; action: string | null }) => void;
 };
 
 type GameScoreProviderProps = {
@@ -53,6 +55,13 @@ export const GameScoreContext = createContext<GameScoreContextType>({
   },
   setPlayerScore: (playerScore) => {
     console.log('Initial setPlayerScore called with', playerScore);
+  },
+  mostRecentAction: {
+    runs: 0,
+    action: null
+  },
+  setMostRecentAction: (mostRecentAction) => {
+    console.log('Initial setMostRecentAction called with', mostRecentAction);
   }
 });
 
@@ -72,6 +81,14 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     }
   ]);
 
+  const [mostRecentAction, setMostRecentActionState] = useState<{
+    runs: number;
+    action: string | null;
+  }>({
+    runs: 0,
+    action: null
+  });
+
   const updateTeamScore = (teamPlayers: TeamPlayer[], playerIndex: number, runs: number) => {
     const player = teamPlayers.find((player) => player.index === playerIndex);
 
@@ -87,7 +104,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
   };
 
   const setPlayerScore = (teamIndex: number, playerIndex: number, runs: number) => {
-    console.log(1, teamIndex, playerIndex, runs);
     if (teamIndex < 0 || teamIndex > 1) {
       return;
     }
@@ -111,8 +127,13 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     setGameScoreState(gameScore);
   };
 
+  const setMostRecentAction = (mostRecentAction: { runs: number; action: string | null }) => {
+    setMostRecentActionState(mostRecentAction);
+  };
+
   return (
-    <GameScoreContext.Provider value={{ gameScore, setGameScore, setPlayerScore }}>
+    <GameScoreContext.Provider
+      value={{ gameScore, setGameScore, setPlayerScore, mostRecentAction, setMostRecentAction }}>
       {children}
     </GameScoreContext.Provider>
   );

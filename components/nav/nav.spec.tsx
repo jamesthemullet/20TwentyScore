@@ -35,6 +35,8 @@ const gameScore = [
   { team2Players: [], name: 'Team 2', index: 1 }
 ] as GameScore;
 const setPlayerScore = jest.fn();
+const setMostRecentAction = jest.fn();
+const mostRecentAction = { runs: 0, action: null };
 
 describe('Nav Component', () => {
   beforeEach(() => {
@@ -106,7 +108,14 @@ describe('Nav Component', () => {
       );
 
       render(
-        <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
+        <GameScoreContext.Provider
+          value={{
+            setGameScore,
+            gameScore,
+            setPlayerScore,
+            mostRecentAction,
+            setMostRecentAction
+          }}>
           <Nav />
         </GameScoreContext.Provider>
       );
@@ -129,7 +138,14 @@ describe('Nav Component', () => {
       localStorageMock.getItem.mockReturnValueOnce(null);
 
       render(
-        <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
+        <GameScoreContext.Provider
+          value={{
+            setGameScore,
+            gameScore,
+            setPlayerScore,
+            mostRecentAction,
+            setMostRecentAction
+          }}>
           <Nav />
         </GameScoreContext.Provider>
       );
@@ -205,7 +221,8 @@ describe('Nav Component', () => {
     (useSession as jest.Mock).mockReturnValue(session);
 
     render(
-      <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
+      <GameScoreContext.Provider
+        value={{ setGameScore, gameScore, setPlayerScore, mostRecentAction, setMostRecentAction }}>
         <Nav />
       </GameScoreContext.Provider>
     );

@@ -23,7 +23,6 @@ type TeamProps = {
     index: number;
     isBatting: boolean;
   };
-  mostRecentAction: { runs: number; action: null | string };
 };
 
 type TeamPlayer = {
@@ -52,14 +51,7 @@ type PlayersScore = {
   player11: TeamPlayer;
 };
 
-const Team = ({
-  teamIndex,
-  name,
-  players,
-  currentStriker,
-  currentNonStriker,
-  mostRecentAction
-}: TeamProps) => {
+const Team = ({ teamIndex, name, players, currentStriker, currentNonStriker }: TeamProps) => {
   const [teamName, setTeamName] = useState('Team ' + teamIndex);
   const [editTeamName, setEditTeamName] = useState(false);
 

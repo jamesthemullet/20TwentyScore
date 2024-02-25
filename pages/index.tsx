@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GetStaticProps } from 'next';
 import Layout from '../components/Layout';
-import Scoreboard from '../components/Scoreboard';
+import Scoreboard from '../components/scoreboard/scoreboard';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
 import Team from '../components/team/team';
@@ -45,13 +45,13 @@ const Blog: React.FC<Props> = (props) => {
   const [currentStriker, setCurrentStriker] = useState<Player>(team1Players[0]);
   const [currentNonStriker, setCurrentNonStriker] = useState<Player>(team1Players[1]);
 
-  const [mostRecentAction, setMostRecentAction] = useState<{
-    runs: number;
-    action: string | null;
-  }>({
-    runs: 0,
-    action: null
-  });
+  // const [mostRecentAction, setMostRecentAction] = useState<{
+  //   runs: number;
+  //   action: string | null;
+  // }>({
+  //   runs: 0,
+  //   action: null
+  // });
 
   const maxOvers = 20;
   const [currentOver, setCurrentOver] = useState(1);
@@ -59,54 +59,54 @@ const Blog: React.FC<Props> = (props) => {
   const [currentExtrasInOver, setCurrentExtrasInOver] = useState(0);
   const maxBallsInOver = 6 + currentExtrasInOver;
 
-  const updatePlayerRuns = (
-    teamIndex: number,
-    playerIndex: number,
-    runs: number,
-    action: null | string
-  ): void => {
-    if (teamIndex === 1) {
-      const updatedPlayers = [...team1Players];
-      updatedPlayers[playerIndex].runs += runs;
-      if (action) {
-        updatedPlayers[playerIndex].allActions.push(action);
-      } else {
-        updatedPlayers[playerIndex].allActions.push(runs.toString());
-      }
-      if (action === 'Wicket') {
-        updatedPlayers[playerIndex].isOnTheCrease = false;
-        updatedPlayers[playerIndex].isOut = true;
-        const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
-        if (nextPlayer) {
-          updatedPlayers[nextPlayer.index].isOnTheCrease = true;
-          setCurrentStriker(updatedPlayers[playerIndex + 1]);
-        } else {
-          console.log('all out');
-        }
-      }
-      setTeam1Players(updatedPlayers);
-    } else if (teamIndex === 2) {
-      const updatedPlayers = [...team2Players];
-      updatedPlayers[playerIndex].runs += runs;
-      if (action) {
-        updatedPlayers[playerIndex].allActions.push(action);
-      } else {
-        updatedPlayers[playerIndex].allActions.push(runs.toString());
-      }
-      if (action === 'Wicket') {
-        updatedPlayers[playerIndex].isOnTheCrease = false;
-        updatedPlayers[playerIndex].isOut = true;
-        const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
-        if (nextPlayer) {
-          updatedPlayers[nextPlayer.index].isOnTheCrease = true;
-          setCurrentStriker(updatedPlayers[playerIndex + 1]);
-        } else {
-          console.log('all out');
-        }
-      }
-      setTeam2Players(updatedPlayers);
-    }
-  };
+  // const updatePlayerRuns = (
+  //   teamIndex: number,
+  //   playerIndex: number,
+  //   runs: number,
+  //   action: null | string
+  // ): void => {
+  //   if (teamIndex === 1) {
+  //     const updatedPlayers = [...team1Players];
+  //     updatedPlayers[playerIndex].runs += runs;
+  //     if (action) {
+  //       updatedPlayers[playerIndex].allActions.push(action);
+  //     } else {
+  //       updatedPlayers[playerIndex].allActions.push(runs.toString());
+  //     }
+  //     if (action === 'Wicket') {
+  //       updatedPlayers[playerIndex].isOnTheCrease = false;
+  //       updatedPlayers[playerIndex].isOut = true;
+  //       const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
+  //       if (nextPlayer) {
+  //         updatedPlayers[nextPlayer.index].isOnTheCrease = true;
+  //         setCurrentStriker(updatedPlayers[playerIndex + 1]);
+  //       } else {
+  //         console.log('all out');
+  //       }
+  //     }
+  //     setTeam1Players(updatedPlayers);
+  //   } else if (teamIndex === 2) {
+  //     const updatedPlayers = [...team2Players];
+  //     updatedPlayers[playerIndex].runs += runs;
+  //     if (action) {
+  //       updatedPlayers[playerIndex].allActions.push(action);
+  //     } else {
+  //       updatedPlayers[playerIndex].allActions.push(runs.toString());
+  //     }
+  //     if (action === 'Wicket') {
+  //       updatedPlayers[playerIndex].isOnTheCrease = false;
+  //       updatedPlayers[playerIndex].isOut = true;
+  //       const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
+  //       if (nextPlayer) {
+  //         updatedPlayers[nextPlayer.index].isOnTheCrease = true;
+  //         setCurrentStriker(updatedPlayers[playerIndex + 1]);
+  //       } else {
+  //         console.log('all out');
+  //       }
+  //     }
+  //     setTeam2Players(updatedPlayers);
+  //   }
+  // };
 
   const updateOvers = (action: null | string) => {
     if (action === 'No Ball' || action === 'Wide') {
@@ -128,7 +128,7 @@ const Blog: React.FC<Props> = (props) => {
     }
   };
 
-  const { setPlayerScore } = useGameScore();
+  const { setPlayerScore, setMostRecentAction } = useGameScore();
 
   const updateGame = (
     teamIndex: number,
@@ -150,7 +150,6 @@ const Blog: React.FC<Props> = (props) => {
             players={team1Players}
             currentStriker={currentStriker}
             currentNonStriker={currentNonStriker}
-            mostRecentAction={mostRecentAction}
           />
           <Scoreboard />
           <Scoring
@@ -164,7 +163,6 @@ const Blog: React.FC<Props> = (props) => {
             players={team2Players}
             currentStriker={currentStriker}
             currentNonStriker={currentNonStriker}
-            mostRecentAction={mostRecentAction}
           />
         </Board>
         {/* <h2>Public Feed</h2>
