@@ -2,13 +2,13 @@ import styled from '@emotion/styled';
 
 export const SquareButton = styled.button`
   background-color: #fff;
-  border: 1px solid #000;
+  border: 5px solid green;
   border-radius: 0;
   color: #000;
   cursor: pointer;
   display: inline-block;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 700;
   margin: 0;
   padding: 0.5rem;
   text-align: center;
@@ -17,12 +17,19 @@ export const SquareButton = styled.button`
   white-space: nowrap;
   width: 100px;
   aspect-ratio: 1;
+  text-wrap: balance;
   &:hover {
-    background-color: #000;
+    background-color: green;
     color: #fff;
   }
   &:focus {
     outline: 0;
+  }
+  &:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
   }
 `;
 
