@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { SquareButton } from '../core/buttons';
+import { useState } from 'react';
 
 type Player = {
   index: number;
@@ -23,15 +24,27 @@ type ScoringProps = {
 };
 
 const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) => {
+  const [countRuns, setCountRuns] = useState(0);
+  const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
+
   const handleScoreClick = (
     teamIndex: number,
     playerIndex: number,
     runs: number,
     action: null | string
   ) => {
-    console.log(10);
-    onScoreUpdate(teamIndex, playerIndex, runs, action);
+    if (action === 'wait') {
+      setCountRuns((prevCountRuns) => prevCountRuns + runs);
+      setNextRunButtonDisabled(false);
+      return;
+    } else if (action === 'Next Ball') {
+      onScoreUpdate(teamIndex, playerIndex, countRuns, action);
+    } else {
+      onScoreUpdate(teamIndex, playerIndex, runs, action);
+    }
+    setCountRuns(0);
     onOverUpdate(action);
+    setNextRunButtonDisabled(true);
   };
   return (
     <ScoringContainer>
@@ -43,7 +56,7 @@ const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) 
         <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, null)}>
           1 & next ball
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, null)}>
+        <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, 'wait')}>
           1+
         </SquareButton>
         <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 4, null)}>
@@ -61,8 +74,9 @@ const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) 
         <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, 'Wide')}>
           Wide
         </SquareButton>
+
         <SquareButton
-          disabled
+          disabled={nextRunButtonDisabled}
           onClick={() => handleScoreClick(1, currentStriker.index, 0, 'Next Ball')}>
           Next Ball
         </SquareButton>
