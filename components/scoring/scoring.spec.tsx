@@ -24,7 +24,7 @@ describe('Scoring Component', () => {
     expect(headingElement).toHaveTextContent('Scoring');
 
     const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(8);
+    expect(buttons).toHaveLength(9);
   });
 
   it('should call onScoreUpdate and onOverUpdate when a button is clicked', () => {
@@ -35,5 +35,15 @@ describe('Scoring Component', () => {
     });
     expect(ScoringProps.onScoreUpdate).toHaveBeenCalledTimes(8);
     expect(ScoringProps.onOverUpdate).toHaveBeenCalledTimes(8);
+  });
+
+  it('should set next ball action to disabled by default', () => {
+    render(<Scoring {...ScoringProps} />);
+    const buttons = screen.getAllByRole('button');
+    buttons.forEach((button) => {
+      if (button.textContent === 'Next Ball') {
+        expect(button).toBeDisabled();
+      }
+    });
   });
 });
