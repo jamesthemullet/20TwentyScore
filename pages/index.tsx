@@ -144,26 +144,14 @@ const Blog: React.FC<Props> = (props) => {
     <Layout>
       <Main aria-label="Scoreboard">
         <Board>
-          <Team
-            teamIndex={1}
-            name="Team 1"
-            players={team1Players}
-            currentStriker={currentStriker}
-            currentNonStriker={currentNonStriker}
-          />
+          <Team teamIndex={0} />
           <Scoreboard />
           <Scoring
             onScoreUpdate={updateGame}
             onOverUpdate={updateOvers}
             currentStriker={currentStriker}
           />
-          <Team
-            teamIndex={2}
-            name="Team 2"
-            players={team2Players}
-            currentStriker={currentStriker}
-            currentNonStriker={currentNonStriker}
-          />
+          <Team teamIndex={1} />
         </Board>
         {/* <h2>Public Feed</h2>
         {props.feed.map((post) => (

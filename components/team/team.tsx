@@ -13,45 +13,9 @@ type Player = {
 
 type TeamProps = {
   teamIndex: number;
-  name: string;
-  players: Player[];
-  currentStriker: {
-    index: number;
-    isBatting: boolean;
-  };
-  currentNonStriker: {
-    index: number;
-    isBatting: boolean;
-  };
 };
 
-type TeamPlayer = {
-  index: number;
-  runs: number;
-  isBatting: boolean;
-  allActions: (string | null)[];
-};
-
-type RecentAction = {
-  runs: number;
-  action: string | null;
-};
-
-type PlayersScore = {
-  player1: TeamPlayer;
-  player2: TeamPlayer;
-  player3: TeamPlayer;
-  player4: TeamPlayer;
-  player5: TeamPlayer;
-  player6: TeamPlayer;
-  player7: TeamPlayer;
-  player8: TeamPlayer;
-  player9: TeamPlayer;
-  player10: TeamPlayer;
-  player11: TeamPlayer;
-};
-
-const Team = ({ teamIndex, name, players, currentStriker, currentNonStriker }: TeamProps) => {
+const Team = ({ teamIndex }: TeamProps) => {
   const [teamName, setTeamName] = useState('Team ' + teamIndex);
   const [editTeamName, setEditTeamName] = useState(false);
 
@@ -68,6 +32,7 @@ const Team = ({ teamIndex, name, players, currentStriker, currentNonStriker }: T
   };
 
   const { gameScore } = useGameScore();
+
   // now replace players
 
   return (
@@ -91,10 +56,8 @@ const Team = ({ teamIndex, name, players, currentStriker, currentNonStriker }: T
       )}
       <TeamLayout>
         <div>
-          {players.map((player, index) => {
-            return (
-              <Player key={index} index={index} runs={player.runs} isBatting={player.isBatting} />
-            );
+          {gameScore[teamIndex]?.players.map((player, index) => {
+            return <Player key={index} index={index} runs={player.runs} />;
           })}
         </div>
       </TeamLayout>

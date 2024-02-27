@@ -9,12 +9,12 @@ type TeamPlayer = {
 
 export type GameScore = [
   {
-    team1Players: TeamPlayer[];
+    players: TeamPlayer[];
     name: 'Team 1';
     index: 0;
   },
   {
-    team2Players: TeamPlayer[];
+    players: TeamPlayer[];
     name: 'Team 2';
     index: 1;
   }
@@ -40,12 +40,12 @@ type GameScoreProviderProps = {
 export const GameScoreContext = createContext<GameScoreContextType>({
   gameScore: [
     {
-      team1Players: [],
+      players: [],
       name: 'Team 1',
       index: 0
     },
     {
-      team2Players: [],
+      players: [],
       name: 'Team 2',
       index: 1
     }
@@ -70,12 +70,12 @@ export const useGameScore = () => useContext(GameScoreContext);
 export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }) => {
   const [gameScore, setGameScoreState] = useState<GameScore>([
     {
-      team1Players: defaultPlayers(),
+      players: defaultPlayers(),
       name: 'Team 1',
       index: 0
     },
     {
-      team2Players: defaultPlayers(),
+      players: defaultPlayers(),
       name: 'Team 2',
       index: 1
     }
@@ -110,12 +110,12 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     setGameScoreState((prevState: GameScore) => {
       return [
         {
-          team1Players: updateTeamScore(prevState[0].team1Players, playerIndex, runs),
+          players: updateTeamScore(prevState[0].players, playerIndex, runs),
           name: 'Team 1',
           index: 0
         },
         {
-          team2Players: updateTeamScore(prevState[1].team2Players, playerIndex, runs),
+          players: updateTeamScore(prevState[1].players, playerIndex, runs),
           name: 'Team 2',
           index: 1
         }
