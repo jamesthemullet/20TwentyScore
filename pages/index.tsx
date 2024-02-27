@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GetStaticProps } from 'next';
-import Layout from '../components/Layout';
+import Layout from '../components/layout/layout';
 import Scoreboard from '../components/scoreboard/scoreboard';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
