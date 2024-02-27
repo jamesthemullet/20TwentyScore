@@ -7,7 +7,7 @@ describe('GameScoreProvider', () => {
     const MockChildComponent = () => {
       const { gameScore } = useGameScore();
 
-      return <div>{gameScore[0].team1Players.length}</div>;
+      return <div>{gameScore[0].players.length}</div>;
     };
     render(
       <GameScoreProvider>
@@ -24,19 +24,19 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setGameScore([
           {
-            team1Players: [{ name: 'Player 1', index: 0, runs: 10 }],
+            players: [{ name: 'Player 1', index: 0, runs: 10 }],
             name: 'Team 1',
             index: 0
           },
           {
-            team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+            players: [{ name: 'Player 1', index: 0, runs: 0 }],
             name: 'Team 2',
             index: 1
           }
         ]);
       }, []);
 
-      return <div>Runs: {gameScore[0].team1Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
@@ -54,7 +54,7 @@ describe('GameScoreProvider', () => {
         setPlayerScore(1, 0, 4);
       }, []);
 
-      return <div>Runs: {gameScore[1].team2Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
@@ -72,7 +72,7 @@ describe('GameScoreProvider', () => {
         setPlayerScore(1, 11, 10);
       }, []);
 
-      return <div>Runs: {gameScore[0].team1Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
@@ -90,7 +90,7 @@ describe('GameScoreProvider', () => {
         setPlayerScore(555, 0, 10);
       }, []);
 
-      return <div>Runs: {gameScore[0].team1Players[0]?.runs}</div>;
+      return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
     render(
       <GameScoreProvider>
@@ -107,12 +107,12 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setGameScore([
           {
-            team1Players: [{ name: 'Player 1', index: 0, runs: 22 }],
+            players: [{ name: 'Player 1', index: 0, runs: 22 }],
             name: 'Team 1',
             index: 0
           },
           {
-            team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+            players: [{ name: 'Player 1', index: 0, runs: 0 }],
             name: 'Team 2',
             index: 1
           }
@@ -121,7 +121,7 @@ describe('GameScoreProvider', () => {
 
       return (
         <div>
-          Runs: {gameScore[0].team1Players[0]?.runs}, {gameScore[1].team2Players[0]?.runs}
+          Runs: {gameScore[0].players[0]?.runs}, {gameScore[1].players[0]?.runs}
         </div>
       );
     };
@@ -182,12 +182,12 @@ describe('GameScoreProvider', () => {
 
       setGameScore([
         {
-          team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+          players: [{ name: 'Player 1', index: 0, runs: 0 }],
           name: 'Team 1',
           index: 0
         },
         {
-          team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+          players: [{ name: 'Player 1', index: 0, runs: 0 }],
           name: 'Team 2',
           index: 1
         }
@@ -202,12 +202,12 @@ describe('GameScoreProvider', () => {
 
     expect(logSpy).toHaveBeenCalledWith('Initial setGameScore called with', [
       {
-        team1Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+        players: [{ name: 'Player 1', index: 0, runs: 0 }],
         name: 'Team 1',
         index: 0
       },
       {
-        team2Players: [{ name: 'Player 1', index: 0, runs: 0 }],
+        players: [{ name: 'Player 1', index: 0, runs: 0 }],
         name: 'Team 2',
         index: 1
       }

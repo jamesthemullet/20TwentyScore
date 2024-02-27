@@ -13,8 +13,8 @@ expect.extend(matchers);
 
 const setGameScore = jest.fn();
 const gameScore = [
-  { team1Players: [], name: 'Team 1', index: 0 },
-  { team2Players: [], name: 'Team 2', index: 1 }
+  { players: [], name: 'Team 1', index: 0 },
+  { players: [], name: 'Team 2', index: 1 }
 ] as GameScore;
 const setPlayerScore = jest.fn();
 const setMostRecentAction = jest.fn();

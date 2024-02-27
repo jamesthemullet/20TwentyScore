@@ -4,10 +4,10 @@ import styled from '@emotion/styled';
 type PlayerProps = {
   index: number;
   runs: number;
-  isBatting: boolean;
+  // isBatting: boolean;
 };
 
-export const Player = ({ index, runs, isBatting }: PlayerProps) => {
+export const Player = ({ index, runs }: PlayerProps) => {
   const [name, setName] = useState('Player ' + index);
   const [editPlayer, setEditPlayer] = useState(false);
 
@@ -40,7 +40,7 @@ export const Player = ({ index, runs, isBatting }: PlayerProps) => {
         )}
       </PlayerName>
       <p>Runs: {runs}</p>
-      {isBatting && <img alt="logo" width="32px" src="/icons/png/006-cricket-1.png" />}
+      {/* {isBatting && <img alt="logo" width="32px" src="/icons/png/006-cricket-1.png" />} */}
       {/* {allActions.length > 0 && <p>{allActions.join(', ')}</p>} */}
     </PlayerContainer>
   );
