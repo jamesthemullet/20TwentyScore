@@ -27,7 +27,12 @@ describe('Scoreboard Component', () => {
         <Scoreboard />
       </GameScoreProvider>
     );
-    expect(screen.queryByText('Scoreboard')).toBeVisible();
+    const heading = screen.getByRole('heading', { level: 2 });
+    expect(heading).toHaveTextContent('Scoreboard');
+    expect(screen.queryByText('Team 1')).toBeVisible();
+    expect(screen.queryByText('Team 2')).toBeVisible();
+    const runs = screen.getAllByText('Runs - Wickets (Overs)');
+    expect(runs).toHaveLength(2);
     expect(screen.queryByText('Most recent ball:')).not.toBeInTheDocument();
   });
 

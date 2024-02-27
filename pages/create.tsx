@@ -1,7 +1,7 @@
 // pages/create.tsx
 
 import React, { useState } from 'react';
-import Layout from '../components/Layout';
+import Layout from '../components/layout/layout';
 import Router from 'next/router';
 import { useSession } from 'next-auth/react';
 
