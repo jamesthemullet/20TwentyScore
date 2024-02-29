@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import Scoring from '../components/scoring/scoring';
 import defaultPlayers from '../components/players';
 import { useGameScore } from '../context/GameScoreContext';
+import { useMostRecentAction } from '../context/MostRecentActionContext';
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
@@ -128,7 +129,8 @@ const Blog: React.FC<Props> = (props) => {
     }
   };
 
-  const { setPlayerScore, setMostRecentAction } = useGameScore();
+  const { setMostRecentAction } = useMostRecentAction();
+  const { setPlayerScore } = useGameScore();
 
   const updateGame = (
     teamIndex: number,
