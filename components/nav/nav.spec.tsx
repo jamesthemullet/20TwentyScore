@@ -112,9 +112,7 @@ describe('Nav Component', () => {
           value={{
             setGameScore,
             gameScore,
-            setPlayerScore,
-            mostRecentAction,
-            setMostRecentAction
+            setPlayerScore
           }}>
           <Nav />
         </GameScoreContext.Provider>
@@ -142,9 +140,7 @@ describe('Nav Component', () => {
           value={{
             setGameScore,
             gameScore,
-            setPlayerScore,
-            mostRecentAction,
-            setMostRecentAction
+            setPlayerScore
           }}>
           <Nav />
         </GameScoreContext.Provider>
@@ -221,8 +217,7 @@ describe('Nav Component', () => {
     (useSession as jest.Mock).mockReturnValue(session);
 
     render(
-      <GameScoreContext.Provider
-        value={{ setGameScore, gameScore, setPlayerScore, mostRecentAction, setMostRecentAction }}>
+      <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
         <Nav />
       </GameScoreContext.Provider>
     );
@@ -235,8 +230,8 @@ describe('Nav Component', () => {
 
     expect(localStorageMock.removeItem).toHaveBeenCalled();
     expect(setGameScore).toHaveBeenCalledWith([
-      { team1Players: defaultPlayers(), name: 'Team 1', index: 0 },
-      { team2Players: defaultPlayers(), name: 'Team 2', index: 1 }
+      { players: defaultPlayers(), name: 'Team 1', index: 0 },
+      { players: defaultPlayers(), name: 'Team 2', index: 1 }
     ]);
   });
 });

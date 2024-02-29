@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useGameScore } from '../../context/GameScoreContext';
+import { useMostRecentAction } from '../../context/MostRecentActionContext';
 
 const Scoreboard = () => {
-  const { mostRecentAction } = useGameScore();
+  const { mostRecentAction } = useMostRecentAction();
   const { runs, action } = mostRecentAction;
   return (
     <ScoreboardContainer>

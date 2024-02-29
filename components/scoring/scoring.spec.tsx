@@ -55,7 +55,9 @@ describe('Scoring Component', () => {
   it('should not call onScoreUpdate if the 1+ button is clicked', () => {
     render(<Scoring {...ScoringProps} />);
     const button = screen.getByRole('button', { name: /1\+/i });
-    button.click();
+    act(() => {
+      fireEvent.click(button);
+    });
     expect(ScoringProps.onScoreUpdate).not.toHaveBeenCalled();
   });
 
