@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GetStaticProps } from 'next';
 import Layout from '../components/layout/layout';
 import Scoreboard from '../components/scoreboard/scoreboard';
-import Post, { PostProps } from '../components/Post';
+import { Post, PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
 import Team from '../components/team/team';
 import styled from '@emotion/styled';
@@ -45,14 +45,6 @@ const Blog: React.FC<Props> = (props) => {
   const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
   const [currentStriker, setCurrentStriker] = useState<Player>(team1Players[0]);
   const [currentNonStriker, setCurrentNonStriker] = useState<Player>(team1Players[1]);
-
-  // const [mostRecentAction, setMostRecentAction] = useState<{
-  //   runs: number;
-  //   action: string | null;
-  // }>({
-  //   runs: 0,
-  //   action: null
-  // });
 
   const maxOvers = 20;
   const [currentOver, setCurrentOver] = useState(1);
@@ -155,12 +147,12 @@ const Blog: React.FC<Props> = (props) => {
           />
           <Team teamIndex={1} />
         </Board>
-        {/* <h2>Public Feed</h2>
-        {props.feed.map((post) => (
+        <h2>Public Feed</h2>
+        {props?.feed?.map((post) => (
           <div key={post.id} className="post">
             <Post post={post} />
           </div>
-        ))} */}
+        ))}
       </Main>
     </Layout>
   );
