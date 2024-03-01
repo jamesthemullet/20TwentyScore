@@ -17,13 +17,13 @@ jest.mock('next-auth/react', () => ({
   useSession: jest.fn()
 }));
 
-jest.mock('@prisma/client', () => ({
-  PrismaClient: jest.fn(() => ({
-    post: {
-      findMany: jest.fn()
-    }
-  }))
-}));
+// jest.mock('@prisma/client', () => ({
+//   PrismaClient: jest.fn(() => ({
+//     post: {
+//       findMany: jest.fn()
+//     }
+//   }))
+// }));
 
 const mockPosts = [
   {
