@@ -148,11 +148,11 @@ const Blog: React.FC<Props> = (props) => {
           <Team teamIndex={1} />
         </Board>
         <h2>Public Feed</h2>
-        {props?.feed?.map((post) => (
+        {/* {props?.feed?.map((post) => (
           <div key={post.id} className="post">
             <Post post={post} />
           </div>
-        ))}
+        ))} */}
       </Main>
     </Layout>
   );
