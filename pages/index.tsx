@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GetStaticProps } from 'next';
+import { GetStaticProps } from 'next/types';
 import Layout from '../components/layout/layout';
 import Scoreboard from '../components/scoreboard/scoreboard';
 import Post, { PostProps } from '../components/Post';
