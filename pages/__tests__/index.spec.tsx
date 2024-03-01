@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import Index, { getStaticProps } from './index';
+import Index, { getStaticProps } from '../index';
 import { NextRouter, useRouter } from 'next/router';
 import { SessionContextValue, useSession } from 'next-auth/react';
-import prisma from '../lib/prisma';
+import prisma from '../../lib/prisma';
 import { GetStaticPropsContext } from 'next';
 
 const useRouterMock = useRouter as jest.MockedFunction<typeof useRouter>;
