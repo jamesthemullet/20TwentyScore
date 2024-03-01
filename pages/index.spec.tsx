@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from 'next/router';
 import { SessionContextValue, useSession } from 'next-auth/react';
 import Blog from './index';
 import prisma from '../lib/prisma';
+import { GetStaticPropsContext } from 'next';
 
 const useRouterMock = useRouter as jest.MockedFunction<typeof useRouter>;
 
@@ -88,24 +89,21 @@ describe('Index page', () => {
   });
 
   it('should retrieve posts from Prisma', async () => {
-    // Mock the Prisma query method
     prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
 
-    // Call getStaticProps without passing any arguments
-    const props = getStaticProps({ params: {}, preview: false });
+    const context = {} as GetStaticPropsContext;
+    const params = {};
 
-    // Check if the props object contains the expected feed
+    const { props } = (await getStaticProps({ params, context } as any)) as any;
+
     expect(props).toHaveProperty('feed', mockPosts);
   });
 
   it('should render posts', async () => {
-    // Mock the Prisma query method
     prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
 
-    // Render the page
     render(<Index feed={mockPosts} />);
 
-    // Wait for the posts to be rendered
     await waitFor(() => {
       const postElements = screen.getAllByRole('article');
       expect(postElements).toHaveLength(2);

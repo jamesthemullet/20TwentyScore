@@ -11,7 +11,7 @@ import defaultPlayers from '../components/players';
 import { useGameScore } from '../context/GameScoreContext';
 import { useMostRecentAction } from '../context/MostRecentActionContext';
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const feed = await prisma.post.findMany({
     where: { published: true },
     include: {
