@@ -11,21 +11,6 @@ import defaultPlayers from '../components/players';
 import { useGameScore } from '../context/GameScoreContext';
 import { useMostRecentAction } from '../context/MostRecentActionContext';
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const feed = await prisma.post.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true }
-      }
-    }
-  });
-  return {
-    props: { feed },
-    revalidate: 10
-  };
-};
-
 type Player = {
   index: number;
   name: string;
@@ -40,7 +25,7 @@ type Props = {
   feed: PostProps[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const Index: React.FC<Props> = (props) => {
   const [team1Players, setTeam1Players] = useState<Player[]>(defaultPlayers());
   const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
   const [currentStriker, setCurrentStriker] = useState<Player>(team1Players[0]);
@@ -148,17 +133,32 @@ const Blog: React.FC<Props> = (props) => {
           <Team teamIndex={1} />
         </Board>
         <h2>Public Feed</h2>
-        {/* {props?.feed?.map((post) => (
+        {props?.feed?.map((post) => (
           <div key={post.id} className="post">
             <Post post={post} />
           </div>
-        ))} */}
+        ))}
       </Main>
     </Layout>
   );
 };
 
-export default Blog;
+export default Index;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const feed = await prisma.post.findMany({
+    where: { published: true },
+    include: {
+      author: {
+        select: { name: true }
+      }
+    }
+  });
+  return {
+    props: { feed },
+    revalidate: 10
+  };
+};
 
 const Board = styled.div`
   display: flex;
