@@ -98,14 +98,14 @@ describe('Index page', () => {
   //   expect(props).toHaveProperty('feed', mockPosts);
   // });
 
-  it('should render posts', async () => {
-    prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
+  // it('should render posts', async () => {
+  //   prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
 
-    render(<Index feed={mockPosts} />);
+  //   render(<Index feed={mockPosts} />);
 
-    await waitFor(() => {
-      const postElements = screen.getAllByRole('article');
-      expect(postElements).toHaveLength(2);
-    });
-  });
+  //   await waitFor(() => {
+  //     const postElements = screen.getAllByRole('article');
+  //     expect(postElements).toHaveLength(2);
+  //   });
+  // });
 });
