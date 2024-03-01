@@ -11,7 +11,22 @@ import defaultPlayers from '../components/players';
 import { useGameScore } from '../context/GameScoreContext';
 import { useMostRecentAction } from '../context/MostRecentActionContext';
 
-export const getStaticProps: GetStaticProps = async () => {
+// export const getStaticProps: GetStaticProps = async () => {
+//   const feed = await prisma.post.findMany({
+//     where: { published: true },
+//     include: {
+//       author: {
+//         select: { name: true }
+//       }
+//     }
+//   });
+//   return {
+//     props: { feed },
+//     revalidate: 10
+//   };
+// };
+
+export async function getStaticProps() {
   const feed = await prisma.post.findMany({
     where: { published: true },
     include: {
@@ -24,7 +39,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: { feed },
     revalidate: 10
   };
-};
+}
 
 type Player = {
   index: number;
