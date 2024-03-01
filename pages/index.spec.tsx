@@ -92,9 +92,7 @@ describe('Index page', () => {
     prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
 
     // Call getStaticProps without passing any arguments
-    const { props } = (await getStaticProps()) as unknown as {
-      props: { feed: typeof mockPosts };
-    };
+    const props = getStaticProps({ params: {}, preview: false });
 
     // Check if the props object contains the expected feed
     expect(props).toHaveProperty('feed', mockPosts);
