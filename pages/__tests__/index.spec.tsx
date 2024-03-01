@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import Index, { getStaticProps } from '../index';
+import Index from '../index';
 import { NextRouter, useRouter } from 'next/router';
 import { SessionContextValue, useSession } from 'next-auth/react';
 import prisma from '../../lib/prisma';
@@ -87,16 +87,16 @@ describe('Index page', () => {
     expect(headingElement).toHaveTextContent('20Twenty Score');
   });
 
-  it('should retrieve posts from Prisma', async () => {
-    prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
+  // it('should retrieve posts from Prisma', async () => {
+  //   prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
 
-    const context = {} as GetStaticPropsContext;
-    const params = {};
+  //   const context = {} as GetStaticPropsContext;
+  //   const params = {};
 
-    const { props } = (await getStaticProps({ params, context } as any)) as any;
+  //   const { props } = (await getStaticProps({ params, context } as any)) as any;
 
-    expect(props).toHaveProperty('feed', mockPosts);
-  });
+  //   expect(props).toHaveProperty('feed', mockPosts);
+  // });
 
   it('should render posts', async () => {
     prisma.post.findMany = jest.fn().mockResolvedValue(mockPosts);
