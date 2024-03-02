@@ -5,9 +5,10 @@ type PlayerProps = {
   index: number;
   runs: number;
   isBatting: boolean;
+  allActions: (string | null)[];
 };
 
-export const Player = ({ index, runs, isBatting }: PlayerProps) => {
+export const Player = ({ index, runs, isBatting, allActions }: PlayerProps) => {
   const [name, setName] = useState('Player ' + index);
   const [editPlayer, setEditPlayer] = useState(false);
 
@@ -22,6 +23,8 @@ export const Player = ({ index, runs, isBatting }: PlayerProps) => {
   const handleSavePlayerName = () => {
     setEditPlayer(false);
   };
+
+  console.log(1, 'all actions', allActions);
 
   return (
     <PlayerContainer>

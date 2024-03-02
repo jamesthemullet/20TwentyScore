@@ -99,7 +99,7 @@ const Index: React.FC<Props> = (props) => {
     runs: number,
     action: null | string
   ) => {
-    setPlayerScore(teamIndex, playerIndex, runs);
+    setPlayerScore(teamIndex, playerIndex, runs, action);
     setMostRecentAction({ runs, action });
   };
 
