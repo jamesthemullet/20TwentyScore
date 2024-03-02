@@ -57,7 +57,9 @@ const Team = ({ teamIndex }: TeamProps) => {
       <TeamLayout>
         <div>
           {gameScore[teamIndex]?.players.map((player, index) => {
-            return <Player key={index} index={index} runs={player.runs} />;
+            return (
+              <Player key={index} index={index} runs={player.runs} isBatting={player.isBatting} />
+            );
           })}
         </div>
       </TeamLayout>
