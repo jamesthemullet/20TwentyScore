@@ -5,6 +5,7 @@ type TeamPlayer = {
   index: number;
   name: string;
   runs: number;
+  isBatting: boolean;
 };
 
 export type GameScore = [

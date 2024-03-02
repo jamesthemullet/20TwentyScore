@@ -55,15 +55,15 @@ describe('Player', () => {
     expect(screen.getByText('Player La La La')).toBeVisible();
   });
 
-  // it('should show icon if player is batting', () => {
-  //   const props = {
-  //     index: 1,
-  //     runs: 10,
-  //     isBatting: true
-  //   };
-  //   render(<Player {...props} />);
-  //   expect(screen.getByAltText('logo')).toBeVisible();
-  // });
+  it('should show icon if player is batting', () => {
+    const props = {
+      index: 1,
+      runs: 10,
+      isBatting: true
+    };
+    render(<Player {...props} />);
+    expect(screen.getByAltText('logo')).toBeVisible();
+  });
 
   it('should not show icon if player is not batting', () => {
     const props = {
