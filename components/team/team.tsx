@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Player } from '../player/player';
 import { useGameScore } from '../../context/GameScoreContext';
@@ -32,8 +32,6 @@ const Team = ({ teamIndex }: TeamProps) => {
   };
 
   const { gameScore } = useGameScore();
-
-  // now replace players
 
   return (
     <TeamContainer>

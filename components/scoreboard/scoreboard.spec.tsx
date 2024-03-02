@@ -7,7 +7,6 @@ import { MostRecentActionContext } from '../../context/MostRecentActionContext';
 
 expect.extend(matchers);
 
-const mostRecentAction = { runs: 4, action: null };
 const setMostRecentAction = jest.fn();
 
 describe('Scoreboard Component', () => {
@@ -26,12 +25,63 @@ describe('Scoreboard Component', () => {
     expect(screen.queryByText('Most recent ball:')).not.toBeInTheDocument();
   });
 
-  it('should display most recent ball action', () => {
+  it('should display most recent ball action including plural when anything other than 1 run', () => {
+    const mostRecentAction = { runs: 4, action: null };
     render(
       <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
         <Scoreboard />
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: 4 runs')).toBeVisible();
+  });
+
+  it('should display most recent ball action including singular when 1 run', () => {
+    const mostRecentAction = { runs: 1, action: null };
+    render(
+      <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
+        <Scoreboard />
+      </MostRecentActionContext.Provider>
+    );
+    expect(screen.queryByText('Most recent ball: 1 run')).toBeVisible();
+  });
+
+  it('should display most recent ball action when action is a wicket', () => {
+    const mostRecentAction = { runs: 0, action: 'Wicket' };
+    render(
+      <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
+        <Scoreboard />
+      </MostRecentActionContext.Provider>
+    );
+    expect(screen.queryByText('Most recent ball: Wicket')).toBeVisible();
+  });
+
+  it('should display most recent ball action when action is a wide', () => {
+    const mostRecentAction = { runs: 1, action: 'Wide' };
+    render(
+      <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
+        <Scoreboard />
+      </MostRecentActionContext.Provider>
+    );
+    expect(screen.queryByText('Most recent ball: Wide')).toBeVisible();
+  });
+
+  it('should display most recent ball action when action is a no ball', () => {
+    const mostRecentAction = { runs: 1, action: 'No Ball' };
+    render(
+      <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
+        <Scoreboard />
+      </MostRecentActionContext.Provider>
+    );
+    expect(screen.queryByText('Most recent ball: No Ball')).toBeVisible();
+  });
+
+  it('should display most recent ball action when action is next ball', () => {
+    const mostRecentAction = { runs: 2, action: 'Next Ball' };
+    render(
+      <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
+        <Scoreboard />
+      </MostRecentActionContext.Provider>
+    );
+    expect(screen.queryByText('Most recent ball: 2 runs')).toBeVisible();
   });
 });
