@@ -20,8 +20,6 @@ const config: Config = {
     'context/**/*.ts',
     '!**/node_modules/**'
   ]
-  // Add more setup options before each test is run
-  // setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
 
 export default createJestConfig(config);
