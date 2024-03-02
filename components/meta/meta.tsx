@@ -26,7 +26,7 @@ type seoProps = {
 
 export default function Meta() {
   const router = useRouter();
-  const currentUrl = router.asPath;
+  const currentUrl = router.asPath ?? '';
   const siteAddress = 'https://20-twenty-score.vercel.app/';
   const defaultImageUrl = '/images/temp-seo-image.jpg';
   return (

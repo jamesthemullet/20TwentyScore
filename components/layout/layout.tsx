@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import Meta from '../meta';
+import Meta from '../meta/meta';
 
 type Props = {
   children: ReactNode;
