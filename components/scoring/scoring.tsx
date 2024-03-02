@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { SquareButton } from '../core/buttons';
 import { useState } from 'react';
+import { useGameScore } from '../../context/GameScoreContext';
 
 type Player = {
   index: number;
@@ -20,12 +21,19 @@ type ScoringProps = {
     action: null | string
   ) => void;
   onOverUpdate: (action: null | string) => void;
-  currentStriker: Player;
 };
 
-const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) => {
+const Scoring = ({ onScoreUpdate, onOverUpdate }: ScoringProps) => {
   const [countRuns, setCountRuns] = useState(0);
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
+
+  const { gameScore } = useGameScore();
+
+  const currentStriker = gameScore[0].players.find((player) => player.isBatting);
+
+  if (!currentStriker) {
+    return null;
+  }
 
   const handleScoreClick = (
     teamIndex: number,
@@ -46,6 +54,7 @@ const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) 
     onOverUpdate(action);
     setNextRunButtonDisabled(true);
   };
+
   return (
     <ScoringContainer>
       <h2>Scoring</h2>
@@ -74,7 +83,6 @@ const Scoring = ({ onScoreUpdate, onOverUpdate, currentStriker }: ScoringProps) 
         <SquareButton onClick={() => handleScoreClick(1, currentStriker.index, 1, 'Wide')}>
           Wide
         </SquareButton>
-
         <SquareButton
           disabled={nextRunButtonDisabled}
           onClick={() => handleScoreClick(1, currentStriker.index, 0, 'Next Ball')}>

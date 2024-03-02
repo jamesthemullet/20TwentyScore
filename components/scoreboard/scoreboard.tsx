@@ -2,6 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
 
+const addPlural = (runs: number) => (runs === 1 ? 'run' : 'runs');
+
 const Scoreboard = () => {
   const { mostRecentAction } = useMostRecentAction();
   const { runs, action } = mostRecentAction;
@@ -20,7 +22,12 @@ const Scoreboard = () => {
       </ScoreboardLayout>
       {mostRecentAction && (
         <p>
-          Most recent ball: {runs && `${runs} runs`} {action}{' '}
+          Most recent ball:{' '}
+          {(!action || action === 'Next Ball') &&
+            runs !== null &&
+            runs !== undefined &&
+            `${runs} ${addPlural(runs)}`}{' '}
+          {action !== 'Next Ball' && action}{' '}
         </p>
       )}
     </ScoreboardContainer>

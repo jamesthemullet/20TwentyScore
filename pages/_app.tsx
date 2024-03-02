@@ -3,6 +3,7 @@ import { SessionProvider } from 'next-auth/react';
 import { GameScoreProvider } from '../context/GameScoreContext';
 
 import { css, Global } from '@emotion/react';
+import { MostRecentActionProvider } from '../context/MostRecentActionContext';
 
 const GlobalStyles = () => (
   <Global
@@ -30,7 +31,9 @@ const App = ({ Component, pageProps }: AppProps) => {
     <SessionProvider session={pageProps.session}>
       <GlobalStyles />
       <GameScoreProvider>
-        <Component {...pageProps} />
+        <MostRecentActionProvider>
+          <Component {...pageProps} />
+        </MostRecentActionProvider>
       </GameScoreProvider>
     </SessionProvider>
   );

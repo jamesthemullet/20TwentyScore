@@ -1,20 +1,36 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import Scoring from './scoring';
-import { after } from 'node:test';
+import { GameScore, GameScoreContext, useGameScore } from '../../context/GameScoreContext';
+
+const gameScore = [
+  {
+    players: [
+      {
+        name: 'Player 1',
+        index: 0,
+        runs: 0,
+        isBatting: true
+      },
+      {
+        name: 'Player 2',
+        index: 1,
+        runs: 0,
+        isBatting: false
+      }
+    ],
+    name: 'Team 1',
+    index: 0
+  },
+  { players: [], name: 'Team 2', index: 1 }
+] as GameScore;
+const setGameScore = jest.fn();
+const setPlayerScore = jest.fn();
 
 const ScoringProps = {
   onScoreUpdate: jest.fn(),
   onOverUpdate: jest.fn(),
-  currentStriker: {
-    index: 0,
-    name: 'Player 1',
-    runs: 0,
-    isBatting: true,
-    isOnTheCrease: true,
-    isOut: false,
-    allActions: []
-  }
+  currentStriker: gameScore[0].players[0]
 };
 
 describe('Scoring Component', () => {
@@ -22,7 +38,16 @@ describe('Scoring Component', () => {
     jest.clearAllMocks();
   });
   it('should render a Scoring component successfully', () => {
-    render(<Scoring {...ScoringProps} />);
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <Scoring {...ScoringProps} />
+      </GameScoreContext.Provider>
+    );
     const headingElement = screen.getByRole('heading', { level: 2 });
     expect(headingElement).toBeInTheDocument();
     expect(headingElement).toHaveTextContent('Scoring');
@@ -32,7 +57,16 @@ describe('Scoring Component', () => {
   });
 
   it('should call onScoreUpdate and onOverUpdate when the 0 runs button is clicked', () => {
-    render(<Scoring {...ScoringProps} />);
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <Scoring {...ScoringProps} />
+      </GameScoreContext.Provider>
+    );
     const button = screen.getByRole('button', { name: '0' });
 
     act(() => {
@@ -43,7 +77,16 @@ describe('Scoring Component', () => {
   });
 
   it('should set next ball action to disabled by default', () => {
-    render(<Scoring {...ScoringProps} />);
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <Scoring {...ScoringProps} />
+      </GameScoreContext.Provider>
+    );
     const buttons = screen.getAllByRole('button');
     buttons.forEach((button) => {
       if (button.textContent === 'Next Ball') {
@@ -53,7 +96,16 @@ describe('Scoring Component', () => {
   });
 
   it('should not call onScoreUpdate if the 1+ button is clicked', () => {
-    render(<Scoring {...ScoringProps} />);
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <Scoring {...ScoringProps} />
+      </GameScoreContext.Provider>
+    );
     const button = screen.getByRole('button', { name: /1\+/i });
     act(() => {
       fireEvent.click(button);
@@ -62,7 +114,16 @@ describe('Scoring Component', () => {
   });
 
   it('should enable next ball button when 1+ button is clicked', () => {
-    render(<Scoring {...ScoringProps} />);
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <Scoring {...ScoringProps} />
+      </GameScoreContext.Provider>
+    );
     const button = screen.getByRole('button', { name: /1\+/i });
 
     act(() => {
@@ -74,7 +135,16 @@ describe('Scoring Component', () => {
   });
 
   it('should call onScoreUpdate when next ball is clicked, and send the runs stored in state', () => {
-    render(<Scoring {...ScoringProps} />);
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <Scoring {...ScoringProps} />
+      </GameScoreContext.Provider>
+    );
     const button = screen.getByRole('button', { name: /1\+/i });
 
     act(() => {

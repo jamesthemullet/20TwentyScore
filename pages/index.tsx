@@ -7,30 +7,14 @@ import prisma from '../lib/prisma';
 import Team from '../components/team/team';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring/scoring';
-import defaultPlayers from '../components/players';
 import { useGameScore } from '../context/GameScoreContext';
 import { useMostRecentAction } from '../context/MostRecentActionContext';
-
-type Player = {
-  index: number;
-  name: string;
-  runs: number;
-  isBatting: boolean;
-  isOnTheCrease: boolean;
-  isOut: boolean;
-  allActions: (string | null)[];
-};
 
 type Props = {
   feed: PostProps[];
 };
 
 const Index: React.FC<Props> = (props) => {
-  const [team1Players, setTeam1Players] = useState<Player[]>(defaultPlayers());
-  const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
-  const [currentStriker, setCurrentStriker] = useState<Player>(team1Players[0]);
-  const [currentNonStriker, setCurrentNonStriker] = useState<Player>(team1Players[1]);
-
   const maxOvers = 20;
   const [currentOver, setCurrentOver] = useState(1);
   const [currentBallInOver, setCurrentBallInOver] = useState(1);
@@ -97,9 +81,9 @@ const Index: React.FC<Props> = (props) => {
       setCurrentExtrasInOver(0);
       setCurrentOver(currentOver + 1);
       //swap currentStriker with currentNonStriker
-      const temp = currentStriker;
-      setCurrentStriker(currentNonStriker);
-      setCurrentNonStriker(temp);
+      // const temp = currentStriker;
+      // setCurrentStriker(currentNonStriker);
+      // setCurrentNonStriker(temp);
     }
     if (currentOver === maxOvers) {
       console.log('game over');
@@ -125,11 +109,7 @@ const Index: React.FC<Props> = (props) => {
         <Board>
           <Team teamIndex={0} />
           <Scoreboard />
-          <Scoring
-            onScoreUpdate={updateGame}
-            onOverUpdate={updateOvers}
-            currentStriker={currentStriker}
-          />
+          <Scoring onScoreUpdate={updateGame} onOverUpdate={updateOvers} />
           <Team teamIndex={1} />
         </Board>
         <h2>Public Feed</h2>
