@@ -6,6 +6,7 @@ type TeamPlayer = {
   name: string;
   runs: number;
   isBatting: boolean;
+  allActions: (string | null)[];
 };
 
 export type GameScore = [
@@ -29,7 +30,12 @@ export type PlayerScore = {
 type GameScoreContextType = {
   gameScore: GameScore;
   setGameScore: (gameScore: GameScore) => void;
-  setPlayerScore: (teamIndex: number, playerIndex: number, runs: number) => void;
+  setPlayerScore: (
+    teamIndex: number,
+    playerIndex: number,
+    runs: number,
+    action: string | null
+  ) => void;
 };
 
 type GameScoreProviderProps = {
@@ -73,7 +79,12 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     }
   ]);
 
-  const updateTeamScore = (teamPlayers: TeamPlayer[], playerIndex: number, runs: number) => {
+  const updateTeamScore = (
+    teamPlayers: TeamPlayer[],
+    playerIndex: number,
+    runs: number,
+    action: string | null
+  ) => {
     const player = teamPlayers.find((player) => player.index === playerIndex);
 
     if (!player) {
@@ -81,25 +92,36 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     }
 
     const updatedTeamPlayers = teamPlayers.map((player) =>
-      player.index === playerIndex ? { ...player, runs: player.runs + runs } : player
+      player.index === playerIndex
+        ? {
+            ...player,
+            runs: player.runs + runs,
+            allActions: [...player.allActions, action || runs.toString()]
+          }
+        : player
     );
 
     return updatedTeamPlayers;
   };
 
-  const setPlayerScore = (teamIndex: number, playerIndex: number, runs: number) => {
+  const setPlayerScore = (
+    teamIndex: number,
+    playerIndex: number,
+    runs: number,
+    action: string | null
+  ) => {
     if (teamIndex < 0 || teamIndex > 1) {
       return;
     }
     setGameScoreState((prevState: GameScore) => {
       return [
         {
-          players: updateTeamScore(prevState[0].players, playerIndex, runs),
+          players: updateTeamScore(prevState[0].players, playerIndex, runs, action),
           name: 'Team 1',
           index: 0
         },
         {
-          players: updateTeamScore(prevState[1].players, playerIndex, runs),
+          players: updateTeamScore(prevState[1].players, playerIndex, runs, action),
           name: 'Team 2',
           index: 1
         }

@@ -10,13 +10,15 @@ const gameScore = [
         name: 'Player 1',
         index: 0,
         runs: 0,
-        isBatting: true
+        isBatting: true,
+        allActions: []
       },
       {
         name: 'Player 2',
         index: 1,
         runs: 0,
-        isBatting: false
+        isBatting: false,
+        allActions: []
       }
     ],
     name: 'Team 1',

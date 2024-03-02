@@ -24,12 +24,12 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setGameScore([
           {
-            players: [{ name: 'Player 1', index: 0, runs: 10, isBatting: true }],
+            players: [{ name: 'Player 1', index: 0, runs: 10, isBatting: true, allActions: [] }],
             name: 'Team 1',
             index: 0
           },
           {
-            players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false }],
+            players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
             name: 'Team 2',
             index: 1
           }
@@ -51,7 +51,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 4);
+        setPlayerScore(1, 0, 4, null);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -69,7 +69,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 11, 10);
+        setPlayerScore(1, 11, 10, null);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -87,7 +87,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(555, 0, 10);
+        setPlayerScore(555, 0, 10, null);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -107,12 +107,12 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setGameScore([
           {
-            players: [{ name: 'Player 1', index: 0, runs: 22, isBatting: true }],
+            players: [{ name: 'Player 1', index: 0, runs: 22, isBatting: true, allActions: [] }],
             name: 'Team 1',
             index: 0
           },
           {
-            players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false }],
+            players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
             name: 'Team 2',
             index: 1
           }
@@ -143,17 +143,17 @@ describe('GameScoreProvider', () => {
 
       setGameScore([
         {
-          players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: true }],
+          players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: true, allActions: [] }],
           name: 'Team 1',
           index: 0
         },
         {
-          players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false }],
+          players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
           name: 'Team 2',
           index: 1
         }
       ]);
-      setPlayerScore(0, 0, 10);
+      setPlayerScore(0, 0, 10, null);
 
       return null;
     };
@@ -175,5 +175,25 @@ describe('GameScoreProvider', () => {
     expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);
 
     logSpy.mockRestore();
+  });
+
+  it('should add each action to allActions', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setPlayerScore(0, 0, 1, null);
+        setPlayerScore(0, 0, 4, null);
+        setPlayerScore(0, 0, 1, 'No ball');
+      }, []);
+
+      return <div>{gameScore[0].players[0]?.allActions.join(', ')}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('1, 4, No ball')).toBeInTheDocument();
   });
 });
