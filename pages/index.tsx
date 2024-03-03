@@ -7,8 +7,6 @@ import prisma from '../lib/prisma';
 import Team from '../components/team/team';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring/scoring';
-import { useGameScore } from '../context/GameScoreContext';
-import { useMostRecentAction } from '../context/MostRecentActionContext';
 
 type Props = {
   feed: PostProps[];
@@ -90,26 +88,13 @@ const Index: React.FC<Props> = (props) => {
     }
   };
 
-  const { setMostRecentAction } = useMostRecentAction();
-  const { setPlayerScore } = useGameScore();
-
-  const updateGame = (
-    teamIndex: number,
-    playerIndex: number,
-    runs: number,
-    action: null | string
-  ) => {
-    setPlayerScore(teamIndex, playerIndex, runs, action);
-    setMostRecentAction({ runs, action });
-  };
-
   return (
     <Layout>
       <Main aria-label="Scoreboard">
         <Board>
           <Team teamIndex={0} />
           <Scoreboard />
-          <Scoring onScoreUpdate={updateGame} onOverUpdate={updateOvers} />
+          <Scoring onOverUpdate={updateOvers} />
           <Team teamIndex={1} />
         </Board>
         <h2>Public Feed</h2>

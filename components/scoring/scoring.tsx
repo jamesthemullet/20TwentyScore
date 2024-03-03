@@ -2,32 +2,18 @@ import styled from '@emotion/styled';
 import { SquareButton } from '../core/buttons';
 import { useState } from 'react';
 import { useGameScore } from '../../context/GameScoreContext';
-
-type Player = {
-  index: number;
-  name: string;
-  runs: number;
-  isBatting: boolean;
-  isOnTheCrease: boolean;
-  isOut: boolean;
-  allActions: (string | null)[];
-};
+import { useMostRecentAction } from '../../context/MostRecentActionContext';
 
 type ScoringProps = {
-  onScoreUpdate: (
-    teamIndex: number,
-    playerIndex: number,
-    runs: number,
-    action: null | string
-  ) => void;
   onOverUpdate: (action: null | string) => void;
 };
 
-const Scoring = ({ onScoreUpdate, onOverUpdate }: ScoringProps) => {
+const Scoring = ({ onOverUpdate }: ScoringProps) => {
   const [countRuns, setCountRuns] = useState(0);
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
 
-  const { gameScore } = useGameScore();
+  const { setPlayerScore, gameScore } = useGameScore();
+  const { setMostRecentAction } = useMostRecentAction();
 
   const currentStriker = gameScore[0].players.find((player) => player.isBatting);
 
@@ -46,13 +32,23 @@ const Scoring = ({ onScoreUpdate, onOverUpdate }: ScoringProps) => {
       setNextRunButtonDisabled(false);
       return;
     } else if (action === 'Next Ball') {
-      onScoreUpdate(teamIndex, playerIndex, countRuns, action);
+      updateGame(teamIndex, playerIndex, countRuns, action);
     } else {
-      onScoreUpdate(teamIndex, playerIndex, runs, action);
+      updateGame(teamIndex, playerIndex, runs, action);
     }
     setCountRuns(0);
     onOverUpdate(action);
     setNextRunButtonDisabled(true);
+  };
+
+  const updateGame = (
+    teamIndex: number,
+    playerIndex: number,
+    runs: number,
+    action: null | string
+  ) => {
+    setPlayerScore(teamIndex, playerIndex, runs, action);
+    setMostRecentAction({ runs, action });
   };
 
   return (
