@@ -30,7 +30,6 @@ const setGameScore = jest.fn();
 const setPlayerScore = jest.fn();
 
 const ScoringProps = {
-  onScoreUpdate: jest.fn(),
   onOverUpdate: jest.fn(),
   currentStriker: gameScore[0].players[0]
 };
@@ -58,7 +57,7 @@ describe('Scoring Component', () => {
     expect(buttons).toHaveLength(9);
   });
 
-  it('should call onScoreUpdate and onOverUpdate when the 0 runs button is clicked', () => {
+  it('should call setPlayerScore and onOverUpdate when the 0 runs button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
@@ -74,7 +73,7 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
-    expect(ScoringProps.onScoreUpdate).toHaveBeenCalledTimes(1);
+    expect(setPlayerScore).toHaveBeenCalledTimes(1);
     expect(ScoringProps.onOverUpdate).toHaveBeenCalledTimes(1);
   });
 
@@ -97,7 +96,7 @@ describe('Scoring Component', () => {
     });
   });
 
-  it('should not call onScoreUpdate if the 1+ button is clicked', () => {
+  it('should not call setPlayerScore if the 1+ button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
@@ -112,7 +111,7 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
-    expect(ScoringProps.onScoreUpdate).not.toHaveBeenCalled();
+    expect(setPlayerScore).not.toHaveBeenCalled();
   });
 
   it('should enable next ball button when 1+ button is clicked', () => {
@@ -136,7 +135,7 @@ describe('Scoring Component', () => {
     expect(nextBallButton).not.toBeDisabled();
   });
 
-  it('should call onScoreUpdate when next ball is clicked, and send the runs stored in state', () => {
+  it('should call setPlayerScore when next ball is clicked, and send the runs stored in state', () => {
     render(
       <GameScoreContext.Provider
         value={{
@@ -161,6 +160,6 @@ describe('Scoring Component', () => {
       fireEvent.click(nextBallButton);
     });
 
-    expect(ScoringProps.onScoreUpdate).toHaveBeenCalledWith(1, 0, 3, 'Next Ball');
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 3, 'Next Ball');
   });
 });

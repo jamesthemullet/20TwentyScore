@@ -162,12 +162,12 @@ describe('GameScoreProvider', () => {
 
     expect(logSpy).toHaveBeenCalledWith('Initial setGameScore called with', [
       {
-        players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: true }],
+        players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: true, allActions: [] }],
         name: 'Team 1',
         index: 0
       },
       {
-        players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false }],
+        players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
         name: 'Team 2',
         index: 1
       }
