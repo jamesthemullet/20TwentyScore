@@ -4,6 +4,7 @@ import { GameScoreProvider } from '../context/GameScoreContext';
 
 import { css, Global } from '@emotion/react';
 import { MostRecentActionProvider } from '../context/MostRecentActionContext';
+import { OversProvider } from '../context/OversContext';
 
 const GlobalStyles = () => (
   <Global
@@ -31,9 +32,11 @@ const App = ({ Component, pageProps }: AppProps) => {
     <SessionProvider session={pageProps.session}>
       <GlobalStyles />
       <GameScoreProvider>
-        <MostRecentActionProvider>
-          <Component {...pageProps} />
-        </MostRecentActionProvider>
+        <OversProvider>
+          <MostRecentActionProvider>
+            <Component {...pageProps} />
+          </MostRecentActionProvider>
+        </OversProvider>
       </GameScoreProvider>
     </SessionProvider>
   );
