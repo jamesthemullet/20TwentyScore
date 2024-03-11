@@ -143,7 +143,7 @@ describe('GameScoreProvider', () => {
 
       setGameScore([
         {
-          players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: true, allActions: [] }],
+          players: [{ name: 'Player 122222', index: 0, runs: 0, isBatting: true, allActions: [] }],
           name: 'Team 1',
           index: 0
         },
