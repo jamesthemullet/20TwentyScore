@@ -10,7 +10,8 @@
     "lint": "tsc --noEmit && eslint .",
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "yarn jest"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,css,md,json}": "eslint .",
