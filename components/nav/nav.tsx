@@ -5,7 +5,7 @@ import { useGameScore } from '../../context/GameScoreContext';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { PrimaryButton } from '../core/buttons';
-import defaultPlayers from '../players';
+import defaultPlayers from '../core/players';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

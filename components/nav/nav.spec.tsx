@@ -5,7 +5,7 @@ import { NextRouter, useRouter } from 'next/router';
 import { SessionContextValue, useSession } from 'next-auth/react';
 import { matchers } from '@emotion/jest';
 import { GameScore, GameScoreContext } from '../../context/GameScoreContext';
-import defaultPlayers from '../players';
+import defaultPlayers from '../core/players';
 
 expect.extend(matchers);
 
