@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import defaultPlayers from '../components/players';
+import defaultPlayers from '../components/core/players';
 
 type TeamPlayer = {
   index: number;

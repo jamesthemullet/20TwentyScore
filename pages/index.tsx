@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GetStaticProps } from 'next/types';
 import Layout from '../components/layout/layout';
 import Scoreboard from '../components/scoreboard/scoreboard';
-import Post, { PostProps } from '../components/Post';
+import Post, { PostProps } from '../components/post/post';
 import prisma from '../lib/prisma';
 import Team from '../components/team/team';
 import styled from '@emotion/styled';
