@@ -7,7 +7,7 @@ type Player = {
   name: string;
   index: number;
   runs: number;
-  isBatting: boolean;
+  currentStriker: boolean;
   allActions: (string | null)[];
 };
 
@@ -60,8 +60,9 @@ const Team = ({ teamIndex }: TeamProps) => {
                 key={index}
                 index={index}
                 runs={player.runs}
-                isBatting={player.isBatting}
+                currentStriker={player.currentStriker}
                 allActions={player.allActions}
+                currentNonStriker={player.currentNonStriker}
               />
             );
           })}

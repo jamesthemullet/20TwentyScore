@@ -10,39 +10,39 @@ const teamProps = {
       index: 0,
       name: 'Player 1',
       runs: 10,
-      isBatting: true,
+      currentStriker: true,
       allActions: ['', '', '', '', '', 'Wicket']
     },
     {
       index: 1,
       name: 'Player 2',
       runs: 20,
-      isBatting: false,
+      currentStriker: false,
       allActions: ['', '', '', '', '']
     },
     {
       index: 2,
       name: 'Player 3',
       runs: 30,
-      isBatting: false,
+      currentStriker: false,
       allActions: []
     },
-    { index: 3, name: 'Player 4', runs: 40, isBatting: false, allActions: [] },
-    { index: 4, name: 'Player 5', runs: 50, isBatting: false, allActions: [] },
-    { index: 5, name: 'Player 6', runs: 60, isBatting: false, allActions: [] },
-    { index: 6, name: 'Player 7', runs: 70, isBatting: false, allActions: [] },
-    { index: 7, name: 'Player 8', runs: 80, isBatting: false, allActions: [] },
-    { index: 8, name: 'Player 9', runs: 90, isBatting: false, allActions: [] },
-    { index: 9, name: 'Player 10', runs: 100, isBatting: false, allActions: [] },
-    { index: 10, name: 'Player 11', runs: 110, isBatting: false, allActions: [] }
+    { index: 3, name: 'Player 4', runs: 40, currentStriker: false, allActions: [] },
+    { index: 4, name: 'Player 5', runs: 50, currentStriker: false, allActions: [] },
+    { index: 5, name: 'Player 6', runs: 60, currentStriker: false, allActions: [] },
+    { index: 6, name: 'Player 7', runs: 70, currentStriker: false, allActions: [] },
+    { index: 7, name: 'Player 8', runs: 80, currentStriker: false, allActions: [] },
+    { index: 8, name: 'Player 9', runs: 90, currentStriker: false, allActions: [] },
+    { index: 9, name: 'Player 10', runs: 100, currentStriker: false, allActions: [] },
+    { index: 10, name: 'Player 11', runs: 110, currentStriker: false, allActions: [] }
   ],
   currentStriker: {
     index: 1,
-    isBatting: true
+    currentStriker: true
   },
   currentNonStriker: {
     index: 2,
-    isBatting: false
+    currentStriker: false
   },
   mostRecentAction: {
     runs: 4,

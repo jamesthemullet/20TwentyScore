@@ -7,7 +7,9 @@ describe('Player', () => {
     const props = {
       index: 1,
       runs: 10,
-      isBatting: true
+      currentStriker: true,
+      allActions: [],
+      currentNonStriker: false
     };
     render(<Player {...props} />);
     expect(screen.getByText('Player 1')).toBeVisible();
@@ -19,7 +21,9 @@ describe('Player', () => {
     const props = {
       index: 1,
       runs: 10,
-      isBatting: true
+      currentStriker: true,
+      allActions: [],
+      currentNonStriker: false
     };
     render(<Player {...props} />);
     const editButton = screen.getByRole('button', { name: 'Edit' });
@@ -35,7 +39,9 @@ describe('Player', () => {
     const props = {
       index: 1,
       runs: 10,
-      isBatting: true
+      currentStriker: true,
+      allActions: [],
+      currentNonStriker: false
     };
     render(<Player {...props} />);
     const editButton = screen.getByRole('button', { name: 'Edit' });
@@ -55,23 +61,39 @@ describe('Player', () => {
     expect(screen.getByText('Player La La La')).toBeVisible();
   });
 
-  it('should show icon if player is batting', () => {
+  it('should show current striker icon if player is batting', () => {
     const props = {
       index: 1,
       runs: 10,
-      isBatting: true
+      currentStriker: true,
+      allActions: [],
+      currentNonStriker: false
     };
     render(<Player {...props} />);
-    expect(screen.getByAltText('logo')).toBeVisible();
+    expect(screen.getByTitle('Current striker')).toBeVisible();
   });
 
-  it('should not show icon if player is not batting', () => {
+  it('should not show current striker icon if player is not batting', () => {
     const props = {
       index: 3,
       runs: 0,
-      isBatting: false
+      currentStriker: false,
+      allActions: [],
+      currentNonStriker: false
     };
     render(<Player {...props} />);
-    expect(screen.queryByAltText('logo')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('logo')).not.toBeInTheDocument();
+  });
+
+  it('should show current non striker icon if player is not batting', () => {
+    const props = {
+      index: 3,
+      runs: 0,
+      currentStriker: false,
+      allActions: [],
+      currentNonStriker: true
+    };
+    render(<Player {...props} />);
+    expect(screen.getByTitle('Current non striker')).toBeVisible();
   });
 });

@@ -15,7 +15,7 @@ const Scoring = ({ onOverUpdate }: ScoringProps) => {
   const { setPlayerScore, gameScore } = useGameScore();
   const { setMostRecentAction } = useMostRecentAction();
 
-  const currentStriker = gameScore[0].players.find((player) => player.isBatting);
+  const currentStriker = gameScore[0].players.find((player) => player.currentStriker);
 
   if (!currentStriker) {
     return null;
