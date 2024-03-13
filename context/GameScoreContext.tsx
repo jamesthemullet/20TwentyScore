@@ -5,8 +5,9 @@ type TeamPlayer = {
   index: number;
   name: string;
   runs: number;
-  isBatting: boolean;
+  currentStriker: boolean;
   allActions: (string | null)[];
+  currentNonStriker: boolean;
 };
 
 export type GameScore = [

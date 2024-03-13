@@ -24,12 +24,30 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setGameScore([
           {
-            players: [{ name: 'Player 1', index: 0, runs: 10, isBatting: true, allActions: [] }],
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: true,
+                allActions: [],
+                currentNonStriker: false
+              }
+            ],
             name: 'Team 1',
             index: 0
           },
           {
-            players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                currentNonStriker: true
+              }
+            ],
             name: 'Team 2',
             index: 1
           }
@@ -107,12 +125,30 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setGameScore([
           {
-            players: [{ name: 'Player 1', index: 0, runs: 22, isBatting: true, allActions: [] }],
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 22,
+                currentStriker: true,
+                allActions: [],
+                currentNonStriker: false
+              }
+            ],
             name: 'Team 1',
             index: 0
           },
           {
-            players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                currentNonStriker: true
+              }
+            ],
             name: 'Team 2',
             index: 1
           }
@@ -143,12 +179,30 @@ describe('GameScoreProvider', () => {
 
       setGameScore([
         {
-          players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: true, allActions: [] }],
+          players: [
+            {
+              name: 'Player 1',
+              index: 0,
+              runs: 0,
+              currentStriker: true,
+              allActions: [],
+              currentNonStriker: false
+            }
+          ],
           name: 'Team 1',
           index: 0
         },
         {
-          players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
+          players: [
+            {
+              name: 'Player 1',
+              index: 0,
+              runs: 0,
+              currentStriker: false,
+              allActions: [],
+              currentNonStriker: true
+            }
+          ],
           name: 'Team 2',
           index: 1
         }
@@ -162,12 +216,30 @@ describe('GameScoreProvider', () => {
 
     expect(logSpy).toHaveBeenCalledWith('Initial setGameScore called with', [
       {
-        players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: true, allActions: [] }],
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            currentStriker: true,
+            allActions: [],
+            currentNonStriker: false
+          }
+        ],
         name: 'Team 1',
         index: 0
       },
       {
-        players: [{ name: 'Player 1', index: 0, runs: 0, isBatting: false, allActions: [] }],
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            currentNonStriker: true
+          }
+        ],
         name: 'Team 2',
         index: 1
       }
