@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
+import { useOvers } from '../../context/OversContext';
 
 const addPlural = (runs: number) => (runs === 1 ? 'run' : 'runs');
 
 const Scoreboard = () => {
   const { mostRecentAction } = useMostRecentAction();
+  const { currentBallInThisOver, currentExtrasInThisOver, currentOver } = useOvers();
   const { runs, action } = mostRecentAction;
   return (
     <ScoreboardContainer>
@@ -30,6 +32,11 @@ const Scoreboard = () => {
           {action !== 'Next Ball' && action}{' '}
         </p>
       )}
+      <div>
+        <p>
+          Over: {currentOver} Ball: {currentBallInThisOver} (extras: {currentExtrasInThisOver})
+        </p>
+      </div>
     </ScoreboardContainer>
   );
 };

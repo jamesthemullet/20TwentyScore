@@ -4,10 +4,14 @@ import { matchers } from '@emotion/jest';
 import { render, screen } from '@testing-library/react';
 import Scoreboard from './scoreboard';
 import { MostRecentActionContext } from '../../context/MostRecentActionContext';
+import { OversContext } from '../../context/OversContext';
 
 expect.extend(matchers);
 
 const setMostRecentAction = jest.fn();
+const incrementCurrentOver = jest.fn();
+const setCurrentBallInThisOver = jest.fn();
+const setCurrentExtrasInThisOver = jest.fn();
 
 describe('Scoreboard Component', () => {
   it('should render Scoreboard component on initial load', () => {
@@ -83,5 +87,25 @@ describe('Scoreboard Component', () => {
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: 2 runs')).toBeVisible();
+  });
+
+  it('should display current ball, current over and current extras in over', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 1;
+    const currentExtrasInThisOver = 0;
+    render(
+      <OversContext.Provider
+        value={{
+          currentOver,
+          incrementCurrentOver,
+          currentBallInThisOver,
+          setCurrentBallInThisOver,
+          currentExtrasInThisOver,
+          setCurrentExtrasInThisOver
+        }}>
+        <Scoreboard />
+      </OversContext.Provider>
+    );
+    expect(screen.getByText('Over: 1 Ball: 1 (extras: 0)')).toBeVisible();
   });
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import Scoring from './scoring';
 import { GameScore, GameScoreContext, useGameScore } from '../../context/GameScoreContext';
+import { OversContext } from '../../context/OversContext';
 
 const gameScore = [
   {
@@ -30,11 +31,9 @@ const gameScore = [
 ] as GameScore;
 const setGameScore = jest.fn();
 const setPlayerScore = jest.fn();
-
-const ScoringProps = {
-  onOverUpdate: jest.fn(),
-  currentStriker: gameScore[0].players[0]
-};
+const setCurrentBallInThisOver = jest.fn();
+const setCurrentExtrasInThisOver = jest.fn();
+const incrementCurrentOver = jest.fn();
 
 describe('Scoring Component', () => {
   afterEach(() => {
@@ -48,7 +47,7 @@ describe('Scoring Component', () => {
           gameScore,
           setPlayerScore
         }}>
-        <Scoring {...ScoringProps} />
+        <Scoring />
       </GameScoreContext.Provider>
     );
     const headingElement = screen.getByRole('heading', { level: 2 });
@@ -59,7 +58,7 @@ describe('Scoring Component', () => {
     expect(buttons).toHaveLength(9);
   });
 
-  it('should call setPlayerScore and onOverUpdate when the 0 runs button is clicked', () => {
+  it('should call setPlayerScore when the 0 runs button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
@@ -67,7 +66,7 @@ describe('Scoring Component', () => {
           gameScore,
           setPlayerScore
         }}>
-        <Scoring {...ScoringProps} />
+        <Scoring />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: '0' });
@@ -76,7 +75,6 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
     expect(setPlayerScore).toHaveBeenCalledTimes(1);
-    expect(ScoringProps.onOverUpdate).toHaveBeenCalledTimes(1);
   });
 
   it('should set next ball action to disabled by default', () => {
@@ -87,7 +85,7 @@ describe('Scoring Component', () => {
           gameScore,
           setPlayerScore
         }}>
-        <Scoring {...ScoringProps} />
+        <Scoring />
       </GameScoreContext.Provider>
     );
     const buttons = screen.getAllByRole('button');
@@ -106,7 +104,7 @@ describe('Scoring Component', () => {
           gameScore,
           setPlayerScore
         }}>
-        <Scoring {...ScoringProps} />
+        <Scoring />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: /1\+/i });
@@ -124,7 +122,7 @@ describe('Scoring Component', () => {
           gameScore,
           setPlayerScore
         }}>
-        <Scoring {...ScoringProps} />
+        <Scoring />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: /1\+/i });
@@ -145,7 +143,7 @@ describe('Scoring Component', () => {
           gameScore,
           setPlayerScore
         }}>
-        <Scoring {...ScoringProps} />
+        <Scoring />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: /1\+/i });
@@ -163,5 +161,139 @@ describe('Scoring Component', () => {
     });
 
     expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 3, 'Next Ball');
+  });
+
+  it('should add 1 to the current ball in over, when balls in over is less than 6, not including extras', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 1;
+    const currentExtrasInThisOver = 0;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /4/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(setCurrentBallInThisOver).toHaveBeenCalled();
+  });
+
+  it('should increase the over count by 1 after the 6th ball, if are there no extras, set current ball to 1, and reset current extras to 0', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 6;
+    const currentExtrasInThisOver = 0;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /4/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(incrementCurrentOver).toHaveBeenCalled();
+    expect(setCurrentBallInThisOver).toHaveBeenCalledWith(1);
+    expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith('reset');
+  });
+
+  it('should not increase the over count by 1 after the 6th ball, if there are extras', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 6;
+    const currentExtrasInThisOver = 1;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /4/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(incrementCurrentOver).not.toHaveBeenCalled();
+  });
+
+  it('should increase extras if wide or no ball is clicked', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 1;
+    const currentExtrasInThisOver = 0;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /wide/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
   });
 });
