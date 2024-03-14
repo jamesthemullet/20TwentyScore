@@ -4,11 +4,11 @@ const maxOvers = 20;
 
 type OversContextType = {
   currentExtrasInThisOver: number;
-  setCurrentExtrasInThisOver: (extras: number) => void;
+  setCurrentExtrasInThisOver: (extras: number | string) => void;
   currentBallInThisOver: number;
-  setCurrentBallInThisOver: () => void;
+  setCurrentBallInThisOver: (ball: number | null) => void;
   currentOver: number;
-  setCurrentOver: () => void;
+  incrementCurrentOver: () => void;
 };
 
 type OversProviderProps = {
@@ -17,16 +17,16 @@ type OversProviderProps = {
 
 export const OversContext = createContext<OversContextType>({
   currentExtrasInThisOver: 0,
-  setCurrentExtrasInThisOver: (extras) => {
+  setCurrentExtrasInThisOver: (extras: number | string) => {
     console.log('Initial setCurrentExtrasInOver called with', extras);
   },
   currentBallInThisOver: 1,
-  setCurrentBallInThisOver: () => {
+  setCurrentBallInThisOver: (ball: number | null) => {
     console.log('Initial setCurrentBallInThisOver called');
   },
   currentOver: 1,
-  setCurrentOver: () => {
-    console.log('Initial setCurrentOver called');
+  incrementCurrentOver: () => {
+    console.log('Initial incrementCurrentOver called');
   }
 });
 
@@ -35,22 +35,20 @@ export const useOvers = () => useContext(OversContext);
 export const OversProvider: React.FC<OversProviderProps> = ({ children }) => {
   const [currentExtrasInThisOver, setCurrentExtrasInOverState] = useState(0);
 
-  const setCurrentExtrasInThisOver = (extras: number) => {
-    setCurrentExtrasInOverState(currentExtrasInThisOver + extras);
+  const setCurrentExtrasInThisOver = (extras: number | string) => {
+    setCurrentExtrasInOverState(extras === 'reset' ? 0 : currentExtrasInThisOver + Number(extras));
   };
 
   const [currentBallInThisOver, setCurrentBallInOverState] = useState(1);
 
-  console.log(10, currentBallInThisOver);
-
-  const setCurrentBallInThisOver = () => {
-    setCurrentBallInOverState(currentBallInThisOver + 1);
+  const setCurrentBallInThisOver = (ball: number | null) => {
+    setCurrentBallInOverState(ball || currentBallInThisOver + 1);
   };
 
-  const [currentOver, setCurrentOverState] = useState(1);
+  const [currentOver, incrementCurrentOverState] = useState(1);
 
-  const setCurrentOver = () => {
-    setCurrentOverState(currentOver + 1);
+  const incrementCurrentOver = () => {
+    incrementCurrentOverState(currentOver + 1);
   };
 
   return (
@@ -61,7 +59,7 @@ export const OversProvider: React.FC<OversProviderProps> = ({ children }) => {
         currentBallInThisOver,
         setCurrentBallInThisOver,
         currentOver,
-        setCurrentOver
+        incrementCurrentOver
       }}>
       {children}
     </OversContext.Provider>

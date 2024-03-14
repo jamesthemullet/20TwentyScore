@@ -27,7 +27,7 @@ describe('OversProvider', () => {
         const { currentBallInThisOver, setCurrentBallInThisOver } = useOvers();
 
         React.useEffect(() => {
-          setCurrentBallInThisOver();
+          setCurrentBallInThisOver(null);
         }, []);
 
         return <div>Current ball: {currentBallInThisOver}</div>;
@@ -42,10 +42,10 @@ describe('OversProvider', () => {
 
     it('should set over', () => {
       const MockChildComponent = () => {
-        const { currentOver, setCurrentOver } = useOvers();
+        const { currentOver, incrementCurrentOver } = useOvers();
 
         React.useEffect(() => {
-          setCurrentOver();
+          incrementCurrentOver();
         }, []);
 
         return <div>Current over: {currentOver}</div>;
@@ -70,12 +70,12 @@ describe('OversProvider', () => {
 
         setCurrentBallInThisOver,
 
-        setCurrentOver
+        incrementCurrentOver
       } = React.useContext(OversContext);
 
       setCurrentExtrasInThisOver(1);
-      setCurrentBallInThisOver();
-      setCurrentOver();
+      setCurrentBallInThisOver(null);
+      incrementCurrentOver();
 
       return null;
     };

@@ -14,7 +14,7 @@ type Props = {
 
 const Index: React.FC<Props> = (props) => {
   const maxOvers = 20;
-  const [currentOver, setCurrentOver] = useState(1);
+  const [currentOver, incrementCurrentOver] = useState(1);
   const [currentBallInOver, setCurrentBallInOver] = useState(1);
   const [currentExtrasInOver, setCurrentExtrasInOver] = useState(0);
   const maxBallsInOver = 6 + currentExtrasInOver;
@@ -77,7 +77,7 @@ const Index: React.FC<Props> = (props) => {
     } else {
       setCurrentBallInOver(1);
       setCurrentExtrasInOver(0);
-      setCurrentOver(currentOver + 1);
+      incrementCurrentOver(currentOver + 1);
       //swap currentStriker with currentNonStriker
       // const temp = currentStriker;
       // setCurrentStriker(currentNonStriker);
@@ -94,7 +94,7 @@ const Index: React.FC<Props> = (props) => {
         <Board>
           <Team teamIndex={0} />
           <Scoreboard />
-          <Scoring onOverUpdate={updateOvers} />
+          <Scoring />
           <Team teamIndex={1} />
         </Board>
         <h2>Public Feed</h2>
