@@ -21,8 +21,6 @@ const Scoring = () => {
 
   const currentStriker = gameScore[0].players.find((player) => player.currentStriker) || undefined;
 
-  console.log(10);
-
   const handleScoreClick = (
     teamIndex: number,
     playerIndex: number | undefined,

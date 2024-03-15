@@ -16,7 +16,7 @@ describe('App tests', () => {
   it('should create an app', async () => {
     const props: AppProps = {
       Component: () => <div>{pageContent}</div>,
-      pageProps: {},
+      pageProps: { session: {} },
       router: {}
     };
 

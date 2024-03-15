@@ -79,6 +79,9 @@ describe('Drafts page', () => {
     (getSession as jest.Mock).mockReturnValue(getSessionUser);
     (useSession as jest.Mock).mockReturnValue(session);
   });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it('should render the drafts page', async () => {
     const drafts = [
       {
