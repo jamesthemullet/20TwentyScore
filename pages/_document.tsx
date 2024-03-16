@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang="en" data-testid="html">
         <Head />
         <StyledBody>
           <Main />
