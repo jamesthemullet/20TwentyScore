@@ -13,7 +13,9 @@ const gameScore = [
         runs: 0,
         currentStriker: true,
         allActions: [],
-        currentNonStriker: false
+        onTheCrease: true,
+        currentNonStriker: false,
+        status: 'Not out'
       },
       {
         name: 'Player 2',
@@ -21,7 +23,9 @@ const gameScore = [
         runs: 0,
         currentStriker: false,
         allActions: [],
-        currentNonStriker: true
+        onTheCrease: true,
+        currentNonStriker: true,
+        status: 'Not out'
       }
     ],
     name: 'Team 1',

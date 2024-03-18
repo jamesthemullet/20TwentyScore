@@ -63,6 +63,7 @@ const Team = ({ teamIndex }: TeamProps) => {
                 currentStriker={player.currentStriker}
                 allActions={player.allActions}
                 currentNonStriker={player.currentNonStriker}
+                status={player.status}
               />
             );
           })}

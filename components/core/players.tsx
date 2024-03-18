@@ -7,7 +7,9 @@ const defaultPlayers = () => {
       currentStriker: true,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: true,
+      status: 'Not out'
     },
     {
       index: 1,
@@ -16,7 +18,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: true,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: true,
+      status: 'Not out'
     },
     {
       index: 2,
@@ -25,7 +29,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 3,
@@ -34,7 +40,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 4,
@@ -43,7 +51,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 5,
@@ -52,7 +62,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 6,
@@ -61,7 +73,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 7,
@@ -70,7 +84,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 8,
@@ -79,7 +95,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 9,
@@ -88,7 +106,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     },
     {
       index: 10,
@@ -97,7 +117,9 @@ const defaultPlayers = () => {
       currentStriker: false,
       currentNonStriker: false,
       isOut: false,
-      allActions: []
+      allActions: [],
+      onTheCrease: false,
+      status: 'Not out'
     }
   ];
 };

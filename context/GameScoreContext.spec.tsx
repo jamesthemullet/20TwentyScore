@@ -31,7 +31,39 @@ describe('GameScoreProvider', () => {
                 runs: 10,
                 currentStriker: true,
                 allActions: [],
-                currentNonStriker: false
+                onTheCrease: true,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 2',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: true,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
               }
             ],
             name: 'Team 1',
@@ -45,7 +77,9 @@ describe('GameScoreProvider', () => {
                 runs: 0,
                 currentStriker: false,
                 allActions: [],
-                currentNonStriker: true
+                onTheCrease: false,
+                currentNonStriker: true,
+                status: 'Not out'
               }
             ],
             name: 'Team 2',
@@ -132,7 +166,39 @@ describe('GameScoreProvider', () => {
                 runs: 22,
                 currentStriker: true,
                 allActions: [],
-                currentNonStriker: false
+                onTheCrease: true,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 2',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: true,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
               }
             ],
             name: 'Team 1',
@@ -146,7 +212,9 @@ describe('GameScoreProvider', () => {
                 runs: 0,
                 currentStriker: false,
                 allActions: [],
-                currentNonStriker: true
+                onTheCrease: false,
+                currentNonStriker: true,
+                status: 'Not out'
               }
             ],
             name: 'Team 2',
@@ -169,6 +237,43 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Runs: 22, 0')).toBeInTheDocument();
   });
 
+  it('should set current striker when a wicket occurs', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setPlayerScore(0, 0, 10, 'Wicket');
+      }, []);
+
+      return (
+        <div>
+          <p>Player 0: {gameScore[0].players[0].status}</p>
+          <p>Player 0 on the crease: {gameScore[0].players[0].onTheCrease ? 'true' : 'false'}</p>
+          <p>
+            Player 0 current striker: {gameScore[0].players[0].currentStriker ? 'true' : 'false'}
+          </p>
+
+          <p>Player 2: {gameScore[0].players[2].status}</p>
+          <p>Player 2 on the crease: {gameScore[0].players[2].onTheCrease ? 'true' : 'false'}</p>
+          <p>
+            Player 2 current striker: {gameScore[0].players[2].currentStriker ? 'true' : 'false'}
+          </p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('Player 0: Out')).toBeInTheDocument();
+    expect(screen.getByText('Player 0 on the crease: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 0 current striker: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 2: Not out')).toBeInTheDocument();
+    expect(screen.getByText('Player 2 on the crease: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 2 current striker: true')).toBeInTheDocument();
+  });
+
   it('should process pointless initial setGameScore correctly', () => {
     const logSpy = jest.spyOn(console, 'log');
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -186,7 +291,39 @@ describe('GameScoreProvider', () => {
               runs: 0,
               currentStriker: true,
               allActions: [],
-              currentNonStriker: false
+              onTheCrease: true,
+              currentNonStriker: false,
+              status: 'Not out'
+            },
+            {
+              name: 'Player 2',
+              index: 0,
+              runs: 0,
+              currentStriker: false,
+              allActions: [],
+              onTheCrease: true,
+              currentNonStriker: true,
+              status: 'Not out'
+            },
+            {
+              name: 'Player 3',
+              index: 0,
+              runs: 0,
+              currentStriker: false,
+              allActions: [],
+              onTheCrease: false,
+              currentNonStriker: false,
+              status: 'Not out'
+            },
+            {
+              name: 'Player 4',
+              index: 0,
+              runs: 0,
+              currentStriker: false,
+              allActions: [],
+              onTheCrease: false,
+              currentNonStriker: false,
+              status: 'Not out'
             }
           ],
           name: 'Team 1',
@@ -200,7 +337,9 @@ describe('GameScoreProvider', () => {
               runs: 0,
               currentStriker: false,
               allActions: [],
-              currentNonStriker: true
+              onTheCrease: false,
+              currentNonStriker: true,
+              status: 'Not out'
             }
           ],
           name: 'Team 2',
@@ -223,7 +362,39 @@ describe('GameScoreProvider', () => {
             runs: 0,
             currentStriker: true,
             allActions: [],
-            currentNonStriker: false
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 2',
+            index: 0,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: true,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 3',
+            index: 0,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: false,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 4',
+            index: 0,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: false,
+            currentNonStriker: false,
+            status: 'Not out'
           }
         ],
         name: 'Team 1',
@@ -237,7 +408,9 @@ describe('GameScoreProvider', () => {
             runs: 0,
             currentStriker: false,
             allActions: [],
-            currentNonStriker: true
+            onTheCrease: false,
+            currentNonStriker: true,
+            status: 'Not out'
           }
         ],
         name: 'Team 2',
