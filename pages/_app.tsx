@@ -28,7 +28,6 @@ const GlobalStyles = () => (
 );
 
 const App = ({ Component, pageProps }: AppProps) => {
-  console.log(9, pageProps.session);
   return (
     <SessionProvider session={pageProps.session}>
       <GlobalStyles />

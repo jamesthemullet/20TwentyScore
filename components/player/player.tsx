@@ -7,6 +7,7 @@ type PlayerProps = {
   currentStriker: boolean;
   allActions: (string | null)[];
   currentNonStriker: boolean;
+  status: string;
 };
 
 export const Player = ({
@@ -14,7 +15,8 @@ export const Player = ({
   runs,
   currentStriker,
   allActions,
-  currentNonStriker
+  currentNonStriker,
+  status
 }: PlayerProps) => {
   const [name, setName] = useState('Player ' + index);
   const [editPlayer, setEditPlayer] = useState(false);
@@ -56,6 +58,7 @@ export const Player = ({
       {currentNonStriker && (
         <img alt="" title="Current non striker" width="32px" src="/icons/png/010-helmet.png" />
       )}
+      <p>{status}</p>
       {/* {allActions.length > 0 && <p>{allActions.join(', ')}</p>} */}
     </PlayerContainer>
   );

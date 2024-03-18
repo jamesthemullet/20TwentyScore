@@ -8,6 +8,8 @@ type TeamPlayer = {
   currentStriker: boolean;
   allActions: (string | null)[];
   currentNonStriker: boolean;
+  onTheCrease: boolean;
+  status: string;
 };
 
 export type GameScore = [
@@ -101,6 +103,21 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           }
         : player
     );
+
+    if (action === 'Wicket') {
+      updatedTeamPlayers[playerIndex].status = 'Out';
+      updatedTeamPlayers[playerIndex].onTheCrease = false;
+      updatedTeamPlayers[playerIndex].currentStriker = false;
+
+      const nextPlayer = updatedTeamPlayers.find(
+        (player) => player.status !== 'Out' && !player.onTheCrease
+      );
+
+      if (nextPlayer) {
+        updatedTeamPlayers[nextPlayer.index].onTheCrease = true;
+        updatedTeamPlayers[nextPlayer.index].currentStriker = true;
+      }
+    }
 
     return updatedTeamPlayers;
   };

@@ -9,11 +9,13 @@ describe('Player', () => {
       runs: 10,
       currentStriker: true,
       allActions: [],
-      currentNonStriker: false
+      currentNonStriker: false,
+      status: 'Not out'
     };
     render(<Player {...props} />);
     expect(screen.getByText('Player 1')).toBeVisible();
     expect(screen.getByText('Runs: 10')).toBeVisible();
+    expect(screen.getAllByText('Not out')[0]).toBeVisible();
     expect(screen.getByRole('button', { name: 'Edit' })).toBeVisible();
   });
 
@@ -23,7 +25,8 @@ describe('Player', () => {
       runs: 10,
       currentStriker: true,
       allActions: [],
-      currentNonStriker: false
+      currentNonStriker: false,
+      status: 'Not out'
     };
     render(<Player {...props} />);
     const editButton = screen.getByRole('button', { name: 'Edit' });
@@ -41,7 +44,8 @@ describe('Player', () => {
       runs: 10,
       currentStriker: true,
       allActions: [],
-      currentNonStriker: false
+      currentNonStriker: false,
+      status: 'Not out'
     };
     render(<Player {...props} />);
     const editButton = screen.getByRole('button', { name: 'Edit' });
@@ -67,7 +71,8 @@ describe('Player', () => {
       runs: 10,
       currentStriker: true,
       allActions: [],
-      currentNonStriker: false
+      currentNonStriker: false,
+      status: 'Not out'
     };
     render(<Player {...props} />);
     expect(screen.getByTitle('Current striker')).toBeVisible();
@@ -79,7 +84,8 @@ describe('Player', () => {
       runs: 0,
       currentStriker: false,
       allActions: [],
-      currentNonStriker: false
+      currentNonStriker: false,
+      status: 'Not out'
     };
     render(<Player {...props} />);
     expect(screen.queryByTitle('logo')).not.toBeInTheDocument();
@@ -91,7 +97,8 @@ describe('Player', () => {
       runs: 0,
       currentStriker: false,
       allActions: [],
-      currentNonStriker: true
+      currentNonStriker: true,
+      status: 'Not out'
     };
     render(<Player {...props} />);
     expect(screen.getByTitle('Current non striker')).toBeVisible();
