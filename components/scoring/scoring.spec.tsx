@@ -40,6 +40,7 @@ const setPlayerScore = jest.fn();
 const setCurrentBallInThisOver = jest.fn();
 const setCurrentExtrasInThisOver = jest.fn();
 const incrementCurrentOver = jest.fn();
+const swapBatsmen = jest.fn();
 
 describe('Scoring Component', () => {
   afterEach(() => {
@@ -51,7 +52,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <Scoring />
       </GameScoreContext.Provider>
@@ -70,7 +72,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <Scoring />
       </GameScoreContext.Provider>
@@ -89,7 +92,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <Scoring />
       </GameScoreContext.Provider>
@@ -108,7 +112,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <Scoring />
       </GameScoreContext.Provider>
@@ -126,7 +131,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <Scoring />
       </GameScoreContext.Provider>
@@ -147,7 +153,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <Scoring />
       </GameScoreContext.Provider>
@@ -178,7 +185,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <OversContext.Provider
           value={{
@@ -211,7 +219,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <OversContext.Provider
           value={{
@@ -246,7 +255,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <OversContext.Provider
           value={{
@@ -279,7 +289,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore
+          setPlayerScore,
+          swapBatsmen
         }}>
         <OversContext.Provider
           value={{

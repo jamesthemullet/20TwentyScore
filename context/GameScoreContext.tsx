@@ -43,6 +43,7 @@ type GameScoreContextType = {
     runs: number,
     action: string | null
   ) => void;
+  swapBatsmen: () => void;
 };
 
 type GameScoreProviderProps = {
@@ -71,6 +72,9 @@ export const GameScoreContext = createContext<GameScoreContextType>({
   },
   setPlayerScore: (playerScore) => {
     console.log('Initial setPlayerScore called with', playerScore);
+  },
+  swapBatsmen: () => {
+    console.log('Initial swapBatsmen called');
   }
 });
 
@@ -167,8 +171,38 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     setGameScoreState(gameScore);
   };
 
+  const swapBatsmen = () => {
+    const currentStriker = gameScore[0].players.find((player) => player.currentStriker);
+    const currentNonStriker = gameScore[0].players.find((player) => player.currentNonStriker);
+
+    setGameScoreState((prevState: GameScore) => {
+      return [
+        {
+          players: prevState[0].players.map((player) =>
+            player.index === currentStriker?.index
+              ? { ...player, currentStriker: false, currentNonStriker: true }
+              : player.index === currentNonStriker?.index
+              ? { ...player, currentStriker: true, currentNonStriker: false }
+              : player
+          ),
+          name: 'Team 1',
+          index: 0,
+          totalRuns: prevState[0].totalRuns,
+          totalWickets: prevState[0].totalWickets
+        },
+        {
+          players: prevState[1].players,
+          name: 'Team 2',
+          index: 1,
+          totalRuns: prevState[1].totalRuns,
+          totalWickets: prevState[1].totalWickets
+        }
+      ];
+    });
+  };
+
   return (
-    <GameScoreContext.Provider value={{ gameScore, setGameScore, setPlayerScore }}>
+    <GameScoreContext.Provider value={{ gameScore, setGameScore, setPlayerScore, swapBatsmen }}>
       {children}
     </GameScoreContext.Provider>
   );

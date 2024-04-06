@@ -9,7 +9,7 @@ const Scoring = () => {
   const [countRuns, setCountRuns] = useState(0);
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
 
-  const { setPlayerScore, gameScore } = useGameScore();
+  const { setPlayerScore, gameScore, swapBatsmen } = useGameScore();
   const { setMostRecentAction } = useMostRecentAction();
   const {
     currentBallInThisOver,
@@ -55,6 +55,7 @@ const Scoring = () => {
       setCurrentBallInThisOver(1);
       incrementCurrentOver();
       setCurrentExtrasInThisOver('reset');
+      swapBatsmen();
     } else {
       setCurrentBallInThisOver(null);
     }

@@ -35,6 +35,7 @@ const gameScore = [
   { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0 }
 ] as GameScore;
 const setPlayerScore = jest.fn();
+const swapBatsmen = jest.fn();
 
 describe('Nav Component', () => {
   beforeEach(() => {
@@ -110,7 +111,8 @@ describe('Nav Component', () => {
           value={{
             setGameScore,
             gameScore,
-            setPlayerScore
+            setPlayerScore,
+            swapBatsmen
           }}>
           <Nav />
         </GameScoreContext.Provider>
@@ -138,7 +140,8 @@ describe('Nav Component', () => {
           value={{
             setGameScore,
             gameScore,
-            setPlayerScore
+            setPlayerScore,
+            swapBatsmen
           }}>
           <Nav />
         </GameScoreContext.Provider>
@@ -215,7 +218,7 @@ describe('Nav Component', () => {
     (useSession as jest.Mock).mockReturnValue(session);
 
     render(
-      <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore }}>
+      <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore, swapBatsmen }}>
         <Nav />
       </GameScoreContext.Provider>
     );
