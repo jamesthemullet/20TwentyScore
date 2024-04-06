@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { GameScoreProvider, useGameScore, GameScoreContext } from './GameScoreContext';
+import { GameScoreProvider, useGameScore, GameScoreContext, GameScore } from './GameScoreContext';
 import React from 'react';
+import testTeamData1 from '../__tests__/test-team-1.json';
+import testTeamData2 from '../__tests__/test-team-2.json';
 
 describe('GameScoreProvider', () => {
   it('should provide the correct initial context values', () => {
@@ -22,74 +24,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setGameScore } = useGameScore();
 
       React.useEffect(() => {
-        setGameScore([
-          {
-            players: [
-              {
-                name: 'Player 1',
-                index: 0,
-                runs: 10,
-                currentStriker: true,
-                allActions: [],
-                onTheCrease: true,
-                currentNonStriker: false,
-                status: 'Not out'
-              },
-              {
-                name: 'Player 2',
-                index: 0,
-                runs: 0,
-                currentStriker: false,
-                allActions: [],
-                onTheCrease: true,
-                currentNonStriker: true,
-                status: 'Not out'
-              },
-              {
-                name: 'Player 3',
-                index: 0,
-                runs: 10,
-                currentStriker: false,
-                allActions: [],
-                onTheCrease: false,
-                currentNonStriker: false,
-                status: 'Not out'
-              },
-              {
-                name: 'Player 4',
-                index: 0,
-                runs: 10,
-                currentStriker: false,
-                allActions: [],
-                onTheCrease: false,
-                currentNonStriker: false,
-                status: 'Not out'
-              }
-            ],
-            name: 'Team 1',
-            index: 0,
-            totalRuns: 30,
-            totalWickets: 2
-          },
-          {
-            players: [
-              {
-                name: 'Player 1',
-                index: 0,
-                runs: 0,
-                currentStriker: false,
-                allActions: [],
-                onTheCrease: false,
-                currentNonStriker: true,
-                status: 'Not out'
-              }
-            ],
-            name: 'Team 2',
-            index: 1,
-            totalRuns: 0,
-            totalWickets: 0
-          }
-        ]);
+        setGameScore([testTeamData1, testTeamData2] as GameScore);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
