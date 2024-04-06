@@ -34,8 +34,8 @@ export default function Nav() {
   const newGame = () => {
     localStorage.removeItem('gameData');
     setGameScore([
-      { players: defaultPlayers(), name: 'Team 1', index: 0 },
-      { players: defaultPlayers(), name: 'Team 2', index: 1 }
+      { players: defaultPlayers(), name: 'Team 1', index: 0, totalRuns: 0, totalWickets: 0 },
+      { players: defaultPlayers(), name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0 }
     ]);
   };
 

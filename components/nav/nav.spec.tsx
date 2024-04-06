@@ -31,12 +31,10 @@ Object.defineProperty(window, 'localStorage', {
 
 const setGameScore = jest.fn();
 const gameScore = [
-  { players: [], name: 'Team 1', index: 0 },
-  { players: [], name: 'Team 2', index: 1 }
+  { players: [], name: 'Team 1', index: 0, totalRuns: 0, totalWickets: 0 },
+  { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0 }
 ] as GameScore;
 const setPlayerScore = jest.fn();
-const setMostRecentAction = jest.fn();
-const mostRecentAction = { runs: 0, action: null };
 
 describe('Nav Component', () => {
   beforeEach(() => {
@@ -230,8 +228,8 @@ describe('Nav Component', () => {
 
     expect(localStorageMock.removeItem).toHaveBeenCalled();
     expect(setGameScore).toHaveBeenCalledWith([
-      { players: defaultPlayers(), name: 'Team 1', index: 0 },
-      { players: defaultPlayers(), name: 'Team 2', index: 1 }
+      { players: defaultPlayers(), name: 'Team 1', index: 0, totalRuns: 0, totalWickets: 0 },
+      { players: defaultPlayers(), name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0 }
     ]);
   });
 });

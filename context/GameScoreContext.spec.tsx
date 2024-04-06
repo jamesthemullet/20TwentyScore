@@ -46,7 +46,7 @@ describe('GameScoreProvider', () => {
                 status: 'Not out'
               },
               {
-                name: 'Player 1',
+                name: 'Player 3',
                 index: 0,
                 runs: 10,
                 currentStriker: false,
@@ -56,7 +56,7 @@ describe('GameScoreProvider', () => {
                 status: 'Not out'
               },
               {
-                name: 'Player 1',
+                name: 'Player 4',
                 index: 0,
                 runs: 10,
                 currentStriker: false,
@@ -67,7 +67,9 @@ describe('GameScoreProvider', () => {
               }
             ],
             name: 'Team 1',
-            index: 0
+            index: 0,
+            totalRuns: 30,
+            totalWickets: 2
           },
           {
             players: [
@@ -83,7 +85,9 @@ describe('GameScoreProvider', () => {
               }
             ],
             name: 'Team 2',
-            index: 1
+            index: 1,
+            totalRuns: 0,
+            totalWickets: 0
           }
         ]);
       }, []);
@@ -202,7 +206,9 @@ describe('GameScoreProvider', () => {
               }
             ],
             name: 'Team 1',
-            index: 0
+            index: 0,
+            totalRuns: 32,
+            totalWickets: 2
           },
           {
             players: [
@@ -218,7 +224,9 @@ describe('GameScoreProvider', () => {
               }
             ],
             name: 'Team 2',
-            index: 1
+            index: 1,
+            totalRuns: 0,
+            totalWickets: 0
           }
         ]);
       }, []);
@@ -327,7 +335,9 @@ describe('GameScoreProvider', () => {
             }
           ],
           name: 'Team 1',
-          index: 0
+          index: 0,
+          totalRuns: 0,
+          totalWickets: 0
         },
         {
           players: [
@@ -343,7 +353,9 @@ describe('GameScoreProvider', () => {
             }
           ],
           name: 'Team 2',
-          index: 1
+          index: 1,
+          totalRuns: 0,
+          totalWickets: 0
         }
       ]);
       setPlayerScore(0, 0, 10, null);
@@ -398,7 +410,9 @@ describe('GameScoreProvider', () => {
           }
         ],
         name: 'Team 1',
-        index: 0
+        index: 0,
+        totalRuns: 0,
+        totalWickets: 0
       },
       {
         players: [
@@ -414,7 +428,9 @@ describe('GameScoreProvider', () => {
           }
         ],
         name: 'Team 2',
-        index: 1
+        index: 1,
+        totalRuns: 0,
+        totalWickets: 0
       }
     ]);
     expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);
