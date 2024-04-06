@@ -17,11 +17,15 @@ export type GameScore = [
     players: TeamPlayer[];
     name: 'Team 1';
     index: 0;
+    totalRuns: number;
+    totalWickets: number;
   },
   {
     players: TeamPlayer[];
     name: 'Team 2';
     index: 1;
+    totalRuns: number;
+    totalWickets: number;
   }
 ];
 
@@ -50,12 +54,16 @@ export const GameScoreContext = createContext<GameScoreContextType>({
     {
       players: [],
       name: 'Team 1',
-      index: 0
+      index: 0,
+      totalRuns: 0,
+      totalWickets: 0
     },
     {
       players: [],
       name: 'Team 2',
-      index: 1
+      index: 1,
+      totalRuns: 0,
+      totalWickets: 0
     }
   ],
   setGameScore: (gameScore) => {
@@ -73,12 +81,16 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     {
       players: defaultPlayers(),
       name: 'Team 1',
-      index: 0
+      index: 0,
+      totalRuns: 0,
+      totalWickets: 0
     },
     {
       players: defaultPlayers(),
       name: 'Team 2',
-      index: 1
+      index: 1,
+      totalRuns: 0,
+      totalWickets: 0
     }
   ]);
 
@@ -136,12 +148,16 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         {
           players: updateTeamScore(prevState[0].players, playerIndex, runs, action),
           name: 'Team 1',
-          index: 0
+          index: 0,
+          totalRuns: prevState[0].totalRuns + runs,
+          totalWickets: prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0)
         },
         {
           players: updateTeamScore(prevState[1].players, playerIndex, runs, action),
           name: 'Team 2',
-          index: 1
+          index: 1,
+          totalRuns: prevState[1].totalRuns + runs,
+          totalWickets: prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0)
         }
       ];
     });

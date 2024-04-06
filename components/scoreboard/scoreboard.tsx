@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
 import { useOvers } from '../../context/OversContext';
+import { useGameScore } from '../../context/GameScoreContext';
 
 const addPlural = (runs: number) => (runs === 1 ? 'run' : 'runs');
 
@@ -9,17 +10,26 @@ const Scoreboard = () => {
   const { mostRecentAction } = useMostRecentAction();
   const { currentBallInThisOver, currentExtrasInThisOver, currentOver } = useOvers();
   const { runs, action } = mostRecentAction;
+  const { gameScore } = useGameScore();
+
+  const team1 = gameScore[0];
+  const team2 = gameScore[1];
+
   return (
     <ScoreboardContainer>
       <h2>Scoreboard</h2>
       <ScoreboardLayout>
         <div>
           <p>Team 1</p>
-          <p>Runs - Wickets (Overs)</p>
+          <p>
+            {team1.totalRuns} Runs - {team1.totalWickets} Wickets (Overs)
+          </p>
         </div>
         <div>
           <p>Team 2</p>
-          <p>Runs - Wickets (Overs)</p>
+          <p>
+            {team2.totalRuns} Runs - {team2.totalWickets} Wickets (Overs)
+          </p>
         </div>
       </ScoreboardLayout>
       {mostRecentAction && (

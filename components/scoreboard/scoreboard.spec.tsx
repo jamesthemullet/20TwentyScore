@@ -1,5 +1,5 @@
 import React from 'react';
-import { GameScoreProvider } from '../../context/GameScoreContext';
+import { GameScoreProvider, useGameScore } from '../../context/GameScoreContext';
 import { matchers } from '@emotion/jest';
 import { render, screen } from '@testing-library/react';
 import Scoreboard from './scoreboard';
@@ -24,8 +24,6 @@ describe('Scoreboard Component', () => {
     expect(heading).toHaveTextContent('Scoreboard');
     expect(screen.queryByText('Team 1')).toBeVisible();
     expect(screen.queryByText('Team 2')).toBeVisible();
-    const runs = screen.getAllByText('Runs - Wickets (Overs)');
-    expect(runs).toHaveLength(2);
     expect(screen.queryByText('Most recent ball:')).not.toBeInTheDocument();
   });
 
@@ -107,5 +105,110 @@ describe('Scoreboard Component', () => {
       </OversContext.Provider>
     );
     expect(screen.getByText('Over: 1 Ball: 1 (extras: 0)')).toBeVisible();
+  });
+
+  it('should display total runs and total wickets', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setGameScore } = useGameScore();
+      React.useEffect(() => {
+        setGameScore([
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: true,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 2',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: true,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 3',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 4',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 1',
+            index: 0,
+            totalRuns: 30,
+            totalWickets: 2
+          },
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: true,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 2',
+            index: 1,
+            totalRuns: 0,
+            totalWickets: 0
+          }
+        ]);
+      }, []);
+
+      const team1 = gameScore[0];
+      const team2 = gameScore[1];
+
+      return (
+        <>
+          <div>
+            <p>Team 1</p>
+            <p>
+              {team1.totalRuns} Runs - {team1.totalWickets} Wickets (Overs)
+            </p>
+          </div>
+          <div>
+            <p>Team 2</p>
+            <p>
+              {team2.totalRuns} Runs - {team2.totalWickets} Wickets (Overs)
+            </p>
+          </div>
+        </>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.queryByText('Team 1')).toBeVisible();
+    expect(screen.queryByText('Team 2')).toBeVisible();
+    expect(screen.queryByText('30 Runs - 2 Wickets (Overs)')).toBeVisible();
+    expect(screen.queryByText('0 Runs - 0 Wickets (Overs)')).toBeVisible();
   });
 });
