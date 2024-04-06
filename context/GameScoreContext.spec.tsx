@@ -223,7 +223,7 @@ describe('GameScoreProvider', () => {
     logSpy.mockImplementation(() => {});
 
     const TestComponent = () => {
-      const { setGameScore, setPlayerScore } = React.useContext(GameScoreContext);
+      const { setGameScore, setPlayerScore, swapBatsmen } = React.useContext(GameScoreContext);
 
       setGameScore([
         {
@@ -294,6 +294,7 @@ describe('GameScoreProvider', () => {
         }
       ]);
       setPlayerScore(0, 0, 10, null);
+      swapBatsmen();
 
       return null;
     };
@@ -369,6 +370,7 @@ describe('GameScoreProvider', () => {
       }
     ]);
     expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);
+    expect(logSpy).toHaveBeenCalledWith('Initial swapBatsmen called');
 
     logSpy.mockRestore();
   });
@@ -391,5 +393,43 @@ describe('GameScoreProvider', () => {
       </GameScoreProvider>
     );
     expect(screen.getByText('1, 4, No ball')).toBeInTheDocument();
+  });
+
+  it('should swap the current striker and non-striker', () => {
+    const MockChildComponent = () => {
+      const { gameScore, swapBatsmen } = useGameScore();
+
+      React.useEffect(() => {
+        swapBatsmen();
+      }, []);
+
+      return (
+        <div>
+          <p>
+            Player 0 current striker: {gameScore[0].players[0].currentStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 0 current non-striker:{' '}
+            {gameScore[0].players[0].currentNonStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 1 current striker: {gameScore[0].players[1].currentStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 1 current non-striker:{' '}
+            {gameScore[0].players[1].currentNonStriker ? 'true' : 'false'}
+          </p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('Player 0 current striker: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 0 current non-striker: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current striker: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current non-striker: false')).toBeInTheDocument();
   });
 });
