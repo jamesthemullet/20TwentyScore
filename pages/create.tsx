@@ -19,6 +19,7 @@ const Draft: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
+
       await Router.push('/drafts');
     } catch (error) {
       // eslint-disable-next-line no-console
