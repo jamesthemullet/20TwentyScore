@@ -31,9 +31,10 @@ const gameScore = [
     name: 'Team 1',
     index: 0,
     totalRuns: 0,
-    totalWickets: 0
+    totalWickets: 0,
+    overs: 0
   },
-  { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0 }
+  { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0, overs: 0 }
 ] as GameScore;
 const setGameScore = jest.fn();
 const setPlayerScore = jest.fn();
@@ -444,9 +445,10 @@ describe('Scoring Component', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 0
+        totalWickets: 0,
+        overs: 0
       },
-      { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0 }
+      { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0, overs: 0 }
     ] as GameScore;
     render(
       <GameScoreContext.Provider

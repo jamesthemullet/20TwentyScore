@@ -104,5 +104,6 @@
   "name": "Team 1",
   "index": 0,
   "totalRuns": 30,
-  "totalWickets": 2
+  "totalWickets": 2,
+  "overs": 0
 }

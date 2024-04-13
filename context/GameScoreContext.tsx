@@ -19,6 +19,7 @@ export type GameScore = [
     index: 0;
     totalRuns: number;
     totalWickets: number;
+    overs: number;
   },
   {
     players: TeamPlayer[];
@@ -26,6 +27,7 @@ export type GameScore = [
     index: 1;
     totalRuns: number;
     totalWickets: number;
+    overs: number;
   }
 ];
 
@@ -57,14 +59,16 @@ export const GameScoreContext = createContext<GameScoreContextType>({
       name: 'Team 1',
       index: 0,
       totalRuns: 0,
-      totalWickets: 0
+      totalWickets: 0,
+      overs: 0
     },
     {
       players: [],
       name: 'Team 2',
       index: 1,
       totalRuns: 0,
-      totalWickets: 0
+      totalWickets: 0,
+      overs: 0
     }
   ],
   setGameScore: (gameScore) => {
@@ -87,14 +91,16 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       name: 'Team 1',
       index: 0,
       totalRuns: 0,
-      totalWickets: 0
+      totalWickets: 0,
+      overs: 0
     },
     {
       players: defaultPlayers(),
       name: 'Team 2',
       index: 1,
       totalRuns: 0,
-      totalWickets: 0
+      totalWickets: 0,
+      overs: 0
     }
   ]);
 
@@ -158,14 +164,16 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           name: 'Team 1',
           index: 0,
           totalRuns: prevState[0].totalRuns + runs,
-          totalWickets: prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0)
+          totalWickets: prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0),
+          overs: prevState[0].overs
         },
         {
           players: updateTeamScore(prevState[1].players, playerIndex, runs, action),
           name: 'Team 2',
           index: 1,
           totalRuns: prevState[1].totalRuns + runs,
-          totalWickets: prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0)
+          totalWickets: prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0),
+          overs: prevState[1].overs
         }
       ];
     });
@@ -192,14 +200,16 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           name: 'Team 1',
           index: 0,
           totalRuns: prevState[0].totalRuns,
-          totalWickets: prevState[0].totalWickets
+          totalWickets: prevState[0].totalWickets,
+          overs: prevState[0].overs
         },
         {
           players: prevState[1].players,
           name: 'Team 2',
           index: 1,
           totalRuns: prevState[1].totalRuns,
-          totalWickets: prevState[1].totalWickets
+          totalWickets: prevState[1].totalWickets,
+          overs: prevState[1].overs
         }
       ];
     });
