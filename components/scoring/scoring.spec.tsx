@@ -449,8 +449,6 @@ describe('Scoring Component', () => {
         overs: 0
       },
       { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0, overs: 0 }
-        totalWickets: 0
-      },
     ] as GameScore;
     render(
       <GameScoreContext.Provider
