@@ -19,7 +19,7 @@ const Scoring = () => {
     setCurrentExtrasInThisOver
   } = useOvers();
 
-  const currentStriker = gameScore[0].players.find((player) => player.currentStriker) || undefined;
+  const currentStriker = gameScore[0].players.find((player) => player.currentStriker);
 
   const handleScoreClick = (
     teamIndex: number,
