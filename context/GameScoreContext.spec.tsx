@@ -24,7 +24,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setGameScore } = useGameScore();
 
       React.useEffect(() => {
-        setGameScore([testTeamData1, testTeamData2] as GameScore);
+        setGameScore([testTeamData1, testTeamData2] as unknown as GameScore);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -143,7 +143,8 @@ describe('GameScoreProvider', () => {
             name: 'Team 1',
             index: 0,
             totalRuns: 32,
-            totalWickets: 2
+            totalWickets: 2,
+            overs: 5
           },
           {
             players: [
@@ -161,7 +162,8 @@ describe('GameScoreProvider', () => {
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0
+            totalWickets: 0,
+            overs: 0
           }
         ]);
       }, []);
@@ -272,7 +274,8 @@ describe('GameScoreProvider', () => {
           name: 'Team 1',
           index: 0,
           totalRuns: 0,
-          totalWickets: 0
+          totalWickets: 0,
+          overs: 0
         },
         {
           players: [
@@ -290,7 +293,8 @@ describe('GameScoreProvider', () => {
           name: 'Team 2',
           index: 1,
           totalRuns: 0,
-          totalWickets: 0
+          totalWickets: 0,
+          overs: 0
         }
       ]);
       setPlayerScore(0, 0, 10, null);
@@ -348,7 +352,8 @@ describe('GameScoreProvider', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 0
+        totalWickets: 0,
+        overs: 0
       },
       {
         players: [
@@ -366,7 +371,8 @@ describe('GameScoreProvider', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0
+        totalWickets: 0,
+        overs: 0
       }
     ]);
     expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);

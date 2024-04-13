@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { authHandler } from './[...nextauth]';
+import authHandler from './[...nextauth]';
 
 jest.mock('next-auth', () => jest.fn());
 
@@ -20,7 +20,6 @@ describe('Nextauth', () => {
     };
     const req = {} as any;
     const res = {} as any;
-    console.log(33, process.env);
     await authHandler(req, res);
     expect(NextAuth).toHaveBeenCalledWith(
       req,

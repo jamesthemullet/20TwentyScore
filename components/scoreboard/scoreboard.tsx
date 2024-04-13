@@ -22,13 +22,13 @@ const Scoreboard = () => {
         <div>
           <p>Team 1</p>
           <p>
-            {team1.totalRuns} Runs - {team1.totalWickets} Wickets (Overs)
+            {team1.totalRuns} Runs - {team1.totalWickets} Wickets ({team1.overs}Overs)
           </p>
         </div>
         <div>
           <p>Team 2</p>
           <p>
-            {team2.totalRuns} Runs - {team2.totalWickets} Wickets (Overs)
+            {team2.totalRuns} Runs - {team2.totalWickets} Wickets ({team2.overs}Overs)
           </p>
         </div>
       </ScoreboardLayout>

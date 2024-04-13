@@ -107,7 +107,7 @@ describe('Scoreboard Component', () => {
     expect(screen.getByText('Over: 1 Ball: 1 (extras: 0)')).toBeVisible();
   });
 
-  it('should display total runs and total wickets', () => {
+  it('should display total runs, total wickets and overs', () => {
     const MockChildComponent = () => {
       const { gameScore, setGameScore } = useGameScore();
       React.useEffect(() => {
@@ -158,7 +158,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 1',
             index: 0,
             totalRuns: 30,
-            totalWickets: 2
+            totalWickets: 2,
+            overs: 5
           },
           {
             players: [
@@ -176,7 +177,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0
+            totalWickets: 0,
+            overs: 0
           }
         ]);
       }, []);
@@ -189,13 +191,13 @@ describe('Scoreboard Component', () => {
           <div>
             <p>Team 1</p>
             <p>
-              {team1.totalRuns} Runs - {team1.totalWickets} Wickets (Overs)
+              {team1.totalRuns} Runs - {team1.totalWickets} Wickets ({team1.overs} Overs)
             </p>
           </div>
           <div>
             <p>Team 2</p>
             <p>
-              {team2.totalRuns} Runs - {team2.totalWickets} Wickets (Overs)
+              {team2.totalRuns} Runs - {team2.totalWickets} Wickets ({team2.overs} Overs)
             </p>
           </div>
         </>
@@ -208,7 +210,7 @@ describe('Scoreboard Component', () => {
     );
     expect(screen.queryByText('Team 1')).toBeVisible();
     expect(screen.queryByText('Team 2')).toBeVisible();
-    expect(screen.queryByText('30 Runs - 2 Wickets (Overs)')).toBeVisible();
-    expect(screen.queryByText('0 Runs - 0 Wickets (Overs)')).toBeVisible();
+    expect(screen.queryByText('30 Runs - 2 Wickets (5 Overs)')).toBeVisible();
+    expect(screen.queryByText('0 Runs - 0 Wickets (0 Overs)')).toBeVisible();
   });
 });
