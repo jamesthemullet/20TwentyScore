@@ -98,6 +98,10 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     }
   ]);
 
+  if (!gameScore[0].players.find((player) => player.currentStriker)) {
+    gameScore[0].players[0].currentStriker = true;
+  }
+
   const updateTeamScore = (
     teamPlayers: TeamPlayer[],
     playerIndex: number,

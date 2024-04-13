@@ -86,6 +86,69 @@ describe('Scoring Component', () => {
     expect(setPlayerScore).toHaveBeenCalledTimes(1);
   });
 
+  it('should call setPlayerScore when the 1 run button is clicked', () => {
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <Scoring />
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: '1 & next ball' });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+    expect(setPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 1, null);
+  });
+
+  it('should call setPlayerScore when the 6 runs button is clicked', () => {
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <Scoring />
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: '6' });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+    expect(setPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 6, null);
+  });
+
+  it('should call setPlayerScore when the wicket button is clicked', () => {
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <Scoring />
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: 'Wicket' });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+    expect(setPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 0, 'Wicket');
+  });
+
   it('should set next ball action to disabled by default', () => {
     render(
       <GameScoreContext.Provider
@@ -280,7 +343,7 @@ describe('Scoring Component', () => {
     expect(incrementCurrentOver).not.toHaveBeenCalled();
   });
 
-  it('should increase extras if wide or no ball is clicked', () => {
+  it('should increase extras if wide is clicked', () => {
     const currentOver = 1;
     const currentBallInThisOver = 1;
     const currentExtrasInThisOver = 0;
@@ -312,5 +375,106 @@ describe('Scoring Component', () => {
     });
 
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 1, 'Wide');
+  });
+
+  it('should increase extras if no ball is clicked', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 1;
+    const currentExtrasInThisOver = 0;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /no ball/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 1, 'No Ball');
+  });
+
+  it('should not call setPlayerScore if playerIndex is undefined', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 1;
+    const currentExtrasInThisOver = 0;
+    const gameScore = [
+      {
+        players: [
+          {
+            name: 'Player 1',
+            index: undefined,
+            runs: 0,
+            currentStriker: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 2',
+            index: 1,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: true,
+            status: 'Not out'
+          }
+        ],
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 0,
+        totalWickets: 0
+      },
+      { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0 }
+    ] as GameScore;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /no ball/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(setPlayerScore).not.toHaveBeenCalled();
   });
 });
