@@ -87,6 +87,69 @@ describe('Scoring Component', () => {
     expect(setPlayerScore).toHaveBeenCalledTimes(1);
   });
 
+  it('should call setPlayerScore when the 1 run button is clicked', () => {
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <Scoring />
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: '1 & next ball' });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+    expect(setPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 1, null);
+  });
+
+  it('should call setPlayerScore when the 6 runs button is clicked', () => {
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <Scoring />
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: '6' });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+    expect(setPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 6, null);
+  });
+
+  it('should call setPlayerScore when the wicket button is clicked', () => {
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <Scoring />
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: 'Wicket' });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+    expect(setPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 0, 'Wicket');
+  });
+
   it('should set next ball action to disabled by default', () => {
     render(
       <GameScoreContext.Provider
@@ -281,7 +344,7 @@ describe('Scoring Component', () => {
     expect(incrementCurrentOver).not.toHaveBeenCalled();
   });
 
-  it('should increase extras if wide or no ball is clicked', () => {
+  it('should increase extras if wide is clicked', () => {
     const currentOver = 1;
     const currentBallInThisOver = 1;
     const currentExtrasInThisOver = 0;
@@ -386,6 +449,8 @@ describe('Scoring Component', () => {
         overs: 0
       },
       { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0, overs: 0 }
+        totalWickets: 0
+      },
     ] as GameScore;
     render(
       <GameScoreContext.Provider
