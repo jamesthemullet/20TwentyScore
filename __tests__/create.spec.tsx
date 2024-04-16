@@ -77,9 +77,6 @@ describe('Create page', () => {
       contentInput.blur();
     });
 
-    // expect(titleInput).toHaveFocus();
-    // expect(contentInput).toHaveFocus();
-
     await waitFor(() => {
       titleInput.focus();
       titleInput.blur();
