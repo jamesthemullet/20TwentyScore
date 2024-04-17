@@ -9,6 +9,7 @@ import defaultPlayers from '../core/players';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isGameLoaded, setGameLoaded] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -20,8 +21,8 @@ export default function Nav() {
     const gameData = localStorage.getItem('gameData');
     if (gameData) {
       const parsedGameData = JSON.parse(gameData);
-
       setGameScore(parsedGameData);
+      setGameLoaded(true);
     }
   };
 
@@ -81,7 +82,7 @@ export default function Nav() {
           <PrimaryButton>Log in</PrimaryButton>
         </Link>
       )}
-      {session && (
+      {session && !isGameLoaded && (
         <>
           <UserAndLogout>
             ({session?.user?.email})

@@ -130,6 +130,7 @@ describe('Nav Component', () => {
           '[{"team1Players": [{"name": "Player 1"}], "name": "Team 1", "index": 0}, {"team2Players": [{"name": "Player 1"}], "name": "Team 2", "index": 1}]'
         )
       );
+      expect(screen.queryByRole('button', { name: 'Load Game' })).not.toBeInTheDocument();
     });
 
     it('should not load a game from local storage when there is no game data', () => {
