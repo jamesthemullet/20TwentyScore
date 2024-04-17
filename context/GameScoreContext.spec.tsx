@@ -182,6 +182,93 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Runs: 22, 0')).toBeInTheDocument();
   });
 
+  it('should set the first player as the current striker if no player is currently the striker', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setGameScore } = useGameScore();
+
+      React.useEffect(() => {
+        setGameScore([
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 22,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 2',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: true,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 1',
+            index: 0,
+            totalRuns: 32,
+            totalWickets: 2,
+            overs: 5
+          },
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: true,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 2',
+            index: 1,
+            totalRuns: 0,
+            totalWickets: 0,
+            overs: 0
+          }
+        ]);
+      }, []);
+
+      return <div>{gameScore[0].players[0]?.currentStriker ? 'true' : 'false'}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('true')).toBeInTheDocument();
+  });
+
   it('should set current striker when a wicket occurs', () => {
     const MockChildComponent = () => {
       const { gameScore, setPlayerScore } = useGameScore();
