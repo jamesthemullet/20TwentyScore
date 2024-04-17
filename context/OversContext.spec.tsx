@@ -22,6 +22,24 @@ describe('OversProvider', () => {
       expect(screen.queryByText('extras: 1')).toBeInTheDocument();
     });
 
+    it('should reset the current amount of extras in the current over, if called with reset', () => {
+      const MockChildComponent = () => {
+        const { currentExtrasInThisOver, setCurrentExtrasInThisOver } = useOvers();
+
+        React.useEffect(() => {
+          setCurrentExtrasInThisOver('reset');
+        }, []);
+
+        return <div>extras: {currentExtrasInThisOver}</div>;
+      };
+      render(
+        <OversProvider>
+          <MockChildComponent />
+        </OversProvider>
+      );
+      expect(screen.queryByText('extras: 0')).toBeInTheDocument();
+    });
+
     it('should set ball in this current over', () => {
       const MockChildComponent = () => {
         const { currentBallInThisOver, setCurrentBallInThisOver } = useOvers();
