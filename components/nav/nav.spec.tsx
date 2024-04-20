@@ -254,7 +254,8 @@ describe('Nav Component', () => {
         index: 0,
         totalRuns: 0,
         totalWickets: 0,
-        overs: 0
+        overs: 0,
+        currentBattingTeam: true
       },
       {
         players: defaultPlayers(),
@@ -262,7 +263,8 @@ describe('Nav Component', () => {
         index: 1,
         totalRuns: 0,
         totalWickets: 0,
-        overs: 0
+        overs: 0,
+        currentBattingTeam: false
       }
     ]);
   });
