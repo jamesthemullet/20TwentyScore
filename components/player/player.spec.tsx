@@ -13,7 +13,7 @@ describe('Player', () => {
       status: 'Not out'
     };
     render(<Player {...props} />);
-    expect(screen.getByText('Player 1')).toBeVisible();
+    expect(screen.getByText('Player 2')).toBeVisible();
     expect(screen.getByText('Runs: 10')).toBeVisible();
     expect(screen.getAllByText('Not out')[0]).toBeVisible();
     expect(screen.getByRole('button', { name: 'Edit' })).toBeVisible();

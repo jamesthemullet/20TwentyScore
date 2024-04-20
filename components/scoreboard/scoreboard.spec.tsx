@@ -159,7 +159,8 @@ describe('Scoreboard Component', () => {
             index: 0,
             totalRuns: 30,
             totalWickets: 2,
-            overs: 5
+            overs: 5,
+            currentBattingTeam: true
           },
           {
             players: [
@@ -178,7 +179,8 @@ describe('Scoreboard Component', () => {
             index: 1,
             totalRuns: 0,
             totalWickets: 0,
-            overs: 0
+            overs: 0,
+            currentBattingTeam: false
           }
         ]);
       }, []);

@@ -41,7 +41,8 @@ export default function Nav() {
         index: 0,
         totalRuns: 0,
         totalWickets: 0,
-        overs: 0
+        overs: 0,
+        currentBattingTeam: true
       },
       {
         players: defaultPlayers(),
@@ -49,7 +50,8 @@ export default function Nav() {
         index: 1,
         totalRuns: 0,
         totalWickets: 0,
-        overs: 0
+        overs: 0,
+        currentBattingTeam: false
       }
     ]);
   };
