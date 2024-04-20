@@ -18,7 +18,7 @@ export const Player = ({
   currentNonStriker,
   status
 }: PlayerProps) => {
-  const [name, setName] = useState('Player ' + index);
+  const [name, setName] = useState('Player ' + (index + 1));
   const [editPlayer, setEditPlayer] = useState(false);
 
   const handleEditPlayerName = () => {
@@ -32,8 +32,6 @@ export const Player = ({
   const handleSavePlayerName = () => {
     setEditPlayer(false);
   };
-
-  console.log(1, 'all actions', allActions);
 
   return (
     <PlayerContainer>

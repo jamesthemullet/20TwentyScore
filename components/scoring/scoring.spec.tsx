@@ -32,9 +32,18 @@ const gameScore = [
     index: 0,
     totalRuns: 0,
     totalWickets: 0,
-    overs: 0
+    overs: 0,
+    currentBattingTeam: true
   },
-  { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0, overs: 0 }
+  {
+    players: [],
+    name: 'Team 2',
+    index: 1,
+    totalRuns: 0,
+    totalWickets: 0,
+    overs: 0,
+    currentBattingTeam: false
+  }
 ] as GameScore;
 const setGameScore = jest.fn();
 const setPlayerScore = jest.fn();
@@ -105,7 +114,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
     expect(setPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 1, null);
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 1, null);
   });
 
   it('should call setPlayerScore when the 6 runs button is clicked', () => {
@@ -126,7 +135,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
     expect(setPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 6, null);
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 6, null);
   });
 
   it('should call setPlayerScore when the wicket button is clicked', () => {
@@ -147,7 +156,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
     expect(setPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 0, 'Wicket');
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket');
   });
 
   it('should set next ball action to disabled by default', () => {
@@ -237,7 +246,7 @@ describe('Scoring Component', () => {
       fireEvent.click(nextBallButton);
     });
 
-    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 3, 'Next Ball');
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 3, 'Next Ball');
   });
 
   it('should add 1 to the current ball in over, when balls in over is less than 6, not including extras', () => {
@@ -376,7 +385,7 @@ describe('Scoring Component', () => {
     });
 
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 1, 'Wide');
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'Wide');
   });
 
   it('should increase extras if no ball is clicked', () => {
@@ -411,7 +420,7 @@ describe('Scoring Component', () => {
     });
 
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(1, 0, 1, 'No Ball');
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'No Ball');
   });
 
   it('should not call setPlayerScore if playerIndex is undefined', () => {
@@ -446,9 +455,18 @@ describe('Scoring Component', () => {
         index: 0,
         totalRuns: 0,
         totalWickets: 0,
-        overs: 0
+        overs: 0,
+        currentBattingTeam: true
       },
-      { players: [], name: 'Team 2', index: 1, totalRuns: 0, totalWickets: 0, overs: 0 }
+      {
+        players: [],
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 0,
+        totalWickets: 0,
+        overs: 0,
+        currentBattingTeam: false
+      }
     ] as GameScore;
     render(
       <GameScoreContext.Provider
