@@ -126,10 +126,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
   ) => {
     const player = teamPlayers.find((player) => player.index === playerIndex);
 
-    console.log(15, playerIndex, runs, action);
-
     if (!player) {
-      console.log(1515151515151515);
       return teamPlayers;
     }
 
@@ -148,13 +145,9 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       updatedTeamPlayers[playerIndex].onTheCrease = false;
       updatedTeamPlayers[playerIndex].currentStriker = false;
 
-      console.log(16, updatedTeamPlayers);
-
       const nextPlayer = updatedTeamPlayers.find(
         (player) => player.status !== 'Out' && !player.onTheCrease
       );
-
-      console.log(17, nextPlayer);
 
       if (nextPlayer) {
         updatedTeamPlayers[nextPlayer.index].onTheCrease = true;
@@ -183,8 +176,11 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
               : prevState[0].players,
           name: 'Team 1',
           index: 0,
-          totalRuns: prevState[0].totalRuns + runs,
-          totalWickets: prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0),
+          totalRuns: teamIndex === 0 ? prevState[0].totalRuns + runs : prevState[0].totalRuns,
+          totalWickets:
+            teamIndex === 0
+              ? prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0)
+              : prevState[0].totalWickets,
           overs: prevState[0].overs,
           currentBattingTeam: prevState[0].currentBattingTeam
         },
@@ -195,8 +191,11 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
               : prevState[1].players,
           name: 'Team 2',
           index: 1,
-          totalRuns: prevState[1].totalRuns + runs,
-          totalWickets: prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0),
+          totalRuns: teamIndex === 1 ? prevState[1].totalRuns + runs : prevState[1].totalRuns,
+          totalWickets:
+            teamIndex === 1
+              ? prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0)
+              : prevState[1].totalWickets,
           overs: prevState[1].overs,
           currentBattingTeam: prevState[1].currentBattingTeam
         }
