@@ -55,6 +55,25 @@ describe('GameScoreProvider', () => {
     expect(screen.queryByText('Runs: 4')).toBeInTheDocument();
   });
 
+  it('should process setGameScore correctly for team 2 when there is a wicket', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setPlayerScore(1, 0, 4, null);
+        setPlayerScore(1, 0, 0, 'Wicket');
+      }, []);
+
+      return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.queryByText('Runs: 4')).toBeInTheDocument();
+  });
+
   it('should return without updating if the player index is invalid', () => {
     const MockChildComponent = () => {
       const { gameScore, setPlayerScore } = useGameScore();
