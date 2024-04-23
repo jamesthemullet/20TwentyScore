@@ -18,6 +18,7 @@ export const Player = ({
   currentNonStriker,
   status
 }: PlayerProps) => {
+  console.log(21, index, runs, currentStriker, allActions, currentNonStriker, status);
   const [name, setName] = useState('Player ' + (index + 1));
   const [editPlayer, setEditPlayer] = useState(false);
 
