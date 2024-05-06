@@ -45,9 +45,10 @@ type GameScoreContextType = {
     teamIndex: number,
     playerIndex: number,
     runs: number,
-    action: string | null
+    action: string | null,
+    endOfOver: boolean
   ) => void;
-  swapBatsmen: () => void;
+  swapBatsmen: (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => void;
 };
 
 type GameScoreProviderProps = {
@@ -122,7 +123,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     teamPlayers: TeamPlayer[],
     playerIndex: number,
     runs: number,
-    action: string | null
+    action: string | null,
+    endOfOver: boolean
   ) => {
     const player = teamPlayers.find((player) => player.index === playerIndex);
 
@@ -153,6 +155,18 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         updatedTeamPlayers[nextPlayer.index].onTheCrease = true;
         updatedTeamPlayers[nextPlayer.index].currentStriker = true;
       }
+
+      const currentStriker = updatedTeamPlayers.find((player) => player.currentStriker);
+      const currentNonStriker = updatedTeamPlayers.find((player) => player.currentNonStriker);
+
+      if (!currentStriker || !currentNonStriker) {
+        return updatedTeamPlayers;
+      }
+
+      // if final ball in over, swap
+      if (endOfOver) {
+        swapBatsmen(currentStriker, currentNonStriker);
+      }
     }
 
     return updatedTeamPlayers;
@@ -162,7 +176,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     teamIndex: number,
     playerIndex: number,
     runs: number,
-    action: string | null
+    action: string | null,
+    endOfOver: boolean
   ) => {
     if (teamIndex < 0 || teamIndex > 1) {
       return;
@@ -172,7 +187,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         {
           players:
             teamIndex === 0
-              ? updateTeamScore(prevState[0].players, playerIndex, runs, action)
+              ? updateTeamScore(prevState[0].players, playerIndex, runs, action, endOfOver)
               : prevState[0].players,
           name: 'Team 1',
           index: 0,
@@ -187,7 +202,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         {
           players:
             teamIndex === 1
-              ? updateTeamScore(prevState[1].players, playerIndex, runs, action)
+              ? updateTeamScore(prevState[1].players, playerIndex, runs, action, endOfOver)
               : prevState[1].players,
           name: 'Team 2',
           index: 1,
@@ -207,46 +222,35 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     setGameScoreState(gameScore);
   };
 
-  const swapBatsmen = () => {
-    console.log('fix me');
-    // const currentStriker = gameScore[0].players.find((player) => player.currentStriker);
-    // const currentNonStriker = gameScore[0].players.find((player) => player.currentNonStriker);
-
-    // console.log(30, currentStriker, currentNonStriker);
-
-    // setGameScoreState((prevState: GameScore) => {
-    //   return [
-    //     {
-    //       players: prevState[0].players.map((player) =>
-    //         player.index === currentStriker?.index
-    //           ? { ...player, currentStriker: false, currentNonStriker: true }
-    //           : player.index === currentNonStriker?.index
-    //           ? { ...player, currentStriker: true, currentNonStriker: false }
-    //           : player
-    //       ),
-    //       name: 'Team 1',
-    //       index: 0,
-    //       totalRuns: prevState[0].totalRuns,
-    //       totalWickets: prevState[0].totalWickets,
-    //       overs: prevState[0].overs,
-    //       currentBattingTeam: prevState[0].currentBattingTeam
-    //     },
-    //     {
-    //       players: prevState[1].players,
-    //       name: 'Team 2',
-    //       index: 1,
-    //       totalRuns: prevState[1].totalRuns,
-    //       totalWickets: prevState[1].totalWickets,
-    //       overs: prevState[1].overs,
-    //       currentBattingTeam: prevState[1].currentBattingTeam
-    //     }
-    //   ];
-    // });
-
-    // const currentStriker2 = gameScore[0].players.find((player) => player.currentStriker);
-    // const currentNonStriker2 = gameScore[0].players.find((player) => player.currentNonStriker);
-
-    // console.log(31, currentStriker2, currentNonStriker2);
+  const swapBatsmen = (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => {
+    setGameScoreState((prevState: GameScore) => {
+      return [
+        {
+          players: prevState[0].players.map((player) =>
+            player.index === currentStriker?.index
+              ? { ...player, currentStriker: false, currentNonStriker: true }
+              : player.index === currentNonStriker?.index
+              ? { ...player, currentStriker: true, currentNonStriker: false }
+              : player
+          ),
+          name: 'Team 1',
+          index: 0,
+          totalRuns: prevState[0].totalRuns,
+          totalWickets: prevState[0].totalWickets,
+          overs: prevState[0].overs,
+          currentBattingTeam: prevState[0].currentBattingTeam
+        },
+        {
+          players: prevState[1].players,
+          name: 'Team 2',
+          index: 1,
+          totalRuns: prevState[1].totalRuns,
+          totalWickets: prevState[1].totalWickets,
+          overs: prevState[1].overs,
+          currentBattingTeam: prevState[1].currentBattingTeam
+        }
+      ];
+    });
   };
 
   return (

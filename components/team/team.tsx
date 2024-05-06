@@ -33,8 +33,6 @@ const Team = ({ teamIndex }: TeamProps) => {
 
   const { gameScore } = useGameScore();
 
-  console.log(20, gameScore[0]);
-
   return (
     <TeamContainer>
       {!editTeamName && (

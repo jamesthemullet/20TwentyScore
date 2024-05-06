@@ -20,9 +20,12 @@ const Scoring = () => {
   } = useOvers();
 
   const currentStriker = gameScore[0].players.find((player) => player.currentStriker);
+  const currentNonStriker = gameScore[0].players.find((player) => !player.currentNonStriker);
 
   const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam) || gameScore[0];
   const currentBattingTeamIndex = currentBattingTeam.index;
+
+  const endOfOver = () => currentBallInThisOver === 6 + currentExtrasInThisOver;
 
   const handleScoreClick = (
     playerIndex: number | undefined,
@@ -37,9 +40,9 @@ const Scoring = () => {
       setNextRunButtonDisabled(false);
       return;
     } else if (action === 'Next Ball') {
-      updateGame(currentBattingTeamIndex, playerIndex, countRuns, action);
+      updateGame(currentBattingTeamIndex, playerIndex, countRuns, action, endOfOver());
     } else {
-      updateGame(currentBattingTeamIndex, playerIndex, runs, action);
+      updateGame(currentBattingTeamIndex, playerIndex, runs, action, endOfOver());
     }
     setCountRuns(0);
     updateOver(action);
@@ -53,13 +56,14 @@ const Scoring = () => {
       return;
     }
 
-    if (currentBallInThisOver === 6 + currentExtrasInThisOver) {
+    if (endOfOver()) {
       setCurrentBallInThisOver(1);
       incrementCurrentOver();
       setCurrentExtrasInThisOver('reset');
-      // setTimeout(() => {
-      //   swapBatsmen();
-      // }, 1000);
+
+      if (action !== 'Wicket' && currentStriker && currentNonStriker) {
+        swapBatsmen(currentStriker, currentNonStriker);
+      }
     } else {
       setCurrentBallInThisOver(null);
     }
@@ -69,9 +73,10 @@ const Scoring = () => {
     teamIndex: number,
     playerIndex: number,
     runs: number,
-    action: null | string
+    action: null | string,
+    endOfOver: boolean
   ) => {
-    setPlayerScore(teamIndex, playerIndex, runs, action);
+    setPlayerScore(teamIndex, playerIndex, runs, action, endOfOver);
     setMostRecentAction({ runs, action });
   };
 

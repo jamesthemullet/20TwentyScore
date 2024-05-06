@@ -42,7 +42,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 4, null);
+        setPlayerScore(1, 0, 4, null, false);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -60,8 +60,8 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 4, null);
-        setPlayerScore(1, 0, 0, 'Wicket');
+        setPlayerScore(1, 0, 4, null, false);
+        setPlayerScore(1, 0, 0, 'Wicket', false);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -74,12 +74,57 @@ describe('GameScoreProvider', () => {
     expect(screen.queryByText('Runs: 4')).toBeInTheDocument();
   });
 
+  it('should swap players if there is a wicket and if it is endOfOver', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setPlayerScore(0, 0, 0, 'Wicket', true);
+      }, []);
+
+      return (
+        <div>
+          <p>Player 0: {gameScore[0].players[0].status}</p>
+          <p>Player 0 on the crease: {gameScore[0].players[0].onTheCrease ? 'true' : 'false'}</p>
+          <p>
+            Player 0 current striker: {gameScore[0].players[0].currentStriker ? 'true' : 'false'}
+          </p>
+
+          <p>Player 1: {gameScore[0].players[1].status}</p>
+          <p>Player 1 on the crease: {gameScore[0].players[1].onTheCrease ? 'true' : 'false'}</p>
+          <p>
+            Player 1 current striker: {gameScore[0].players[1].currentStriker ? 'true' : 'false'}
+          </p>
+          <p>Player 2: {gameScore[0].players[2].status}</p>
+          <p>Player 2 on the crease: {gameScore[0].players[2].onTheCrease ? 'true' : 'false'}</p>
+          <p>
+            Player 2 current striker: {gameScore[0].players[2].currentStriker ? 'true' : 'false'}
+          </p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('Player 0: Out')).toBeInTheDocument();
+    expect(screen.getByText('Player 0 on the crease: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 0 current striker: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 1: Not out')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 on the crease: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current striker: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 2: Not out')).toBeInTheDocument();
+    expect(screen.getByText('Player 2 on the crease: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 2 current striker: true')).toBeInTheDocument();
+  });
+
   it('should return without updating if the player index is invalid', () => {
     const MockChildComponent = () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 11, 10, null);
+        setPlayerScore(1, 11, 10, null, false);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -97,7 +142,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(555, 0, 10, null);
+        setPlayerScore(555, 0, 10, null, false);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -297,7 +342,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 10, 'Wicket');
+        setPlayerScore(0, 0, 10, 'Wicket', false);
       }, []);
 
       return (
@@ -409,8 +454,28 @@ describe('GameScoreProvider', () => {
           currentBattingTeam: false
         }
       ]);
-      setPlayerScore(0, 0, 10, null);
-      swapBatsmen();
+      const currentStriker = {
+        name: 'Player 1',
+        index: 0,
+        runs: 0,
+        currentStriker: true,
+        allActions: [],
+        onTheCrease: true,
+        currentNonStriker: false,
+        status: 'Not out'
+      };
+      const currentNonStriker = {
+        name: 'Player 2',
+        index: 0,
+        runs: 0,
+        currentStriker: false,
+        allActions: [],
+        onTheCrease: true,
+        currentNonStriker: true,
+        status: 'Not out'
+      };
+      setPlayerScore(0, 0, 10, null, false);
+      swapBatsmen(currentStriker, currentNonStriker);
 
       return null;
     };
@@ -500,9 +565,9 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 1, null);
-        setPlayerScore(0, 0, 4, null);
-        setPlayerScore(0, 0, 1, 'No ball');
+        setPlayerScore(0, 0, 1, null, false);
+        setPlayerScore(0, 0, 4, null, false);
+        setPlayerScore(0, 0, 1, 'No ball', false);
       }, []);
 
       return <div>{gameScore[0].players[0]?.allActions.join(', ')}</div>;
@@ -515,41 +580,47 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('1, 4, No ball')).toBeInTheDocument();
   });
 
-  // it('should swap the current striker and non-striker', () => {
-  //   const MockChildComponent = () => {
-  //     const { gameScore, swapBatsmen } = useGameScore();
+  it('should swap the current striker and non-striker', () => {
+    const MockChildComponent = () => {
+      const { gameScore, swapBatsmen } = useGameScore();
+      const currentStriker = gameScore[0].players.find((player) => player.currentStriker);
+      const currentNonStriker = gameScore[0].players.find((player) => player.currentNonStriker);
 
-  //     React.useEffect(() => {
-  //       swapBatsmen();
-  //     }, []);
+      if (!currentStriker || !currentNonStriker) {
+        return <div>Players not found</div>;
+      }
 
-  //     return (
-  //       <div>
-  //         <p>
-  //           Player 0 current striker: {gameScore[0].players[0].currentStriker ? 'true' : 'false'}
-  //         </p>
-  //         <p>
-  //           Player 0 current non-striker:{' '}
-  //           {gameScore[0].players[0].currentNonStriker ? 'true' : 'false'}
-  //         </p>
-  //         <p>
-  //           Player 1 current striker: {gameScore[0].players[1].currentStriker ? 'true' : 'false'}
-  //         </p>
-  //         <p>
-  //           Player 1 current non-striker:{' '}
-  //           {gameScore[0].players[1].currentNonStriker ? 'true' : 'false'}
-  //         </p>
-  //       </div>
-  //     );
-  //   };
-  //   render(
-  //     <GameScoreProvider>
-  //       <MockChildComponent />
-  //     </GameScoreProvider>
-  //   );
-  //   expect(screen.getByText('Player 0 current striker: false')).toBeInTheDocument();
-  //   expect(screen.getByText('Player 0 current non-striker: true')).toBeInTheDocument();
-  //   expect(screen.getByText('Player 1 current striker: true')).toBeInTheDocument();
-  //   expect(screen.getByText('Player 1 current non-striker: false')).toBeInTheDocument();
-  // });
+      React.useEffect(() => {
+        swapBatsmen(currentStriker, currentNonStriker);
+      }, []);
+
+      return (
+        <div>
+          <p>
+            Player 0 current striker: {gameScore[0].players[0].currentStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 0 current non-striker:{' '}
+            {gameScore[0].players[0].currentNonStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 1 current striker: {gameScore[0].players[1].currentStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 1 current non-striker:{' '}
+            {gameScore[0].players[1].currentNonStriker ? 'true' : 'false'}
+          </p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('Player 0 current striker: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 0 current non-striker: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current striker: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current non-striker: false')).toBeInTheDocument();
+  });
 });
