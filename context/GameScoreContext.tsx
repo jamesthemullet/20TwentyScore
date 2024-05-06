@@ -46,7 +46,8 @@ type GameScoreContextType = {
     playerIndex: number,
     runs: number,
     action: string | null,
-    endOfOver: boolean
+    endOfOver: boolean,
+    endOfInnings: boolean
   ) => void;
   swapBatsmen: (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => void;
 };
@@ -111,12 +112,14 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     }
   ]);
 
-  if (!gameScore[0].players.find((player) => player.currentStriker)) {
-    gameScore[0].players[0].currentStriker = true;
+  const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
+  if (!currentBattingTeam) {
+    return;
   }
+  const currentBattingTeamIndex = currentBattingTeam.index;
 
-  if (!gameScore[0].currentBattingTeam && !gameScore[1].currentBattingTeam) {
-    gameScore[0].currentBattingTeam = true;
+  if (!gameScore[currentBattingTeamIndex].players.find((player) => player.currentStriker)) {
+    gameScore[currentBattingTeamIndex].players[0].currentStriker = true;
   }
 
   const updateTeamScore = (
@@ -163,7 +166,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         return updatedTeamPlayers;
       }
 
-      // if final ball in over, swap
       if (endOfOver) {
         swapBatsmen(currentStriker, currentNonStriker);
       }
@@ -177,7 +179,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     playerIndex: number,
     runs: number,
     action: string | null,
-    endOfOver: boolean
+    endOfOver: boolean,
+    endOfInnings: boolean
   ) => {
     if (teamIndex < 0 || teamIndex > 1) {
       return;
@@ -196,8 +199,10 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             teamIndex === 0
               ? prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0)
               : prevState[0].totalWickets,
-          overs: prevState[0].overs,
-          currentBattingTeam: prevState[0].currentBattingTeam
+          overs: endOfOver ? prevState[0].overs + 1 : prevState[0].overs,
+          currentBattingTeam: !endOfInnings
+            ? prevState[0].currentBattingTeam
+            : !prevState[0].currentBattingTeam
         },
         {
           players:
@@ -211,8 +216,10 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             teamIndex === 1
               ? prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0)
               : prevState[1].totalWickets,
-          overs: prevState[1].overs,
-          currentBattingTeam: prevState[1].currentBattingTeam
+          overs: endOfOver ? prevState[1].overs + 1 : prevState[1].overs,
+          currentBattingTeam: !endOfInnings
+            ? prevState[1].currentBattingTeam
+            : !prevState[1].currentBattingTeam
         }
       ];
     });

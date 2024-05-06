@@ -33,6 +33,12 @@ const Team = ({ teamIndex }: TeamProps) => {
 
   const { gameScore } = useGameScore();
 
+  const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
+  if (!currentBattingTeam) {
+    return null;
+  }
+  const currentBattingTeamIndex = currentBattingTeam.index;
+
   return (
     <TeamContainer>
       {!editTeamName && (
@@ -60,9 +66,11 @@ const Team = ({ teamIndex }: TeamProps) => {
                 key={index}
                 index={index}
                 runs={player.runs}
-                currentStriker={player.currentStriker}
+                currentStriker={player.currentStriker && currentBattingTeamIndex === teamIndex}
                 allActions={player.allActions}
-                currentNonStriker={player.currentNonStriker}
+                currentNonStriker={
+                  player.currentNonStriker && currentBattingTeamIndex === teamIndex
+                }
                 status={player.status}
               />
             );

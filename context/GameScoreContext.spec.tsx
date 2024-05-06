@@ -27,6 +27,8 @@ describe('GameScoreProvider', () => {
         setGameScore([testTeamData1, testTeamData2] as unknown as GameScore);
       }, []);
 
+      console.log(12, gameScore[0].players[0]);
+
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
     render(
@@ -42,7 +44,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 4, null, false);
+        setPlayerScore(1, 0, 4, null, false, false);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -60,8 +62,8 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 4, null, false);
-        setPlayerScore(1, 0, 0, 'Wicket', false);
+        setPlayerScore(1, 0, 4, null, false, false);
+        setPlayerScore(1, 0, 0, 'Wicket', false, false);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -79,7 +81,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 0, 'Wicket', true);
+        setPlayerScore(0, 0, 0, 'Wicket', true, false);
       }, []);
 
       return (
@@ -124,7 +126,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 11, 10, null, false);
+        setPlayerScore(1, 11, 10, null, false, false);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -142,7 +144,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(555, 0, 10, null, false);
+        setPlayerScore(555, 0, 10, null, false, false);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -342,7 +344,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 10, 'Wicket', false);
+        setPlayerScore(0, 0, 10, 'Wicket', false, false);
       }, []);
 
       return (
@@ -474,7 +476,7 @@ describe('GameScoreProvider', () => {
         currentNonStriker: true,
         status: 'Not out'
       };
-      setPlayerScore(0, 0, 10, null, false);
+      setPlayerScore(0, 0, 10, null, false, false);
       swapBatsmen(currentStriker, currentNonStriker);
 
       return null;
@@ -565,9 +567,9 @@ describe('GameScoreProvider', () => {
       const { gameScore, setPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 1, null, false);
-        setPlayerScore(0, 0, 4, null, false);
-        setPlayerScore(0, 0, 1, 'No ball', false);
+        setPlayerScore(0, 0, 1, null, false, false);
+        setPlayerScore(0, 0, 4, null, false, false);
+        setPlayerScore(0, 0, 1, 'No ball', false, false);
       }, []);
 
       return <div>{gameScore[0].players[0]?.allActions.join(', ')}</div>;

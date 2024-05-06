@@ -19,13 +19,24 @@ const Scoring = () => {
     setCurrentExtrasInThisOver
   } = useOvers();
 
-  const currentStriker = gameScore[0].players.find((player) => player.currentStriker);
-  const currentNonStriker = gameScore[0].players.find((player) => !player.currentNonStriker);
-
-  const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam) || gameScore[0];
+  const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
+  if (!currentBattingTeam) {
+    return;
+  }
   const currentBattingTeamIndex = currentBattingTeam.index;
 
+  const currentStriker = gameScore[currentBattingTeamIndex].players.find(
+    (player) => player.currentStriker
+  );
+  const currentNonStriker = gameScore[currentBattingTeamIndex].players.find(
+    (player) => !player.currentNonStriker
+  );
+
   const endOfOver = () => currentBallInThisOver === 6 + currentExtrasInThisOver;
+  console.log(99, currentBattingTeam.totalWickets);
+  const endOfInnings = (action: string | null) =>
+    (currentBattingTeam.totalWickets === 9 && action === 'Wicket') ||
+    (currentBattingTeam.overs === 19 && endOfOver());
 
   const handleScoreClick = (
     playerIndex: number | undefined,
@@ -40,9 +51,9 @@ const Scoring = () => {
       setNextRunButtonDisabled(false);
       return;
     } else if (action === 'Next Ball') {
-      updateGame(currentBattingTeamIndex, playerIndex, countRuns, action, endOfOver());
+      updateGame(currentBattingTeamIndex, playerIndex, countRuns, action);
     } else {
-      updateGame(currentBattingTeamIndex, playerIndex, runs, action, endOfOver());
+      updateGame(currentBattingTeamIndex, playerIndex, runs, action);
     }
     setCountRuns(0);
     updateOver(action);
@@ -73,10 +84,9 @@ const Scoring = () => {
     teamIndex: number,
     playerIndex: number,
     runs: number,
-    action: null | string,
-    endOfOver: boolean
+    action: null | string
   ) => {
-    setPlayerScore(teamIndex, playerIndex, runs, action, endOfOver);
+    setPlayerScore(teamIndex, playerIndex, runs, action, endOfOver(), endOfInnings(action));
     setMostRecentAction({ runs, action });
   };
 

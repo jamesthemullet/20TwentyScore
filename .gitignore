@@ -8,3 +8,4 @@ tsbuildinfo
 **/*.tsbuildinfo
 yarn.lock
 coverage/
+tsbuildinfo

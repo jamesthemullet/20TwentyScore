@@ -104,5 +104,6 @@
   "name": "Team 2",
   "index": 0,
   "totalRuns": 0,
-  "totalWickets": 0
+  "totalWickets": 0,
+  "currentBattingTeam": false
 }

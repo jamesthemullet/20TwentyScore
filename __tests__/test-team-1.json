@@ -105,5 +105,6 @@
   "index": 0,
   "totalRuns": 30,
   "totalWickets": 2,
-  "overs": 0
+  "overs": 0,
+  "currentBattingTeam": true
 }
