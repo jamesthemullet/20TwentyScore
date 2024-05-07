@@ -33,7 +33,8 @@ const gameScore = [
     totalRuns: 0,
     totalWickets: 0,
     overs: 0,
-    currentBattingTeam: true
+    currentBattingTeam: true,
+    finishedBatting: false
   },
   {
     players: [],
@@ -42,7 +43,8 @@ const gameScore = [
     totalRuns: 0,
     totalWickets: 0,
     overs: 0,
-    currentBattingTeam: false
+    currentBattingTeam: false,
+    finishedBatting: false
   }
 ] as GameScore;
 const setGameScore = jest.fn();
@@ -456,7 +458,8 @@ describe('Scoring Component', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: true
+        currentBattingTeam: true,
+        finishedBatting: false
       },
       {
         players: [],
@@ -465,7 +468,8 @@ describe('Scoring Component', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: false
+        currentBattingTeam: false,
+        finishedBatting: false
       }
     ] as GameScore;
     render(
@@ -531,7 +535,8 @@ describe('Scoring Component', () => {
         totalRuns: 0,
         totalWickets: 9,
         overs: 0,
-        currentBattingTeam: true
+        currentBattingTeam: true,
+        finishedBatting: false
       },
       {
         players: [],
@@ -540,7 +545,8 @@ describe('Scoring Component', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: false
+        currentBattingTeam: false,
+        finishedBatting: false
       }
     ] as GameScore;
     render(
@@ -606,7 +612,8 @@ describe('Scoring Component', () => {
         totalRuns: 0,
         totalWickets: 9,
         overs: 19,
-        currentBattingTeam: true
+        currentBattingTeam: true,
+        finishedBatting: false
       },
       {
         players: [],
@@ -615,7 +622,8 @@ describe('Scoring Component', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: false
+        currentBattingTeam: false,
+        finishedBatting: false
       }
     ] as GameScore;
     render(

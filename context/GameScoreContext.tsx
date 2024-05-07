@@ -21,6 +21,7 @@ export type GameScore = [
     totalWickets: number;
     overs: number;
     currentBattingTeam: boolean;
+    finishedBatting: boolean;
   },
   {
     players: TeamPlayer[];
@@ -30,6 +31,7 @@ export type GameScore = [
     totalWickets: number;
     overs: number;
     currentBattingTeam: boolean;
+    finishedBatting: boolean;
   }
 ];
 
@@ -65,7 +67,8 @@ export const GameScoreContext = createContext<GameScoreContextType>({
       totalRuns: 0,
       totalWickets: 0,
       overs: 0,
-      currentBattingTeam: true
+      currentBattingTeam: true,
+      finishedBatting: false
     },
     {
       players: [],
@@ -74,7 +77,8 @@ export const GameScoreContext = createContext<GameScoreContextType>({
       totalRuns: 0,
       totalWickets: 0,
       overs: 0,
-      currentBattingTeam: false
+      currentBattingTeam: false,
+      finishedBatting: false
     }
   ],
   setGameScore: (gameScore) => {
@@ -99,7 +103,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       totalRuns: 0,
       totalWickets: 0,
       overs: 0,
-      currentBattingTeam: true
+      currentBattingTeam: true,
+      finishedBatting: false
     },
     {
       players: defaultPlayers(),
@@ -108,7 +113,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       totalRuns: 0,
       totalWickets: 0,
       overs: 0,
-      currentBattingTeam: false
+      currentBattingTeam: false,
+      finishedBatting: false
     }
   ]);
 
@@ -202,7 +208,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           overs: endOfOver ? prevState[0].overs + 1 : prevState[0].overs,
           currentBattingTeam: !endOfInnings
             ? prevState[0].currentBattingTeam
-            : !prevState[0].currentBattingTeam
+            : !prevState[0].currentBattingTeam,
+          finishedBatting: prevState[0].finishedBatting || (teamIndex === 0 && endOfInnings)
         },
         {
           players:
@@ -219,10 +226,12 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           overs: endOfOver ? prevState[1].overs + 1 : prevState[1].overs,
           currentBattingTeam: !endOfInnings
             ? prevState[1].currentBattingTeam
-            : !prevState[1].currentBattingTeam
+            : !prevState[1].currentBattingTeam,
+          finishedBatting: prevState[1].finishedBatting || (teamIndex === 1 && endOfInnings)
         }
       ];
     });
+    console.log(30, gameScore[0].finishedBatting, gameScore[1].finishedBatting);
   };
 
   const setGameScore = (gameScore: GameScore) => {
@@ -245,7 +254,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           totalRuns: prevState[0].totalRuns,
           totalWickets: prevState[0].totalWickets,
           overs: prevState[0].overs,
-          currentBattingTeam: prevState[0].currentBattingTeam
+          currentBattingTeam: prevState[0].currentBattingTeam,
+          finishedBatting: prevState[0].finishedBatting
         },
         {
           players: prevState[1].players.map((player) =>
@@ -260,7 +270,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           totalRuns: prevState[1].totalRuns,
           totalWickets: prevState[1].totalWickets,
           overs: prevState[1].overs,
-          currentBattingTeam: prevState[1].currentBattingTeam
+          currentBattingTeam: prevState[1].currentBattingTeam,
+          finishedBatting: prevState[1].finishedBatting
         }
       ];
     });

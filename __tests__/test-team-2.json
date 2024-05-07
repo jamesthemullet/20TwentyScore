@@ -105,5 +105,6 @@
   "index": 0,
   "totalRuns": 0,
   "totalWickets": 0,
-  "currentBattingTeam": false
+  "currentBattingTeam": false,
+  "currentBowlingTeam": false
 }

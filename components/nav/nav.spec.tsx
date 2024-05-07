@@ -38,7 +38,8 @@ const gameScore = [
     totalRuns: 0,
     totalWickets: 0,
     overs: 0,
-    currentBattingTeam: true
+    currentBattingTeam: true,
+    finishedBatting: false
   },
   {
     players: [],
@@ -47,7 +48,8 @@ const gameScore = [
     totalRuns: 0,
     totalWickets: 0,
     overs: 0,
-    currentBattingTeam: false
+    currentBattingTeam: false,
+    finishedBatting: false
   }
 ] as GameScore;
 const setPlayerScore = jest.fn();
@@ -255,7 +257,8 @@ describe('Nav Component', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: true
+        currentBattingTeam: true,
+        finishedBatting: false
       },
       {
         players: defaultPlayers(),
@@ -264,7 +267,8 @@ describe('Nav Component', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: false
+        currentBattingTeam: false,
+        finishedBatting: false
       }
     ]);
   });

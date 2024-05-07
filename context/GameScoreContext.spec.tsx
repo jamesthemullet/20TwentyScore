@@ -209,7 +209,8 @@ describe('GameScoreProvider', () => {
             totalRuns: 32,
             totalWickets: 2,
             overs: 5,
-            currentBattingTeam: true
+            currentBattingTeam: true,
+            finishedBatting: false
           },
           {
             players: [
@@ -229,7 +230,8 @@ describe('GameScoreProvider', () => {
             totalRuns: 0,
             totalWickets: 0,
             overs: 0,
-            currentBattingTeam: false
+            currentBattingTeam: false,
+            finishedBatting: false
           }
         ]);
       }, []);
@@ -302,7 +304,8 @@ describe('GameScoreProvider', () => {
             totalRuns: 32,
             totalWickets: 2,
             overs: 5,
-            currentBattingTeam: true
+            currentBattingTeam: true,
+            finishedBatting: false
           },
           {
             players: [
@@ -322,7 +325,8 @@ describe('GameScoreProvider', () => {
             totalRuns: 0,
             totalWickets: 0,
             overs: 0,
-            currentBattingTeam: false
+            currentBattingTeam: false,
+            finishedBatting: false
           }
         ]);
       }, []);
@@ -431,7 +435,8 @@ describe('GameScoreProvider', () => {
           totalRuns: 0,
           totalWickets: 0,
           overs: 0,
-          currentBattingTeam: true
+          currentBattingTeam: true,
+          finishedBatting: false
         },
         {
           players: [
@@ -451,7 +456,8 @@ describe('GameScoreProvider', () => {
           totalRuns: 0,
           totalWickets: 0,
           overs: 0,
-          currentBattingTeam: false
+          currentBattingTeam: false,
+          finishedBatting: false
         }
       ]);
       const currentStriker = {
@@ -531,7 +537,8 @@ describe('GameScoreProvider', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: true
+        currentBattingTeam: true,
+        finishedBatting: false
       },
       {
         players: [
@@ -551,7 +558,8 @@ describe('GameScoreProvider', () => {
         totalRuns: 0,
         totalWickets: 0,
         overs: 0,
-        currentBattingTeam: false
+        currentBattingTeam: false,
+        finishedBatting: false
       }
     ]);
     expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);
