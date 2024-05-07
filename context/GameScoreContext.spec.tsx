@@ -27,8 +27,6 @@ describe('GameScoreProvider', () => {
         setGameScore([testTeamData1, testTeamData2] as unknown as GameScore);
       }, []);
 
-      console.log(12, gameScore[0].players[0]);
-
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
     render(
