@@ -12,6 +12,8 @@ const Scoreboard = () => {
   const { runs, action } = mostRecentAction;
   const { gameScore } = useGameScore();
 
+  console.log(40, gameScore);
+
   const team1 = gameScore[0];
   const team2 = gameScore[1];
 
@@ -47,6 +49,13 @@ const Scoreboard = () => {
           Over: {currentOver} Ball: {currentBallInThisOver} (extras: {currentExtrasInThisOver})
         </p>
       </div>
+      {gameScore[0].finishedBatting && gameScore[1].finishedBatting && (
+        <>
+          <p>Game Over</p>
+          <p>The winner is:</p>
+          <p>{team1.totalRuns > team2.totalRuns ? 'Team 1' : 'Team 2'}</p>
+        </>
+      )}
     </ScoreboardContainer>
   );
 };

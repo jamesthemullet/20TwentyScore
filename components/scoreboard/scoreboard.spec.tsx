@@ -160,7 +160,8 @@ describe('Scoreboard Component', () => {
             totalRuns: 30,
             totalWickets: 2,
             overs: 5,
-            currentBattingTeam: true
+            currentBattingTeam: true,
+            finishedBatting: false
           },
           {
             players: [
@@ -180,7 +181,8 @@ describe('Scoreboard Component', () => {
             totalRuns: 0,
             totalWickets: 0,
             overs: 0,
-            currentBattingTeam: false
+            currentBattingTeam: false,
+            finishedBatting: false
           }
         ]);
       }, []);
@@ -214,5 +216,203 @@ describe('Scoreboard Component', () => {
     expect(screen.queryByText('Team 2')).toBeVisible();
     expect(screen.queryByText('30 Runs - 2 Wickets (5 Overs)')).toBeVisible();
     expect(screen.queryByText('0 Runs - 0 Wickets (0 Overs)')).toBeVisible();
+  });
+
+  it('should display game over message and winner when both teams have finished batting', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setGameScore } = useGameScore();
+      React.useEffect(() => {
+        setGameScore([
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: true,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 2',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: true,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 3',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 4',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 1',
+            index: 0,
+            totalRuns: 30,
+            totalWickets: 2,
+            overs: 5,
+            currentBattingTeam: true,
+            finishedBatting: true
+          },
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: true,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 2',
+            index: 1,
+            totalRuns: 0,
+            totalWickets: 0,
+            overs: 0,
+            currentBattingTeam: false,
+            finishedBatting: true
+          }
+        ]);
+      }, []);
+
+      const team1 = gameScore[0];
+      const team2 = gameScore[1];
+
+      return (
+        <>
+          {gameScore[0].finishedBatting && gameScore[1].finishedBatting && (
+            <p>Game Over! {team1.totalRuns > team2.totalRuns ? 'Team 1' : 'Team 2'} wins!</p>
+          )}
+        </>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.queryByText('Game Over! Team 1 wins!')).toBeVisible();
+  });
+
+  it('should not display game over message and winner when both teams have not finished batting', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setGameScore } = useGameScore();
+      React.useEffect(() => {
+        setGameScore([
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 10,
+                currentStriker: true,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 2',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: true,
+                currentNonStriker: true,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 3',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              },
+              {
+                name: 'Player 4',
+                index: 0,
+                runs: 10,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: false,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 1',
+            index: 0,
+            totalRuns: 30,
+            totalWickets: 2,
+            overs: 5,
+            currentBattingTeam: true,
+            finishedBatting: false
+          },
+          {
+            players: [
+              {
+                name: 'Player 1',
+                index: 0,
+                runs: 0,
+                currentStriker: false,
+                allActions: [],
+                onTheCrease: false,
+                currentNonStriker: true,
+                status: 'Not out'
+              }
+            ],
+            name: 'Team 2',
+            index: 1,
+            totalRuns: 0,
+            totalWickets: 0,
+            overs: 0,
+            currentBattingTeam: false,
+            finishedBatting: false
+          }
+        ]);
+      }, []);
+
+      const team1 = gameScore[0];
+      const team2 = gameScore[1];
+
+      return (
+        <>
+          {gameScore[0].finishedBatting && gameScore[1].finishedBatting && (
+            <p>Game Over! {team1.totalRuns > team2.totalRuns ? 'Team 1' : 'Team 2'} wins!</p>
+          )}
+        </>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.queryByText('Game Over!')).not.toBeInTheDocument();
   });
 });
