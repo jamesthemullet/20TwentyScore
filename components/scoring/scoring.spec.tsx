@@ -497,4 +497,154 @@ describe('Scoring Component', () => {
 
     expect(setPlayerScore).not.toHaveBeenCalled();
   });
+
+  it('should call endOfInnings on the 10th wicket', () => {
+    const currentOver = 1;
+    const currentBallInThisOver = 1;
+    const currentExtrasInThisOver = 0;
+    const gameScore = [
+      {
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            currentStriker: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 2',
+            index: 1,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: true,
+            status: 'Not out'
+          }
+        ],
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 0,
+        totalWickets: 9,
+        overs: 0,
+        currentBattingTeam: true
+      },
+      {
+        players: [],
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 0,
+        totalWickets: 0,
+        overs: 0,
+        currentBattingTeam: false
+      }
+    ] as GameScore;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /Wicket/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, true);
+  });
+
+  it('should call end of innings on the last ball of the 20th over', () => {
+    const currentOver = 19;
+    const currentBallInThisOver = 6;
+    const currentExtrasInThisOver = 0;
+    const gameScore = [
+      {
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            currentStriker: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 2',
+            index: 1,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: true,
+            status: 'Not out'
+          }
+        ],
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 0,
+        totalWickets: 9,
+        overs: 19,
+        currentBattingTeam: true
+      },
+      {
+        players: [],
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 0,
+        totalWickets: 0,
+        overs: 0,
+        currentBattingTeam: false
+      }
+    ] as GameScore;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            incrementCurrentOver,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const button = screen.getByRole('button', { name: /4/i });
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 4, null, true, true);
+  });
 });

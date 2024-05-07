@@ -248,7 +248,13 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           currentBattingTeam: prevState[0].currentBattingTeam
         },
         {
-          players: prevState[1].players,
+          players: prevState[1].players.map((player) =>
+            player.index === currentStriker?.index
+              ? { ...player, currentStriker: false, currentNonStriker: true }
+              : player.index === currentNonStriker?.index
+              ? { ...player, currentStriker: true, currentNonStriker: false }
+              : player
+          ),
           name: 'Team 2',
           index: 1,
           totalRuns: prevState[1].totalRuns,
