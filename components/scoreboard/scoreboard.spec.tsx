@@ -9,9 +9,10 @@ import { OversContext } from '../../context/OversContext';
 expect.extend(matchers);
 
 const setMostRecentAction = jest.fn();
-const incrementCurrentOver = jest.fn();
+const setCurrentOvers = jest.fn();
 const setCurrentBallInThisOver = jest.fn();
 const setCurrentExtrasInThisOver = jest.fn();
+const resetOvers = jest.fn();
 
 describe('Scoreboard Component', () => {
   it('should render Scoreboard component on initial load', () => {
@@ -95,7 +96,8 @@ describe('Scoreboard Component', () => {
       <OversContext.Provider
         value={{
           currentOver,
-          incrementCurrentOver,
+          setCurrentOvers,
+          resetOvers,
           currentBallInThisOver,
           setCurrentBallInThisOver,
           currentExtrasInThisOver,

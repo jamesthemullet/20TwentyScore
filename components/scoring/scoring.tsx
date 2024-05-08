@@ -14,9 +14,10 @@ const Scoring = () => {
   const {
     currentBallInThisOver,
     setCurrentBallInThisOver,
-    incrementCurrentOver,
+    setCurrentOvers,
     currentExtrasInThisOver,
-    setCurrentExtrasInThisOver
+    setCurrentExtrasInThisOver,
+    resetOvers
   } = useOvers();
 
   const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
@@ -69,7 +70,7 @@ const Scoring = () => {
 
     if (endOfOver()) {
       setCurrentBallInThisOver(1);
-      incrementCurrentOver();
+      setCurrentOvers(undefined);
       setCurrentExtrasInThisOver('reset');
 
       if (action !== 'Wicket' && currentStriker && currentNonStriker) {
@@ -77,6 +78,10 @@ const Scoring = () => {
       }
     } else {
       setCurrentBallInThisOver(null);
+    }
+
+    if (endOfInnings(action)) {
+      resetOvers();
     }
   };
 
@@ -92,7 +97,7 @@ const Scoring = () => {
 
   return (
     <ScoringContainer>
-      <h2>Scoring</h2>
+      <StyledHeading>Scoring</StyledHeading>
       <ScoringGrid>
         <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 0, null)}>
           0
@@ -142,6 +147,15 @@ const ScoringGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
+`;
+
+const StyledHeading = styled.h2`
+  text-align: center;
+  margin: 0;
+  padding: 1rem;
+  font-size: 2rem;
+  border-bottom: 1px solid #ccc;
+  font-family: 'Oswald', sans-serif;
 `;
 
 export default Scoring;
