@@ -205,7 +205,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             teamIndex === 0
               ? prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0)
               : prevState[0].totalWickets,
-          overs: endOfOver ? prevState[0].overs + 1 : prevState[0].overs,
+          overs: teamIndex === 0 && endOfOver ? prevState[0].overs + 1 : prevState[0].overs,
           currentBattingTeam: !endOfInnings
             ? prevState[0].currentBattingTeam
             : !prevState[0].currentBattingTeam,
@@ -223,7 +223,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             teamIndex === 1
               ? prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0)
               : prevState[1].totalWickets,
-          overs: endOfOver ? prevState[1].overs + 1 : prevState[1].overs,
+          overs: teamIndex === 1 && endOfOver ? prevState[1].overs + 1 : prevState[1].overs,
           currentBattingTeam: !endOfInnings
             ? prevState[1].currentBattingTeam
             : !prevState[1].currentBattingTeam,
@@ -231,7 +231,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         }
       ];
     });
-    console.log(30, gameScore[0].finishedBatting, gameScore[1].finishedBatting);
   };
 
   const setGameScore = (gameScore: GameScore) => {

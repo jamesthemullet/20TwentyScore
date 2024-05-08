@@ -60,10 +60,10 @@ describe('OversProvider', () => {
 
     it('should set over', () => {
       const MockChildComponent = () => {
-        const { currentOver, incrementCurrentOver } = useOvers();
+        const { currentOver, setCurrentOvers } = useOvers();
 
         React.useEffect(() => {
-          incrementCurrentOver();
+          setCurrentOvers(undefined);
         }, []);
 
         return <div>Current over: {currentOver}</div>;
@@ -75,32 +75,65 @@ describe('OversProvider', () => {
       );
       expect(screen.getByText('Current over: 2')).toBeInTheDocument();
     });
+
+    it('should reset overs', () => {
+      const MockChildComponent = () => {
+        const {
+          currentExtrasInThisOver,
+          currentOver,
+          currentBallInThisOver,
+          setCurrentExtrasInThisOver,
+          setCurrentBallInThisOver,
+          setCurrentOvers,
+          resetOvers
+        } = useOvers();
+
+        React.useEffect(() => {
+          setCurrentOvers(2);
+          setCurrentBallInThisOver(6);
+          setCurrentExtrasInThisOver(2);
+          resetOvers();
+        }, []);
+
+        return (
+          <>
+            <div>Current extras: {currentExtrasInThisOver}</div>
+            <div>Current over: {currentOver}</div>
+            <div>Current ball: {currentBallInThisOver}</div>
+          </>
+        );
+      };
+      render(
+        <OversProvider>
+          <MockChildComponent />
+        </OversProvider>
+      );
+      expect(screen.queryByText('Current extras: 0')).toBeInTheDocument();
+      expect(screen.queryByText('Current over: 1')).toBeInTheDocument();
+      expect(screen.queryByText('Current ball: 1')).toBeInTheDocument();
+    });
   });
 
-  it('should process pointless initial setOvers correctly', () => {
+  it('should process pointless initialising functions correctly', () => {
     const logSpy = jest.spyOn(console, 'log');
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     logSpy.mockImplementation(() => {});
 
     const TestComponent = () => {
-      const {
-        setCurrentExtrasInThisOver,
-
-        setCurrentBallInThisOver,
-
-        incrementCurrentOver
-      } = React.useContext(OversContext);
+      const { setCurrentExtrasInThisOver, setCurrentBallInThisOver, setCurrentOvers, resetOvers } =
+        React.useContext(OversContext);
 
       setCurrentExtrasInThisOver(1);
       setCurrentBallInThisOver(null);
-      incrementCurrentOver();
+      setCurrentOvers(undefined);
+      resetOvers();
 
       return null;
     };
 
     render(<TestComponent />);
 
-    expect(logSpy).toHaveBeenCalledTimes(3);
+    expect(logSpy).toHaveBeenCalledTimes(4);
 
     logSpy.mockRestore();
   });

@@ -51,8 +51,9 @@ const setGameScore = jest.fn();
 const setPlayerScore = jest.fn();
 const setCurrentBallInThisOver = jest.fn();
 const setCurrentExtrasInThisOver = jest.fn();
-const incrementCurrentOver = jest.fn();
+const setCurrentOvers = jest.fn();
 const swapBatsmen = jest.fn();
+const resetOvers = jest.fn();
 
 describe('Scoring Component', () => {
   afterEach(() => {
@@ -266,7 +267,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,
@@ -300,7 +302,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,
@@ -316,7 +319,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    expect(incrementCurrentOver).toHaveBeenCalled();
+    expect(setCurrentOvers).toHaveBeenCalled();
     expect(setCurrentBallInThisOver).toHaveBeenCalledWith(1);
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith('reset');
   });
@@ -336,7 +339,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,
@@ -352,7 +356,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    expect(incrementCurrentOver).not.toHaveBeenCalled();
+    expect(setCurrentOvers).not.toHaveBeenCalled();
   });
 
   it('should increase extras if wide is clicked', () => {
@@ -370,7 +374,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,
@@ -405,7 +410,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,
@@ -483,7 +489,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,
@@ -560,7 +567,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,
@@ -637,7 +645,8 @@ describe('Scoring Component', () => {
         <OversContext.Provider
           value={{
             currentOver,
-            incrementCurrentOver,
+            setCurrentOvers,
+            resetOvers,
             currentBallInThisOver,
             setCurrentBallInThisOver,
             currentExtrasInThisOver,

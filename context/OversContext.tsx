@@ -1,14 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 
-const maxOvers = 20;
-
 type OversContextType = {
   currentExtrasInThisOver: number;
   setCurrentExtrasInThisOver: (extras: number | string) => void;
   currentBallInThisOver: number;
   setCurrentBallInThisOver: (ball: number | null) => void;
   currentOver: number;
-  incrementCurrentOver: () => void;
+  setCurrentOvers: (inc: number | undefined) => void;
+  resetOvers: () => void;
 };
 
 type OversProviderProps = {
@@ -25,8 +24,11 @@ export const OversContext = createContext<OversContextType>({
     console.log('Initial setCurrentBallInThisOver called');
   },
   currentOver: 1,
-  incrementCurrentOver: () => {
+  setCurrentOvers: (inc: number | undefined) => {
     console.log('Initial incrementCurrentOver called');
+  },
+  resetOvers: () => {
+    console.log('Initial resetOvers called');
   }
 });
 
@@ -45,10 +47,10 @@ export const OversProvider: React.FC<OversProviderProps> = ({ children }) => {
     setCurrentBallInOverState(ball || currentBallInThisOver + 1);
   };
 
-  const [currentOver, incrementCurrentOverState] = useState(1);
+  const [currentOver, setCurrentOverState] = useState(1);
 
-  const incrementCurrentOver = () => {
-    incrementCurrentOverState(currentOver + 1);
+  const setCurrentOvers = (inc: number | undefined) => {
+    setCurrentOverState(!inc ? currentOver + 1 : 1);
   };
 
   return (
@@ -59,7 +61,12 @@ export const OversProvider: React.FC<OversProviderProps> = ({ children }) => {
         currentBallInThisOver,
         setCurrentBallInThisOver,
         currentOver,
-        incrementCurrentOver
+        setCurrentOvers,
+        resetOvers: () => {
+          setCurrentExtrasInOverState(0);
+          setCurrentBallInOverState(1);
+          setCurrentOvers(1);
+        }
       }}>
       {children}
     </OversContext.Provider>

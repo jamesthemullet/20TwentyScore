@@ -12,25 +12,25 @@ const Scoreboard = () => {
   const { runs, action } = mostRecentAction;
   const { gameScore } = useGameScore();
 
-  console.log(40, gameScore);
-
   const team1 = gameScore[0];
   const team2 = gameScore[1];
 
   return (
     <ScoreboardContainer>
-      <h2>Scoreboard</h2>
+      <StyledHeading>Scoreboard</StyledHeading>
       <ScoreboardLayout>
         <div>
           <p>Team 1</p>
           <p>
-            {team1.totalRuns} Runs - {team1.totalWickets} Wickets ({team1.overs}Overs)
+            {team1.totalRuns} Runs - {team1.totalWickets} Wickets
+            <br />({team1.overs} Overs)
           </p>
         </div>
         <div>
           <p>Team 2</p>
           <p>
-            {team2.totalRuns} Runs - {team2.totalWickets} Wickets ({team2.overs}Overs)
+            {team2.totalRuns} Runs - {team2.totalWickets} Wickets
+            <br /> ({team2.overs} Overs)
           </p>
         </div>
       </ScoreboardLayout>
@@ -89,4 +89,13 @@ const ScoreboardLayout = styled.div`
   & > div:last-of-type {
     text-align: right;
   }
+`;
+
+const StyledHeading = styled.h2`
+  text-align: center;
+  margin: 0;
+  padding: 1rem;
+  font-size: 2rem;
+  border-bottom: 1px solid #ccc;
+  font-family: 'Oswald', sans-serif;
 `;
