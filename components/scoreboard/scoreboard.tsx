@@ -3,8 +3,31 @@ import styled from '@emotion/styled';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
 import { useOvers } from '../../context/OversContext';
 import { useGameScore } from '../../context/GameScoreContext';
+import { pluralise } from '../../utils/pluralise';
 
 const addPlural = (runs: number) => (runs === 1 ? 'run' : 'runs');
+
+type TeamScoreProps = {
+  team: {
+    name: string;
+    totalRuns: number;
+    totalWickets: number;
+    overs: number;
+  };
+};
+
+const TeamScore = ({ team }: TeamScoreProps) => {
+  return (
+    <div>
+      <p>{team.name}</p>
+      <p>
+        {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWickets}
+        {pluralise(team.totalWickets, 'wicket', 'wickets')}
+        <br />({team.overs} {pluralise(team.overs, 'over', 'overs')})
+      </p>
+    </div>
+  );
+};
 
 const Scoreboard = () => {
   const { mostRecentAction } = useMostRecentAction();
@@ -19,20 +42,8 @@ const Scoreboard = () => {
     <ScoreboardContainer>
       <StyledHeading>Scoreboard</StyledHeading>
       <ScoreboardLayout>
-        <div>
-          <p>Team 1</p>
-          <p>
-            {team1.totalRuns} Runs - {team1.totalWickets} Wickets
-            <br />({team1.overs} Overs)
-          </p>
-        </div>
-        <div>
-          <p>Team 2</p>
-          <p>
-            {team2.totalRuns} Runs - {team2.totalWickets} Wickets
-            <br /> ({team2.overs} Overs)
-          </p>
-        </div>
+        <TeamScore team={team1} />
+        <TeamScore team={team2} />
       </ScoreboardLayout>
       {mostRecentAction && (
         <p>
