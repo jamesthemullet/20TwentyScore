@@ -664,4 +664,79 @@ describe('Scoring Component', () => {
 
     expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 4, null, true, true);
   });
+
+  it('should set all buttons to disabled when the game is finished', () => {
+    const currentOver = 19;
+    const currentBallInThisOver = 6;
+    const currentExtrasInThisOver = 0;
+    const gameScore = [
+      {
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            currentStriker: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 2',
+            index: 1,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: true,
+            status: 'Not out'
+          }
+        ],
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 0,
+        totalWickets: 9,
+        overs: 19,
+        currentBattingTeam: true,
+        finishedBatting: true
+      },
+      {
+        players: [],
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 0,
+        totalWickets: 0,
+        overs: 0,
+        currentBattingTeam: false,
+        finishedBatting: true
+      }
+    ] as GameScore;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <OversContext.Provider
+          value={{
+            currentOver,
+            setCurrentOvers,
+            resetOvers,
+            currentBallInThisOver,
+            setCurrentBallInThisOver,
+            currentExtrasInThisOver,
+            setCurrentExtrasInThisOver
+          }}>
+          <Scoring />
+        </OversContext.Provider>
+      </GameScoreContext.Provider>
+    );
+    const buttons = screen.getAllByRole('button');
+    buttons.forEach((button) => {
+      expect(button).toBeDisabled();
+    });
+  });
 });
