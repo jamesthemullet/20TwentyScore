@@ -21,9 +21,11 @@ const Scoring = () => {
   } = useOvers();
 
   const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
+
   if (!currentBattingTeam) {
     return;
   }
+
   const currentBattingTeamIndex = currentBattingTeam.index;
 
   const currentStriker = gameScore[currentBattingTeamIndex].players.find(
@@ -38,6 +40,8 @@ const Scoring = () => {
   const endOfInnings = (action: string | null) =>
     (currentBattingTeam.totalWickets === 9 && action === 'Wicket') ||
     (currentBattingTeam.overs === 19 && endOfOver());
+
+  const endOfGame = () => gameScore.every((team) => team.finishedBatting === true);
 
   const handleScoreClick = (
     playerIndex: number | undefined,
@@ -99,32 +103,48 @@ const Scoring = () => {
     <ScoringContainer>
       <StyledHeading>Scoring</StyledHeading>
       <ScoringGrid>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 0, null)}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 0, null)}>
           0
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 1, null)}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 1, null)}>
           1 & next ball
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 1, 'wait')}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 1, 'wait')}>
           1+
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 4, null)}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 4, null)}>
           4
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 6, null)}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 6, null)}>
           6
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket')}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket')}>
           Wicket
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 1, 'No Ball')}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 1, 'No Ball')}>
           No Ball
         </SquareButton>
-        <SquareButton onClick={() => handleScoreClick(currentStriker?.index, 1, 'Wide')}>
+        <SquareButton
+          disabled={endOfGame()}
+          onClick={() => handleScoreClick(currentStriker?.index, 1, 'Wide')}>
           Wide
         </SquareButton>
         <SquareButton
-          disabled={nextRunButtonDisabled}
+          disabled={nextRunButtonDisabled || endOfGame()}
           onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
           Next Ball
         </SquareButton>
