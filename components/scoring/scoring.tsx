@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useGameScore } from '../../context/GameScoreContext';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
 import { useOvers } from '../../context/OversContext';
+import { HomeContainer } from '../core/home-container';
+import { StyledHeading2 } from '../core/heading';
 
 const Scoring = () => {
   const [countRuns, setCountRuns] = useState(0);
@@ -100,8 +102,8 @@ const Scoring = () => {
   };
 
   return (
-    <ScoringContainer>
-      <StyledHeading>Scoring</StyledHeading>
+    <HomeContainer>
+      <StyledHeading2>Scoring</StyledHeading2>
       <ScoringGrid>
         <SquareButton
           disabled={endOfGame()}
@@ -149,33 +151,14 @@ const Scoring = () => {
           Next Ball
         </SquareButton>
       </ScoringGrid>
-    </ScoringContainer>
+    </HomeContainer>
   );
 };
-
-const ScoringContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 10px;
-  flex: 3;
-`;
 
 const ScoringGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
-`;
-
-const StyledHeading = styled.h2`
-  text-align: center;
-  margin: 0;
-  padding: 1rem;
-  font-size: 2rem;
-  border-bottom: 1px solid #ccc;
-  font-family: 'Oswald', sans-serif;
 `;
 
 export default Scoring;

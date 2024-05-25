@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Player } from '../player/player';
 import { useGameScore } from '../../context/GameScoreContext';
+import { HomeContainer } from '../core/home-container';
+import { StyledHeading2 } from '../core/heading';
+import { PrimaryButton, SecondaryButton } from '../core/buttons';
 
 type Player = {
   name: string;
@@ -40,11 +43,11 @@ const Team = ({ teamIndex }: TeamProps) => {
   const currentBattingTeamIndex = currentBattingTeam.index;
 
   return (
-    <TeamContainer>
+    <HomeContainer>
       {!editTeamName && (
         <>
-          <p>{teamName}</p>
-          <button onClick={() => handleEditTeamName()}>Edit Team Name</button>
+          <StyledHeading2>{teamName}</StyledHeading2>
+          <SecondaryButton onClick={() => handleEditTeamName()}>Edit Team Name</SecondaryButton>
         </>
       )}
       {editTeamName && (
@@ -55,48 +58,34 @@ const Team = ({ teamIndex }: TeamProps) => {
             value={teamName}
             onChange={(event) => handleTeamNameChange(event)}
           />
-          <button onClick={() => handleSaveTeamName()}>Save Team Name</button>
+          <SecondaryButton onClick={() => handleSaveTeamName()}>Save Team Name</SecondaryButton>
         </>
       )}
       <TeamLayout>
-        <div>
-          {gameScore[teamIndex]?.players.map((player, index) => {
-            return (
-              <Player
-                key={index}
-                index={index}
-                runs={player.runs}
-                currentStriker={player.currentStriker && currentBattingTeamIndex === teamIndex}
-                allActions={player.allActions}
-                currentNonStriker={
-                  player.currentNonStriker && currentBattingTeamIndex === teamIndex
-                }
-                status={player.status}
-              />
-            );
-          })}
-        </div>
+        {gameScore[teamIndex]?.players.map((player, index) => {
+          return (
+            <Player
+              key={index}
+              index={index}
+              runs={player.runs}
+              currentStriker={player.currentStriker && currentBattingTeamIndex === teamIndex}
+              allActions={player.allActions}
+              currentNonStriker={player.currentNonStriker && currentBattingTeamIndex === teamIndex}
+              status={player.status}
+            />
+          );
+        })}
       </TeamLayout>
-    </TeamContainer>
+    </HomeContainer>
   );
 };
 
 export default Team;
 
-const TeamContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 20px;
-  flex: 5;
-  background-color: #f4f4f4;
-`;
-
 const TeamLayout = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   input[type='text'] {
     padding: 5px;
