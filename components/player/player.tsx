@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { SecondaryButton } from '../core/buttons';
 
 type PlayerProps = {
   index: number;
@@ -10,14 +11,7 @@ type PlayerProps = {
   status: string;
 };
 
-export const Player = ({
-  index,
-  runs,
-  currentStriker,
-  allActions,
-  currentNonStriker,
-  status
-}: PlayerProps) => {
+export const Player = ({ index, runs, currentStriker, currentNonStriker, status }: PlayerProps) => {
   const [name, setName] = useState('Player ' + (index + 1));
   const [editPlayer, setEditPlayer] = useState(false);
 
@@ -39,13 +33,13 @@ export const Player = ({
         {!editPlayer && (
           <>
             <p>{name}</p>
-            <button onClick={() => handleEditPlayerName()}>Edit</button>
+            <SecondaryButton onClick={() => handleEditPlayerName()}>Edit</SecondaryButton>
           </>
         )}
         {editPlayer && (
           <>
             <input type="text" value={name} onChange={(event) => handlePlayerNameChange(event)} />
-            <button onClick={() => handleSavePlayerName()}>Save</button>
+            <SecondaryButton onClick={() => handleSavePlayerName()}>Save</SecondaryButton>
           </>
         )}
       </PlayerName>
@@ -57,7 +51,6 @@ export const Player = ({
         <img alt="" title="Current non striker" width="32px" src="/icons/png/010-helmet.png" />
       )}
       <p>{status}</p>
-      {/* {allActions.length > 0 && <p>{allActions.join(', ')}</p>} */}
     </PlayerContainer>
   );
 };
@@ -68,10 +61,8 @@ const PlayerContainer = styled.div`
   align-items: center;
   gap: 10px;
   padding: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
+  border: 3px solid black;
   margin: 10px;
-  width: 100%;
   box-sizing: border-box;
 `;
 

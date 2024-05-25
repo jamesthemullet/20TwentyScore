@@ -4,6 +4,8 @@ import { useMostRecentAction } from '../../context/MostRecentActionContext';
 import { useOvers } from '../../context/OversContext';
 import { useGameScore } from '../../context/GameScoreContext';
 import { pluralise } from '../../utils/pluralise';
+import { HomeContainer } from '../core/home-container';
+import { StyledHeading2 } from '../core/heading';
 
 const addPlural = (runs: number) => (runs === 1 ? 'run' : 'runs');
 
@@ -21,7 +23,7 @@ const TeamScore = ({ team }: TeamScoreProps) => {
     <div>
       <p>{team.name}</p>
       <p>
-        {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWickets}
+        {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWickets}{' '}
         {pluralise(team.totalWickets, 'wicket', 'wickets')}
         <br />({team.overs} {pluralise(team.overs, 'over', 'overs')})
       </p>
@@ -42,8 +44,8 @@ const Scoreboard = () => {
     team1.totalRuns === team2.totalRuns && team1.finishedBatting && team2.finishedBatting;
 
   return (
-    <ScoreboardContainer>
-      <StyledHeading>Scoreboard</StyledHeading>
+    <HomeContainer>
+      <StyledHeading2>Scoreboard</StyledHeading2>
       <ScoreboardLayout>
         <TeamScore team={team1} />
         <TeamScore team={team2} />
@@ -76,28 +78,11 @@ const Scoreboard = () => {
           <p>It&apos;s a draw!</p>
         </>
       )}
-    </ScoreboardContainer>
+    </HomeContainer>
   );
 };
 
 export default Scoreboard;
-
-const ScoreboardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 10px;
-  flex: 3;
-  width: 100%;
-
-  h2 {
-    margin-bottom: 1rem;
-    height: 2rem;
-    font-size: 1.5rem;
-  }
-`;
 
 const ScoreboardLayout = styled.div`
   display: flex;
@@ -109,13 +94,4 @@ const ScoreboardLayout = styled.div`
   & > div:last-of-type {
     text-align: right;
   }
-`;
-
-const StyledHeading = styled.h2`
-  text-align: center;
-  margin: 0;
-  padding: 1rem;
-  font-size: 2rem;
-  border-bottom: 1px solid #ccc;
-  font-family: 'Oswald', sans-serif;
 `;

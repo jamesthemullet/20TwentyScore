@@ -55,3 +55,26 @@ export const PrimaryButton = styled.button`
     text-decoration: none;
   }
 `;
+
+export const SecondaryButton = styled.button`
+  background-color: #000;
+  border: 1px solid green;
+  border-radius: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+`;
