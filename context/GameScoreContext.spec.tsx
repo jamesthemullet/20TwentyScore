@@ -119,6 +119,45 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Player 2 current striker: true')).toBeInTheDocument();
   });
 
+  it('should swap batsmen if runs are odd', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setPlayerScore(0, 0, 1, null, false, false);
+        setPlayerScore(0, 0, 1, null, false, false);
+      }, []);
+
+      return (
+        <div>
+          <p>
+            Player 0 current striker: {gameScore[0].players[0].currentStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 0 current non-striker:{' '}
+            {gameScore[0].players[0].currentNonStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 1 current striker: {gameScore[0].players[1].currentStriker ? 'true' : 'false'}
+          </p>
+          <p>
+            Player 1 current non-striker:{' '}
+            {gameScore[0].players[1].currentNonStriker ? 'true' : 'false'}
+          </p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('Player 0 current striker: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 0 current non-striker: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current striker: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current non-striker: false')).toBeInTheDocument();
+  });
+
   it('should return without updating if the player index is invalid', () => {
     const MockChildComponent = () => {
       const { gameScore, setPlayerScore } = useGameScore();
