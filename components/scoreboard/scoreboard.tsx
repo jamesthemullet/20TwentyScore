@@ -38,6 +38,9 @@ const Scoreboard = () => {
   const team1 = gameScore[0];
   const team2 = gameScore[1];
 
+  const isGameADraw = () =>
+    team1.totalRuns === team2.totalRuns && team1.finishedBatting && team2.finishedBatting;
+
   return (
     <ScoreboardContainer>
       <StyledHeading>Scoreboard</StyledHeading>
@@ -60,11 +63,17 @@ const Scoreboard = () => {
           Over: {currentOver} Ball: {currentBallInThisOver} (extras: {currentExtrasInThisOver})
         </p>
       </div>
-      {gameScore[0].finishedBatting && gameScore[1].finishedBatting && (
+      {gameScore[0].finishedBatting && gameScore[1].finishedBatting && !isGameADraw() && (
         <>
           <p>Game Over</p>
           <p>The winner is:</p>
           <p>{team1.totalRuns > team2.totalRuns ? 'Team 1' : 'Team 2'}</p>
+        </>
+      )}
+      {gameScore[0].finishedBatting && gameScore[1].finishedBatting && isGameADraw() && (
+        <>
+          <p>Game Over</p>
+          <p>It&apos;s a draw!</p>
         </>
       )}
     </ScoreboardContainer>

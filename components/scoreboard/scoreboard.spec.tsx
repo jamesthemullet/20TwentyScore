@@ -1,5 +1,10 @@
 import React from 'react';
-import { GameScoreProvider, useGameScore } from '../../context/GameScoreContext';
+import {
+  GameScore,
+  GameScoreContext,
+  GameScoreProvider,
+  useGameScore
+} from '../../context/GameScoreContext';
 import { matchers } from '@emotion/jest';
 import { render, screen } from '@testing-library/react';
 import Scoreboard from './scoreboard';
@@ -13,6 +18,9 @@ const setCurrentOvers = jest.fn();
 const setCurrentBallInThisOver = jest.fn();
 const setCurrentExtrasInThisOver = jest.fn();
 const resetOvers = jest.fn();
+const setGameScore = jest.fn();
+const setPlayerScore = jest.fn();
+const swapBatsmen = jest.fn();
 
 describe('Scoreboard Component', () => {
   it('should render Scoreboard component on initial load', () => {
@@ -317,6 +325,101 @@ describe('Scoreboard Component', () => {
       </GameScoreProvider>
     );
     expect(screen.queryByText('Game Over! Team 1 wins!')).toBeVisible();
+  });
+
+  it('should advise a draw when both teams have finished batting and have the same score', () => {
+    const gameScore = [
+      {
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 10,
+            currentStriker: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 2',
+            index: 0,
+            runs: 0,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: true,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 3',
+            index: 0,
+            runs: 10,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: false,
+            currentNonStriker: false,
+            status: 'Not out'
+          },
+          {
+            name: 'Player 4',
+            index: 0,
+            runs: 10,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: false,
+            currentNonStriker: false,
+            status: 'Not out'
+          }
+        ],
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 30,
+        totalWickets: 2,
+        overs: 5,
+        currentBattingTeam: true,
+        finishedBatting: true
+      },
+      {
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 30,
+            currentStriker: false,
+            allActions: [],
+            onTheCrease: false,
+            currentNonStriker: true,
+            status: 'Not out'
+          }
+        ],
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 30,
+        totalWickets: 0,
+        overs: 0,
+        currentBattingTeam: false,
+        finishedBatting: true
+      }
+    ] as GameScore;
+    render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setPlayerScore,
+          swapBatsmen
+        }}>
+        <Scoreboard />
+      </GameScoreContext.Provider>
+    );
+    const team1 = screen.getByText('Team 1');
+    const team2 = screen.getByText('Team 2');
+    expect(team1).toBeVisible();
+    expect(team2).toBeVisible();
+    expect(screen.getByText('Game Over')).toBeVisible();
+    expect(screen.queryByText('The winner is:')).not.toBeInTheDocument();
+    expect(screen.getByText("It's a draw!")).toBeVisible();
   });
 
   it('should not display game over message and winner when both teams have not finished batting', () => {
