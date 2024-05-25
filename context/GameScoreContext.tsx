@@ -118,8 +118,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     }
   ]);
 
-  console.log(16, gameScore[0].players);
-
   const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
   if (!currentBattingTeam) {
     return;
@@ -153,8 +151,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         : player
     );
 
-    console.log(10, runs % 2);
-
     if (action === 'Wicket') {
       updatedTeamPlayers[playerIndex].status = 'Out';
       updatedTeamPlayers[playerIndex].onTheCrease = false;
@@ -182,7 +178,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     } else if (runs % 2 !== 0) {
       const currentStriker = updatedTeamPlayers.find((player) => player.currentStriker);
       const currentNonStriker = updatedTeamPlayers.find((player) => player.currentNonStriker);
-      console.log(12, currentStriker, currentNonStriker);
       if (!currentStriker || !currentNonStriker) {
         return updatedTeamPlayers;
       }
@@ -250,20 +245,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
   };
 
   const swapBatsmen = (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => {
-    console.log(14, currentStriker, currentNonStriker);
     setGameScoreState((prevState: GameScore) => {
-      console.log(15, prevState[0].players[0]);
-      console.log(15.5, [
-        {
-          players: prevState[0].players.map((player) =>
-            player.index === currentStriker?.index
-              ? { ...player, currentStriker: false, currentNonStriker: true }
-              : player.index === currentNonStriker?.index
-              ? { ...player, currentStriker: true, currentNonStriker: false }
-              : player
-          )[0]
-        }
-      ]);
       return [
         {
           players: prevState[0].players.map((player) =>
