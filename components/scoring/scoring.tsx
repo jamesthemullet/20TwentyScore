@@ -156,6 +156,7 @@ const Scoring = () => {
 };
 
 const ScoringGrid = styled.div`
+  transition: flex 0.3s;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
