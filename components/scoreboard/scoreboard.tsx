@@ -6,6 +6,7 @@ import { useGameScore } from '../../context/GameScoreContext';
 import { pluralise } from '../../utils/pluralise';
 import { HomeContainer } from '../core/home-container';
 import { StyledHeading2 } from '../core/heading';
+import { SecondaryButton } from '../core/buttons';
 
 const addPlural = (runs: number) => (runs === 1 ? 'run' : 'runs');
 
@@ -15,13 +16,28 @@ type TeamScoreProps = {
     totalRuns: number;
     totalWickets: number;
     overs: number;
+    index: number;
   };
+  showTeam: (index: number) => void;
 };
 
-const TeamScore = ({ team }: TeamScoreProps) => {
+type ScoreboardProps = {
+  handleShowTeam: (index: number) => void;
+};
+
+const TeamScore = ({ team, showTeam }: TeamScoreProps) => {
+  const [showOrHide, setShowOrHide] = React.useState(true);
+
+  const toggleShowOrHide = (index: number) => {
+    showTeam(index);
+    setShowOrHide(!showOrHide);
+  };
   return (
     <div>
       <p>{team.name}</p>
+      <SecondaryButton onClick={() => toggleShowOrHide(team.index)}>
+        {showOrHide ? 'Show' : 'Hide'} Team
+      </SecondaryButton>
       <p>
         {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWickets}{' '}
         {pluralise(team.totalWickets, 'wicket', 'wickets')}
@@ -31,7 +47,7 @@ const TeamScore = ({ team }: TeamScoreProps) => {
   );
 };
 
-const Scoreboard = () => {
+const Scoreboard = ({ handleShowTeam }: ScoreboardProps) => {
   const { mostRecentAction } = useMostRecentAction();
   const { currentBallInThisOver, currentExtrasInThisOver, currentOver } = useOvers();
   const { runs, action } = mostRecentAction;
@@ -47,8 +63,8 @@ const Scoreboard = () => {
     <HomeContainer>
       <StyledHeading2>Scoreboard</StyledHeading2>
       <ScoreboardLayout>
-        <TeamScore team={team1} />
-        <TeamScore team={team2} />
+        <TeamScore team={team1} showTeam={(index) => handleShowTeam(index)} />
+        <TeamScore team={team2} showTeam={(index) => handleShowTeam(index)} />
       </ScoreboardLayout>
       {mostRecentAction && (
         <p>
@@ -85,9 +101,9 @@ const Scoreboard = () => {
 export default Scoreboard;
 
 const ScoreboardLayout = styled.div`
+  transition: flex 0.3s;
   display: flex;
   justify-content: space-between;
-  width: 100%;
   margin-bottom: 1rem;
   gap: 5rem;
 

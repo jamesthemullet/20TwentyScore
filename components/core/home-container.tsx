@@ -5,9 +5,7 @@ export const HomeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   border: 5px solid black;
-  padding: 20px;
-  width: 100%;
-
+  flex: 10;
   p {
     font-size: 1.25rem;
   }

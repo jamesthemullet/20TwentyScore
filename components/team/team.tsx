@@ -85,7 +85,6 @@ export default Team;
 const TeamLayout = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   input[type='text'] {
     padding: 5px;
