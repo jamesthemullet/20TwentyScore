@@ -88,7 +88,7 @@ export default function Nav() {
       {session && !isGameLoaded && (
         <>
           <UserAndLogout>
-            ({session?.user?.email})
+            <p>({session?.user?.email})</p>
             <Link href="/api/auth/signout">
               <PrimaryButton>Log out</PrimaryButton>
             </Link>
@@ -123,6 +123,14 @@ const UserAndLogout = styled.div`
 
   button {
     margin-left: 1rem;
+  }
+
+  p {
+    display: none;
+
+    @media (min-width: 769px) {
+      display: block;
+    }
   }
 `;
 
