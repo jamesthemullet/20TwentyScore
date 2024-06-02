@@ -6,7 +6,9 @@ export const HomeContainer = styled.div`
   align-items: center;
   border: 5px solid black;
   flex: 10;
+  order: 2;
   p {
     font-size: 1.25rem;
   }
+  padding: 20px;
 `;

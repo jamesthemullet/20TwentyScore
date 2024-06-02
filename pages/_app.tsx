@@ -23,6 +23,16 @@ const GlobalStyles = () => (
         font-style: normal;
         font-display: swap;
       }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
     `}
   />
 );

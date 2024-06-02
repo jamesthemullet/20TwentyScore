@@ -65,11 +65,14 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const Board = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  min-height: 500px;
   gap: 10px;
   padding: 20px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const Main = styled.main`
@@ -78,10 +81,17 @@ const Main = styled.main`
 `;
 
 const TeamContainer = styled.div<{ showTeam: boolean; index: number }>`
+  display: ${(props) => (props.showTeam ? 'block' : 'none')};
   transition: transform 0.3s ease-in-out, opacity 0.3s, flex 0.3s;
   transform: translateX(
     ${(props) => (props.showTeam ? '0' : props.index === 0 ? '-100%' : '100%')}
   );
   opacity: ${(props) => (props.showTeam ? '1' : '0')};
   flex: ${(props) => (props.showTeam ? '10' : '0')};
+  order: 1;
+
+  @media (min-width: 768px) {
+    display: block;
+    order: ${(props) => (props.index === 0 ? 1 : 3)};
+  }
 `;
