@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export default function Footer() {
   return (
     <FooterContainer>
-      <p>This is footer</p>
+      <p>20Twenty Score - a website by James Winfield.</p>
       <div>
         Icons made by{' '}
         <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">
@@ -22,9 +22,16 @@ const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px;
-  min-height: 80px;
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  font-family: 'Oswald', sans-serif;
+
+  a {
+    color: #fff;
+  }
+
+  p {
+    margin: 0;
+  }
 `;
