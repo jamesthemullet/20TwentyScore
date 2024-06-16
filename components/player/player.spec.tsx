@@ -16,7 +16,7 @@ describe('Player', () => {
     expect(screen.getByText('Player 2')).toBeVisible();
     expect(screen.getByText('Runs: 10')).toBeVisible();
     expect(screen.getAllByText('Not out')[0]).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Edit' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Edit player' })).toBeVisible();
   });
 
   it('should show a textbox and save button, upon clicking the edit button, and hide the edit button', () => {
@@ -29,12 +29,12 @@ describe('Player', () => {
       status: 'Not out'
     };
     render(<Player {...props} />);
-    const editButton = screen.getByRole('button', { name: 'Edit' });
+    const editButton = screen.getByRole('button', { name: 'Edit player' });
     act(() => {
       editButton.click();
     });
     expect(screen.getByRole('textbox')).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Save' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Save player' })).toBeVisible();
     expect(editButton).not.toBeVisible();
   });
 
@@ -48,7 +48,7 @@ describe('Player', () => {
       status: 'Not out'
     };
     render(<Player {...props} />);
-    const editButton = screen.getByRole('button', { name: 'Edit' });
+    const editButton = screen.getByRole('button', { name: 'Edit player' });
     act(() => {
       editButton.click();
     });
@@ -57,7 +57,7 @@ describe('Player', () => {
       fireEvent.change(textbox, { target: { value: 'Player La La La' } });
     });
     expect(textbox).toHaveValue('Player La La La');
-    const saveButton = screen.getByRole('button', { name: 'Save' });
+    const saveButton = screen.getByRole('button', { name: 'Save player' });
     act(() => {
       saveButton.click();
     });
