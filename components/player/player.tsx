@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { SecondaryButton } from '../core/buttons';
+import Image from 'next/image';
 
 type PlayerProps = {
   index: number;
@@ -33,22 +34,44 @@ export const Player = ({ index, runs, currentStriker, currentNonStriker, status 
         {!editPlayer && (
           <>
             <p>{name}</p>
-            <SecondaryButton onClick={() => handleEditPlayerName()}>Edit</SecondaryButton>
+            <StyledButton onClick={() => handleEditPlayerName()} aria-label="Edit player">
+              <Image alt="" title="Edit player" width={16} height={16} src="/icons/png/edit.png" />
+            </StyledButton>
           </>
         )}
         {editPlayer && (
           <>
             <input type="text" value={name} onChange={(event) => handlePlayerNameChange(event)} />
-            <SecondaryButton onClick={() => handleSavePlayerName()}>Save</SecondaryButton>
+            <StyledButton onClick={() => handleSavePlayerName()} aria-label="Save player">
+              <Image
+                alt=""
+                title="Save player"
+                width={16}
+                height={16}
+                src="/icons/png/009-save.png"
+              />
+            </StyledButton>
           </>
         )}
       </PlayerName>
       <p>Runs: {runs}</p>
       {currentStriker && (
-        <img alt="" title="Current striker" width="32px" src="/icons/png/004-cricket-player.png" />
+        <Image
+          alt=""
+          title="Current striker"
+          width={32}
+          height={32}
+          src="/icons/png/004-cricket-player.png"
+        />
       )}
       {currentNonStriker && (
-        <img alt="" title="Current non striker" width="32px" src="/icons/png/010-helmet.png" />
+        <Image
+          alt=""
+          title="Current non striker"
+          width={32}
+          height={32}
+          src="/icons/png/010-helmet.png"
+        />
       )}
       <p>{status}</p>
     </PlayerContainer>
@@ -71,4 +94,10 @@ const PlayerName = styled.div`
   align-items: center;
   gap: 10px;
   height: 20px;
+`;
+
+const StyledButton = styled.button`
+  background-color: white;
+  border: none;
+  cursor: pointer;
 `;
