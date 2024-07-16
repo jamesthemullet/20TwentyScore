@@ -35,9 +35,7 @@ const TeamScore = ({ team, showTeam }: TeamScoreProps) => {
   return (
     <div>
       <p>{team.name}</p>
-      <SecondaryButton onClick={() => toggleShowOrHide(team.index)}>
-        {showOrHide ? 'Show' : 'Hide'} Team
-      </SecondaryButton>
+      <SecondaryButton onClick={() => toggleShowOrHide(team.index)}>Show Team</SecondaryButton>
       <p>
         {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWickets}{' '}
         {pluralise(team.totalWickets, 'wicket', 'wickets')}

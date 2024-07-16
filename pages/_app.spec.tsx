@@ -2,6 +2,18 @@ import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import App from './_app';
 
+jest.mock('@mantine/core', () => {
+  const originalModule = jest.requireActual('@mantine/core');
+
+  type MantineProviderProps = React.PropsWithChildren<unknown>;
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    MantineProvider: ({ children }: MantineProviderProps) => <div>{children}</div>
+  };
+});
+
 global.fetch = require('jest-fetch-mock');
 
 type AppProps = {
