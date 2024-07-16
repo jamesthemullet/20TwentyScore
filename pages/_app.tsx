@@ -5,6 +5,8 @@ import { GameScoreProvider } from '../context/GameScoreContext';
 import { css, Global } from '@emotion/react';
 import { MostRecentActionProvider } from '../context/MostRecentActionContext';
 import { OversProvider } from '../context/OversContext';
+import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
 
 const GlobalStyles = () => (
   <Global
@@ -41,13 +43,15 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <SessionProvider session={pageProps.session}>
       <GlobalStyles />
-      <GameScoreProvider>
-        <OversProvider>
-          <MostRecentActionProvider>
-            <Component {...pageProps} />
-          </MostRecentActionProvider>
-        </OversProvider>
-      </GameScoreProvider>
+      <MantineProvider>
+        <GameScoreProvider>
+          <OversProvider>
+            <MostRecentActionProvider>
+              <Component {...pageProps} />
+            </MostRecentActionProvider>
+          </OversProvider>
+        </GameScoreProvider>
+      </MantineProvider>
     </SessionProvider>
   );
 };

@@ -19,13 +19,14 @@ type TeamScoreProps = {
     index: number;
   };
   showTeam: (index: number) => void;
+  selectedTeamIndex?: number;
 };
 
 type ScoreboardProps = {
   handleShowTeam: (index: number) => void;
 };
 
-const TeamScore = ({ team, showTeam }: TeamScoreProps) => {
+const TeamScore = ({ team, showTeam, selectedTeamIndex }: TeamScoreProps) => {
   const [showOrHide, setShowOrHide] = React.useState(true);
 
   const toggleShowOrHide = (index: number) => {
@@ -35,9 +36,7 @@ const TeamScore = ({ team, showTeam }: TeamScoreProps) => {
   return (
     <div>
       <p>{team.name}</p>
-      <SecondaryButton onClick={() => toggleShowOrHide(team.index)}>
-        {showOrHide ? 'Show' : 'Hide'} Team
-      </SecondaryButton>
+      <SecondaryButton onClick={() => toggleShowOrHide(team.index)}>Show Team</SecondaryButton>
       <p>
         {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWickets}{' '}
         {pluralise(team.totalWickets, 'wicket', 'wickets')}
