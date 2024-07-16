@@ -19,14 +19,13 @@ type TeamScoreProps = {
     index: number;
   };
   showTeam: (index: number) => void;
-  selectedTeamIndex?: number;
 };
 
 type ScoreboardProps = {
   handleShowTeam: (index: number) => void;
 };
 
-const TeamScore = ({ team, showTeam, selectedTeamIndex }: TeamScoreProps) => {
+const TeamScore = ({ team, showTeam }: TeamScoreProps) => {
   const [showOrHide, setShowOrHide] = React.useState(true);
 
   const toggleShowOrHide = (index: number) => {

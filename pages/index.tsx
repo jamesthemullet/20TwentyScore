@@ -27,7 +27,7 @@ const Index: React.FC<Props> = (props) => {
     <Layout>
       <Main aria-label="Scoreboard">
         <Board>
-          <Scoreboard handleShowTeam={(index) => openModal(index)} selectedTeamIndex />
+          <Scoreboard handleShowTeam={(index) => openModal(index)} />
           <Scoring />
         </Board>
         {selectedTeamIndex !== null && (
