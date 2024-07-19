@@ -79,4 +79,7 @@ const Board = styled.div`
 const Main = styled.main`
   position: relative;
   width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  flex: 1;
 `;

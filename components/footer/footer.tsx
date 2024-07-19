@@ -26,6 +26,9 @@ const FooterContainer = styled.footer`
   color: #fff;
   padding: 1rem;
   font-family: 'Oswald', sans-serif;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 
   a {
     color: #fff;
