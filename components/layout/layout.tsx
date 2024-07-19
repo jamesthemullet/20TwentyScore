@@ -21,7 +21,7 @@ const Layout: React.FC<Props> = (props) => {
   );
 };
 
-const SiteContainer = styled.main`
+const SiteContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
