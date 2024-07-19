@@ -15,19 +15,19 @@ const Layout: React.FC<Props> = (props) => {
     <SiteContainer>
       <Meta />
       <Header />
-      <Main>{props.children}</Main>
+      <Content>{props.children}</Content>
       <Footer />
     </SiteContainer>
   );
 };
 
-const SiteContainer = styled.div`
+const SiteContainer = styled.main`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 `;
 
-const Main = styled.main`
+const Content = styled.div`
   flex: 1;
 `;
 
