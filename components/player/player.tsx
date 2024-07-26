@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { SecondaryButton } from '../core/buttons';
 import Image from 'next/image';
@@ -15,6 +15,7 @@ type PlayerProps = {
 export const Player = ({ index, runs, currentStriker, currentNonStriker, status }: PlayerProps) => {
   const [name, setName] = useState('Player ' + (index + 1));
   const [editPlayer, setEditPlayer] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleEditPlayerName = () => {
     setEditPlayer(true);
@@ -28,21 +29,43 @@ export const Player = ({ index, runs, currentStriker, currentNonStriker, status 
     setEditPlayer(false);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(event.key);
+    if (event.key === 'Enter') {
+      handleSavePlayerName();
+    }
+    if (event.key === 'Escape') {
+      setEditPlayer(false);
+    }
+  };
+
+  useEffect(() => {
+    if (editPlayer && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editPlayer]);
+
   return (
     <PlayerContainer>
       <PlayerName>
         {!editPlayer && (
           <>
             <p>{name}</p>
-            <StyledButton onClick={() => handleEditPlayerName()} aria-label="Edit player">
+            <StyledButton onClick={handleEditPlayerName} aria-label="Edit player">
               <Image alt="" title="Edit player" width={16} height={16} src="/icons/png/edit.png" />
             </StyledButton>
           </>
         )}
         {editPlayer && (
           <>
-            <input type="text" value={name} onChange={(event) => handlePlayerNameChange(event)} />
-            <StyledButton onClick={() => handleSavePlayerName()} aria-label="Save player">
+            <input
+              ref={inputRef}
+              type="text"
+              value={name}
+              onChange={handlePlayerNameChange}
+              onKeyDown={handleKeyDown}
+            />
+            <StyledButton onClick={handleSavePlayerName} aria-label="Save player">
               <Image
                 alt=""
                 title="Save player"
@@ -94,6 +117,8 @@ const PlayerName = styled.div`
   align-items: center;
   gap: 10px;
   height: 20px;
+  min-width: 250px;
+  justify-content: center;
 `;
 
 const StyledButton = styled.button`

@@ -38,7 +38,8 @@ const Index: React.FC<Props> = (props) => {
               setSelectedTeamIndex(null);
             }}
             size="800"
-            withCloseButton={true}>
+            withCloseButton={true}
+            closeOnEscape={false}>
             <Team teamIndex={selectedTeamIndex} />
           </Modal>
         )}
