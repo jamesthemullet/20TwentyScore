@@ -7,6 +7,7 @@ describe('Player', () => {
     const props = {
       index: 1,
       runs: 10,
+      wicketsTaken: 0,
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
@@ -23,6 +24,7 @@ describe('Player', () => {
     const props = {
       index: 1,
       runs: 10,
+      wicketsTaken: 0,
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
@@ -42,6 +44,7 @@ describe('Player', () => {
     const props = {
       index: 1,
       runs: 10,
+      wicketsTaken: 0,
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
@@ -69,6 +72,7 @@ describe('Player', () => {
     const props = {
       index: 1,
       runs: 10,
+      wicketsTaken: 0,
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
@@ -82,6 +86,7 @@ describe('Player', () => {
     const props = {
       index: 3,
       runs: 0,
+      wicketsTaken: 0,
       currentStriker: false,
       allActions: [],
       currentNonStriker: false,
@@ -95,6 +100,7 @@ describe('Player', () => {
     const props = {
       index: 3,
       runs: 0,
+      wicketsTaken: 0,
       currentStriker: false,
       allActions: [],
       currentNonStriker: true,

@@ -15,6 +15,7 @@ export const MostRecentActionContext = createContext<MostRecentActionContextType
     action: null
   },
   setMostRecentAction: (mostRecentAction) => {
+    // eslint-disable-next-line no-console
     console.log('Initial setMostRecentAction called with', mostRecentAction);
   }
 });

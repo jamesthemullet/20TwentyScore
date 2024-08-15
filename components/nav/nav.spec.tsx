@@ -56,7 +56,8 @@ const gameScore = [
     finishedBatting: false
   }
 ] as GameScore;
-const setPlayerScore = jest.fn();
+const setBattingPlayerScore = jest.fn();
+const setBowlingPlayerScore = jest.fn();
 const swapBatsmen = jest.fn();
 
 describe('Nav Component', () => {
@@ -133,7 +134,8 @@ describe('Nav Component', () => {
           value={{
             setGameScore,
             gameScore,
-            setPlayerScore,
+            setBattingPlayerScore,
+            setBowlingPlayerScore,
             swapBatsmen
           }}>
           <Nav />
@@ -163,7 +165,8 @@ describe('Nav Component', () => {
           value={{
             setGameScore,
             gameScore,
-            setPlayerScore,
+            setBattingPlayerScore,
+            setBowlingPlayerScore,
             swapBatsmen
           }}>
           <Nav />
@@ -241,7 +244,14 @@ describe('Nav Component', () => {
     (useSession as jest.Mock).mockReturnValue(session);
 
     render(
-      <GameScoreContext.Provider value={{ setGameScore, gameScore, setPlayerScore, swapBatsmen }}>
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
+          swapBatsmen
+        }}>
         <Nav />
       </GameScoreContext.Provider>
     );

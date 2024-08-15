@@ -11,7 +11,7 @@ const Scoring = () => {
   const [countRuns, setCountRuns] = useState(0);
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
 
-  const { setPlayerScore, gameScore, swapBatsmen } = useGameScore();
+  const { setBattingPlayerScore, gameScore, swapBatsmen, setBowlingPlayerScore } = useGameScore();
   const { setMostRecentAction } = useMostRecentAction();
   const {
     currentBallInThisOver,
@@ -23,12 +23,14 @@ const Scoring = () => {
   } = useOvers();
 
   const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
+  const currentBowlingTeam = gameScore.find((team) => team.currentBowlingTeam);
 
-  if (!currentBattingTeam) {
+  if (!currentBattingTeam || !currentBowlingTeam) {
     return;
   }
 
   const currentBattingTeamIndex = currentBattingTeam.index;
+  const currentBowlingTeamIndex = currentBowlingTeam.index;
 
   const currentStriker = gameScore[currentBattingTeamIndex].players.find(
     (player) => player.currentStriker
@@ -36,6 +38,7 @@ const Scoring = () => {
   const currentNonStriker = gameScore[currentBattingTeamIndex].players.find(
     (player) => player.currentNonStriker
   );
+  const currentBowler = gameScore[currentBowlingTeamIndex].players[0];
 
   const endOfOver = () => currentBallInThisOver === 6 + currentExtrasInThisOver;
 
@@ -92,12 +95,20 @@ const Scoring = () => {
   };
 
   const updateGame = (
-    teamIndex: number,
-    playerIndex: number,
+    currentBattingTeamIndex: number,
+    currentStriker: number,
     runs: number,
     action: null | string
   ) => {
-    setPlayerScore(teamIndex, playerIndex, runs, action, endOfOver(), endOfInnings(action));
+    setBattingPlayerScore(
+      currentBattingTeamIndex,
+      currentStriker,
+      runs,
+      action,
+      endOfOver(),
+      endOfInnings(action)
+    );
+    setBowlingPlayerScore(currentBowlingTeamIndex, currentBowler.index, action);
     setMostRecentAction({ runs, action });
   };
 

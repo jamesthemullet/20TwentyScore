@@ -39,10 +39,10 @@ describe('GameScoreProvider', () => {
 
   it('should process setGameScore correctly for team 2', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 4, null, false, false);
+        setBattingPlayerScore(1, 0, 4, null, false, false);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -57,11 +57,11 @@ describe('GameScoreProvider', () => {
 
   it('should process setGameScore correctly for team 2 when there is a wicket', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 0, 4, null, false, false);
-        setPlayerScore(1, 0, 0, 'Wicket', false, false);
+        setBattingPlayerScore(1, 0, 4, null, false, false);
+        setBattingPlayerScore(1, 0, 0, 'Wicket', false, false);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -76,10 +76,10 @@ describe('GameScoreProvider', () => {
 
   it('should swap players if there is a wicket and if it is endOfOver', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 0, 'Wicket', true, false);
+        setBattingPlayerScore(0, 0, 0, 'Wicket', true, false);
       }, []);
 
       return (
@@ -121,11 +121,11 @@ describe('GameScoreProvider', () => {
 
   it('should swap batsmen if runs are odd', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 1, null, false, false);
-        setPlayerScore(0, 0, 1, null, false, false);
+        setBattingPlayerScore(0, 0, 1, null, false, false);
+        setBattingPlayerScore(0, 0, 1, null, false, false);
       }, []);
 
       return (
@@ -160,10 +160,10 @@ describe('GameScoreProvider', () => {
 
   it('should return without updating if the player index is invalid', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(1, 11, 10, null, false, false);
+        setBattingPlayerScore(1, 11, 10, null, false, false);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -178,10 +178,10 @@ describe('GameScoreProvider', () => {
 
   it('should return without updating if the team index is invalid', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(555, 0, 10, null, false, false);
+        setBattingPlayerScore(555, 0, 10, null, false, false);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -206,6 +206,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 22,
+                wicketsTaken: 0,
                 currentStriker: true,
                 allActions: [],
                 onTheCrease: true,
@@ -217,6 +218,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 2',
                 index: 0,
                 runs: 0,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: true,
@@ -228,6 +230,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 10,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: false,
@@ -239,6 +242,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 10,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: false,
@@ -263,6 +267,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 0,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: false,
@@ -310,6 +315,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 22,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: true,
@@ -321,6 +327,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 2',
                 index: 0,
                 runs: 0,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: true,
@@ -332,6 +339,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 10,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: false,
@@ -343,6 +351,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 10,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: false,
@@ -367,6 +376,7 @@ describe('GameScoreProvider', () => {
                 name: 'Player 1',
                 index: 0,
                 runs: 0,
+                wicketsTaken: 0,
                 currentStriker: false,
                 allActions: [],
                 onTheCrease: false,
@@ -400,10 +410,10 @@ describe('GameScoreProvider', () => {
 
   it('should set current striker when a wicket occurs', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 10, 'Wicket', false, false);
+        setBattingPlayerScore(0, 0, 10, 'Wicket', false, false);
       }, []);
 
       return (
@@ -441,7 +451,8 @@ describe('GameScoreProvider', () => {
     logSpy.mockImplementation(() => {});
 
     const TestComponent = () => {
-      const { setGameScore, setPlayerScore, swapBatsmen } = React.useContext(GameScoreContext);
+      const { setGameScore, setBattingPlayerScore, swapBatsmen } =
+        React.useContext(GameScoreContext);
 
       setGameScore([
         {
@@ -450,6 +461,7 @@ describe('GameScoreProvider', () => {
               name: 'Player 1',
               index: 0,
               runs: 0,
+              wicketsTaken: 0,
               currentStriker: true,
               allActions: [],
               onTheCrease: true,
@@ -461,6 +473,7 @@ describe('GameScoreProvider', () => {
               name: 'Player 2',
               index: 0,
               runs: 0,
+              wicketsTaken: 0,
               currentStriker: false,
               allActions: [],
               onTheCrease: true,
@@ -472,6 +485,7 @@ describe('GameScoreProvider', () => {
               name: 'Player 3',
               index: 0,
               runs: 0,
+              wicketsTaken: 0,
               currentStriker: false,
               allActions: [],
               onTheCrease: false,
@@ -483,6 +497,7 @@ describe('GameScoreProvider', () => {
               name: 'Player 4',
               index: 0,
               runs: 0,
+              wicketsTaken: 0,
               currentStriker: false,
               allActions: [],
               onTheCrease: false,
@@ -507,6 +522,7 @@ describe('GameScoreProvider', () => {
               name: 'Player 1',
               index: 0,
               runs: 0,
+              wicketsTaken: 0,
               currentStriker: false,
               allActions: [],
               onTheCrease: false,
@@ -530,6 +546,7 @@ describe('GameScoreProvider', () => {
         name: 'Player 1',
         index: 0,
         runs: 0,
+        wicketsTaken: 0,
         currentStriker: true,
         currentBowler: false,
         allActions: [],
@@ -541,6 +558,7 @@ describe('GameScoreProvider', () => {
         name: 'Player 2',
         index: 0,
         runs: 0,
+        wicketsTaken: 0,
         currentStriker: false,
 
         currentBowler: false,
@@ -549,7 +567,7 @@ describe('GameScoreProvider', () => {
         currentNonStriker: true,
         status: 'Not out'
       };
-      setPlayerScore(0, 0, 10, null, false, false);
+      setBattingPlayerScore(0, 0, 10, null, false, false);
       swapBatsmen(currentStriker, currentNonStriker);
 
       return null;
@@ -564,6 +582,7 @@ describe('GameScoreProvider', () => {
             name: 'Player 1',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: true,
             allActions: [],
             onTheCrease: true,
@@ -575,6 +594,7 @@ describe('GameScoreProvider', () => {
             name: 'Player 2',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             currentBowler: false,
             allActions: [],
@@ -586,6 +606,7 @@ describe('GameScoreProvider', () => {
             name: 'Player 3',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             currentBowler: false,
             allActions: [],
@@ -597,6 +618,7 @@ describe('GameScoreProvider', () => {
             name: 'Player 4',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             currentBowler: false,
             allActions: [],
@@ -621,6 +643,7 @@ describe('GameScoreProvider', () => {
             name: 'Player 1',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             allActions: [],
             onTheCrease: false,
@@ -640,7 +663,7 @@ describe('GameScoreProvider', () => {
         finishedBatting: false
       }
     ]);
-    expect(logSpy).toHaveBeenCalledWith('Initial setPlayerScore called with', 0);
+    expect(logSpy).toHaveBeenCalledWith('Initial setBattingPlayerScore called with', 0);
     expect(logSpy).toHaveBeenCalledWith('Initial swapBatsmen called');
 
     logSpy.mockRestore();
@@ -648,12 +671,12 @@ describe('GameScoreProvider', () => {
 
   it('should add each action to allActions', () => {
     const MockChildComponent = () => {
-      const { gameScore, setPlayerScore } = useGameScore();
+      const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setPlayerScore(0, 0, 1, null, false, false);
-        setPlayerScore(0, 0, 4, null, false, false);
-        setPlayerScore(0, 0, 1, 'No ball', false, false);
+        setBattingPlayerScore(0, 0, 1, null, false, false);
+        setBattingPlayerScore(0, 0, 4, null, false, false);
+        setBattingPlayerScore(0, 0, 1, 'No ball', false, false);
       }, []);
 
       return <div>{gameScore[0].players[0]?.allActions.join(', ')}</div>;

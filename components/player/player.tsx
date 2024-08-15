@@ -5,13 +5,21 @@ import Image from 'next/image';
 type PlayerProps = {
   index: number;
   runs: number;
+  wicketsTaken: number;
   currentStriker: boolean;
   allActions: (string | null)[];
   currentNonStriker: boolean;
   status: string;
 };
 
-export const Player = ({ index, runs, currentStriker, currentNonStriker, status }: PlayerProps) => {
+export const Player = ({
+  index,
+  runs,
+  wicketsTaken,
+  currentStriker,
+  currentNonStriker,
+  status
+}: PlayerProps) => {
   const [name, setName] = useState('Player ' + (index + 1));
   const [editPlayer, setEditPlayer] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,6 +84,7 @@ export const Player = ({ index, runs, currentStriker, currentNonStriker, status 
         )}
       </PlayerName>
       <p>Runs: {runs}</p>
+      <p>Wickets Taken: {wicketsTaken}</p>
       {currentStriker && (
         <Image
           alt=""
