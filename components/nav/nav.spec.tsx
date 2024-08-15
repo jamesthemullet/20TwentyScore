@@ -263,6 +263,7 @@ describe('Nav Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: false
       },
       {
@@ -274,6 +275,7 @@ describe('Nav Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: false
       }
     ]);

@@ -568,6 +568,7 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
+            currentBowler: false,
             status: 'Not out'
           },
           {
@@ -575,6 +576,7 @@ describe('GameScoreProvider', () => {
             index: 0,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
@@ -585,6 +587,7 @@ describe('GameScoreProvider', () => {
             index: 0,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
@@ -595,6 +598,7 @@ describe('GameScoreProvider', () => {
             index: 0,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
@@ -608,6 +612,7 @@ describe('GameScoreProvider', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: false
       },
       {
@@ -620,6 +625,7 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: true,
+            currentBowler: false,
             status: 'Not out'
           }
         ],
@@ -630,6 +636,7 @@ describe('GameScoreProvider', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: false
       }
     ]);
