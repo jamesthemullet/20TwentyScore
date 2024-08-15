@@ -17,17 +17,21 @@ type OversProviderProps = {
 export const OversContext = createContext<OversContextType>({
   currentExtrasInThisOver: 0,
   setCurrentExtrasInThisOver: (extras: number | string) => {
+    // eslint-disable-next-line no-console
     console.log('Initial setCurrentExtrasInOver called with', extras);
   },
   currentBallInThisOver: 1,
   setCurrentBallInThisOver: (ball: number | null) => {
+    // eslint-disable-next-line no-console
     console.log('Initial setCurrentBallInThisOver called');
   },
   currentOver: 1,
   setCurrentOvers: (inc: number | undefined) => {
+    // eslint-disable-next-line no-console
     console.log('Initial incrementCurrentOver called');
   },
   resetOvers: () => {
+    // eslint-disable-next-line no-console
     console.log('Initial resetOvers called');
   }
 });

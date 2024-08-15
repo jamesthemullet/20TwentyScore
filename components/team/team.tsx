@@ -68,6 +68,7 @@ const Team = ({ teamIndex }: TeamProps) => {
               key={index}
               index={index}
               runs={player.runs}
+              wicketsTaken={player.wicketsTaken}
               currentStriker={player.currentStriker && currentBattingTeamIndex === teamIndex}
               allActions={player.allActions}
               currentNonStriker={player.currentNonStriker && currentBattingTeamIndex === teamIndex}

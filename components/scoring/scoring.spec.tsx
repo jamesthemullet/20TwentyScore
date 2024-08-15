@@ -11,6 +11,7 @@ const gameScore = [
         name: 'Player 1',
         index: 0,
         runs: 0,
+        wicketsTaken: 0,
         currentStriker: true,
         currentBowler: false,
         allActions: [],
@@ -22,6 +23,7 @@ const gameScore = [
         name: 'Player 2',
         index: 1,
         runs: 0,
+        wicketsTaken: 0,
         currentStriker: false,
         currentBowler: false,
         allActions: [],
@@ -41,7 +43,20 @@ const gameScore = [
     finishedBatting: false
   },
   {
-    players: [],
+    players: [
+      {
+        name: 'Player 1',
+        index: 0,
+        runs: 0,
+        wicketsTaken: 0,
+        currentStriker: true,
+        currentBowler: true,
+        allActions: [],
+        onTheCrease: true,
+        currentNonStriker: false,
+        status: 'Not out'
+      }
+    ],
     name: 'Team 2',
     index: 1,
     totalRuns: 0,
@@ -54,7 +69,8 @@ const gameScore = [
   }
 ] as GameScore;
 const setGameScore = jest.fn();
-const setPlayerScore = jest.fn();
+const setBattingPlayerScore = jest.fn();
+const setBowlingPlayerScore = jest.fn();
 const setCurrentBallInThisOver = jest.fn();
 const setCurrentExtrasInThisOver = jest.fn();
 const setCurrentOvers = jest.fn();
@@ -71,7 +87,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -85,13 +102,14 @@ describe('Scoring Component', () => {
     expect(buttons).toHaveLength(9);
   });
 
-  it('should call setPlayerScore when the 0 runs button is clicked', () => {
+  it('should call setBattingPlayerScore when the 0 runs button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -102,16 +120,17 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
-    expect(setPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setBattingPlayerScore).toHaveBeenCalledTimes(1);
   });
 
-  it('should call setPlayerScore when the 1 run button is clicked', () => {
+  it('should call setBattingPlayerScore when the 1 run button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -122,17 +141,18 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
-    expect(setPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 1, null, false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, null, false, false);
   });
 
-  it('should call setPlayerScore when the 6 runs button is clicked', () => {
+  it('should call setBattingPlayerScore when the 6 runs button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -143,17 +163,18 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
-    expect(setPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 6, null, false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 6, null, false, false);
   });
 
-  it('should call setPlayerScore when the wicket button is clicked', () => {
+  it('should call setBattingPlayerScore when the wicket button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -164,8 +185,8 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
-    expect(setPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledTimes(1);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, false);
   });
 
   it('should set next ball action to disabled by default', () => {
@@ -174,7 +195,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -188,13 +210,14 @@ describe('Scoring Component', () => {
     });
   });
 
-  it('should not call setPlayerScore if the 1+ button is clicked', () => {
+  it('should not call setBattingPlayerScore if the 1+ button is clicked', () => {
     render(
       <GameScoreContext.Provider
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -204,7 +227,7 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
-    expect(setPlayerScore).not.toHaveBeenCalled();
+    expect(setBattingPlayerScore).not.toHaveBeenCalled();
   });
 
   it('should enable next ball button when 1+ button is clicked', () => {
@@ -213,7 +236,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -229,13 +253,14 @@ describe('Scoring Component', () => {
     expect(nextBallButton).not.toBeDisabled();
   });
 
-  it('should call setPlayerScore when next ball is clicked, and send the runs stored in state', () => {
+  it('should call setBattingPlayerScore when next ball is clicked, and send the runs stored in state', () => {
     render(
       <GameScoreContext.Provider
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <Scoring />
@@ -255,7 +280,7 @@ describe('Scoring Component', () => {
       fireEvent.click(nextBallButton);
     });
 
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 3, 'Next Ball', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 3, 'Next Ball', false, false);
   });
 
   it('should add 1 to the current ball in over, when balls in over is less than 6, not including extras', () => {
@@ -267,7 +292,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -302,7 +328,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -339,7 +366,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -374,7 +402,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -398,7 +427,7 @@ describe('Scoring Component', () => {
     });
 
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'Wide', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'Wide', false, false);
   });
 
   it('should increase extras if no ball is clicked', () => {
@@ -410,7 +439,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -434,10 +464,10 @@ describe('Scoring Component', () => {
     });
 
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'No Ball', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'No Ball', false, false);
   });
 
-  it('should not call setPlayerScore if playerIndex is undefined', () => {
+  it('should not call setBattingPlayerScore if playerIndex is undefined', () => {
     const currentOver = 1;
     const currentBallInThisOver = 1;
     const currentExtrasInThisOver = 0;
@@ -448,6 +478,7 @@ describe('Scoring Component', () => {
             name: 'Player 1',
             index: undefined,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: true,
             currentBowler: false,
             allActions: [],
@@ -459,6 +490,7 @@ describe('Scoring Component', () => {
             name: 'Player 2',
             index: 1,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             currentBowler: false,
             allActions: [],
@@ -478,7 +510,20 @@ describe('Scoring Component', () => {
         finishedBatting: false
       },
       {
-        players: [],
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            wicketsTaken: 0,
+            currentStriker: true,
+            currentBowler: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          }
+        ],
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
@@ -495,7 +540,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -518,7 +564,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    expect(setPlayerScore).not.toHaveBeenCalled();
+    expect(setBattingPlayerScore).not.toHaveBeenCalled();
   });
 
   it('should call endOfInnings on the 10th wicket', () => {
@@ -532,6 +578,7 @@ describe('Scoring Component', () => {
             name: 'Player 1',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: true,
             currentBowler: false,
             allActions: [],
@@ -543,6 +590,7 @@ describe('Scoring Component', () => {
             name: 'Player 2',
             index: 1,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             currentBowler: false,
             allActions: [],
@@ -562,7 +610,20 @@ describe('Scoring Component', () => {
         finishedBatting: false
       },
       {
-        players: [],
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            wicketsTaken: 0,
+            currentStriker: true,
+            currentBowler: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          }
+        ],
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
@@ -579,7 +640,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -602,7 +664,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, true);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, true);
   });
 
   it('should call end of innings on the last ball of the 20th over', () => {
@@ -616,6 +678,7 @@ describe('Scoring Component', () => {
             name: 'Player 1',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: true,
             currentBowler: false,
             allActions: [],
@@ -627,6 +690,7 @@ describe('Scoring Component', () => {
             name: 'Player 2',
             index: 1,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             currentBowler: false,
             allActions: [],
@@ -646,7 +710,20 @@ describe('Scoring Component', () => {
         finishedBatting: false
       },
       {
-        players: [],
+        players: [
+          {
+            name: 'Player 1',
+            index: 0,
+            runs: 0,
+            wicketsTaken: 0,
+            currentStriker: true,
+            currentBowler: true,
+            allActions: [],
+            onTheCrease: true,
+            currentNonStriker: false,
+            status: 'Not out'
+          }
+        ],
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
@@ -663,7 +740,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -686,7 +764,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    expect(setPlayerScore).toHaveBeenCalledWith(0, 0, 4, null, true, true);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 4, null, true, true);
   });
 
   it('should set all buttons to disabled when the game is finished', () => {
@@ -700,6 +778,7 @@ describe('Scoring Component', () => {
             name: 'Player 1',
             index: 0,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: true,
             allActions: [],
             onTheCrease: true,
@@ -711,6 +790,7 @@ describe('Scoring Component', () => {
             name: 'Player 2',
             index: 1,
             runs: 0,
+            wicketsTaken: 0,
             currentStriker: false,
             allActions: [],
             onTheCrease: true,
@@ -747,7 +827,8 @@ describe('Scoring Component', () => {
         value={{
           setGameScore,
           gameScore,
-          setPlayerScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
           swapBatsmen
         }}>
         <OversContext.Provider

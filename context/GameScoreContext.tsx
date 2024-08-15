@@ -5,6 +5,7 @@ type TeamPlayer = {
   index: number;
   name: string;
   runs: number;
+  wicketsTaken: number;
   currentStriker: boolean;
   allActions: (string | null)[];
   currentNonStriker: boolean;
@@ -48,7 +49,7 @@ export type PlayerScore = {
 type GameScoreContextType = {
   gameScore: GameScore;
   setGameScore: (gameScore: GameScore) => void;
-  setPlayerScore: (
+  setBattingPlayerScore: (
     teamIndex: number,
     playerIndex: number,
     runs: number,
@@ -56,6 +57,7 @@ type GameScoreContextType = {
     endOfOver: boolean,
     endOfInnings: boolean
   ) => void;
+  setBowlingPlayerScore: (teamIndex: number, playerIndex: number, action: string | null) => void;
   swapBatsmen: (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => void;
 };
 
@@ -91,12 +93,19 @@ export const GameScoreContext = createContext<GameScoreContextType>({
     }
   ],
   setGameScore: (gameScore) => {
+    // eslint-disable-next-line no-console
     console.log('Initial setGameScore called with', gameScore);
   },
-  setPlayerScore: (playerScore) => {
-    console.log('Initial setPlayerScore called with', playerScore);
+  setBattingPlayerScore: (playerScore) => {
+    // eslint-disable-next-line no-console
+    console.log('Initial setBattingPlayerScore called with', playerScore);
+  },
+  setBowlingPlayerScore: (playerScore) => {
+    // eslint-disable-next-line no-console
+    console.log('Initial setBowlingPlayerScore called with', playerScore);
   },
   swapBatsmen: () => {
+    // eslint-disable-next-line no-console
     console.log('Initial swapBatsmen called');
   }
 });
@@ -141,7 +150,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     gameScore[currentBattingTeamIndex].players[0].currentStriker = true;
   }
 
-  const updateTeamScore = (
+  const updateTeamScoreForBatting = (
     teamPlayers: TeamPlayer[],
     playerIndex: number,
     runs: number,
@@ -200,7 +209,29 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     return updatedTeamPlayers;
   };
 
-  const setPlayerScore = (
+  const updateTeamScoreForBowling = (
+    teamPlayers: TeamPlayer[],
+    playerIndex: number,
+    action: string | null
+  ) => {
+    const player = teamPlayers.find((player) => player.index === playerIndex);
+
+    if (!player) {
+      return teamPlayers;
+    }
+
+    return teamPlayers.map((player) =>
+      player.index === playerIndex
+        ? {
+            ...player,
+            wicketsTaken: player.wicketsTaken + (action === 'Wicket' ? 1 : 0),
+            allActions: [...player.allActions, action || '']
+          }
+        : player
+    );
+  };
+
+  const setBattingPlayerScore = (
     teamIndex: number,
     playerIndex: number,
     runs: number,
@@ -216,7 +247,13 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         {
           players:
             teamIndex === 0
-              ? updateTeamScore(prevState[0].players, playerIndex, runs, action, endOfOver)
+              ? updateTeamScoreForBatting(
+                  prevState[0].players,
+                  playerIndex,
+                  runs,
+                  action,
+                  endOfOver
+                )
               : prevState[0].players,
           name: 'Team 1',
           index: 0,
@@ -236,7 +273,13 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         {
           players:
             teamIndex === 1
-              ? updateTeamScore(prevState[1].players, playerIndex, runs, action, endOfOver)
+              ? updateTeamScoreForBatting(
+                  prevState[1].players,
+                  playerIndex,
+                  runs,
+                  action,
+                  endOfOver
+                )
               : prevState[1].players,
           name: 'Team 2',
           index: 1,
@@ -252,6 +295,38 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             : !prevState[1].currentBattingTeam,
           currentBowlingTeam: prevState[1].currentBowlingTeam,
           finishedBatting: prevState[1].finishedBatting || (teamIndex === 1 && endOfInnings)
+        }
+      ];
+    });
+  };
+
+  const setBowlingPlayerScore = (teamIndex: number, playerIndex: number, action: string | null) => {
+    if (teamIndex < 0 || teamIndex > 1) {
+      return;
+    }
+    setGameScoreState((prevState: GameScore) => {
+      return [
+        {
+          ...prevState[0],
+          players:
+            teamIndex === 0
+              ? prevState[0].players
+              : updateTeamScoreForBowling(prevState[1].players, playerIndex, action),
+          totalWicketsTaken:
+            teamIndex === 1
+              ? prevState[0].totalWicketsTaken + (action === 'Wicket' ? 1 : 0)
+              : prevState[0].totalWicketsTaken
+        },
+        {
+          ...prevState[1],
+          players:
+            teamIndex === 1
+              ? updateTeamScoreForBowling(prevState[1].players, playerIndex, action)
+              : prevState[1].players,
+          totalWicketsTaken:
+            teamIndex === 0
+              ? prevState[1].totalWicketsTaken + (action === 'Wicket' ? 1 : 0)
+              : prevState[1].totalWicketsTaken
         }
       ];
     });
@@ -305,7 +380,14 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
   };
 
   return (
-    <GameScoreContext.Provider value={{ gameScore, setGameScore, setPlayerScore, swapBatsmen }}>
+    <GameScoreContext.Provider
+      value={{
+        gameScore,
+        setGameScore,
+        setBattingPlayerScore,
+        setBowlingPlayerScore,
+        swapBatsmen
+      }}>
       {children}
     </GameScoreContext.Provider>
   );
