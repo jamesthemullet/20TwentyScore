@@ -210,6 +210,7 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
+                currentBowler: false,
                 status: 'Not out'
               },
               {
@@ -220,6 +221,7 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
+                currentBowler: false,
                 status: 'Not out'
               },
               {
@@ -230,6 +232,7 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
+                currentBowler: false,
                 status: 'Not out'
               },
               {
@@ -240,15 +243,18 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
+                currentBowler: false,
                 status: 'Not out'
               }
             ],
             name: 'Team 1',
             index: 0,
             totalRuns: 32,
-            totalWickets: 2,
+            totalWicketsConceded: 2,
+            totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
+            currentBowlingTeam: false,
             finishedBatting: false
           },
           {
@@ -261,15 +267,18 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
+                currentBowler: false,
                 status: 'Not out'
               }
             ],
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0,
+            totalWicketsConceded: 0,
+            totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
+            currentBowlingTeam: true,
             finishedBatting: false
           }
         ]);
@@ -305,6 +314,7 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
+                currentBowler: false,
                 status: 'Not out'
               },
               {
@@ -315,6 +325,7 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
+                currentBowler: false,
                 status: 'Not out'
               },
               {
@@ -325,6 +336,7 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
+                currentBowler: false,
                 status: 'Not out'
               },
               {
@@ -335,15 +347,18 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
+                currentBowler: false,
                 status: 'Not out'
               }
             ],
             name: 'Team 1',
             index: 0,
             totalRuns: 32,
-            totalWickets: 2,
+            totalWicketsConceded: 2,
+            totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
+            currentBowlingTeam: false,
             finishedBatting: false
           },
           {
@@ -356,15 +371,18 @@ describe('GameScoreProvider', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
+                currentBowler: false,
                 status: 'Not out'
               }
             ],
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0,
+            totalWicketsConceded: 0,
+            totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
+            currentBowlingTeam: true,
             finishedBatting: false
           }
         ]);
@@ -436,6 +454,7 @@ describe('GameScoreProvider', () => {
               allActions: [],
               onTheCrease: true,
               currentNonStriker: false,
+              currentBowler: false,
               status: 'Not out'
             },
             {
@@ -446,6 +465,7 @@ describe('GameScoreProvider', () => {
               allActions: [],
               onTheCrease: true,
               currentNonStriker: true,
+              currentBowler: false,
               status: 'Not out'
             },
             {
@@ -456,6 +476,7 @@ describe('GameScoreProvider', () => {
               allActions: [],
               onTheCrease: false,
               currentNonStriker: false,
+              currentBowler: false,
               status: 'Not out'
             },
             {
@@ -466,15 +487,18 @@ describe('GameScoreProvider', () => {
               allActions: [],
               onTheCrease: false,
               currentNonStriker: false,
+              currentBowler: false,
               status: 'Not out'
             }
           ],
           name: 'Team 1',
           index: 0,
           totalRuns: 0,
-          totalWickets: 0,
+          totalWicketsConceded: 0,
+          totalWicketsTaken: 0,
           overs: 0,
           currentBattingTeam: true,
+          currentBowlingTeam: false,
           finishedBatting: false
         },
         {
@@ -487,15 +511,18 @@ describe('GameScoreProvider', () => {
               allActions: [],
               onTheCrease: false,
               currentNonStriker: true,
+              currentBowler: false,
               status: 'Not out'
             }
           ],
           name: 'Team 2',
           index: 1,
           totalRuns: 0,
-          totalWickets: 0,
+          totalWicketsConceded: 0,
+          totalWicketsTaken: 0,
           overs: 0,
           currentBattingTeam: false,
+          currentBowlingTeam: true,
           finishedBatting: false
         }
       ]);
@@ -504,6 +531,7 @@ describe('GameScoreProvider', () => {
         index: 0,
         runs: 0,
         currentStriker: true,
+        currentBowler: false,
         allActions: [],
         onTheCrease: true,
         currentNonStriker: false,
@@ -514,6 +542,8 @@ describe('GameScoreProvider', () => {
         index: 0,
         runs: 0,
         currentStriker: false,
+
+        currentBowler: false,
         allActions: [],
         onTheCrease: true,
         currentNonStriker: true,
@@ -538,6 +568,7 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
+            currentBowler: false,
             status: 'Not out'
           },
           {
@@ -545,6 +576,7 @@ describe('GameScoreProvider', () => {
             index: 0,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
@@ -555,6 +587,7 @@ describe('GameScoreProvider', () => {
             index: 0,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
@@ -565,6 +598,7 @@ describe('GameScoreProvider', () => {
             index: 0,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
@@ -574,9 +608,11 @@ describe('GameScoreProvider', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: false
       },
       {
@@ -589,15 +625,18 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: true,
+            currentBowler: false,
             status: 'Not out'
           }
         ],
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: false
       }
     ]);

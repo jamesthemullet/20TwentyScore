@@ -36,9 +36,11 @@ const gameScore = [
     name: 'Team 1',
     index: 0,
     totalRuns: 0,
-    totalWickets: 0,
+    totalWicketsConceded: 0,
+    totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: true,
+    currentBowlingTeam: false,
     finishedBatting: false
   },
   {
@@ -46,9 +48,11 @@ const gameScore = [
     name: 'Team 2',
     index: 1,
     totalRuns: 0,
-    totalWickets: 0,
+    totalWicketsConceded: 0,
+    totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: false,
+    currentBowlingTeam: true,
     finishedBatting: false
   }
 ] as GameScore;
@@ -255,9 +259,11 @@ describe('Nav Component', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: false
       },
       {
@@ -265,9 +271,11 @@ describe('Nav Component', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: false
       }
     ]);

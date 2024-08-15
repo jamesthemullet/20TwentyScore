@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { SecondaryButton } from '../core/buttons';
 import Image from 'next/image';
 
 type PlayerProps = {
@@ -30,7 +29,6 @@ export const Player = ({ index, runs, currentStriker, currentNonStriker, status 
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.key);
     if (event.key === 'Enter') {
       handleSavePlayerName();
     }

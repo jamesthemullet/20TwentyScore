@@ -4,7 +4,7 @@ import { Player } from '../player/player';
 import { useGameScore } from '../../context/GameScoreContext';
 import { HomeContainer } from '../core/home-container';
 import { StyledHeading2 } from '../core/heading';
-import { PrimaryButton, SecondaryButton } from '../core/buttons';
+import { SecondaryButton } from '../core/buttons';
 
 type Player = {
   name: string;
