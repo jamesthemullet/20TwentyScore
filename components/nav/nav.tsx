@@ -39,7 +39,8 @@ export default function Nav() {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
         finishedBatting: false
@@ -49,7 +50,8 @@ export default function Nav() {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
         finishedBatting: false

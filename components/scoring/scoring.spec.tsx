@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import Scoring from './scoring';
-import { GameScore, GameScoreContext, useGameScore } from '../../context/GameScoreContext';
+import { GameScore, GameScoreContext } from '../../context/GameScoreContext';
 import { OversContext } from '../../context/OversContext';
 
 const gameScore = [
@@ -31,7 +31,8 @@ const gameScore = [
     name: 'Team 1',
     index: 0,
     totalRuns: 0,
-    totalWickets: 0,
+    totalWicketsConceded: 0,
+    totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: true,
     finishedBatting: false
@@ -41,7 +42,8 @@ const gameScore = [
     name: 'Team 2',
     index: 1,
     totalRuns: 0,
-    totalWickets: 0,
+    totalWicketsConceded: 0,
+    totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: false,
     finishedBatting: false
@@ -462,7 +464,8 @@ describe('Scoring Component', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
         finishedBatting: false
@@ -472,7 +475,8 @@ describe('Scoring Component', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
         finishedBatting: false
@@ -540,7 +544,8 @@ describe('Scoring Component', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 9,
+        totalWicketsConceded: 9,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
         finishedBatting: false
@@ -550,7 +555,8 @@ describe('Scoring Component', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
         finishedBatting: false
@@ -618,7 +624,8 @@ describe('Scoring Component', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 9,
+        totalWicketsConceded: 9,
+        totalWicketsTaken: 0,
         overs: 19,
         currentBattingTeam: true,
         finishedBatting: false
@@ -628,7 +635,8 @@ describe('Scoring Component', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
         finishedBatting: false
@@ -696,7 +704,8 @@ describe('Scoring Component', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 9,
+        totalWicketsConceded: 9,
+        totalWicketsTaken: 0,
         overs: 19,
         currentBattingTeam: true,
         finishedBatting: true
@@ -706,7 +715,8 @@ describe('Scoring Component', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
         finishedBatting: true

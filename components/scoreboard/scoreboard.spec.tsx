@@ -26,7 +26,7 @@ describe('Scoreboard Component', () => {
   it('should render Scoreboard component on initial load', () => {
     render(
       <GameScoreProvider>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </GameScoreProvider>
     );
     const heading = screen.getByRole('heading', { level: 2 });
@@ -40,7 +40,7 @@ describe('Scoreboard Component', () => {
     const mostRecentAction = { runs: 4, action: null };
     render(
       <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: 4 runs')).toBeVisible();
@@ -50,7 +50,7 @@ describe('Scoreboard Component', () => {
     const mostRecentAction = { runs: 1, action: null };
     render(
       <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: 1 run')).toBeVisible();
@@ -60,7 +60,7 @@ describe('Scoreboard Component', () => {
     const mostRecentAction = { runs: 0, action: 'Wicket' };
     render(
       <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: Wicket')).toBeVisible();
@@ -70,7 +70,7 @@ describe('Scoreboard Component', () => {
     const mostRecentAction = { runs: 1, action: 'Wide' };
     render(
       <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: Wide')).toBeVisible();
@@ -80,7 +80,7 @@ describe('Scoreboard Component', () => {
     const mostRecentAction = { runs: 1, action: 'No Ball' };
     render(
       <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: No Ball')).toBeVisible();
@@ -90,7 +90,7 @@ describe('Scoreboard Component', () => {
     const mostRecentAction = { runs: 2, action: 'Next Ball' };
     render(
       <MostRecentActionContext.Provider value={{ mostRecentAction, setMostRecentAction }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </MostRecentActionContext.Provider>
     );
     expect(screen.queryByText('Most recent ball: 2 runs')).toBeVisible();
@@ -111,7 +111,7 @@ describe('Scoreboard Component', () => {
           currentExtrasInThisOver,
           setCurrentExtrasInThisOver
         }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </OversContext.Provider>
     );
     expect(screen.getByText('Over: 1 Ball: 1 (extras: 0)')).toBeVisible();
@@ -168,7 +168,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 1',
             index: 0,
             totalRuns: 30,
-            totalWickets: 2,
+            totalWicketsConceded: 2,
+            totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
             finishedBatting: false
@@ -189,7 +190,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0,
+            totalWicketsConceded: 0,
+            totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
             finishedBatting: false
@@ -205,13 +207,13 @@ describe('Scoreboard Component', () => {
           <div>
             <p>Team 1</p>
             <p>
-              {team1.totalRuns} Runs - {team1.totalWickets} Wickets ({team1.overs} Overs)
+              {team1.totalRuns} Runs - {team1.totalWicketsConceded} Wickets ({team1.overs} Overs)
             </p>
           </div>
           <div>
             <p>Team 2</p>
             <p>
-              {team2.totalRuns} Runs - {team2.totalWickets} Wickets ({team2.overs} Overs)
+              {team2.totalRuns} Runs - {team2.totalWicketsConceded} Wickets ({team2.overs} Overs)
             </p>
           </div>
         </>
@@ -279,7 +281,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 1',
             index: 0,
             totalRuns: 30,
-            totalWickets: 2,
+            totalWicketsConceded: 2,
+            totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
             finishedBatting: true
@@ -300,7 +303,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0,
+            totalWicketsConceded: 0,
+            totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
             finishedBatting: true
@@ -375,7 +379,8 @@ describe('Scoreboard Component', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 30,
-        totalWickets: 2,
+        totalWicketsConceded: 2,
+        totalWicketsTaken: 0,
         overs: 5,
         currentBattingTeam: true,
         finishedBatting: true
@@ -396,7 +401,8 @@ describe('Scoreboard Component', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 30,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
         finishedBatting: true
@@ -410,7 +416,7 @@ describe('Scoreboard Component', () => {
           setPlayerScore,
           swapBatsmen
         }}>
-        <Scoreboard />
+        <Scoreboard handleShowTeam={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const team1 = screen.getByText('Team 1');
@@ -473,7 +479,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 1',
             index: 0,
             totalRuns: 30,
-            totalWickets: 2,
+            totalWicketsConceded: 2,
+            totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
             finishedBatting: false
@@ -494,7 +501,8 @@ describe('Scoreboard Component', () => {
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0,
+            totalWicketsConceded: 0,
+            totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
             finishedBatting: false

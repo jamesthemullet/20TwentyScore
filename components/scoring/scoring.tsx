@@ -40,7 +40,7 @@ const Scoring = () => {
   const endOfOver = () => currentBallInThisOver === 6 + currentExtrasInThisOver;
 
   const endOfInnings = (action: string | null) =>
-    (currentBattingTeam.totalWickets === 9 && action === 'Wicket') ||
+    (currentBattingTeam.totalWicketsConceded === 9 && action === 'Wicket') ||
     (currentBattingTeam.overs === 19 && endOfOver());
 
   const endOfGame = () => gameScore.every((team) => team.finishedBatting === true);

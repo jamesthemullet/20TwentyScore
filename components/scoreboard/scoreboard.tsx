@@ -14,7 +14,7 @@ type TeamScoreProps = {
   team: {
     name: string;
     totalRuns: number;
-    totalWickets: number;
+    totalWicketsConceded: number;
     overs: number;
     index: number;
   };
@@ -37,8 +37,8 @@ const TeamScore = ({ team, showTeam }: TeamScoreProps) => {
       <p>{team.name}</p>
       <SecondaryButton onClick={() => toggleShowOrHide(team.index)}>Show Team</SecondaryButton>
       <p>
-        {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWickets}{' '}
-        {pluralise(team.totalWickets, 'wicket', 'wickets')}
+        {team.totalRuns} {pluralise(team.totalRuns, 'run', 'runs')} - {team.totalWicketsConceded}{' '}
+        {pluralise(team.totalWicketsConceded, 'wicket', 'wickets')}
         <br />({team.overs} {pluralise(team.overs, 'over', 'overs')})
       </p>
     </div>

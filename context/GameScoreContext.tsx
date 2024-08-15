@@ -18,7 +18,8 @@ export type GameScore = [
     name: 'Team 1';
     index: 0;
     totalRuns: number;
-    totalWickets: number;
+    totalWicketsConceded: number;
+    totalWicketsTaken: number;
     overs: number;
     currentBattingTeam: boolean;
     finishedBatting: boolean;
@@ -28,7 +29,8 @@ export type GameScore = [
     name: 'Team 2';
     index: 1;
     totalRuns: number;
-    totalWickets: number;
+    totalWicketsConceded: number;
+    totalWicketsTaken: number;
     overs: number;
     currentBattingTeam: boolean;
     finishedBatting: boolean;
@@ -65,7 +67,8 @@ export const GameScoreContext = createContext<GameScoreContextType>({
       name: 'Team 1',
       index: 0,
       totalRuns: 0,
-      totalWickets: 0,
+      totalWicketsConceded: 0,
+      totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: true,
       finishedBatting: false
@@ -75,7 +78,8 @@ export const GameScoreContext = createContext<GameScoreContextType>({
       name: 'Team 2',
       index: 1,
       totalRuns: 0,
-      totalWickets: 0,
+      totalWicketsConceded: 0,
+      totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: false,
       finishedBatting: false
@@ -101,7 +105,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       name: 'Team 1',
       index: 0,
       totalRuns: 0,
-      totalWickets: 0,
+      totalWicketsConceded: 0,
+      totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: true,
       finishedBatting: false
@@ -111,7 +116,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       name: 'Team 2',
       index: 1,
       totalRuns: 0,
-      totalWickets: 0,
+      totalWicketsConceded: 0,
+      totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: false,
       finishedBatting: false
@@ -208,10 +214,11 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           name: 'Team 1',
           index: 0,
           totalRuns: teamIndex === 0 ? prevState[0].totalRuns + runs : prevState[0].totalRuns,
-          totalWickets:
+          totalWicketsConceded:
             teamIndex === 0
-              ? prevState[0].totalWickets + (action === 'Wicket' ? 1 : 0)
-              : prevState[0].totalWickets,
+              ? prevState[0].totalWicketsConceded + (action === 'Wicket' ? 1 : 0)
+              : prevState[0].totalWicketsConceded,
+          totalWicketsTaken: prevState[0].totalWicketsTaken,
           overs: teamIndex === 0 && endOfOver ? prevState[0].overs + 1 : prevState[0].overs,
           currentBattingTeam: !endOfInnings
             ? prevState[0].currentBattingTeam
@@ -226,10 +233,11 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           name: 'Team 2',
           index: 1,
           totalRuns: teamIndex === 1 ? prevState[1].totalRuns + runs : prevState[1].totalRuns,
-          totalWickets:
+          totalWicketsConceded:
             teamIndex === 1
-              ? prevState[1].totalWickets + (action === 'Wicket' ? 1 : 0)
-              : prevState[1].totalWickets,
+              ? prevState[1].totalWicketsConceded + (action === 'Wicket' ? 1 : 0)
+              : prevState[1].totalWicketsConceded,
+          totalWicketsTaken: prevState[0].totalWicketsTaken,
           overs: teamIndex === 1 && endOfOver ? prevState[1].overs + 1 : prevState[1].overs,
           currentBattingTeam: !endOfInnings
             ? prevState[1].currentBattingTeam
@@ -258,7 +266,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           name: 'Team 1',
           index: 0,
           totalRuns: prevState[0].totalRuns,
-          totalWickets: prevState[0].totalWickets,
+          totalWicketsConceded: prevState[0].totalWicketsConceded,
+          totalWicketsTaken: prevState[0].totalWicketsTaken,
           overs: prevState[0].overs,
           currentBattingTeam: prevState[0].currentBattingTeam,
           finishedBatting: prevState[0].finishedBatting
@@ -274,7 +283,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           name: 'Team 2',
           index: 1,
           totalRuns: prevState[1].totalRuns,
-          totalWickets: prevState[1].totalWickets,
+          totalWicketsConceded: prevState[1].totalWicketsConceded,
+          totalWicketsTaken: prevState[0].totalWicketsTaken,
           overs: prevState[1].overs,
           currentBattingTeam: prevState[1].currentBattingTeam,
           finishedBatting: prevState[1].finishedBatting

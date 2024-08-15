@@ -246,7 +246,8 @@ describe('GameScoreProvider', () => {
             name: 'Team 1',
             index: 0,
             totalRuns: 32,
-            totalWickets: 2,
+            totalWicketsConceded: 2,
+            totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
             finishedBatting: false
@@ -267,7 +268,8 @@ describe('GameScoreProvider', () => {
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0,
+            totalWicketsConceded: 0,
+            totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
             finishedBatting: false
@@ -341,7 +343,8 @@ describe('GameScoreProvider', () => {
             name: 'Team 1',
             index: 0,
             totalRuns: 32,
-            totalWickets: 2,
+            totalWicketsConceded: 2,
+            totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
             finishedBatting: false
@@ -362,7 +365,8 @@ describe('GameScoreProvider', () => {
             name: 'Team 2',
             index: 1,
             totalRuns: 0,
-            totalWickets: 0,
+            totalWicketsConceded: 0,
+            totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
             finishedBatting: false
@@ -472,7 +476,8 @@ describe('GameScoreProvider', () => {
           name: 'Team 1',
           index: 0,
           totalRuns: 0,
-          totalWickets: 0,
+          totalWicketsConceded: 0,
+          totalWicketsTaken: 0,
           overs: 0,
           currentBattingTeam: true,
           finishedBatting: false
@@ -493,7 +498,8 @@ describe('GameScoreProvider', () => {
           name: 'Team 2',
           index: 1,
           totalRuns: 0,
-          totalWickets: 0,
+          totalWicketsConceded: 0,
+          totalWicketsTaken: 0,
           overs: 0,
           currentBattingTeam: false,
           finishedBatting: false
@@ -574,7 +580,8 @@ describe('GameScoreProvider', () => {
         name: 'Team 1',
         index: 0,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
         finishedBatting: false
@@ -595,7 +602,8 @@ describe('GameScoreProvider', () => {
         name: 'Team 2',
         index: 1,
         totalRuns: 0,
-        totalWickets: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
         finishedBatting: false
