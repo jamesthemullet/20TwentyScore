@@ -12,6 +12,7 @@ const gameScore = [
         index: 0,
         runs: 0,
         currentStriker: true,
+        currentBowler: false,
         allActions: [],
         onTheCrease: true,
         currentNonStriker: false,
@@ -22,6 +23,7 @@ const gameScore = [
         index: 1,
         runs: 0,
         currentStriker: false,
+        currentBowler: false,
         allActions: [],
         onTheCrease: true,
         currentNonStriker: true,
@@ -35,6 +37,7 @@ const gameScore = [
     totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: true,
+    currentBowlingTeam: false,
     finishedBatting: false
   },
   {
@@ -46,6 +49,7 @@ const gameScore = [
     totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: false,
+    currentBowlingTeam: true,
     finishedBatting: false
   }
 ] as GameScore;
@@ -445,6 +449,7 @@ describe('Scoring Component', () => {
             index: undefined,
             runs: 0,
             currentStriker: true,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
@@ -455,6 +460,7 @@ describe('Scoring Component', () => {
             index: 1,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
@@ -468,6 +474,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: false
       },
       {
@@ -479,6 +486,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: false
       }
     ] as GameScore;
@@ -525,6 +533,7 @@ describe('Scoring Component', () => {
             index: 0,
             runs: 0,
             currentStriker: true,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
@@ -535,6 +544,7 @@ describe('Scoring Component', () => {
             index: 1,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
@@ -548,6 +558,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: false
       },
       {
@@ -559,6 +570,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: false
       }
     ] as GameScore;
@@ -605,6 +617,7 @@ describe('Scoring Component', () => {
             index: 0,
             runs: 0,
             currentStriker: true,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
@@ -615,6 +628,7 @@ describe('Scoring Component', () => {
             index: 1,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
@@ -628,6 +642,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 19,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: false
       },
       {
@@ -639,6 +654,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: false
       }
     ] as GameScore;
@@ -688,6 +704,7 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
+            currentBowler: false,
             status: 'Not out'
           },
           {
@@ -698,6 +715,7 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
+            currentBowler: false,
             status: 'Not out'
           }
         ],
@@ -708,6 +726,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 19,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: true
       },
       {
@@ -719,6 +738,7 @@ describe('Scoring Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: true
       }
     ] as GameScore;

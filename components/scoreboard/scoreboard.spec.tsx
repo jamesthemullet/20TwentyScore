@@ -129,6 +129,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: true,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
@@ -139,6 +140,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 0,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
@@ -149,6 +151,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
@@ -159,6 +162,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
@@ -172,6 +176,7 @@ describe('Scoreboard Component', () => {
             totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
+            currentBowlingTeam: false,
             finishedBatting: false
           },
           {
@@ -181,6 +186,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 0,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
@@ -194,6 +200,7 @@ describe('Scoreboard Component', () => {
             totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
+            currentBowlingTeam: true,
             finishedBatting: false
           }
         ]);
@@ -242,6 +249,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: true,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
@@ -252,6 +260,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 0,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
@@ -262,6 +271,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
@@ -272,6 +282,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
@@ -285,6 +296,7 @@ describe('Scoreboard Component', () => {
             totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
+            currentBowlingTeam: false,
             finishedBatting: true
           },
           {
@@ -294,6 +306,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 0,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
@@ -307,6 +320,7 @@ describe('Scoreboard Component', () => {
             totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
+            currentBowlingTeam: true,
             finishedBatting: true
           }
         ]);
@@ -340,6 +354,7 @@ describe('Scoreboard Component', () => {
             index: 0,
             runs: 10,
             currentStriker: true,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
@@ -350,6 +365,7 @@ describe('Scoreboard Component', () => {
             index: 0,
             runs: 0,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
@@ -360,6 +376,7 @@ describe('Scoreboard Component', () => {
             index: 0,
             runs: 10,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
@@ -370,6 +387,7 @@ describe('Scoreboard Component', () => {
             index: 0,
             runs: 10,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
@@ -383,6 +401,7 @@ describe('Scoreboard Component', () => {
         totalWicketsTaken: 0,
         overs: 5,
         currentBattingTeam: true,
+        currentBowlingTeam: false,
         finishedBatting: true
       },
       {
@@ -392,6 +411,7 @@ describe('Scoreboard Component', () => {
             index: 0,
             runs: 30,
             currentStriker: false,
+            currentBowler: false,
             allActions: [],
             onTheCrease: false,
             currentNonStriker: true,
@@ -405,6 +425,7 @@ describe('Scoreboard Component', () => {
         totalWicketsTaken: 0,
         overs: 0,
         currentBattingTeam: false,
+        currentBowlingTeam: true,
         finishedBatting: true
       }
     ] as GameScore;
@@ -440,6 +461,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: true,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
@@ -450,6 +472,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 0,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
@@ -460,6 +483,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
@@ -470,6 +494,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 10,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
@@ -483,6 +508,7 @@ describe('Scoreboard Component', () => {
             totalWicketsTaken: 0,
             overs: 5,
             currentBattingTeam: true,
+            currentBowlingTeam: false,
             finishedBatting: false
           },
           {
@@ -492,6 +518,7 @@ describe('Scoreboard Component', () => {
                 index: 0,
                 runs: 0,
                 currentStriker: false,
+                currentBowler: false,
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
@@ -505,6 +532,7 @@ describe('Scoreboard Component', () => {
             totalWicketsTaken: 0,
             overs: 0,
             currentBattingTeam: false,
+            currentBowlingTeam: true,
             finishedBatting: false
           }
         ]);

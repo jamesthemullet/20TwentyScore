@@ -40,6 +40,7 @@ const gameScore = [
     totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: true,
+    currentBowlingTeam: false,
     finishedBatting: false
   },
   {
@@ -51,6 +52,7 @@ const gameScore = [
     totalWicketsTaken: 0,
     overs: 0,
     currentBattingTeam: false,
+    currentBowlingTeam: true,
     finishedBatting: false
   }
 ] as GameScore;

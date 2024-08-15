@@ -8,6 +8,7 @@ type TeamPlayer = {
   currentStriker: boolean;
   allActions: (string | null)[];
   currentNonStriker: boolean;
+  currentBowler: boolean;
   onTheCrease: boolean;
   status: string;
 };
@@ -22,6 +23,7 @@ export type GameScore = [
     totalWicketsTaken: number;
     overs: number;
     currentBattingTeam: boolean;
+    currentBowlingTeam: boolean;
     finishedBatting: boolean;
   },
   {
@@ -33,6 +35,7 @@ export type GameScore = [
     totalWicketsTaken: number;
     overs: number;
     currentBattingTeam: boolean;
+    currentBowlingTeam: boolean;
     finishedBatting: boolean;
   }
 ];
@@ -71,6 +74,7 @@ export const GameScoreContext = createContext<GameScoreContextType>({
       totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: true,
+      currentBowlingTeam: false,
       finishedBatting: false
     },
     {
@@ -82,6 +86,7 @@ export const GameScoreContext = createContext<GameScoreContextType>({
       totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: false,
+      currentBowlingTeam: true,
       finishedBatting: false
     }
   ],
@@ -109,6 +114,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: true,
+      currentBowlingTeam: false,
       finishedBatting: false
     },
     {
@@ -120,6 +126,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       totalWicketsTaken: 0,
       overs: 0,
       currentBattingTeam: false,
+      currentBowlingTeam: true,
       finishedBatting: false
     }
   ]);
@@ -223,6 +230,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           currentBattingTeam: !endOfInnings
             ? prevState[0].currentBattingTeam
             : !prevState[0].currentBattingTeam,
+          currentBowlingTeam: prevState[0].currentBowlingTeam,
           finishedBatting: prevState[0].finishedBatting || (teamIndex === 0 && endOfInnings)
         },
         {
@@ -237,11 +245,12 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             teamIndex === 1
               ? prevState[1].totalWicketsConceded + (action === 'Wicket' ? 1 : 0)
               : prevState[1].totalWicketsConceded,
-          totalWicketsTaken: prevState[0].totalWicketsTaken,
+          totalWicketsTaken: prevState[1].totalWicketsTaken,
           overs: teamIndex === 1 && endOfOver ? prevState[1].overs + 1 : prevState[1].overs,
           currentBattingTeam: !endOfInnings
             ? prevState[1].currentBattingTeam
             : !prevState[1].currentBattingTeam,
+          currentBowlingTeam: prevState[1].currentBowlingTeam,
           finishedBatting: prevState[1].finishedBatting || (teamIndex === 1 && endOfInnings)
         }
       ];
@@ -270,6 +279,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           totalWicketsTaken: prevState[0].totalWicketsTaken,
           overs: prevState[0].overs,
           currentBattingTeam: prevState[0].currentBattingTeam,
+          currentBowlingTeam: prevState[0].currentBowlingTeam,
           finishedBatting: prevState[0].finishedBatting
         },
         {
@@ -287,6 +297,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           totalWicketsTaken: prevState[0].totalWicketsTaken,
           overs: prevState[1].overs,
           currentBattingTeam: prevState[1].currentBattingTeam,
+          currentBowlingTeam: prevState[1].currentBowlingTeam,
           finishedBatting: prevState[1].finishedBatting
         }
       ];
