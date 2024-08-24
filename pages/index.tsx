@@ -14,7 +14,7 @@ type Props = {
   feed: PostProps[];
 };
 
-const Index: React.FC<Props> = (props) => {
+const Index: React.FC<Props> = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedTeamIndex, setSelectedTeamIndex] = useState<number | null>(null);
 

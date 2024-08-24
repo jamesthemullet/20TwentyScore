@@ -135,7 +135,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 2',
@@ -147,7 +148,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 3',
@@ -159,7 +161,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 4',
@@ -171,7 +174,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 1',
@@ -196,7 +200,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 2',
@@ -260,7 +265,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 2',
@@ -272,7 +278,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 3',
@@ -284,7 +291,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 4',
@@ -296,7 +304,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 1',
@@ -321,7 +330,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 2',
@@ -370,7 +380,8 @@ describe('Scoreboard Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 2',
@@ -382,7 +393,8 @@ describe('Scoreboard Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 3',
@@ -394,7 +406,8 @@ describe('Scoreboard Component', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 4',
@@ -406,7 +419,8 @@ describe('Scoreboard Component', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 1',
@@ -431,7 +445,8 @@ describe('Scoreboard Component', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: true,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 2',
@@ -483,7 +498,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 2',
@@ -495,7 +511,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: true,
                 currentNonStriker: true,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 3',
@@ -507,7 +524,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 4',
@@ -519,7 +537,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 1',
@@ -544,7 +563,8 @@ describe('Scoreboard Component', () => {
                 allActions: [],
                 onTheCrease: false,
                 currentNonStriker: true,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 2',

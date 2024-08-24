@@ -17,7 +17,8 @@ const gameScore = [
         allActions: [],
         onTheCrease: true,
         currentNonStriker: false,
-        status: 'Not out'
+        status: 'Not out',
+        methodOfWicket: null
       },
       {
         name: 'Player 2',
@@ -29,7 +30,8 @@ const gameScore = [
         allActions: [],
         onTheCrease: true,
         currentNonStriker: true,
-        status: 'Not out'
+        status: 'Not out',
+        methodOfWicket: null
       }
     ],
     name: 'Team 1',
@@ -54,7 +56,8 @@ const gameScore = [
         allActions: [],
         onTheCrease: true,
         currentNonStriker: false,
-        status: 'Not out'
+        status: 'Not out',
+        methodOfWicket: null
       }
     ],
     name: 'Team 2',
@@ -142,7 +145,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
     expect(setBattingPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, null, false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, null, false, false, null);
   });
 
   it('should call setBattingPlayerScore when the 6 runs button is clicked', () => {
@@ -164,7 +167,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
     expect(setBattingPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 6, null, false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 6, null, false, false, null);
   });
 
   it('should call setBattingPlayerScore when the wicket button is clicked', () => {
@@ -185,8 +188,14 @@ describe('Scoring Component', () => {
     act(() => {
       fireEvent.click(button);
     });
+
+    const caughtButton = screen.getByRole('button', { name: 'Caught' });
+    act(() => {
+      fireEvent.click(caughtButton);
+    });
+
     expect(setBattingPlayerScore).toHaveBeenCalledTimes(1);
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, false, 'Caught');
   });
 
   it('should set next ball action to disabled by default', () => {
@@ -280,7 +289,7 @@ describe('Scoring Component', () => {
       fireEvent.click(nextBallButton);
     });
 
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 3, 'Next Ball', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 3, 'Next Ball', false, false, null);
   });
 
   it('should add 1 to the current ball in over, when balls in over is less than 6, not including extras', () => {
@@ -427,7 +436,7 @@ describe('Scoring Component', () => {
     });
 
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'Wide', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'Wide', false, false, null);
   });
 
   it('should increase extras if no ball is clicked', () => {
@@ -464,7 +473,7 @@ describe('Scoring Component', () => {
     });
 
     expect(setCurrentExtrasInThisOver).toHaveBeenCalledWith(1);
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'No Ball', false, false);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 1, 'No Ball', false, false, null);
   });
 
   it('should not call setBattingPlayerScore if playerIndex is undefined', () => {
@@ -484,7 +493,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 2',
@@ -496,7 +506,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 1',
@@ -521,7 +532,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 2',
@@ -584,7 +596,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 2',
@@ -596,7 +609,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 1',
@@ -621,7 +635,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 2',
@@ -664,7 +679,12 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, true);
+    const caughtButton = screen.getByRole('button', { name: /Caught/i });
+    act(() => {
+      fireEvent.click(caughtButton);
+    });
+
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 0, 'Wicket', false, true, 'Caught');
   });
 
   it('should call end of innings on the last ball of the 20th over', () => {
@@ -684,7 +704,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 2',
@@ -696,7 +717,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 1',
@@ -721,7 +743,8 @@ describe('Scoring Component', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 2',
@@ -764,7 +787,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 4, null, true, true);
+    expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 4, null, true, true, null);
   });
 
   it('should set all buttons to disabled when the game is finished', () => {
@@ -784,7 +807,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: false,
             currentBowler: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 2',
@@ -796,7 +820,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: true,
             currentBowler: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 1',

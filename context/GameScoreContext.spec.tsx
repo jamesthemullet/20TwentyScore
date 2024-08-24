@@ -42,7 +42,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(1, 0, 4, null, false, false);
+        setBattingPlayerScore(1, 0, 4, null, false, false, null);
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -60,8 +60,8 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(1, 0, 4, null, false, false);
-        setBattingPlayerScore(1, 0, 0, 'Wicket', false, false);
+        setBattingPlayerScore(1, 0, 4, null, false, false, null);
+        setBattingPlayerScore(1, 0, 0, 'Wicket', false, false, 'LBW');
       }, []);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
@@ -79,7 +79,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(0, 0, 0, 'Wicket', true, false);
+        setBattingPlayerScore(0, 0, 0, 'Wicket', true, false, 'LBW');
       }, []);
 
       return (
@@ -124,8 +124,8 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(0, 0, 1, null, false, false);
-        setBattingPlayerScore(0, 0, 1, null, false, false);
+        setBattingPlayerScore(0, 0, 1, null, false, false, null);
+        setBattingPlayerScore(0, 0, 1, null, false, false, null);
       }, []);
 
       return (
@@ -163,7 +163,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(1, 11, 10, null, false, false);
+        setBattingPlayerScore(1, 11, 10, null, false, false, null);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -181,7 +181,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(555, 0, 10, null, false, false);
+        setBattingPlayerScore(555, 0, 10, null, false, false, null);
       }, []);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
@@ -212,7 +212,8 @@ describe('GameScoreProvider', () => {
                 onTheCrease: true,
                 currentNonStriker: false,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 2',
@@ -224,10 +225,11 @@ describe('GameScoreProvider', () => {
                 onTheCrease: true,
                 currentNonStriker: true,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
-                name: 'Player 1',
+                name: 'Player 3',
                 index: 0,
                 runs: 10,
                 wicketsTaken: 0,
@@ -236,10 +238,11 @@ describe('GameScoreProvider', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
-                name: 'Player 1',
+                name: 'Player 4',
                 index: 0,
                 runs: 10,
                 wicketsTaken: 0,
@@ -248,7 +251,8 @@ describe('GameScoreProvider', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 1',
@@ -273,7 +277,8 @@ describe('GameScoreProvider', () => {
                 onTheCrease: false,
                 currentNonStriker: true,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 2',
@@ -321,7 +326,8 @@ describe('GameScoreProvider', () => {
                 onTheCrease: true,
                 currentNonStriker: false,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
                 name: 'Player 2',
@@ -333,10 +339,11 @@ describe('GameScoreProvider', () => {
                 onTheCrease: true,
                 currentNonStriker: true,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
-                name: 'Player 1',
+                name: 'Player 3',
                 index: 0,
                 runs: 10,
                 wicketsTaken: 0,
@@ -345,10 +352,11 @@ describe('GameScoreProvider', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               },
               {
-                name: 'Player 1',
+                name: 'Player 4',
                 index: 0,
                 runs: 10,
                 wicketsTaken: 0,
@@ -357,7 +365,8 @@ describe('GameScoreProvider', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 1',
@@ -382,7 +391,8 @@ describe('GameScoreProvider', () => {
                 onTheCrease: false,
                 currentNonStriker: true,
                 currentBowler: false,
-                status: 'Not out'
+                status: 'Not out',
+                methodOfWicket: null
               }
             ],
             name: 'Team 2',
@@ -413,7 +423,7 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(0, 0, 10, 'Wicket', false, false);
+        setBattingPlayerScore(0, 0, 10, 'Wicket', false, false, 'LBW');
       }, []);
 
       return (
@@ -467,7 +477,8 @@ describe('GameScoreProvider', () => {
               onTheCrease: true,
               currentNonStriker: false,
               currentBowler: false,
-              status: 'Not out'
+              status: 'Not out',
+              methodOfWicket: null
             },
             {
               name: 'Player 2',
@@ -479,7 +490,8 @@ describe('GameScoreProvider', () => {
               onTheCrease: true,
               currentNonStriker: true,
               currentBowler: false,
-              status: 'Not out'
+              status: 'Not out',
+              methodOfWicket: null
             },
             {
               name: 'Player 3',
@@ -491,7 +503,8 @@ describe('GameScoreProvider', () => {
               onTheCrease: false,
               currentNonStriker: false,
               currentBowler: false,
-              status: 'Not out'
+              status: 'Not out',
+              methodOfWicket: null
             },
             {
               name: 'Player 4',
@@ -503,7 +516,8 @@ describe('GameScoreProvider', () => {
               onTheCrease: false,
               currentNonStriker: false,
               currentBowler: false,
-              status: 'Not out'
+              status: 'Not out',
+              methodOfWicket: null
             }
           ],
           name: 'Team 1',
@@ -528,7 +542,8 @@ describe('GameScoreProvider', () => {
               onTheCrease: false,
               currentNonStriker: true,
               currentBowler: false,
-              status: 'Not out'
+              status: 'Not out',
+              methodOfWicket: null
             }
           ],
           name: 'Team 2',
@@ -552,7 +567,8 @@ describe('GameScoreProvider', () => {
         allActions: [],
         onTheCrease: true,
         currentNonStriker: false,
-        status: 'Not out'
+        status: 'Not out',
+        methodOfWicket: null
       };
       const currentNonStriker = {
         name: 'Player 2',
@@ -565,9 +581,10 @@ describe('GameScoreProvider', () => {
         allActions: [],
         onTheCrease: true,
         currentNonStriker: true,
-        status: 'Not out'
+        status: 'Not out',
+        methodOfWicket: null
       };
-      setBattingPlayerScore(0, 0, 10, null, false, false);
+      setBattingPlayerScore(0, 0, 10, null, false, false, null);
       swapBatsmen(currentStriker, currentNonStriker);
 
       return null;
@@ -588,7 +605,8 @@ describe('GameScoreProvider', () => {
             onTheCrease: true,
             currentNonStriker: false,
             currentBowler: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 2',
@@ -600,7 +618,8 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 3',
@@ -612,7 +631,8 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 4',
@@ -624,7 +644,8 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 1',
@@ -649,7 +670,8 @@ describe('GameScoreProvider', () => {
             onTheCrease: false,
             currentNonStriker: true,
             currentBowler: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 2',
@@ -674,9 +696,9 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(0, 0, 1, null, false, false);
-        setBattingPlayerScore(0, 0, 4, null, false, false);
-        setBattingPlayerScore(0, 0, 1, 'No ball', false, false);
+        setBattingPlayerScore(0, 0, 1, null, false, false, null);
+        setBattingPlayerScore(0, 0, 4, null, false, false, null);
+        setBattingPlayerScore(0, 0, 1, 'No ball', false, false, null);
       }, []);
 
       return <div>{gameScore[0].players[0]?.allActions.join(', ')}</div>;

@@ -11,7 +11,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: true,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 1,
@@ -24,7 +25,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: true,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 2,
@@ -37,7 +39,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 3,
@@ -50,7 +53,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 4,
@@ -63,7 +67,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 5,
@@ -76,7 +81,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 6,
@@ -89,7 +95,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 7,
@@ -102,7 +109,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 8,
@@ -115,7 +123,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 9,
@@ -128,7 +137,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     },
     {
       index: 10,
@@ -141,7 +151,8 @@ const defaultPlayers = () => {
       isOut: false,
       allActions: [],
       onTheCrease: false,
-      status: 'Not out'
+      status: 'Not out',
+      methodOfWicket: null
     }
   ];
 };
