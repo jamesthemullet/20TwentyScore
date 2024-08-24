@@ -12,6 +12,7 @@ type TeamPlayer = {
   currentBowler: boolean;
   onTheCrease: boolean;
   status: string;
+  methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null;
 };
 
 export type GameScore = [
@@ -55,7 +56,8 @@ type GameScoreContextType = {
     runs: number,
     action: string | null,
     endOfOver: boolean,
-    endOfInnings: boolean
+    endOfInnings: boolean,
+    methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null
   ) => void;
   setBowlingPlayerScore: (teamIndex: number, playerIndex: number, action: string | null) => void;
   swapBatsmen: (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => void;
@@ -155,7 +157,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     playerIndex: number,
     runs: number,
     action: string | null,
-    endOfOver: boolean
+    endOfOver: boolean,
+    methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null
   ) => {
     const player = teamPlayers.find((player) => player.index === playerIndex);
 
@@ -173,10 +176,14 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         : player
     );
 
+    console.log(31, updatedTeamPlayers);
+
     if (action === 'Wicket') {
       updatedTeamPlayers[playerIndex].status = 'Out';
       updatedTeamPlayers[playerIndex].onTheCrease = false;
       updatedTeamPlayers[playerIndex].currentStriker = false;
+      updatedTeamPlayers[playerIndex].currentNonStriker = false;
+      updatedTeamPlayers[playerIndex].methodOfWicket = methodOfWicket;
 
       const nextPlayer = updatedTeamPlayers.find(
         (player) => player.status !== 'Out' && !player.onTheCrease
@@ -205,6 +212,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       }
       swapBatsmen(currentStriker, currentNonStriker);
     }
+
+    console.log(35, updatedTeamPlayers);
 
     return updatedTeamPlayers;
   };
@@ -237,12 +246,14 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     runs: number,
     action: string | null,
     endOfOver: boolean,
-    endOfInnings: boolean
+    endOfInnings: boolean,
+    methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null
   ) => {
     if (teamIndex < 0 || teamIndex > 1) {
       return;
     }
     setGameScoreState((prevState: GameScore) => {
+      console.log(32, prevState);
       return [
         {
           players:
@@ -252,7 +263,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
                   playerIndex,
                   runs,
                   action,
-                  endOfOver
+                  endOfOver,
+                  methodOfWicket
                 )
               : prevState[0].players,
           name: 'Team 1',
@@ -278,7 +290,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
                   playerIndex,
                   runs,
                   action,
-                  endOfOver
+                  endOfOver,
+                  methodOfWicket
                 )
               : prevState[1].players,
           name: 'Team 2',
@@ -311,7 +324,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           players:
             teamIndex === 0
               ? prevState[0].players
-              : updateTeamScoreForBowling(prevState[1].players, playerIndex, action),
+              : updateTeamScoreForBowling(prevState[0].players, playerIndex, action),
           totalWicketsTaken:
             teamIndex === 1
               ? prevState[0].totalWicketsTaken + (action === 'Wicket' ? 1 : 0)

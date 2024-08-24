@@ -54,6 +54,8 @@ const Scoreboard = ({ handleShowTeam }: ScoreboardProps) => {
   const team1 = gameScore[0];
   const team2 = gameScore[1];
 
+  console.log(30, gameScore);
+
   const isGameADraw = () =>
     team1.totalRuns === team2.totalRuns && team1.finishedBatting && team2.finishedBatting;
 

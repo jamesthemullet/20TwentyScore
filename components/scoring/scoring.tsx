@@ -10,6 +10,7 @@ import { StyledHeading2 } from '../core/heading';
 const Scoring = () => {
   const [countRuns, setCountRuns] = useState(0);
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
+  const [awaitingMethodOfWicket, setAwaitingMethodOfWicket] = useState(false);
 
   const { setBattingPlayerScore, gameScore, swapBatsmen, setBowlingPlayerScore } = useGameScore();
   const { setMostRecentAction } = useMostRecentAction();
@@ -51,7 +52,8 @@ const Scoring = () => {
   const handleScoreClick = (
     playerIndex: number | undefined,
     runs: number,
-    action: null | string
+    action: null | string,
+    methodOfWicket?: 'LBW' | 'Caught' | 'Run Out'
   ) => {
     if (playerIndex === undefined) {
       return;
@@ -63,7 +65,7 @@ const Scoring = () => {
     } else if (action === 'Next Ball') {
       updateGame(currentBattingTeamIndex, playerIndex, countRuns, action);
     } else {
-      updateGame(currentBattingTeamIndex, playerIndex, runs, action);
+      updateGame(currentBattingTeamIndex, playerIndex, runs, action, methodOfWicket);
     }
     setCountRuns(0);
     updateOver(action);
@@ -87,6 +89,7 @@ const Scoring = () => {
       }
     } else {
       setCurrentBallInThisOver(null);
+      setAwaitingMethodOfWicket(false);
     }
 
     if (endOfInnings(action)) {
@@ -98,7 +101,8 @@ const Scoring = () => {
     currentBattingTeamIndex: number,
     currentStriker: number,
     runs: number,
-    action: null | string
+    action: null | string,
+    methodOfWicket?: 'LBW' | 'Caught' | 'Run Out'
   ) => {
     setBattingPlayerScore(
       currentBattingTeamIndex,
@@ -106,7 +110,8 @@ const Scoring = () => {
       runs,
       action,
       endOfOver(),
-      endOfInnings(action)
+      endOfInnings(action),
+      methodOfWicket || null
     );
     setBowlingPlayerScore(currentBowlingTeamIndex, currentBowler.index, action);
     setMostRecentAction({ runs, action });
@@ -117,51 +122,74 @@ const Scoring = () => {
       <StyledHeading2>Scoring</StyledHeading2>
       <ScoringGrid>
         <SquareButton
-          disabled={endOfGame()}
+          disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 0, null)}>
           0
         </SquareButton>
         <SquareButton
-          disabled={endOfGame()}
+          disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, null)}>
           1 & next ball
         </SquareButton>
         <SquareButton
-          disabled={endOfGame()}
+          disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'wait')}>
           1+
         </SquareButton>
         <SquareButton
-          disabled={endOfGame()}
+          disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 4, null)}>
           4
         </SquareButton>
         <SquareButton
-          disabled={endOfGame()}
+          disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 6, null)}>
           6
         </SquareButton>
         <SquareButton
-          disabled={endOfGame()}
-          onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket')}>
-          Wicket
-        </SquareButton>
-        <SquareButton
-          disabled={endOfGame()}
+          disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'No Ball')}>
           No Ball
         </SquareButton>
         <SquareButton
-          disabled={endOfGame()}
+          disabled={endOfGame() || awaitingMethodOfWicket}
+          onClick={() => setAwaitingMethodOfWicket(true)}>
+          Wicket
+        </SquareButton>
+        <SquareButton
+          disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'Wide')}>
           Wide
         </SquareButton>
         <SquareButton
-          disabled={nextRunButtonDisabled || endOfGame()}
+          disabled={nextRunButtonDisabled || endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
           Next Ball
         </SquareButton>
       </ScoringGrid>
+      {awaitingMethodOfWicket && (
+        <>
+          {' '}
+          <StyledHeading2>Method Of Wicket</StyledHeading2>
+          <ScoringGrid>
+            <SquareButton
+              disabled={endOfGame()}
+              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'LBW')}>
+              LBW
+            </SquareButton>
+            <SquareButton
+              disabled={endOfGame()}
+              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Caught')}>
+              Caught
+            </SquareButton>
+            <SquareButton
+              disabled={endOfGame()}
+              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Run Out')}>
+              Run Out
+            </SquareButton>
+          </ScoringGrid>
+        </>
+      )}
     </HomeContainer>
   );
 };
@@ -171,6 +199,7 @@ const ScoringGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
+  margin-bottom: 20px;
 `;
 
 export default Scoring;
