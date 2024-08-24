@@ -605,7 +605,8 @@ describe('GameScoreProvider', () => {
             onTheCrease: true,
             currentNonStriker: false,
             currentBowler: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 2',
@@ -617,7 +618,8 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: true,
             currentNonStriker: true,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 3',
@@ -629,7 +631,8 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           },
           {
             name: 'Player 4',
@@ -641,7 +644,8 @@ describe('GameScoreProvider', () => {
             allActions: [],
             onTheCrease: false,
             currentNonStriker: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 1',
@@ -666,7 +670,8 @@ describe('GameScoreProvider', () => {
             onTheCrease: false,
             currentNonStriker: true,
             currentBowler: false,
-            status: 'Not out'
+            status: 'Not out',
+            methodOfWicket: null
           }
         ],
         name: 'Team 2',
