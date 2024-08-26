@@ -61,6 +61,7 @@ type GameScoreContextType = {
   ) => void;
   setBowlingPlayerScore: (teamIndex: number, playerIndex: number, action: string | null) => void;
   swapBatsmen: (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => void;
+  setCurrentBowler: (teamIndex: number, playerIndex: number) => void;
 };
 
 type GameScoreProviderProps = {
@@ -109,6 +110,10 @@ export const GameScoreContext = createContext<GameScoreContextType>({
   swapBatsmen: () => {
     // eslint-disable-next-line no-console
     console.log('Initial swapBatsmen called');
+  },
+  setCurrentBowler: () => {
+    // eslint-disable-next-line no-console
+    console.log('Initial setCurrentBowler called');
   }
 });
 
@@ -392,6 +397,34 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     });
   };
 
+  const setCurrentBowler = (teamIndex: number, playerIndex: number) => {
+    // update the current bowler
+    setGameScoreState((prevState: GameScore) => {
+      return [
+        teamIndex === 0
+          ? {
+              ...prevState[0],
+              players: prevState[0].players.map((player) =>
+                player.index === playerIndex
+                  ? { ...player, currentBowler: true }
+                  : { ...player, currentBowler: false }
+              )
+            }
+          : prevState[0],
+        teamIndex === 1
+          ? {
+              ...prevState[1],
+              players: prevState[1].players.map((player) =>
+                player.index === playerIndex
+                  ? { ...player, currentBowler: true }
+                  : { ...player, currentBowler: false }
+              )
+            }
+          : prevState[1]
+      ];
+    });
+  };
+
   return (
     <GameScoreContext.Provider
       value={{
@@ -399,7 +432,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         setGameScore,
         setBattingPlayerScore,
         setBowlingPlayerScore,
-        swapBatsmen
+        swapBatsmen,
+        setCurrentBowler
       }}>
       {children}
     </GameScoreContext.Provider>
