@@ -11,7 +11,8 @@ describe('Player', () => {
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
-      status: 'Not out'
+      status: 'Not out',
+      oversBowled: 0
     };
     render(<Player {...props} />);
     expect(screen.getByText('Player 2')).toBeVisible();
@@ -28,7 +29,8 @@ describe('Player', () => {
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
-      status: 'Not out'
+      status: 'Not out',
+      oversBowled: 0
     };
     render(<Player {...props} />);
     const editButton = screen.getByRole('button', { name: 'Edit player' });
@@ -48,7 +50,8 @@ describe('Player', () => {
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
-      status: 'Not out'
+      status: 'Not out',
+      oversBowled: 0
     };
     render(<Player {...props} />);
     const editButton = screen.getByRole('button', { name: 'Edit player' });
@@ -76,7 +79,8 @@ describe('Player', () => {
       currentStriker: true,
       allActions: [],
       currentNonStriker: false,
-      status: 'Not out'
+      status: 'Not out',
+      oversBowled: 0
     };
     render(<Player {...props} />);
     expect(screen.getByTitle('Current striker')).toBeVisible();
@@ -90,7 +94,8 @@ describe('Player', () => {
       currentStriker: false,
       allActions: [],
       currentNonStriker: false,
-      status: 'Not out'
+      status: 'Not out',
+      oversBowled: 0
     };
     render(<Player {...props} />);
     expect(screen.queryByTitle('logo')).not.toBeInTheDocument();
@@ -104,7 +109,8 @@ describe('Player', () => {
       currentStriker: false,
       allActions: [],
       currentNonStriker: true,
-      status: 'Not out'
+      status: 'Not out',
+      oversBowled: 0
     };
     render(<Player {...props} />);
     expect(screen.getByTitle('Current non striker')).toBeVisible();
