@@ -18,7 +18,8 @@ const gameScore = [
         onTheCrease: true,
         currentNonStriker: false,
         status: 'Not out',
-        methodOfWicket: null
+        methodOfWicket: null,
+        oversBowled: 0
       },
       {
         name: 'Player 2',
@@ -31,7 +32,8 @@ const gameScore = [
         onTheCrease: true,
         currentNonStriker: true,
         status: 'Not out',
-        methodOfWicket: null
+        methodOfWicket: null,
+        oversBowled: 0
       }
     ],
     name: 'Team 1',
@@ -57,7 +59,8 @@ const gameScore = [
         onTheCrease: true,
         currentNonStriker: false,
         status: 'Not out',
-        methodOfWicket: null
+        methodOfWicket: null,
+        oversBowled: 0
       }
     ],
     name: 'Team 2',
@@ -76,6 +79,7 @@ const setBattingPlayerScore = jest.fn();
 const setBowlingPlayerScore = jest.fn();
 const setCurrentBallInThisOver = jest.fn();
 const setCurrentExtrasInThisOver = jest.fn();
+const setCurrentBowler = jest.fn();
 const setCurrentOvers = jest.fn();
 const swapBatsmen = jest.fn();
 const resetOvers = jest.fn();
@@ -92,6 +96,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -113,6 +118,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -134,6 +140,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -156,6 +163,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -178,6 +186,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -206,6 +215,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -227,6 +237,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -247,6 +258,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -270,6 +282,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Scoring />
@@ -302,6 +315,7 @@ describe('Scoring Component', () => {
           setGameScore,
           gameScore,
           setBattingPlayerScore,
+          setCurrentBowler,
           setBowlingPlayerScore,
           swapBatsmen
         }}>
@@ -339,6 +353,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -377,6 +392,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -413,6 +429,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -450,6 +467,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -494,7 +512,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           },
           {
             name: 'Player 2',
@@ -507,7 +526,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: true,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 1',
@@ -533,7 +553,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 2',
@@ -554,6 +575,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -597,7 +619,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           },
           {
             name: 'Player 2',
@@ -610,7 +633,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: true,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 1',
@@ -636,7 +660,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 2',
@@ -657,6 +682,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -718,7 +744,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: true,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 1',
@@ -744,7 +771,8 @@ describe('Scoring Component', () => {
             onTheCrease: true,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 2',
@@ -765,6 +793,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider
@@ -808,7 +837,8 @@ describe('Scoring Component', () => {
             currentNonStriker: false,
             currentBowler: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           },
           {
             name: 'Player 2',
@@ -821,7 +851,8 @@ describe('Scoring Component', () => {
             currentNonStriker: true,
             currentBowler: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 1',
@@ -854,6 +885,7 @@ describe('Scoring Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <OversContext.Provider

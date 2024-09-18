@@ -13,6 +13,7 @@ type TeamPlayer = {
   onTheCrease: boolean;
   status: string;
   methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null;
+  oversBowled: number;
 };
 
 export type GameScore = [
@@ -59,7 +60,12 @@ type GameScoreContextType = {
     endOfInnings: boolean,
     methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null
   ) => void;
-  setBowlingPlayerScore: (teamIndex: number, playerIndex: number, action: string | null) => void;
+  setBowlingPlayerScore: (
+    teamIndex: number,
+    playerIndex: number,
+    action: string | null,
+    endOfOver: boolean
+  ) => void;
   swapBatsmen: (currentStriker: TeamPlayer, currentNonStriker: TeamPlayer) => void;
   setCurrentBowler: (teamIndex: number, playerIndex: number) => void;
 };
@@ -226,7 +232,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
   const updateTeamScoreForBowling = (
     teamPlayers: TeamPlayer[],
     playerIndex: number,
-    action: string | null
+    action: string | null,
+    endOfOver: boolean
   ) => {
     const player = teamPlayers.find((player) => player.index === playerIndex);
 
@@ -239,7 +246,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         ? {
             ...player,
             wicketsTaken: player.wicketsTaken + (action === 'Wicket' ? 1 : 0),
-            allActions: [...player.allActions, action || '']
+            allActions: [...player.allActions, action || ''],
+            oversBowled: endOfOver ? player.oversBowled + 1 : player.oversBowled
           }
         : player
     );
@@ -318,7 +326,12 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
     });
   };
 
-  const setBowlingPlayerScore = (teamIndex: number, playerIndex: number, action: string | null) => {
+  const setBowlingPlayerScore = (
+    teamIndex: number,
+    playerIndex: number,
+    action: string | null,
+    endOfOver: boolean
+  ) => {
     if (teamIndex < 0 || teamIndex > 1) {
       return;
     }
@@ -329,7 +342,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           players:
             teamIndex === 0
               ? prevState[0].players
-              : updateTeamScoreForBowling(prevState[0].players, playerIndex, action),
+              : updateTeamScoreForBowling(prevState[0].players, playerIndex, action, endOfOver),
           totalWicketsTaken:
             teamIndex === 1
               ? prevState[0].totalWicketsTaken + (action === 'Wicket' ? 1 : 0)
@@ -339,7 +352,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           ...prevState[1],
           players:
             teamIndex === 1
-              ? updateTeamScoreForBowling(prevState[1].players, playerIndex, action)
+              ? updateTeamScoreForBowling(prevState[1].players, playerIndex, action, endOfOver)
               : prevState[1].players,
           totalWicketsTaken:
             teamIndex === 0

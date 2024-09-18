@@ -73,6 +73,7 @@ const Team = ({ teamIndex }: TeamProps) => {
               allActions={player.allActions}
               currentNonStriker={player.currentNonStriker && currentBattingTeamIndex === teamIndex}
               status={player.status}
+              oversBowled={player.oversBowled}
             />
           );
         })}

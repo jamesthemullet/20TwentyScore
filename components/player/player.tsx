@@ -10,6 +10,7 @@ type PlayerProps = {
   allActions: (string | null)[];
   currentNonStriker: boolean;
   status: string;
+  oversBowled: number;
 };
 
 export const Player = ({
@@ -18,7 +19,8 @@ export const Player = ({
   wicketsTaken,
   currentStriker,
   currentNonStriker,
-  status
+  status,
+  oversBowled
 }: PlayerProps) => {
   const [name, setName] = useState('Player ' + (index + 1));
   const [editPlayer, setEditPlayer] = useState(false);
@@ -85,6 +87,7 @@ export const Player = ({
       </PlayerName>
       <p>Runs: {runs}</p>
       <p>Wickets Taken: {wicketsTaken}</p>
+      <p>Overs Bowled: {oversBowled}</p>
       {currentStriker && (
         <Image
           alt=""

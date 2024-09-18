@@ -113,7 +113,7 @@ const Scoring = () => {
       endOfInnings(action),
       methodOfWicket || null
     );
-    setBowlingPlayerScore(currentBowlingTeamIndex, currentBowler.index, action);
+    setBowlingPlayerScore(currentBowlingTeamIndex, currentBowler.index, action, endOfOver());
     setMostRecentAction({ runs, action });
   };
 

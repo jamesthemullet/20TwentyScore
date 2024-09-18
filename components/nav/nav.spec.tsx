@@ -58,6 +58,7 @@ const gameScore = [
 ] as GameScore;
 const setBattingPlayerScore = jest.fn();
 const setBowlingPlayerScore = jest.fn();
+const setCurrentBowler = jest.fn();
 const swapBatsmen = jest.fn();
 
 describe('Nav Component', () => {
@@ -136,6 +137,7 @@ describe('Nav Component', () => {
             gameScore,
             setBattingPlayerScore,
             setBowlingPlayerScore,
+            setCurrentBowler,
             swapBatsmen
           }}>
           <Nav />
@@ -167,6 +169,7 @@ describe('Nav Component', () => {
             gameScore,
             setBattingPlayerScore,
             setBowlingPlayerScore,
+            setCurrentBowler,
             swapBatsmen
           }}>
           <Nav />
@@ -250,6 +253,7 @@ describe('Nav Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
+          setCurrentBowler,
           swapBatsmen
         }}>
         <Nav />

@@ -21,6 +21,7 @@ const resetOvers = jest.fn();
 const setGameScore = jest.fn();
 const setBattingPlayerScore = jest.fn();
 const setBowlingPlayerScore = jest.fn();
+const setCurrentBowler = jest.fn();
 const swapBatsmen = jest.fn();
 
 describe('Scoreboard Component', () => {
@@ -136,7 +137,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: true,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 2',
@@ -149,7 +151,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: true,
                 currentNonStriker: true,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 3',
@@ -162,7 +165,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 4',
@@ -175,7 +179,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               }
             ],
             name: 'Team 1',
@@ -201,7 +206,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: true,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               }
             ],
             name: 'Team 2',
@@ -266,7 +272,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: true,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 2',
@@ -279,7 +286,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: true,
                 currentNonStriker: true,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 3',
@@ -292,7 +300,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 4',
@@ -305,7 +314,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               }
             ],
             name: 'Team 1',
@@ -331,7 +341,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: true,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               }
             ],
             name: 'Team 2',
@@ -381,7 +392,8 @@ describe('Scoreboard Component', () => {
             onTheCrease: true,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           },
           {
             name: 'Player 2',
@@ -394,7 +406,8 @@ describe('Scoreboard Component', () => {
             onTheCrease: true,
             currentNonStriker: true,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           },
           {
             name: 'Player 3',
@@ -407,7 +420,8 @@ describe('Scoreboard Component', () => {
             onTheCrease: false,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           },
           {
             name: 'Player 4',
@@ -420,7 +434,8 @@ describe('Scoreboard Component', () => {
             onTheCrease: false,
             currentNonStriker: false,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 1',
@@ -446,7 +461,8 @@ describe('Scoreboard Component', () => {
             onTheCrease: false,
             currentNonStriker: true,
             status: 'Not out',
-            methodOfWicket: null
+            methodOfWicket: null,
+            oversBowled: 0
           }
         ],
         name: 'Team 2',
@@ -467,7 +483,8 @@ describe('Scoreboard Component', () => {
           gameScore,
           setBattingPlayerScore,
           setBowlingPlayerScore,
-          swapBatsmen
+          swapBatsmen,
+          setCurrentBowler
         }}>
         <Scoreboard handleShowTeam={jest.fn()} />
       </GameScoreContext.Provider>
@@ -499,7 +516,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: true,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 2',
@@ -512,7 +530,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: true,
                 currentNonStriker: true,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 3',
@@ -525,7 +544,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               },
               {
                 name: 'Player 4',
@@ -538,7 +558,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: false,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               }
             ],
             name: 'Team 1',
@@ -564,7 +585,8 @@ describe('Scoreboard Component', () => {
                 onTheCrease: false,
                 currentNonStriker: true,
                 status: 'Not out',
-                methodOfWicket: null
+                methodOfWicket: null,
+                oversBowled: 0
               }
             ],
             name: 'Team 2',
