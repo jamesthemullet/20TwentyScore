@@ -54,10 +54,15 @@ const Scoreboard = ({ handleShowTeam }: ScoreboardProps) => {
   const team1 = gameScore[0];
   const team2 = gameScore[1];
 
-  console.log(30, gameScore);
-
   const isGameADraw = () =>
     team1.totalRuns === team2.totalRuns && team1.finishedBatting && team2.finishedBatting;
+
+  const currentBattingTeam = gameScore.find((team) => team.currentBattingTeam);
+  const currentBowlingTeam = gameScore.find((team) => team.currentBowlingTeam);
+  const currentBatsman = currentBattingTeam?.players.find((player) => player.currentStriker);
+  const currentBowler = currentBowlingTeam?.players.find((player) => player.currentBowler);
+
+  console.log(31, currentBowlingTeam);
 
   return (
     <HomeContainer>
@@ -79,6 +84,16 @@ const Scoreboard = ({ handleShowTeam }: ScoreboardProps) => {
       <div>
         <p>
           Over: {currentOver} Ball: {currentBallInThisOver} (extras: {currentExtrasInThisOver})
+        </p>
+      </div>
+      <div>
+        <p>Current Batting Team: {currentBattingTeam?.name}</p>
+        <p>Current Bowling Team: {currentBowlingTeam?.name}</p>
+        <p>
+          Current Batsman: {currentBatsman?.name} - {currentBatsman?.runs} runs
+        </p>
+        <p>
+          Current Bowler: {currentBowler?.name} - {currentBowler?.wicketsTaken} wickets taken
         </p>
       </div>
       {gameScore[0].finishedBatting && gameScore[1].finishedBatting && !isGameADraw() && (
