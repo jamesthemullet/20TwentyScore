@@ -22,6 +22,7 @@ const Index: React.FC<Props> = () => {
   const [selectedTeamIndex, setSelectedTeamIndex] = useState<number | null>(null);
   const [gameInitialised, setGameInitialised] = useState(false);
   const [selectBowler, setSelectBowler] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const { setGameScore, gameScore, setCurrentBowler } = useGameScore();
 
@@ -34,10 +35,13 @@ const Index: React.FC<Props> = () => {
 
   const loadGame = () => {
     const gameData = localStorage.getItem('gameData');
+    console.log(20, gameData);
     if (gameData) {
       const parsedGameData = JSON.parse(gameData);
       setGameScore(parsedGameData);
       setGameInitialised(true);
+    } else {
+      setError('No game data found');
     }
   };
 
@@ -69,22 +73,24 @@ const Index: React.FC<Props> = () => {
         finishedBatting: false
       }
     ]);
-    setGameInitialised(true);
     setSelectBowler(true);
   };
 
   const settingBowler = (teamIndex: number, playerIndex: number) => {
     setCurrentBowler(teamIndex, playerIndex);
     setSelectBowler(false);
+    setGameInitialised(true);
   };
 
   return (
     <Layout>
       <Main aria-label="Scoreboard">
-        <Board>
-          <Scoreboard handleShowTeam={(index) => openModal(index)} />
-          <Scoring />
-        </Board>
+        {gameInitialised && (
+          <Board>
+            <Scoreboard handleShowTeam={(index) => openModal(index)} />
+            <Scoring />
+          </Board>
+        )}
         {selectedTeamIndex !== null && (
           <Modal
             opened={opened}
@@ -98,12 +104,14 @@ const Index: React.FC<Props> = () => {
             <Team teamIndex={selectedTeamIndex} />
           </Modal>
         )}
-        {(!gameInitialised || selectBowler) && (
-          <div>
-            <ButtonsContainer>
-              <PrimaryButton onClick={() => newGame()}>New Game</PrimaryButton>
-              <PrimaryButton onClick={() => loadGame()}>Load Game</PrimaryButton>
-            </ButtonsContainer>
+        {!gameInitialised && (
+          <StartingBox>
+            {!selectBowler && (
+              <ButtonsContainer>
+                <PrimaryButton onClick={() => newGame()}>New Game</PrimaryButton>
+                <PrimaryButton onClick={() => loadGame()}>Load Game</PrimaryButton>
+              </ButtonsContainer>
+            )}
             {selectBowler && (
               <>
                 <h3>Select the bowler for the first over.</h3>
@@ -116,7 +124,8 @@ const Index: React.FC<Props> = () => {
                 ))}
               </>
             )}
-          </div>
+            {error && <p>{error}</p>}
+          </StartingBox>
         )}
       </Main>
     </Layout>
@@ -158,6 +167,7 @@ const Main = styled.main`
   max-width: 2000px;
   margin: 0 auto;
   flex: 1;
+  justify-content: center;
 `;
 
 const ButtonsContainer = styled.div`
@@ -168,23 +178,11 @@ const ButtonsContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledModal = styled(Modal)`
-  padding: 20px;
+const StartingBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    width: 100%;
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-
-  h3 {
-    text-align: center;
-    margin-top: 30px;
-  }
+  gap: 20px;
+  margin-top: 20px;
 `;
