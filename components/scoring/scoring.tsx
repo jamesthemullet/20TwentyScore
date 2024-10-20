@@ -7,7 +7,11 @@ import { useOvers } from '../../context/OversContext';
 import { HomeContainer } from '../core/home-container';
 import { StyledHeading2 } from '../core/heading';
 
-const Scoring = () => {
+type ScoringProps = {
+  setSelectBowler: (setBowler: boolean) => void;
+};
+
+const Scoring = ({ setSelectBowler }: ScoringProps) => {
   const [countRuns, setCountRuns] = useState(0);
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
   const [awaitingMethodOfWicket, setAwaitingMethodOfWicket] = useState(false);
@@ -87,6 +91,8 @@ const Scoring = () => {
       if (action !== 'Wicket' && currentStriker && currentNonStriker) {
         swapBatsmen(currentStriker, currentNonStriker);
       }
+
+      setSelectBowler(false);
     } else {
       setCurrentBallInThisOver(null);
       setAwaitingMethodOfWicket(false);

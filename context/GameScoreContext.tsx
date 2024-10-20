@@ -187,8 +187,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
         : player
     );
 
-    console.log(31, updatedTeamPlayers);
-
     if (action === 'Wicket') {
       updatedTeamPlayers[playerIndex].status = 'Out';
       updatedTeamPlayers[playerIndex].onTheCrease = false;
@@ -223,8 +221,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       }
       swapBatsmen(currentStriker, currentNonStriker);
     }
-
-    console.log(35, updatedTeamPlayers);
 
     return updatedTeamPlayers;
   };
@@ -266,7 +262,6 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
       return;
     }
     setGameScoreState((prevState: GameScore) => {
-      console.log(32, prevState);
       return [
         {
           players:

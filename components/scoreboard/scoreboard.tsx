@@ -62,8 +62,6 @@ const Scoreboard = ({ handleShowTeam }: ScoreboardProps) => {
   const currentBatsman = currentBattingTeam?.players.find((player) => player.currentStriker);
   const currentBowler = currentBowlingTeam?.players.find((player) => player.currentBowler);
 
-  console.log(31, currentBowlingTeam);
-
   return (
     <HomeContainer>
       <StyledHeading2>Scoreboard</StyledHeading2>
