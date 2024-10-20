@@ -77,14 +77,12 @@ const Index: React.FC<Props> = () => {
   };
 
   const settingBowler = (teamIndex: number, playerIndex: number) => {
-    console.log(20, teamIndex, playerIndex);
     setCurrentBowler(teamIndex, playerIndex);
     setSelectBowler(false);
     setGameInitialised(true);
   };
 
-  const handleSelectBowler = (teamIndex: number, playerIndex: number) => {
-    console.log(10);
+  const handleSelectBowler = () => {
     setSelectBowler(true);
   };
 
