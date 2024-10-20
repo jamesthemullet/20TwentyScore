@@ -99,7 +99,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const headingElement = screen.getByRole('heading', { level: 2 });
@@ -121,7 +121,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: '0' });
@@ -143,7 +143,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: '1 & next ball' });
@@ -166,7 +166,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: '6' });
@@ -189,7 +189,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: 'Wicket' });
@@ -218,7 +218,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const buttons = screen.getAllByRole('button');
@@ -240,7 +240,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: /1\+/i });
@@ -261,7 +261,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: /1\+/i });
@@ -285,7 +285,7 @@ describe('Scoring Component', () => {
           setCurrentBowler,
           swapBatsmen
         }}>
-        <Scoring />
+        <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
     const button = screen.getByRole('button', { name: /1\+/i });
@@ -329,7 +329,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -366,7 +366,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -405,7 +405,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -442,7 +442,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -480,7 +480,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -588,7 +588,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -695,7 +695,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -806,7 +806,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );
@@ -898,7 +898,7 @@ describe('Scoring Component', () => {
             currentExtrasInThisOver,
             setCurrentExtrasInThisOver
           }}>
-          <Scoring />
+          <Scoring setSelectBowler={jest.fn()} />
         </OversContext.Provider>
       </GameScoreContext.Provider>
     );

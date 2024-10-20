@@ -82,14 +82,41 @@ const Index: React.FC<Props> = () => {
     setGameInitialised(true);
   };
 
+  const handleSelectBowler = () => {
+    setSelectBowler(true);
+  };
+
   return (
     <Layout>
       <Main aria-label="Scoreboard">
-        {gameInitialised && (
+        {gameInitialised && !selectBowler && (
           <Board>
             <Scoreboard handleShowTeam={(index) => openModal(index)} />
-            <Scoring />
+            <Scoring setSelectBowler={handleSelectBowler} />
           </Board>
+        )}
+        {gameInitialised && selectBowler && (
+          <StartingBox>
+            {!selectBowler && (
+              <ButtonsContainer>
+                <PrimaryButton onClick={() => newGame()}>New Game</PrimaryButton>
+                <PrimaryButton onClick={() => loadGame()}>Load Game</PrimaryButton>
+              </ButtonsContainer>
+            )}
+            {selectBowler && (
+              <>
+                <h3>Select the bowler for the first over.</h3>
+                {team1?.players.map((player) => (
+                  <PrimaryButton
+                    key={player.name}
+                    onClick={() => settingBowler(team1.index, player.index)}>
+                    {player.name}
+                  </PrimaryButton>
+                ))}
+              </>
+            )}
+            {error && <p>{error}</p>}
+          </StartingBox>
         )}
         {selectedTeamIndex !== null && (
           <Modal
