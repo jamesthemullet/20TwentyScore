@@ -227,18 +227,21 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
 
   const updateTeamScoreForBowling = (
     teamPlayers: TeamPlayer[],
-    playerIndex: number,
     action: string | null,
     endOfOver: boolean
   ) => {
-    const player = teamPlayers.find((player) => player.index === playerIndex);
+    const currentBowler = teamPlayers.find((player) => player.currentBowler === true);
 
-    if (!player) {
+    console.log(40, currentBowler);
+
+    if (!currentBowler) {
       return teamPlayers;
     }
 
+    console.log(41, currentBowler.wicketsTaken + (action === 'Wicket' ? 1 : 0));
+
     return teamPlayers.map((player) =>
-      player.index === playerIndex
+      player === currentBowler
         ? {
             ...player,
             wicketsTaken: player.wicketsTaken + (action === 'Wicket' ? 1 : 0),
@@ -337,7 +340,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           players:
             teamIndex === 0
               ? prevState[0].players
-              : updateTeamScoreForBowling(prevState[0].players, playerIndex, action, endOfOver),
+              : updateTeamScoreForBowling(prevState[0].players, action, endOfOver),
           totalWicketsTaken:
             teamIndex === 1
               ? prevState[0].totalWicketsTaken + (action === 'Wicket' ? 1 : 0)
@@ -347,7 +350,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
           ...prevState[1],
           players:
             teamIndex === 1
-              ? updateTeamScoreForBowling(prevState[1].players, playerIndex, action, endOfOver)
+              ? updateTeamScoreForBowling(prevState[1].players, action, endOfOver)
               : prevState[1].players,
           totalWicketsTaken:
             teamIndex === 0
@@ -406,6 +409,7 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
   };
 
   const setCurrentBowler = (teamIndex: number, playerIndex: number) => {
+    console.log(10, teamIndex, playerIndex);
     // update the current bowler
     setGameScoreState((prevState: GameScore) => {
       return [

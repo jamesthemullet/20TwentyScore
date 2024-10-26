@@ -26,6 +26,8 @@ const Index: React.FC<Props> = () => {
 
   const { setGameScore, gameScore, setCurrentBowler } = useGameScore();
 
+  console.log(20, gameScore);
+
   const team1 = gameScore.find((team) => team.index === 1);
 
   const openModal = (index: number) => {
@@ -35,7 +37,6 @@ const Index: React.FC<Props> = () => {
 
   const loadGame = () => {
     const gameData = localStorage.getItem('gameData');
-    console.log(20, gameData);
     if (gameData) {
       const parsedGameData = JSON.parse(gameData);
       setGameScore(parsedGameData);
