@@ -1,7 +1,7 @@
 // pages/create.tsx
 
 import React, { useState } from 'react';
-import Layout from '../components/Layout';
+import Layout from '../components/layout/layout';
 import Router from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -19,6 +19,7 @@ const Draft: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
+
       await Router.push('/drafts');
     } catch (error) {
       // eslint-disable-next-line no-console

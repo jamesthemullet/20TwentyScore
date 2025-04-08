@@ -1,13 +1,166 @@
 import React, { useState } from 'react';
-import { GetStaticProps } from 'next';
-import Layout from '../components/Layout';
-import Scoreboard from '../components/Scoreboard';
-import Post, { PostProps } from '../components/Post';
+import { GetStaticProps } from 'next/types';
+import Layout from '../components/layout/layout';
+import Scoreboard from '../components/scoreboard/scoreboard';
+import { PostProps } from '../components/post/post';
 import prisma from '../lib/prisma';
-import Team from '../components/Team';
-import styled from 'styled-components';
-import Scoring from '../components/scoring';
-import defaultPlayers from '../components/players';
+import Team from '../components/team/team';
+import styled from '@emotion/styled';
+import Scoring from '../components/scoring/scoring';
+import { useDisclosure } from '@mantine/hooks';
+import { Modal } from '@mantine/core';
+import { PrimaryButton } from '../components/core/buttons';
+import { useGameScore } from '../context/GameScoreContext';
+import defaultPlayers from '../components/core/players';
+
+type Props = {
+  feed: PostProps[];
+};
+
+const Index: React.FC<Props> = () => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const [selectedTeamIndex, setSelectedTeamIndex] = useState<number | null>(null);
+  const [gameInitialised, setGameInitialised] = useState(false);
+  const [selectBowler, setSelectBowler] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const { setGameScore, gameScore, setCurrentBowler } = useGameScore();
+
+  console.log(20, gameScore);
+
+  const team1 = gameScore.find((team) => team.index === 1);
+
+  const openModal = (index: number) => {
+    setSelectedTeamIndex(index);
+    open();
+  };
+
+  const loadGame = () => {
+    const gameData = localStorage.getItem('gameData');
+    if (gameData) {
+      const parsedGameData = JSON.parse(gameData);
+      setGameScore(parsedGameData);
+      setGameInitialised(true);
+    } else {
+      setError('No game data found');
+    }
+  };
+
+  const newGame = () => {
+    localStorage.removeItem('gameData');
+    setGameScore([
+      {
+        players: defaultPlayers(),
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
+        overs: 0,
+        currentBattingTeam: true,
+        currentBowlingTeam: false,
+        finishedBatting: false
+      },
+      {
+        players: defaultPlayers(),
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
+        overs: 0,
+        currentBattingTeam: false,
+        currentBowlingTeam: true,
+        finishedBatting: false
+      }
+    ]);
+    setSelectBowler(true);
+  };
+
+  const settingBowler = (teamIndex: number, playerIndex: number) => {
+    setCurrentBowler(teamIndex, playerIndex);
+    setSelectBowler(false);
+    setGameInitialised(true);
+  };
+
+  const handleSelectBowler = () => {
+    setSelectBowler(true);
+  };
+
+  return (
+    <Layout>
+      <Main aria-label="Scoreboard">
+        {gameInitialised && !selectBowler && (
+          <Board>
+            <Scoreboard handleShowTeam={(index) => openModal(index)} />
+            <Scoring setSelectBowler={handleSelectBowler} />
+          </Board>
+        )}
+        {gameInitialised && selectBowler && (
+          <StartingBox>
+            {!selectBowler && (
+              <ButtonsContainer>
+                <PrimaryButton onClick={() => newGame()}>New Game</PrimaryButton>
+                <PrimaryButton onClick={() => loadGame()}>Load Game</PrimaryButton>
+              </ButtonsContainer>
+            )}
+            {selectBowler && (
+              <>
+                <h3>Select the bowler for the first over.</h3>
+                {team1?.players.map((player) => (
+                  <PrimaryButton
+                    key={player.name}
+                    onClick={() => settingBowler(team1.index, player.index)}>
+                    {player.name}
+                  </PrimaryButton>
+                ))}
+              </>
+            )}
+            {error && <p>{error}</p>}
+          </StartingBox>
+        )}
+        {selectedTeamIndex !== null && (
+          <Modal
+            opened={opened}
+            onClose={() => {
+              close();
+              setSelectedTeamIndex(null);
+            }}
+            size="800"
+            withCloseButton={true}
+            closeOnEscape={false}>
+            <Team teamIndex={selectedTeamIndex} />
+          </Modal>
+        )}
+        {!gameInitialised && (
+          <StartingBox>
+            {!selectBowler && (
+              <ButtonsContainer>
+                <PrimaryButton onClick={() => newGame()}>New Game</PrimaryButton>
+                <PrimaryButton onClick={() => loadGame()}>Load Game</PrimaryButton>
+              </ButtonsContainer>
+            )}
+            {selectBowler && (
+              <>
+                <h3>Select the bowler for the first over.</h3>
+                {team1?.players.map((player) => (
+                  <PrimaryButton
+                    key={player.name}
+                    onClick={() => settingBowler(team1.index, player.index)}>
+                    {player.name}
+                  </PrimaryButton>
+                ))}
+              </>
+            )}
+            {error && <p>{error}</p>}
+          </StartingBox>
+        )}
+      </Main>
+    </Layout>
+  );
+};
+
+export default Index;
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
@@ -24,124 +177,40 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-type Player = {
-  index: number;
-  name: string;
-  runs: number;
-  isBatting: boolean;
-  isOnTheCrease: boolean;
-  isOut: boolean;
-  allActions: string[];
-};
-
-type Props = {
-  feed: PostProps[];
-};
-
-const Blog: React.FC<Props> = (props) => {
-  const [team1Players, setTeam1Players] = useState<Player[]>(defaultPlayers());
-  const [team2Players, setTeam2Players] = useState<Player[]>(defaultPlayers());
-  const [currentBattingPlayer, setCurrentBattingPlayer] = useState<Player>(team1Players[0]);
-
-  const updatePlayerName = (teamIndex: number, playerIndex: number, name: string): void => {
-    console.log(20, teamIndex, playerIndex, name);
-    if (teamIndex === 1) {
-      const updatedPlayers = [...team1Players];
-      updatedPlayers[playerIndex].name = name;
-      setTeam1Players(updatedPlayers);
-    } else if (teamIndex === 2) {
-      const updatedPlayers = [...team2Players];
-      updatedPlayers[playerIndex].name = name;
-      setTeam2Players(updatedPlayers);
-    }
-  };
-
-  const updatePlayerRuns = (
-    teamIndex: number,
-    playerIndex: number,
-    runs: number,
-    action: null | string
-  ): void => {
-    console.log(1, teamIndex, playerIndex, runs, action);
-    if (teamIndex === 1) {
-      const updatedPlayers = [...team1Players];
-      updatedPlayers[playerIndex].runs += runs;
-      if (action) {
-        updatedPlayers[playerIndex].allActions.push(action);
-      } else {
-        updatedPlayers[playerIndex].allActions.push(runs.toString());
-      }
-      if (action === 'Wicket') {
-        console.log(2);
-        updatedPlayers[playerIndex].isOnTheCrease = false;
-        updatedPlayers[playerIndex].isOut = true;
-        const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
-        if (nextPlayer) {
-          updatedPlayers[nextPlayer.index].isOnTheCrease = true;
-          setCurrentBattingPlayer(updatedPlayers[playerIndex + 1]);
-        } else {
-          console.log('all out');
-        }
-      }
-      setTeam1Players(updatedPlayers);
-    } else if (teamIndex === 2) {
-      const updatedPlayers = [...team2Players];
-      updatedPlayers[playerIndex].runs += runs;
-      if (action) {
-        updatedPlayers[playerIndex].allActions.push(action);
-      } else {
-        updatedPlayers[playerIndex].allActions.push(runs.toString());
-      }
-      if (action === 'Wicket') {
-        updatedPlayers[playerIndex].isOnTheCrease = false;
-        updatedPlayers[playerIndex].isOut = true;
-        const nextPlayer = updatedPlayers.find((player) => !player.isOut && !player.isOnTheCrease);
-        if (nextPlayer) {
-          updatedPlayers[nextPlayer.index].isOnTheCrease = true;
-          setCurrentBattingPlayer(updatedPlayers[playerIndex + 1]);
-        } else {
-          console.log('all out');
-        }
-      }
-      setTeam2Players(updatedPlayers);
-    }
-  };
-  return (
-    <Layout>
-      <div className="page">
-        <main>
-          <Board>
-            <Team
-              teamIndex={1}
-              name="Team 1"
-              players={team1Players}
-              onSetPlayers={updatePlayerName}
-            />
-            <Scoreboard />
-            <Scoring onScoreUpdate={updatePlayerRuns} currentBattingPlayer={currentBattingPlayer} />
-            <Team
-              teamIndex={2}
-              name="Team 2"
-              players={team2Players}
-              onSetPlayers={updatePlayerName}
-            />
-          </Board>
-          <h2>Public Feed</h2>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
-      </div>
-    </Layout>
-  );
-};
-
-export default Blog;
-
 const Board = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
+  padding: 20px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+`;
+
+const Main = styled.main`
+  position: relative;
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  flex: 1;
+  justify-content: center;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+`;
+
+const StartingBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
 `;

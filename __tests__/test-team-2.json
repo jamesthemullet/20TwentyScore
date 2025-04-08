@@ -1,0 +1,110 @@
+{
+  "players": [
+    {
+      "name": "Player 1",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": true,
+      "allActions": [],
+      "onTheCrease": true,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 2",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": true,
+      "currentNonStriker": true,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 3",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 4",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 5",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 6",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 7",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 8",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 9",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    },
+    {
+      "name": "Player 10",
+      "index": 0,
+      "runs": 0,
+      "currentStriker": false,
+      "allActions": [],
+      "onTheCrease": false,
+      "currentNonStriker": false,
+      "status": "Not out"
+    }
+  ],
+  "name": "Team 2",
+  "index": 0,
+  "totalRuns": 0,
+  "totalWickets": 0,
+  "currentBattingTeam": false,
+  "currentBowlingTeam": false
+}
