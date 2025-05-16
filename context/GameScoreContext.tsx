@@ -373,8 +373,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             player.index === currentStriker?.index
               ? { ...player, currentStriker: false, currentNonStriker: true }
               : player.index === currentNonStriker?.index
-              ? { ...player, currentStriker: true, currentNonStriker: false }
-              : player
+                ? { ...player, currentStriker: true, currentNonStriker: false }
+                : player
           ),
           name: 'Team 1',
           index: 0,
@@ -391,8 +391,8 @@ export const GameScoreProvider: React.FC<GameScoreProviderProps> = ({ children }
             player.index === currentStriker?.index
               ? { ...player, currentStriker: false, currentNonStriker: true }
               : player.index === currentNonStriker?.index
-              ? { ...player, currentStriker: true, currentNonStriker: false }
-              : player
+                ? { ...player, currentStriker: true, currentNonStriker: false }
+                : player
           ),
           name: 'Team 2',
           index: 1,

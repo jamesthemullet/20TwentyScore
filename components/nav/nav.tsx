@@ -194,7 +194,9 @@ const BurgerButton = styled.button`
       width: 100%;
       height: 2px;
       background-color: #fff;
-      transition: transform 0.3s, opacity 0.3s;
+      transition:
+        transform 0.3s,
+        opacity 0.3s;
     }
 
     span:nth-of-type(1) {
