@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { useGameScore } from '../../context/GameScoreContext';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { PrimaryButton } from '../core/buttons';
 import defaultPlayers from '../core/players';
