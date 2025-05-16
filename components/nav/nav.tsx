@@ -61,10 +61,10 @@ export default function Nav() {
     ]);
   };
 
-  const router = useRouter();
+  // const router = useRouter();
   // const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <StyledNav aria-label="Navigation Bar">
