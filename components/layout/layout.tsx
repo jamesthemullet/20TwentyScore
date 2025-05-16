@@ -9,7 +9,7 @@ type Props = {
 };
 
 const Layout: React.FC<Props> = (props) => {
-  const seo = null;
+  // const seo = null;
 
   return (
     <SiteContainer>
