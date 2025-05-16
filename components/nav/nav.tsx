@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { useGameScore } from '../../context/GameScoreContext';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { PrimaryButton } from '../core/buttons';
 import defaultPlayers from '../core/players';
@@ -61,10 +61,10 @@ export default function Nav() {
     ]);
   };
 
-  const router = useRouter();
+  // const router = useRouter();
   // const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <StyledNav aria-label="Navigation Bar">
@@ -194,7 +194,9 @@ const BurgerButton = styled.button`
       width: 100%;
       height: 2px;
       background-color: #fff;
-      transition: transform 0.3s, opacity 0.3s;
+      transition:
+        transform 0.3s,
+        opacity 0.3s;
     }
 
     span:nth-of-type(1) {
