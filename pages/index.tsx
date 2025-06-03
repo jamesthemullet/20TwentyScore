@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { GetStaticProps } from 'next/types';
 import Layout from '../components/layout/layout';
 import Scoreboard from '../components/scoreboard/scoreboard';
 import { PostProps } from '../components/post/post';
-import prisma from '../lib/prisma';
 import Team from '../components/team/team';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring/scoring';
@@ -161,21 +159,6 @@ const Index: React.FC<Props> = () => {
 };
 
 export default Index;
-
-export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.post.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true }
-      }
-    }
-  });
-  return {
-    props: { feed },
-    revalidate: 10
-  };
-};
 
 const Board = styled.div`
   display: flex;
