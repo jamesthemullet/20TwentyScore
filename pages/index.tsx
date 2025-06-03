@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { GetStaticProps } from 'next/types';
 import Layout from '../components/layout/layout';
-import Scoreboard from '../components/scoreboard/scoreboard';
+// import Scoreboard from '../components/scoreboard/scoreboard';
 import { PostProps } from '../components/post/post';
-import prisma from '../lib/prisma';
-import Team from '../components/team/team';
+// import Team from '../components/team/team';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring/scoring';
-import { useDisclosure } from '@mantine/hooks';
-import { Modal } from '@mantine/core';
+// import { useDisclosure } from '@mantine/hooks';
+// import { Modal } from '@mantine/core';
 import { PrimaryButton } from '../components/core/buttons';
 import { useGameScore } from '../context/GameScoreContext';
 import defaultPlayers from '../components/core/players';
@@ -18,8 +16,8 @@ type Props = {
 };
 
 const Index: React.FC<Props> = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [selectedTeamIndex, setSelectedTeamIndex] = useState<number | null>(null);
+  // const [opened, { open, close }] = useDisclosure(false);
+  // const [selectedTeamIndex, setSelectedTeamIndex] = useState<number | null>(null);
   const [gameInitialised, setGameInitialised] = useState(false);
   const [selectBowler, setSelectBowler] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,10 +28,10 @@ const Index: React.FC<Props> = () => {
 
   const team1 = gameScore.find((team) => team.index === 1);
 
-  const openModal = (index: number) => {
-    setSelectedTeamIndex(index);
-    open();
-  };
+  // const openModal = (index: number) => {
+  //   setSelectedTeamIndex(index);
+  //   open();
+  // };
 
   const loadGame = () => {
     const gameData = localStorage.getItem('gameData');
@@ -92,7 +90,7 @@ const Index: React.FC<Props> = () => {
       <Main aria-label="Scoreboard">
         {gameInitialised && !selectBowler && (
           <Board>
-            <Scoreboard handleShowTeam={(index) => openModal(index)} />
+            {/* <Scoreboard handleShowTeam={(index) => openModal(index)} /> */}
             <Scoring setSelectBowler={handleSelectBowler} />
           </Board>
         )}
@@ -119,7 +117,7 @@ const Index: React.FC<Props> = () => {
             {error && <p>{error}</p>}
           </StartingBox>
         )}
-        {selectedTeamIndex !== null && (
+        {/* {selectedTeamIndex !== null && (
           <Modal
             opened={opened}
             onClose={() => {
@@ -131,7 +129,7 @@ const Index: React.FC<Props> = () => {
             closeOnEscape={false}>
             <Team teamIndex={selectedTeamIndex} />
           </Modal>
-        )}
+        )} */}
         {!gameInitialised && (
           <StartingBox>
             {!selectBowler && (
@@ -161,21 +159,6 @@ const Index: React.FC<Props> = () => {
 };
 
 export default Index;
-
-export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.post.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true }
-      }
-    }
-  });
-  return {
-    props: { feed },
-    revalidate: 10
-  };
-};
 
 const Board = styled.div`
   display: flex;

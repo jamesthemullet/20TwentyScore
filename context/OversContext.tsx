@@ -21,11 +21,13 @@ export const OversContext = createContext<OversContextType>({
     console.log('Initial setCurrentExtrasInOver called with', extras);
   },
   currentBallInThisOver: 1,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setCurrentBallInThisOver: (ball: number | null) => {
     // eslint-disable-next-line no-console
     console.log('Initial setCurrentBallInThisOver called');
   },
   currentOver: 1,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setCurrentOvers: (inc: number | undefined) => {
     // eslint-disable-next-line no-console
     console.log('Initial incrementCurrentOver called');

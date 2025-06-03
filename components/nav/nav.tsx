@@ -1,70 +1,70 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { useGameScore } from '../../context/GameScoreContext';
+// import { useGameScore } from '../../context/GameScoreContext';
 // import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
-import { PrimaryButton } from '../core/buttons';
-import defaultPlayers from '../core/players';
+// import { useSession } from 'next-auth/react';
+// import { PrimaryButton } from '../core/buttons';
+// import defaultPlayers from '../core/players';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isGameLoaded, setGameLoaded] = useState(false);
+  // const [isGameLoaded, setGameLoaded] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const { gameScore, setGameScore } = useGameScore();
+  // const { gameScore, setGameScore } = useGameScore();
 
-  const loadGame = () => {
-    const gameData = localStorage.getItem('gameData');
-    if (gameData) {
-      const parsedGameData = JSON.parse(gameData);
-      setGameScore(parsedGameData);
-      setGameLoaded(true);
-    }
-  };
+  // const loadGame = () => {
+  //   const gameData = localStorage.getItem('gameData');
+  //   if (gameData) {
+  //     const parsedGameData = JSON.parse(gameData);
+  //     setGameScore(parsedGameData);
+  //     setGameLoaded(true);
+  //   }
+  // };
 
-  const saveGame = () => {
-    const gameData = JSON.stringify(gameScore);
-    localStorage.setItem('gameData', gameData);
-  };
+  // const saveGame = () => {
+  //   const gameData = JSON.stringify(gameScore);
+  //   localStorage.setItem('gameData', gameData);
+  // };
 
-  const newGame = () => {
-    localStorage.removeItem('gameData');
-    setGameScore([
-      {
-        players: defaultPlayers(),
-        name: 'Team 1',
-        index: 0,
-        totalRuns: 0,
-        totalWicketsConceded: 0,
-        totalWicketsTaken: 0,
-        overs: 0,
-        currentBattingTeam: true,
-        currentBowlingTeam: false,
-        finishedBatting: false
-      },
-      {
-        players: defaultPlayers(),
-        name: 'Team 2',
-        index: 1,
-        totalRuns: 0,
-        totalWicketsConceded: 0,
-        totalWicketsTaken: 0,
-        overs: 0,
-        currentBattingTeam: false,
-        currentBowlingTeam: true,
-        finishedBatting: false
-      }
-    ]);
-  };
+  // const newGame = () => {
+  //   localStorage.removeItem('gameData');
+  //   setGameScore([
+  //     {
+  //       players: defaultPlayers(),
+  //       name: 'Team 1',
+  //       index: 0,
+  //       totalRuns: 0,
+  //       totalWicketsConceded: 0,
+  //       totalWicketsTaken: 0,
+  //       overs: 0,
+  //       currentBattingTeam: true,
+  //       currentBowlingTeam: false,
+  //       finishedBatting: false
+  //     },
+  //     {
+  //       players: defaultPlayers(),
+  //       name: 'Team 2',
+  //       index: 1,
+  //       totalRuns: 0,
+  //       totalWicketsConceded: 0,
+  //       totalWicketsTaken: 0,
+  //       overs: 0,
+  //       currentBattingTeam: false,
+  //       currentBowlingTeam: true,
+  //       finishedBatting: false
+  //     }
+  //   ]);
+  // };
 
   // const router = useRouter();
   // const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
 
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   return (
     <StyledNav aria-label="Navigation Bar">
@@ -84,7 +84,7 @@ export default function Nav() {
           <Link href="/scoreboard">Scoreboard</Link>
         </li>
       </ul>
-      {!session && (
+      {/* {!session && (
         <Link href="/api/auth/signin">
           <PrimaryButton>Log in</PrimaryButton>
         </Link>
@@ -109,34 +109,34 @@ export default function Nav() {
           src="/icons/png/009-save.png"
           onClick={() => saveGame()}
         />
-      )}
+      )} */}
     </StyledNav>
   );
 }
 
-const SaveButton = styled.img`
-  cursor: pointer;
-`;
+// const SaveButton = styled.img`
+//   cursor: pointer;
+// `;
 
-const UserAndLogout = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 1rem 0;
-  justify-content: space-between;
+// const UserAndLogout = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   margin: 1rem 0;
+//   justify-content: space-between;
 
-  button {
-    margin-left: 1rem;
-  }
+//   button {
+//     margin-left: 1rem;
+//   }
 
-  p {
-    display: none;
+//   p {
+//     display: none;
 
-    @media (min-width: 769px) {
-      display: block;
-    }
-  }
-`;
+//     @media (min-width: 769px) {
+//       display: block;
+//     }
+//   }
+// `;
 
 const StyledNav = styled.nav`
   background-color: #333;
