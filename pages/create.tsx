@@ -52,7 +52,7 @@ const Draft: React.FC = () => {
           </a>
         </form>
       </div>
-      <style jsx>{`
+      <style>{`
         .page {
           background: var(--geist-background);
           padding: 3rem;
