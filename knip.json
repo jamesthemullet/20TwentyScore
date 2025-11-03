@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreExportsUsedInFile": {
+    "interface": true,
+    "type": true
+  },
+  "ignoreBinaries": ["wait-on", "axe"],
+  "ignoreDependencies": [
+    "@babel/preset-env",
+    "@eslint/eslintrc",
+    "@testing-library/user-event",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
+    "babel-jest",
+    "eslint-config-prettier",
+    "eslint-plugin-prettier",
+    "jest-emotion",
+    "ts-node"
+  ],
+  "tags": ["-lintignore"]
+}

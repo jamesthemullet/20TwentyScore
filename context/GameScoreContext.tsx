@@ -43,11 +43,6 @@ export type GameScore = [
   }
 ];
 
-export type PlayerScore = {
-  team1Players: TeamPlayer[];
-  team2Players: TeamPlayer[];
-};
-
 type GameScoreContextType = {
   gameScore: GameScore;
   setGameScore: (gameScore: GameScore) => void;
