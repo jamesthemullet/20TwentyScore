@@ -15,6 +15,12 @@ type Props = {
   feed: PostProps[];
 };
 
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+  import('accented').then(({ accented }) => {
+    accented();
+  });
+}
+
 const Index: React.FC<Props> = () => {
   // const [opened, { open, close }] = useDisclosure(false);
   // const [selectedTeamIndex, setSelectedTeamIndex] = useState<number | null>(null);
