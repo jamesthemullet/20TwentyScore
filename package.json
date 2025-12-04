@@ -22,8 +22,8 @@
     "husky": "^9.0.0",
     "next": "16.0.3",
     "next-auth": "^4.22.1",
-    "react": "19.2.0",
-    "react-dom": "^19.0.0"
+    "react": "19.2.1",
+    "react-dom": "19.0.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
