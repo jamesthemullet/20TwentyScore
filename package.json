@@ -59,14 +59,14 @@
   },
   "overrides": {
     "eslint-plugin-react": {
-      "minimatch": "^3.1.4"
+      "minimatch": "^10.0.0"
     },
     "next-auth": {
       "preact": "^10.27.3"
     }
   },
   "resolutions": {
-    "eslint-plugin-react/minimatch": "^3.1.4",
+    "eslint-plugin-react/minimatch": "^10.0.0",
     "next-auth/preact": "^10.27.3"
   }
 }
