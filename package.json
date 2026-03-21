@@ -48,7 +48,7 @@
     "jest": "^30.0.0",
     "jest-emotion": "^11.0.0",
     "jest-environment-jsdom": "^30.0.0",
-    "knip": "^5.67.1",
+    "knip": "^6.0.0",
     "postcss": "^8.4.39",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
