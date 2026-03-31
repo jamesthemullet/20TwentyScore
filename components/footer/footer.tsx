@@ -1,22 +1,5 @@
+import React from 'react';
 import styled from '@emotion/styled';
-
-export default function Footer() {
-  return (
-    <FooterContainer>
-      <p>20Twenty Score - a website by James Winfield.</p>
-      <div>
-        Icons made by{' '}
-        <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">
-          Smashicons
-        </a>{' '}
-        from{' '}
-        <a href="https://www.flaticon.com/" title="Flaticon">
-          www.flaticon.com
-        </a>
-      </div>
-    </FooterContainer>
-  );
-}
 
 const FooterContainer = styled.footer`
   display: flex;
@@ -37,4 +20,22 @@ const FooterContainer = styled.footer`
   p {
     margin: 0;
   }
-`;
+` as any;
+
+export default function Footer() {
+  return (
+    <FooterContainer>
+      <p>20Twenty Score - a website by James Winfield.</p>
+      <div>
+        Icons made by{' '}
+        <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">
+          Smashicons
+        </a>{' '}
+        from{' '}
+        <a href="https://www.flaticon.com/" title="Flaticon">
+          www.flaticon.com
+        </a>
+      </div>
+    </FooterContainer>
+  );
+}
