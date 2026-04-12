@@ -497,7 +497,7 @@ describe('GameScoreProvider', () => {
       }
 
       React.useEffect(() => {
-        swapBatsmen(currentStriker, currentNonStriker);
+        swapBatsmen();
       }, []);
 
       return (

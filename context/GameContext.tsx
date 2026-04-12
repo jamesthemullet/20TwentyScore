@@ -18,32 +18,20 @@ export type TeamPlayer = {
   oversBowled: number;
 };
 
-export type GameScore = [
-  {
-    players: TeamPlayer[];
-    name: 'Team 1';
-    index: 0;
-    totalRuns: number;
-    totalWicketsConceded: number;
-    totalWicketsTaken: number;
-    overs: number;
-    currentBattingTeam: boolean;
-    currentBowlingTeam: boolean;
-    finishedBatting: boolean;
-  },
-  {
-    players: TeamPlayer[];
-    name: 'Team 2';
-    index: 1;
-    totalRuns: number;
-    totalWicketsConceded: number;
-    totalWicketsTaken: number;
-    overs: number;
-    currentBattingTeam: boolean;
-    currentBowlingTeam: boolean;
-    finishedBatting: boolean;
-  }
-];
+export type Team = {
+  players: TeamPlayer[];
+  name: 'Team 1' | 'Team 2';
+  index: 0 | 1;
+  totalRuns: number;
+  totalWicketsConceded: number;
+  totalWicketsTaken: number;
+  overs: number;
+  currentBattingTeam: boolean;
+  currentBowlingTeam: boolean;
+  finishedBatting: boolean;
+};
+
+export type GameScore = [Team, Team];
 
 export type GameScoreContextType = {
   gameScore: GameScore;
@@ -229,13 +217,13 @@ function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case 'SET_GAME_SCORE': {
       const teams = action.payload;
-      const battingTeamIndex = teams.findIndex((t) => t.currentBattingTeam) as 0 | 1;
+      const battingTeamIndex = teams.findIndex((t) => t.currentBattingTeam);
 
       if (battingTeamIndex !== -1 && !teams[battingTeamIndex].players.find((p) => p.currentStriker)) {
         const updatedTeams = [...teams] as GameScore;
-        updatedTeams[battingTeamIndex] = {
-          ...updatedTeams[battingTeamIndex],
-          players: updatedTeams[battingTeamIndex].players.map((p, i) =>
+        updatedTeams[battingTeamIndex as 0 | 1] = {
+          ...updatedTeams[battingTeamIndex as 0 | 1],
+          players: updatedTeams[battingTeamIndex as 0 | 1].players.map((p, i) =>
             i === 0 ? { ...p, currentStriker: true } : p
           )
         };
@@ -288,7 +276,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case 'SET_BOWLING_PLAYER_SCORE': {
       const { action: ballAction, endOfOver } = action.payload;
-      const bowlingTeamIndex = state.teams.findIndex((t) => t.currentBowlingTeam) as 0 | 1;
+      const bowlingTeamIndex = state.teams.findIndex((t) => t.currentBowlingTeam);
 
       if (bowlingTeamIndex === -1) return state;
 
@@ -304,7 +292,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case 'SWAP_BATSMEN': {
-      const battingTeamIndex = state.teams.findIndex((t) => t.currentBattingTeam) as 0 | 1;
+      const battingTeamIndex = state.teams.findIndex((t) => t.currentBattingTeam);
       if (battingTeamIndex === -1) return state;
 
       const teams = [...state.teams] as GameScore;
