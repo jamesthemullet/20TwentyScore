@@ -35,7 +35,6 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
   }
 
   const currentBattingTeamIndex = currentBattingTeam.index;
-  const currentBowlingTeamIndex = currentBowlingTeam.index;
 
   const currentStriker = gameScore[currentBattingTeamIndex].players.find(
     (player) => player.currentStriker
@@ -43,7 +42,6 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
   const currentNonStriker = gameScore[currentBattingTeamIndex].players.find(
     (player) => player.currentNonStriker
   );
-  const currentBowler = gameScore[currentBowlingTeamIndex].players[0];
 
   const endOfOver = () => currentBallInThisOver === 6 + currentExtrasInThisOver;
 
@@ -89,7 +87,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
       setCurrentExtrasInThisOver('reset');
 
       if (action !== 'Wicket' && currentStriker && currentNonStriker) {
-        swapBatsmen(currentStriker, currentNonStriker);
+        swapBatsmen();
       }
 
       setSelectBowler(false);
@@ -119,7 +117,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
       endOfInnings(action),
       methodOfWicket || null
     );
-    setBowlingPlayerScore(currentBowlingTeamIndex, currentBowler.index, action, endOfOver());
+    setBowlingPlayerScore(action, endOfOver());
     setMostRecentAction({ runs, action });
   };
 
