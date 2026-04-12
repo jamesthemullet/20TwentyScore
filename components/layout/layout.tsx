@@ -9,8 +9,6 @@ type Props = {
 };
 
 const Layout: React.FC<Props> = (props) => {
-  // const seo = null;
-
   return (
     <SiteContainer>
       <Meta />
