@@ -1,29 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-// type seoProps = {
-//   seo?: {
-//     canonical: string;
-//     focuskw: string;
-//     metaDesc: string;
-//     metaKeywords: string;
-//     opengraphDescription: string;
-//     opengraphImage: {
-//       uri: string;
-//       altText: string;
-//       mediaItemUrl: string;
-//       mediaDetails: {
-//         width: string;
-//         height: string;
-//       };
-//     };
-//     opengraphTitle: string;
-//     opengraphUrl: string;
-//     opengraphSiteName: string;
-//     title: string;
-//   };
-// };
-
 export default function Meta() {
   const router = useRouter();
   const currentUrl = router.asPath ?? '';
