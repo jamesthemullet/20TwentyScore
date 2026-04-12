@@ -2,7 +2,7 @@
 
 A cricket scorecard web app for Twenty20 (T20) cricket games.
 
-Live at: **https://20-twenty-score.vercel.app/**
+Work in progress...do not use!
 
 ## Features
 
