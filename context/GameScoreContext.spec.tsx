@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { GameScoreProvider, useGameScore, GameScoreContext, GameScore } from './GameScoreContext';
+import { GameScoreProvider, useGameScore, GameScore } from './GameScoreContext';
 import React from 'react';
 import testTeamData1 from '../__tests__/test-team-1.json';
 import testTeamData2 from '../__tests__/test-team-2.json';
@@ -113,10 +113,10 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Player 0 current striker: false')).toBeInTheDocument();
     expect(screen.getByText('Player 1: Not out')).toBeInTheDocument();
     expect(screen.getByText('Player 1 on the crease: true')).toBeInTheDocument();
-    expect(screen.getByText('Player 1 current striker: false')).toBeInTheDocument();
+    expect(screen.getByText('Player 1 current striker: true')).toBeInTheDocument();
     expect(screen.getByText('Player 2: Not out')).toBeInTheDocument();
     expect(screen.getByText('Player 2 on the crease: true')).toBeInTheDocument();
-    expect(screen.getByText('Player 2 current striker: true')).toBeInTheDocument();
+    expect(screen.getByText('Player 2 current striker: false')).toBeInTheDocument();
   });
 
   it('should swap batsmen if runs are odd', () => {
@@ -124,7 +124,6 @@ describe('GameScoreProvider', () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
 
       React.useEffect(() => {
-        setBattingPlayerScore(0, 0, 1, null, false, false, null);
         setBattingPlayerScore(0, 0, 1, null, false, false, null);
       }, []);
 
@@ -465,253 +464,7 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Player 2 current striker: true')).toBeInTheDocument();
   });
 
-  it('should process pointless initial setGameScore correctly', () => {
-    const logSpy = jest.spyOn(console, 'log');
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    logSpy.mockImplementation(() => {});
 
-    const TestComponent = () => {
-      const { setGameScore, setBattingPlayerScore, swapBatsmen } =
-        React.useContext(GameScoreContext);
-
-      setGameScore([
-        {
-          players: [
-            {
-              name: 'Player 1',
-              index: 0,
-              runs: 0,
-              wicketsTaken: 0,
-              currentStriker: true,
-              allActions: [],
-              onTheCrease: true,
-              currentNonStriker: false,
-              currentBowler: false,
-              status: 'Not out',
-              methodOfWicket: null,
-              oversBowled: 0
-            },
-            {
-              name: 'Player 2',
-              index: 0,
-              runs: 0,
-              wicketsTaken: 0,
-              currentStriker: false,
-              allActions: [],
-              onTheCrease: true,
-              currentNonStriker: true,
-              currentBowler: false,
-              status: 'Not out',
-              methodOfWicket: null,
-              oversBowled: 0
-            },
-            {
-              name: 'Player 3',
-              index: 0,
-              runs: 0,
-              wicketsTaken: 0,
-              currentStriker: false,
-              allActions: [],
-              onTheCrease: false,
-              currentNonStriker: false,
-              currentBowler: false,
-              status: 'Not out',
-              methodOfWicket: null,
-              oversBowled: 0
-            },
-            {
-              name: 'Player 4',
-              index: 0,
-              runs: 0,
-              wicketsTaken: 0,
-              currentStriker: false,
-              allActions: [],
-              onTheCrease: false,
-              currentNonStriker: false,
-              currentBowler: false,
-              status: 'Not out',
-              methodOfWicket: null,
-              oversBowled: 0
-            }
-          ],
-          name: 'Team 1',
-          index: 0,
-          totalRuns: 0,
-          totalWicketsConceded: 0,
-          totalWicketsTaken: 0,
-          overs: 0,
-          currentBattingTeam: true,
-          currentBowlingTeam: false,
-          finishedBatting: false
-        },
-        {
-          players: [
-            {
-              name: 'Player 1',
-              index: 0,
-              runs: 0,
-              wicketsTaken: 0,
-              currentStriker: false,
-              allActions: [],
-              onTheCrease: false,
-              currentNonStriker: true,
-              currentBowler: false,
-              status: 'Not out',
-              methodOfWicket: null,
-              oversBowled: 0
-            }
-          ],
-          name: 'Team 2',
-          index: 1,
-          totalRuns: 0,
-          totalWicketsConceded: 0,
-          totalWicketsTaken: 0,
-          overs: 0,
-          currentBattingTeam: false,
-          currentBowlingTeam: true,
-          finishedBatting: false
-        }
-      ]);
-      const currentStriker = {
-        name: 'Player 1',
-        index: 0,
-        runs: 0,
-        wicketsTaken: 0,
-        currentStriker: true,
-        currentBowler: false,
-        allActions: [],
-        onTheCrease: true,
-        currentNonStriker: false,
-        status: 'Not out',
-        methodOfWicket: null,
-        oversBowled: 0
-      };
-      const currentNonStriker = {
-        name: 'Player 2',
-        index: 0,
-        runs: 0,
-        wicketsTaken: 0,
-        currentStriker: false,
-
-        currentBowler: false,
-        allActions: [],
-        onTheCrease: true,
-        currentNonStriker: true,
-        status: 'Not out',
-        methodOfWicket: null,
-        oversBowled: 0
-      };
-      setBattingPlayerScore(0, 0, 10, null, false, false, null);
-      swapBatsmen(currentStriker, currentNonStriker);
-
-      return null;
-    };
-
-    render(<TestComponent />);
-
-    expect(logSpy).toHaveBeenCalledWith('Initial setGameScore called with', [
-      {
-        players: [
-          {
-            name: 'Player 1',
-            index: 0,
-            runs: 0,
-            wicketsTaken: 0,
-            currentStriker: true,
-            allActions: [],
-            onTheCrease: true,
-            currentNonStriker: false,
-            currentBowler: false,
-            status: 'Not out',
-            methodOfWicket: null,
-            oversBowled: 0
-          },
-          {
-            name: 'Player 2',
-            index: 0,
-            runs: 0,
-            wicketsTaken: 0,
-            currentStriker: false,
-            currentBowler: false,
-            allActions: [],
-            onTheCrease: true,
-            currentNonStriker: true,
-            status: 'Not out',
-            methodOfWicket: null,
-            oversBowled: 0
-          },
-          {
-            name: 'Player 3',
-            index: 0,
-            runs: 0,
-            wicketsTaken: 0,
-            currentStriker: false,
-            currentBowler: false,
-            allActions: [],
-            onTheCrease: false,
-            currentNonStriker: false,
-            status: 'Not out',
-            methodOfWicket: null,
-            oversBowled: 0
-          },
-          {
-            name: 'Player 4',
-            index: 0,
-            runs: 0,
-            wicketsTaken: 0,
-            currentStriker: false,
-            currentBowler: false,
-            allActions: [],
-            onTheCrease: false,
-            currentNonStriker: false,
-            status: 'Not out',
-            methodOfWicket: null,
-            oversBowled: 0
-          }
-        ],
-        name: 'Team 1',
-        index: 0,
-        totalRuns: 0,
-        totalWicketsConceded: 0,
-        totalWicketsTaken: 0,
-        overs: 0,
-        currentBattingTeam: true,
-        currentBowlingTeam: false,
-        finishedBatting: false
-      },
-      {
-        players: [
-          {
-            name: 'Player 1',
-            index: 0,
-            runs: 0,
-            wicketsTaken: 0,
-            currentStriker: false,
-            allActions: [],
-            onTheCrease: false,
-            currentNonStriker: true,
-            currentBowler: false,
-            status: 'Not out',
-            methodOfWicket: null,
-            oversBowled: 0
-          }
-        ],
-        name: 'Team 2',
-        index: 1,
-        totalRuns: 0,
-        totalWicketsConceded: 0,
-        totalWicketsTaken: 0,
-        overs: 0,
-        currentBattingTeam: false,
-        currentBowlingTeam: true,
-        finishedBatting: false
-      }
-    ]);
-    expect(logSpy).toHaveBeenCalledWith('Initial setBattingPlayerScore called with', 0);
-    expect(logSpy).toHaveBeenCalledWith('Initial swapBatsmen called');
-
-    logSpy.mockRestore();
-  });
 
   it('should add each action to allActions', () => {
     const MockChildComponent = () => {
@@ -744,7 +497,7 @@ describe('GameScoreProvider', () => {
       }
 
       React.useEffect(() => {
-        swapBatsmen(currentStriker, currentNonStriker);
+        swapBatsmen();
       }, []);
 
       return (

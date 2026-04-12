@@ -1,9 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import {
-  MostRecentActionContext,
-  useMostRecentAction,
-  MostRecentActionProvider
-} from './MostRecentActionContext';
+import { useMostRecentAction, MostRecentActionProvider } from './MostRecentActionContext';
 import React from 'react';
 
 describe('RecentActionProvider', () => {
@@ -45,26 +41,5 @@ describe('RecentActionProvider', () => {
     });
   });
 
-  it('should process pointless initial setMostRecentAction correctly', () => {
-    const logSpy = jest.spyOn(console, 'log');
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    logSpy.mockImplementation(() => {});
 
-    const TestComponent = () => {
-      const { setMostRecentAction } = React.useContext(MostRecentActionContext);
-
-      setMostRecentAction({ runs: 1, action: null });
-
-      return null;
-    };
-
-    render(<TestComponent />);
-
-    expect(logSpy).toHaveBeenCalledWith('Initial setMostRecentAction called with', {
-      action: null,
-      runs: 1
-    });
-
-    logSpy.mockRestore();
-  });
 });

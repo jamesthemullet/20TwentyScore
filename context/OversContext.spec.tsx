@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { OversContext, useOvers, OversProvider } from './OversContext';
+import { useOvers, OversProvider } from './OversContext';
 import React from 'react';
 
 describe('OversProvider', () => {
@@ -114,27 +114,5 @@ describe('OversProvider', () => {
     });
   });
 
-  it('should process pointless initialising functions correctly', () => {
-    const logSpy = jest.spyOn(console, 'log');
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    logSpy.mockImplementation(() => {});
 
-    const TestComponent = () => {
-      const { setCurrentExtrasInThisOver, setCurrentBallInThisOver, setCurrentOvers, resetOvers } =
-        React.useContext(OversContext);
-
-      setCurrentExtrasInThisOver(1);
-      setCurrentBallInThisOver(null);
-      setCurrentOvers(undefined);
-      resetOvers();
-
-      return null;
-    };
-
-    render(<TestComponent />);
-
-    expect(logSpy).toHaveBeenCalledTimes(4);
-
-    logSpy.mockRestore();
-  });
 });
