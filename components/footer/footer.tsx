@@ -20,7 +20,7 @@ const FooterContainer = styled.footer`
   p {
     margin: 0;
   }
-` as any;
+`;
 
 export default function Footer() {
   return (
