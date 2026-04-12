@@ -16,7 +16,7 @@
     }
   ],
   "schedule": [
-    "before 4am"
+    "after 4am and before 5am"
   ],
   "timezone": "Europe/London"
 }

@@ -19,7 +19,7 @@ describe('GameScoreProvider', () => {
 
     expect(screen.getByText('11')).toBeInTheDocument();
   });
-  it('should process setGameScore correctly for team 1', () => {
+  it('should process setGameScore correctly for team  1', () => {
     const MockChildComponent = () => {
       const { gameScore, setGameScore } = useGameScore();
 
