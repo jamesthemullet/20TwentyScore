@@ -22,6 +22,7 @@ jest.mock('next/head', () => {
 useRouterMock.mockReturnValue({
   basePath: '',
   isLocaleDomain: false,
+  asPath: '',
   push: async () => true,
   replace: async () => true,
   reload: () => null,
@@ -40,11 +41,11 @@ useRouterMock.mockReturnValue({
 
 describe('Meta', () => {
   it('should set relevant meta tags', () => {
-    const { container } = render(<Meta />);
-    const ogUrlMetaTag = container.querySelector('meta[property="og:url"]');
+    render(<Meta />);
+    const ogUrlMetaTag = document.querySelector('meta[property="og:url"]');
     expect(ogUrlMetaTag).toBeTruthy();
     expect(ogUrlMetaTag?.getAttribute('content')).toBe('https://20-twenty-score.vercel.app/');
-    const ogUrlMetaDescription = container.querySelector('meta[property="og:description"]');
+    const ogUrlMetaDescription = document.querySelector('meta[property="og:description"]');
     expect(ogUrlMetaDescription).toBeTruthy();
     expect(ogUrlMetaDescription?.getAttribute('content')).toBe(
       '20 Twenty Scorecard - keep scores of your 20 Twenty games'
