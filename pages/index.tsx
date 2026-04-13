@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import Layout from '../components/layout/layout';
-import { PostProps } from '../components/post/post';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring/scoring';
 import { PrimaryButton } from '../components/core/buttons';
 import { useGameScore } from '../context/GameScoreContext';
 import defaultPlayers from '../components/core/players';
-
-type Props = {
-  feed: PostProps[];
-};
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   import('accented').then(({ accented }) => {
@@ -17,7 +12,7 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   });
 }
 
-const Index: React.FC<Props> = () => {
+const Index: React.FC = () => {
   const [gameInitialised, setGameInitialised] = useState(false);
   const [selectBowler, setSelectBowler] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,12 +23,16 @@ const Index: React.FC<Props> = () => {
 
   const loadGame = () => {
     const gameData = localStorage.getItem('gameData');
-    if (gameData) {
+    if (!gameData) {
+      setError('No game data found');
+      return;
+    }
+    try {
       const parsedGameData = JSON.parse(gameData);
       setGameScore(parsedGameData);
       setGameInitialised(true);
-    } else {
-      setError('No game data found');
+    } catch {
+      setError('Saved game data is corrupted');
     }
   };
 

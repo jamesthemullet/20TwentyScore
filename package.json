@@ -21,7 +21,6 @@
     "accented": "^1.2.0",
     "husky": "^9.0.0",
     "next": "16.2.3",
-    "next-auth": "^4.22.1",
     "react": "19.2.5",
     "react-dom": "19.2.5"
   },
@@ -60,13 +59,9 @@
   "overrides": {
     "eslint-plugin-react": {
       "minimatch": "^10.0.0"
-    },
-    "next-auth": {
-      "preact": "^10.27.3"
     }
   },
   "resolutions": {
-    "eslint-plugin-react/minimatch": "^10.0.0",
-    "next-auth/preact": "^10.27.3"
+    "eslint-plugin-react/minimatch": "^10.0.0"
   }
 }
