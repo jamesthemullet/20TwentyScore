@@ -4797,9 +4797,9 @@ keyv@^4.5.4:
     json-buffer "3.0.1"
 
 knip@^6.0.0:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/knip/-/knip-6.3.1.tgz#3cccdee10fe6a682171f0023d39ac1ed3edc0abc"
-  integrity sha512-22kLJloVcOVOAudCxlFOC0ICAMme7dKsS7pVTEnrmyKGpswb8ieznvAiSKUeFVDJhb01ect6dkDc1Ha1g1sPpg==
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/knip/-/knip-6.4.1.tgz#ecb95c4653c03215c4de841f0051dcadd1e4f79e"
+  integrity sha512-Ry+ywmDFSZvKp/jx7LxMgsZWRTs931alV84e60lh0Stf6kSRYqSIUTkviyyDFRcSO3yY1Kpbi83OirN+4lA2Xw==
   dependencies:
     "@nodelib/fs.walk" "^1.2.3"
     fast-glob "^3.3.3"
@@ -5463,9 +5463,9 @@ prettier-linter-helpers@^1.0.1:
     fast-diff "^1.1.2"
 
 prettier@^3.0.0:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.8.1.tgz#edf48977cf991558f4fcbd8a3ba6015ba2a3a173"
-  integrity sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.8.2.tgz#4f52e502193c9aa5b384c3d00852003e551bbd9f"
+  integrity sha512-8c3mgTe0ASwWAJK+78dpviD+A8EqhndQPUBpNUIPt6+xWlIigCwfN01lWr9MAede4uqXGTEKeQWTvzb3vjia0Q==
 
 pretty-format@30.2.0, pretty-format@^30.0.0:
   version "30.2.0"
