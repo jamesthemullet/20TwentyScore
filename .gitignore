@@ -10,3 +10,4 @@ yarn.lock
 coverage/
 tsbuildinfo
 tsbuildinfo*
+.claude/settings.local.json
