@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { NextRouter, useRouter } from 'next/router';
-import { SessionContextValue, useSession } from 'next-auth/react';
 import Header from './header';
 
 const useRouterMock = useRouter as jest.MockedFunction<typeof useRouter>;
@@ -9,10 +8,6 @@ const useRouterMock = useRouter as jest.MockedFunction<typeof useRouter>;
 jest.mock('next/router', () => ({
   ...jest.requireActual('next/router'),
   useRouter: jest.fn()
-}));
-
-jest.mock('next-auth/react', () => ({
-  useSession: jest.fn()
 }));
 
 describe('Header Component', () => {
@@ -35,18 +30,6 @@ describe('Header Component', () => {
       isReady: true,
       isPreview: false
     } as unknown as NextRouter);
-
-    const session: SessionContextValue<boolean> = {
-      update: jest.fn(),
-      data: {
-        user: {
-          email: 'test@example.com'
-        },
-        expires: ''
-      },
-      status: 'authenticated'
-    };
-    (useSession as jest.Mock).mockReturnValue(session);
   });
   it('should render a Header component successfully', () => {
     render(<Header />);
