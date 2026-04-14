@@ -2006,10 +2006,10 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.9.tgz#d229a7b7f9dac167a156992ef23c7f023653f53b"
   integrity sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==
 
-"@preact/signals-core@^1.14.0":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@preact/signals-core/-/signals-core-1.14.0.tgz#3a13742301a94161790e84d0f2cbf9b5455593f7"
-  integrity sha512-AowtCcCU/33lFlh1zRFf/u+12rfrhtNakj7UpaGEsmMwUKpKWMVvcktOGcwBBNiB4lWrZWc01LhiyyzVklJyaQ==
+"@preact/signals-core@^1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@preact/signals-core/-/signals-core-1.14.1.tgz#2a5739381eca3d730519d2d447ceb8110508d0bc"
+  integrity sha512-vxPpfXqrwUe9lpjqfYNjAF/0RF/eFGeLgdJzdmIIZjpOnTmGmAB4BjWone562mJGMRP4frU6iZ6ei3PDsu52Ng==
 
 "@sinclair/typebox@^0.34.0":
   version "0.34.48"
@@ -2445,12 +2445,12 @@
   integrity sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==
 
 accented@^1.2.0:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/accented/-/accented-1.2.5.tgz#f4ffc227e6511ddecf6647a4bfeef724a6dff170"
-  integrity sha512-oC/3j3aYuFe2b+t0VXW/Tv6PAX6EsN0qBnIYFlFJ8TD/28Eg1ddqK3YaP6RJTh5K77omB2k1qfK0Kj/RyjbUdw==
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/accented/-/accented-1.2.6.tgz#d49f526809c377246f698dd1644f654d981cd9e8"
+  integrity sha512-mVr9BDW3TWjQLEE7diRKUoZYvbV5Dh5fDddnxgsVoV5lp+zsNiUZMF/ai9TSi2HobUEx7ujFGgE/AGtJUB3Y1w==
   dependencies:
-    "@preact/signals-core" "^1.14.0"
-    axe-core "^4.11.1"
+    "@preact/signals-core" "^1.14.1"
+    axe-core "^4.11.2"
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -2650,10 +2650,10 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axe-core@^4.11.1:
-  version "4.11.1"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.11.1.tgz#052ff9b2cbf543f5595028b583e4763b40c78ea7"
-  integrity sha512-BASOg+YwO2C+346x3LZOeoovTIoTrRqEsqMa6fmfAV0P+U9mFr9NsyOEpiYvFjbc64NMrSswhV50WdXzdb/Z5A==
+axe-core@^4.11.2:
+  version "4.11.3"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.11.3.tgz#d23cf404edaa5f97bdfd9afed6eea8405e5326e7"
+  integrity sha512-zBQouZixDTbo3jMGqHKyePxYxr1e5W8UdTmBQ7sNtaA9M2bE32daxxPLS/jojhKOHxQ7LWwPjfiwf/fhaJWzlg==
 
 babel-jest@30.3.0, babel-jest@^30.0.0:
   version "30.3.0"
@@ -3804,9 +3804,9 @@ globals@^14.0.0:
   integrity sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==
 
 globals@^17.0.0:
-  version "17.4.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-17.4.0.tgz#33d7d297ed1536b388a0e2f4bcd0ff19c8ff91b5"
-  integrity sha512-hjrNztw/VajQwOLsMNT1cbJiH2muO3OROCHnbehc8eY5JyD2gqz4AcMHPqgaOR59DjgUjYAYLeH699g/eWi2jw==
+  version "17.5.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-17.5.0.tgz#a82c641d898f8dfbe0e81f66fdff7d0de43f88c6"
+  integrity sha512-qoV+HK2yFl/366t2/Cb3+xxPUo5BuMynomoDmiaZBIdbs+0pYbjfZU+twLhGKp4uCZ/+NbtpVepH5bGCxRyy2g==
 
 globalthis@^1.0.4:
   version "1.0.4"
