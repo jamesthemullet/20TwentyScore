@@ -443,6 +443,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
 // ── Hooks ─────────────────────────────────────────────────────────────────────
 
-export const useGameScore = () => useContext(GameScoreContext);
-export const useOvers = () => useContext(OversContext);
-export const useMostRecentAction = () => useContext(MostRecentActionContext);
+export const useGameScore = (): GameScoreContextType => useContext(GameScoreContext);
+export const useOvers = (): OversContextType => useContext(OversContext);
+export const useMostRecentAction = (): MostRecentActionContextType => useContext(MostRecentActionContext);

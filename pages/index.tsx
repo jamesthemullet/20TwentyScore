@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Layout from '../components/layout/layout';
 import styled from '@emotion/styled';
 import Scoring from '../components/scoring/scoring';
+import Scoreboard from '../components/scoreboard/scoreboard';
 import { PrimaryButton } from '../components/core/buttons';
 import { useGameScore } from '../context/GameScoreContext';
+import { useOvers } from '../context/OversContext';
 import defaultPlayers from '../components/core/players';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
@@ -18,6 +20,7 @@ const Index: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const { setGameScore, gameScore, setCurrentBowler } = useGameScore();
+  const { currentOver } = useOvers();
 
   const team1 = gameScore.find((team) => team.index === 1);
 
@@ -82,6 +85,7 @@ const Index: React.FC = () => {
       <Main aria-label="Scoreboard">
         {gameInitialised && !selectBowler && (
           <Board>
+            <Scoreboard handleShowTeam={() => undefined} />
             <Scoring setSelectBowler={handleSelectBowler} />
           </Board>
         )}
@@ -95,7 +99,7 @@ const Index: React.FC = () => {
             )}
             {selectBowler && (
               <>
-                <h3>Select the bowler for the first over.</h3>
+                <h2>Select the bowler for over {currentOver}.</h2>
                 {team1?.players.map((player) => (
                   <PrimaryButton
                     key={player.name}

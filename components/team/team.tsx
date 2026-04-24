@@ -6,14 +6,6 @@ import { HomeContainer } from '../core/home-container';
 import { StyledHeading2 } from '../core/heading';
 import { SecondaryButton } from '../core/buttons';
 
-type Player = {
-  name: string;
-  index: number;
-  runs: number;
-  currentStriker: boolean;
-  allActions: (string | null)[];
-};
-
 type TeamProps = {
   teamIndex: number;
 };
