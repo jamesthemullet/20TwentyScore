@@ -7,6 +7,10 @@ import { useOvers } from '../../context/OversContext';
 import { HomeContainer } from '../core/home-container';
 import { StyledHeading2 } from '../core/heading';
 
+const BALLS_PER_OVER = 6;
+const WICKETS_FOR_ALL_OUT = 9; // 9 conceded means 10th wicket falls next
+const FINAL_OVER_INDEX = 19; // T20: overs 0–19
+
 type ScoringProps = {
   setSelectBowler: (setBowler: boolean) => void;
 };
@@ -43,11 +47,11 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     (player) => player.currentNonStriker
   );
 
-  const endOfOver = () => currentBallInThisOver === 6 + currentExtrasInThisOver;
+  const endOfOver = () => currentBallInThisOver === BALLS_PER_OVER + currentExtrasInThisOver;
 
   const endOfInnings = (action: string | null) =>
-    (currentBattingTeam.totalWicketsConceded === 9 && action === 'Wicket') ||
-    (currentBattingTeam.overs === 19 && endOfOver());
+    (currentBattingTeam.totalWicketsConceded === WICKETS_FOR_ALL_OUT && action === 'Wicket') ||
+    (currentBattingTeam.overs === FINAL_OVER_INDEX && endOfOver());
 
   const endOfGame = () => gameScore.every((team) => team.finishedBatting === true);
 
