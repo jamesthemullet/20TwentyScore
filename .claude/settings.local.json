@@ -6,11 +6,14 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
       "Bash(git checkout:*)",
       "Bash(yarn tsc:*)",
       "Bash(gh run:*)",
       "Bash(yarn test:*)",
-      "Bash(tree -L 2 -d /c/Users/james/Documents/GitHub/20TwentyScore --ignore 'node_modules|.next|.git|coverage')"
+      "Bash(tree -L 2 -d /c/Users/james/Documents/GitHub/20TwentyScore --ignore 'node_modules|.next|.git|coverage')",
+      "Bash(awk '{print $NF}')",
+      "Bash(gh label *)"
     ]
   }
 }
