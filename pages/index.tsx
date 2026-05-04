@@ -7,6 +7,7 @@ import { PrimaryButton } from '../components/core/buttons';
 import { useGameScore } from '../context/GameScoreContext';
 import { useOvers } from '../context/OversContext';
 import defaultPlayers from '../components/core/players';
+import PitchDiagram from '../components/pitch/pitch-diagram';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   import('accented').then(({ accented }) => {
@@ -92,10 +93,31 @@ const Index: React.FC = () => {
         {(!gameInitialised || selectBowler) && (
           <StartingBox>
             {!selectBowler && (
-              <ButtonsContainer>
-                <PrimaryButton onClick={() => newGame()}>New Game</PrimaryButton>
-                <PrimaryButton onClick={() => loadGame()}>Load Game</PrimaryButton>
-              </ButtonsContainer>
+              <>
+                <HeroSection>
+                  <PitchDiagram />
+                  <HeroText>
+                    <Tagline>
+                      Twenty overs,<br />
+                      two teams,<br />
+                      one scoresheet.
+                    </Tagline>
+                    <Description>
+                      A hand-kept ledger for your Saturday-afternoon T20s — ball by ball, over by over,
+                      with a running tally any pavilion would be proud of.
+                    </Description>
+                    <FeatureList>
+                      <li>Ball-by-ball</li>
+                      <li>Run rates</li>
+                      <li>Player figures</li>
+                    </FeatureList>
+                  </HeroText>
+                </HeroSection>
+                <ButtonsContainer>
+                  <PrimaryButton onClick={() => newGame()}>Start New Match</PrimaryButton>
+                  <PrimaryButton onClick={() => loadGame()}>Resume Saved Match</PrimaryButton>
+                </ButtonsContainer>
+              </>
             )}
             {selectBowler && (
               <>
@@ -155,4 +177,71 @@ const StartingBox = styled.div`
   align-items: center;
   gap: 20px;
   margin-top: 20px;
+`;
+
+const HeroSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 1rem 0;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const HeroText = styled.div`
+  text-align: center;
+  max-width: 420px;
+
+  @media (min-width: 640px) {
+    text-align: left;
+  }
+`;
+
+const Tagline = styled.p`
+  font-family: 'Pacifico', cursive;
+  font-size: 2rem;
+  color: #222;
+  line-height: 1.4;
+  margin: 0 0 1.25rem;
+`;
+
+const Description = styled.p`
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+  font-family: Georgia, serif;
+`;
+
+const FeatureList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @media (min-width: 640px) {
+    justify-content: flex-start;
+  }
+
+  li {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+
+    &::before {
+      content: '—';
+      margin-right: 0.4rem;
+      color: #bbb;
+    }
+  }
 `;

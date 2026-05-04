@@ -1,28 +1,37 @@
-// Header.tsx
 import React from 'react';
 import Nav from '../nav/nav';
 import styled from '@emotion/styled';
 
 const Header: React.FC = () => {
   return (
-    <>
-      <header>
-        <Nav />
-        <StyledHeading>20Twenty Score</StyledHeading>
-      </header>
-    </>
+    <StyledHeader>
+      <StyledHeading>20Twenty Score</StyledHeading>
+      <Nav />
+    </StyledHeader>
   );
 };
 
+const StyledHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #333;
+  padding: 0 1rem;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    position: relative;
+  }
+`;
+
 const StyledHeading = styled.h1`
-  color: green;
-  text-align: center;
+  color: #fff;
   margin: 0;
-  padding: 1rem;
+  padding: 1rem 0.5rem;
   font-size: 2rem;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #ccc;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Pacifico', cursive;
+  letter-spacing: 1px;
 `;
 
 export default Header;

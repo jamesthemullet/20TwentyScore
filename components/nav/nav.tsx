@@ -21,10 +21,13 @@ export default function Nav() {
           <Link href="/">Home</Link>
         </li>
         <li>
+          <Link href="/match">Match</Link>
+        </li>
+        <li>
           <Link href="/teams">Teams</Link>
         </li>
         <li>
-          <Link href="/scoreboard">Scoreboard</Link>
+          <Link href="/summary">Summary</Link>
         </li>
       </ul>
     </StyledNav>
@@ -32,21 +35,20 @@ export default function Nav() {
 }
 
 const StyledNav = styled.nav`
-  background-color: #333;
-  color: #fff;
-  padding: 1rem;
   font-family: 'Oswald', sans-serif;
   letter-spacing: 2px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  padding: 0.75rem 0;
+
   ul {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    gap: 0.75rem;
     list-style: none;
     margin: 0;
     padding: 0;
+
     @media (max-width: 768px) {
       display: none;
 
@@ -54,15 +56,26 @@ const StyledNav = styled.nav`
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
+        padding: 0.75rem 0 1rem;
+        gap: 0.5rem;
       }
     }
   }
-  li {
-    padding: 0.5rem 2rem;
-    a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1.5rem;
+
+  li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0.4rem 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    display: inline-block;
+    transition: background-color 0.2s, border-color 0.2s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: #fff;
     }
   }
 `;
@@ -80,6 +93,7 @@ const BurgerButton = styled.button`
     padding: 0;
     margin-right: 1rem;
     cursor: pointer;
+    margin-left: auto;
 
     span {
       display: block;

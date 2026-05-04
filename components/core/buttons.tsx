@@ -35,16 +35,17 @@ export const SquareButton = styled.button`
 
 export const PrimaryButton = styled.button`
   background-color: green;
-  border: 1px solid #000;
-  border-radius: 0;
+  border: 2px solid green;
+  border-radius: 999px;
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-size: 1rem;
-  font-family: 'Oswald', sans-serif;
-  font-weight: 400;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   line-height: 1.5;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.5rem;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
