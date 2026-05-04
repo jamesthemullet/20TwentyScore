@@ -9,15 +9,17 @@ describe('Nav Component', () => {
   it('should render navigation links', () => {
     render(<Nav />);
     expect(screen.getByText('Home')).toBeVisible();
+    expect(screen.getByText('Match')).toBeVisible();
     expect(screen.getByText('Teams')).toBeVisible();
-    expect(screen.getByText('Scoreboard')).toBeVisible();
+    expect(screen.getByText('Summary')).toBeVisible();
   });
 
   it('should link to the correct pages', () => {
     render(<Nav />);
     expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: 'Match' })).toHaveAttribute('href', '/match');
     expect(screen.getByRole('link', { name: 'Teams' })).toHaveAttribute('href', '/teams');
-    expect(screen.getByRole('link', { name: 'Scoreboard' })).toHaveAttribute('href', '/scoreboard');
+    expect(screen.getByRole('link', { name: 'Summary' })).toHaveAttribute('href', '/summary');
   });
 
   it('should toggle the dropdown menu when the burger button is clicked', () => {
