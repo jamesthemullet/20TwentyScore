@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const isActive = (href: string) => router.pathname === href;
 
   return (
     <StyledNav aria-label="Navigation Bar">
@@ -18,16 +22,16 @@ export default function Nav() {
       </BurgerButton>
       <ul className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
         </li>
         <li>
-          <Link href="/match">Match</Link>
+          <Link href="/match" className={isActive('/match') ? 'active' : ''}>Match</Link>
         </li>
         <li>
-          <Link href="/teams">Teams</Link>
+          <Link href="/teams" className={isActive('/teams') ? 'active' : ''}>Teams</Link>
         </li>
         <li>
-          <Link href="/summary">Summary</Link>
+          <Link href="/summary" className={isActive('/summary') ? 'active' : ''}>Summary</Link>
         </li>
       </ul>
     </StyledNav>
@@ -76,6 +80,12 @@ const StyledNav = styled.nav`
     &:hover {
       background-color: rgba(255, 255, 255, 0.15);
       border-color: #fff;
+    }
+
+    &.active {
+      background-color: #fff;
+      border-color: #fff;
+      color: #1a1a1a;
     }
   }
 `;
