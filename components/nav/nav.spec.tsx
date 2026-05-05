@@ -3,6 +3,10 @@ import Nav from './nav';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { matchers } from '@emotion/jest';
 
+jest.mock('next/router', () => ({
+  useRouter: () => ({ pathname: '/' }),
+}));
+
 expect.extend(matchers);
 
 describe('Nav Component', () => {

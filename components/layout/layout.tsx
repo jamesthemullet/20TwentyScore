@@ -29,7 +29,7 @@ const Content = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 export default Layout;
