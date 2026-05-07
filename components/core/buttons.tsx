@@ -59,20 +59,26 @@ export const SecondaryButton = styled.button`
 
 export const SquareButton = styled.button`
   background-color: #fff;
-  border: 5px solid #333;
-  border-radius: 0;
+  border: 2px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 2px 0 #333;
   color: #333;
   cursor: pointer;
-  display: inline-block;
-  font-size: 1rem;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.5rem;
+  font-style: italic;
   font-weight: 700;
   margin: 0;
-  padding: 0.5rem;
+  padding: 0.75rem;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
   white-space: nowrap;
-  width: 100px;
+  width: 140px;
   aspect-ratio: 1;
   text-wrap: balance;
   transition: background-color 0.2s, color 0.2s;

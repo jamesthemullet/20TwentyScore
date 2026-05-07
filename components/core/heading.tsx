@@ -6,6 +6,6 @@ export const StyledHeading2 = styled.h2`
   padding-bottom: 10px;
   font-size: 2rem;
   border-bottom: 1px solid #ccc;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Inter', sans-serif;
   margin-bottom: 20px;
 `;

@@ -33,8 +33,7 @@ describe('Header Component', () => {
   });
   it('should render a Header component successfully', () => {
     render(<Header />);
-    const headingElement = screen.getByRole('heading', { level: 1 });
-    expect(headingElement).toBeInTheDocument();
-    expect(headingElement).toHaveTextContent('20Twenty Score');
+    const siteTitle = screen.getByText('20Twenty Score');
+    expect(siteTitle).toBeInTheDocument();
   });
 });

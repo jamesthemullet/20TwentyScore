@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Layout from '../components/layout/layout';
 import styled from '@emotion/styled';
-import Scoring from '../components/scoring/scoring';
-import Scoreboard from '../components/scoreboard/scoreboard';
 import { PrimaryButton, SecondaryButton } from '../components/core/buttons';
 import { useGameScore } from '../context/GameScoreContext';
-import { useOvers } from '../context/OversContext';
 import defaultPlayers from '../components/core/players';
 import PitchDiagram from '../components/pitch/pitch-diagram';
 
@@ -26,14 +24,10 @@ const cricketQuotes = [
 ];
 
 const Index: React.FC = () => {
-  const [gameInitialised, setGameInitialised] = useState(false);
-  const [selectBowler, setSelectBowler] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  const { setGameScore, gameScore, setCurrentBowler } = useGameScore();
-  const { currentOver } = useOvers();
-
-  const team1 = gameScore.find((team) => team.index === 1);
+  const { setGameScore } = useGameScore();
 
   const loadGame = () => {
     const gameData = localStorage.getItem('gameData');
@@ -44,7 +38,7 @@ const Index: React.FC = () => {
     try {
       const parsedGameData = JSON.parse(gameData);
       setGameScore(parsedGameData);
-      setGameInitialised(true);
+      router.push('/match');
     } catch {
       setError('Saved game data is corrupted');
     }
@@ -78,77 +72,41 @@ const Index: React.FC = () => {
         finishedBatting: false
       }
     ]);
-    setSelectBowler(true);
-  };
-
-  const settingBowler = (teamIndex: number, playerIndex: number) => {
-    setCurrentBowler(teamIndex, playerIndex);
-    setSelectBowler(false);
-    setGameInitialised(true);
-  };
-
-  const handleSelectBowler = () => {
-    setSelectBowler(true);
+    router.push('/match');
   };
 
   const dailyQuote = cricketQuotes[new Date().getDay()];
 
   return (
     <Layout>
-      <Main aria-label="Scoreboard">
+      <Main>
         <Welcome>Welcome to 20Twenty Score</Welcome>
-        {gameInitialised && !selectBowler && (
-          <Board>
-            <Scoreboard handleShowTeam={() => undefined} />
-            <Scoring setSelectBowler={handleSelectBowler} />
-          </Board>
-        )}
-        {(!gameInitialised || selectBowler) && (
-          <StartingBox>
-            {!selectBowler && (
-              <>
-                <HeroSection>
-                  <PitchDiagram />
-                  <HeroText>
-                    <Tagline>
-                      Twenty overs,
-                      <br />
-                      two teams,
-                      <br />
-                      one scoresheet.
-                    </Tagline>
-                    <Description>
-                      A hand-kept ledger for your Saturday-afternoon T20s — ball by ball, over by
-                      over, with a running tally any pavilion would be proud of.
-                    </Description>
-                    <FeatureList>
-                      <li>Ball-by-ball</li>
-                      <li>Run rates</li>
-                      <li>Player figures</li>
-                    </FeatureList>
-                  </HeroText>
-                </HeroSection>
-                <ButtonsContainer>
-                  <PrimaryButton onClick={() => newGame()}>Start New Match</PrimaryButton>
-                  <SecondaryButton onClick={() => loadGame()}>Resume Saved Match</SecondaryButton>
-                </ButtonsContainer>
-              </>
-            )}
-            {selectBowler && (
-              <>
-                <h2>Select the bowler for over {currentOver}.</h2>
-                {team1?.players.map((player) => (
-                  <PrimaryButton
-                    key={player.name}
-                    onClick={() => settingBowler(team1.index, player.index)}>
-                    {player.name}
-                  </PrimaryButton>
-                ))}
-              </>
-            )}
-            {error && <p>{error}</p>}
-          </StartingBox>
-        )}
+        <HeroSection>
+          <PitchDiagram />
+          <HeroText>
+            <Tagline>
+              Twenty overs,
+              <br />
+              two teams,
+              <br />
+              one scoresheet.
+            </Tagline>
+            <Description>
+              A hand-kept ledger for your Saturday-afternoon T20s — ball by ball, over by
+              over, with a running tally any pavilion would be proud of.
+            </Description>
+            <FeatureList>
+              <li>Ball-by-ball</li>
+              <li>Run rates</li>
+              <li>Player figures</li>
+            </FeatureList>
+          </HeroText>
+        </HeroSection>
+        <ButtonsContainer>
+          <PrimaryButton onClick={() => newGame()}>Start New Match</PrimaryButton>
+          <SecondaryButton onClick={() => loadGame()}>Resume Saved Match</SecondaryButton>
+        </ButtonsContainer>
+        {error && <p role="alert">{error}</p>}
         <Divider />
         <Quote>
           <p>&ldquo;{dailyQuote.text}&rdquo;</p>
@@ -161,22 +119,10 @@ const Index: React.FC = () => {
 
 export default Index;
 
-const Board = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 20px;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
-`;
-
 const Main = styled.main`
   position: relative;
   width: 100%;
-  max-width: 2000px;
+  max-width: 1400px;
   margin: 0 auto;
   flex: 1;
   justify-content: center;
@@ -189,15 +135,6 @@ const ButtonsContainer = styled.div`
   gap: 10px;
   margin-top: 1rem;
   margin-bottom: 30px;
-`;
-
-const StartingBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-top: 20px;
 `;
 
 const HeroSection = styled.div`
@@ -223,8 +160,8 @@ const HeroText = styled.div`
   }
 `;
 
-const Welcome = styled.h2`
-  font-family: 'Pacifico', cursive;
+const Welcome = styled.h1`
+  font-family: 'Bodoni Moda', serif;
   font-size: 2.5rem;
   color: #222;
   margin: 0;
@@ -238,8 +175,9 @@ const Welcome = styled.h2`
 `;
 
 const Tagline = styled.p`
-  font-family: 'Pacifico', cursive;
+  font-family: 'Bodoni Moda', serif;
   font-size: 2.75rem;
+  font-weight: 700;
   color: #222;
   line-height: 1.4;
   margin: 0 0 1.25rem;
@@ -274,7 +212,7 @@ const Quote = styled.footer`
   }
 
   cite {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -297,7 +235,7 @@ const FeatureList = styled.ul`
   }
 
   li {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
     letter-spacing: 2px;
     text-transform: uppercase;
