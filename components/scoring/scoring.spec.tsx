@@ -83,6 +83,7 @@ const setCurrentBowler = jest.fn();
 const setCurrentOvers = jest.fn();
 const swapBatsmen = jest.fn();
 const resetOvers = jest.fn();
+const undo = jest.fn();
 
 describe('Scoring Component', () => {
   afterEach(() => {
@@ -97,7 +98,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -118,7 +121,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -140,7 +145,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -163,7 +170,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -186,7 +195,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -215,7 +226,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -237,7 +250,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -258,7 +273,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -282,7 +299,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
@@ -316,7 +335,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setCurrentBowler,
           setBowlingPlayerScore,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -353,7 +374,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -392,7 +415,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -429,7 +454,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -467,7 +494,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -575,7 +604,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -682,7 +713,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -793,7 +826,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{
@@ -885,7 +920,9 @@ describe('Scoring Component', () => {
           setBattingPlayerScore,
           setBowlingPlayerScore,
           setCurrentBowler,
-          swapBatsmen
+          swapBatsmen,
+          undo,
+          canUndo: false
         }}>
         <OversContext.Provider
           value={{

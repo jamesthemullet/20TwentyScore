@@ -19,7 +19,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
   const [awaitingMethodOfWicket, setAwaitingMethodOfWicket] = useState(false);
 
-  const { setBattingPlayerScore, gameScore, swapBatsmen, setBowlingPlayerScore } = useGameScore();
+  const { setBattingPlayerScore, gameScore, swapBatsmen, setBowlingPlayerScore, undo, canUndo } = useGameScore();
   const { setMostRecentAction } = useMostRecentAction();
   const {
     currentBallInThisOver,
@@ -187,7 +187,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
       </ScoringGrid>
       <ScoringFooter>
         <FooterHint>Touch a result to record the ball</FooterHint>
-        <UndoButton onClick={() => {}}>
+        <UndoButton onClick={undo} disabled={!canUndo}>
           ↩ Undo
         </UndoButton>
       </ScoringFooter>
@@ -252,6 +252,11 @@ const UndoButton = styled.button`
   display: flex;
   align-items: center;
   gap: 0.25rem;
+
+  &:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
 `;
 
 const ScoringHeader = styled.div`

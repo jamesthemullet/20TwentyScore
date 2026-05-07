@@ -48,6 +48,8 @@ export type GameScoreContextType = {
   setBowlingPlayerScore: (action: string | null, endOfOver: boolean) => void;
   swapBatsmen: () => void;
   setCurrentBowler: (teamIndex: number, playerIndex: number) => void;
+  undo: () => void;
+  canUndo: boolean;
 };
 
 export type OversContextType = {
@@ -67,7 +69,7 @@ export type MostRecentActionContextType = {
 
 // ── State ─────────────────────────────────────────────────────────────────────
 
-type GameState = {
+type CheckpointState = {
   teams: GameScore;
   currentOver: number;
   currentBallInThisOver: number;
@@ -75,7 +77,12 @@ type GameState = {
   mostRecentAction: { runs: number; action: string | null };
 };
 
+type GameState = CheckpointState & {
+  previousState: CheckpointState | null;
+};
+
 type GameAction =
+  | { type: 'UNDO' }
   | { type: 'SET_GAME_SCORE'; payload: GameScore }
   | {
       type: 'SET_BATTING_PLAYER_SCORE';
@@ -130,7 +137,8 @@ const initialState: GameState = {
   currentOver: 1,
   currentBallInThisOver: 1,
   currentExtrasInThisOver: 0,
-  mostRecentAction: { runs: 0, action: null }
+  mostRecentAction: { runs: 0, action: null },
+  previousState: null
 };
 
 // ── Reducer helpers ───────────────────────────────────────────────────────────
@@ -215,6 +223,10 @@ function applyBowlingUpdate(
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
+    case 'UNDO':
+      if (!state.previousState) return state;
+      return { ...state.previousState, previousState: null };
+
     case 'SET_GAME_SCORE': {
       const teams = action.payload;
       const battingTeamIndex = teams.findIndex((t) => t.currentBattingTeam);
@@ -238,6 +250,14 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         action.payload;
 
       if (teamIndex < 0 || teamIndex > 1) return state;
+
+      const checkpoint: CheckpointState = {
+        teams: state.teams,
+        currentOver: state.currentOver,
+        currentBallInThisOver: state.currentBallInThisOver,
+        currentExtrasInThisOver: state.currentExtrasInThisOver,
+        mostRecentAction: state.mostRecentAction
+      };
 
       const teams = [...state.teams] as GameScore;
       const team = teams[teamIndex as 0 | 1];
@@ -271,7 +291,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         };
       }
 
-      return { ...state, teams };
+      return { ...state, teams, previousState: checkpoint };
     }
 
     case 'SET_BOWLING_PLAYER_SCORE': {
@@ -363,7 +383,9 @@ export const GameScoreContext = createContext<GameScoreContextType>({
   setBattingPlayerScore: () => undefined,
   setBowlingPlayerScore: () => undefined,
   swapBatsmen: () => undefined,
-  setCurrentBowler: () => undefined
+  setCurrentBowler: () => undefined,
+  undo: () => undefined,
+  canUndo: false
 });
 
 export const OversContext = createContext<OversContextType>({
@@ -401,9 +423,11 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         dispatch({ type: 'SET_BOWLING_PLAYER_SCORE', payload: { action, endOfOver } }),
       swapBatsmen: () => dispatch({ type: 'SWAP_BATSMEN' }),
       setCurrentBowler: (teamIndex, playerIndex) =>
-        dispatch({ type: 'SET_CURRENT_BOWLER', payload: { teamIndex, playerIndex } })
+        dispatch({ type: 'SET_CURRENT_BOWLER', payload: { teamIndex, playerIndex } }),
+      undo: () => dispatch({ type: 'UNDO' }),
+      canUndo: state.previousState !== null
     }),
-    [state.teams]
+    [state.teams, state.previousState]
   );
 
   const oversValue = useMemo<OversContextType>(
