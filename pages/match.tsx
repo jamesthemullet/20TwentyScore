@@ -47,13 +47,17 @@ const MatchPage: React.FC = () => {
       return;
     }
     if (currentBallInThisOver !== prevBallRef.current) {
-      const { runs, action } = mostRecentAction;
-      let label: string;
-      if (action === 'Wicket') label = 'W';
-      else if (action === 'Wide') label = 'Wd';
-      else if (action === 'No Ball') label = 'NB';
-      else label = String(runs);
-      setOverBalls((prev) => [...prev, label]);
+      if (currentBallInThisOver < prevBallRef.current) {
+        setOverBalls((prev) => prev.slice(0, -1));
+      } else {
+        const { runs, action } = mostRecentAction;
+        let label: string;
+        if (action === 'Wicket') label = 'W';
+        else if (action === 'Wide') label = 'Wd';
+        else if (action === 'No Ball') label = 'NB';
+        else label = String(runs);
+        setOverBalls((prev) => [...prev, label]);
+      }
       prevBallRef.current = currentBallInThisOver;
     }
   }, [currentBallInThisOver, currentOver, mostRecentAction]);
