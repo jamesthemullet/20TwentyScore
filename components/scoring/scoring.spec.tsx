@@ -102,12 +102,11 @@ describe('Scoring Component', () => {
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
-    const headingElement = screen.getByRole('heading', { level: 2 });
-    expect(headingElement).toBeInTheDocument();
-    expect(headingElement).toHaveTextContent('Scoring');
+    const heading = screen.getByText("Scorer's pad");
+    expect(heading).toBeInTheDocument();
 
     const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(9);
+    expect(buttons).toHaveLength(10);
   });
 
   it('should call setBattingPlayerScore when the 0 runs button is clicked', () => {
@@ -124,7 +123,7 @@ describe('Scoring Component', () => {
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
-    const button = screen.getByRole('button', { name: '0' });
+    const button = screen.getByRole('button', { name: /^0/i });
 
     act(() => {
       fireEvent.click(button);
@@ -146,7 +145,7 @@ describe('Scoring Component', () => {
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
-    const button = screen.getByRole('button', { name: '1 & next ball' });
+    const button = screen.getByRole('button', { name: /^1 and next ball/i });
 
     act(() => {
       fireEvent.click(button);
@@ -169,7 +168,7 @@ describe('Scoring Component', () => {
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
-    const button = screen.getByRole('button', { name: '6' });
+    const button = screen.getByRole('button', { name: /^6/i });
 
     act(() => {
       fireEvent.click(button);
@@ -192,7 +191,7 @@ describe('Scoring Component', () => {
         <Scoring setSelectBowler={jest.fn()} />
       </GameScoreContext.Provider>
     );
-    const button = screen.getByRole('button', { name: 'Wicket' });
+    const button = screen.getByRole('button', { name: /^W wicket/i });
 
     act(() => {
       fireEvent.click(button);
@@ -223,7 +222,7 @@ describe('Scoring Component', () => {
     );
     const buttons = screen.getAllByRole('button');
     buttons.forEach((button) => {
-      if (button.textContent === 'Next Ball') {
+      if (button.textContent?.startsWith('↵')) {
         expect(button).toBeDisabled();
       }
     });
@@ -270,7 +269,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    const nextBallButton = screen.getByRole('button', { name: 'Next Ball' });
+    const nextBallButton = screen.getByRole('button', { name: /↵/i });
     expect(nextBallButton).not.toBeDisabled();
   });
 
@@ -296,7 +295,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    const nextBallButton = screen.getByRole('button', { name: 'Next Ball' });
+    const nextBallButton = screen.getByRole('button', { name: /↵/i });
 
     act(() => {
       fireEvent.click(nextBallButton);
@@ -903,7 +902,8 @@ describe('Scoring Component', () => {
       </GameScoreContext.Provider>
     );
     const buttons = screen.getAllByRole('button');
-    buttons.forEach((button) => {
+    const scoringButtons = buttons.filter((b) => !b.textContent?.includes('Undo'));
+    scoringButtons.forEach((button) => {
       expect(button).toBeDisabled();
     });
   });

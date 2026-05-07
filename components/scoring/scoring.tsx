@@ -5,7 +5,6 @@ import { useGameScore } from '../../context/GameScoreContext';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
 import { useOvers } from '../../context/OversContext';
 import { HomeContainer } from '../core/home-container';
-import { StyledHeading2 } from '../core/heading';
 
 const BALLS_PER_OVER = 6;
 const WICKETS_FOR_ALL_OUT = 9; // 9 conceded means 10th wicket falls next
@@ -127,33 +126,36 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
 
   return (
     <HomeContainer>
-      <StyledHeading2>Scoring</StyledHeading2>
+      <ScoringHeader>
+        <ScoringTitle>Scorer&apos;s pad</ScoringTitle>
+        <TapLabel>Tap to record</TapLabel>
+      </ScoringHeader>
       <ScoringGrid>
         <SquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 0, null)}>
-          0
+          0<ButtonSub>dot ball</ButtonSub>
         </SquareButton>
         <SquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, null)}>
-          1 & next ball
+          1<ButtonSub>and next ball</ButtonSub>
         </SquareButton>
         <SquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'wait')}>
-          1+
+          1+<ButtonSub>wait for run</ButtonSub>
         </SquareButton>
-        <SquareButton
+        <RedSquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 4, null)}>
-          4
-        </SquareButton>
-        <SquareButton
+          4<ButtonSub>four</ButtonSub>
+        </RedSquareButton>
+        <GoldSquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 6, null)}>
-          6
-        </SquareButton>
+          6<ButtonSub>six</ButtonSub>
+        </GoldSquareButton>
         <SquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'No Ball')}>
@@ -162,23 +164,39 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
         <SquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => setAwaitingMethodOfWicket(true)}>
-          Wicket
+          W<ButtonSub>wicket</ButtonSub>
         </SquareButton>
         <SquareButton
           disabled={endOfGame() || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'Wide')}>
           Wide
         </SquareButton>
-        <SquareButton
-          disabled={nextRunButtonDisabled || endOfGame() || awaitingMethodOfWicket}
-          onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
-          Next Ball
-        </SquareButton>
+        {nextRunButtonDisabled ? (
+          <GhostSquareButton
+            disabled={nextRunButtonDisabled || endOfGame() || awaitingMethodOfWicket}
+            onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
+            ↵<ButtonSub>next ball</ButtonSub>
+          </GhostSquareButton>
+        ) : (
+          <RedSquareButton
+            disabled={endOfGame() || awaitingMethodOfWicket}
+            onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
+            ↵<ButtonSub>next ball</ButtonSub>
+          </RedSquareButton>
+        )}
       </ScoringGrid>
+      <ScoringFooter>
+        <FooterHint>Touch a result to record the ball</FooterHint>
+        <UndoButton onClick={() => {}}>
+          ↩ Undo
+        </UndoButton>
+      </ScoringFooter>
       {awaitingMethodOfWicket && (
         <>
           {' '}
-          <StyledHeading2>Method Of Wicket</StyledHeading2>
+          <ScoringHeader>
+            <ScoringTitle>Method of wicket</ScoringTitle>
+          </ScoringHeader>
           <ScoringGrid>
             <SquareButton
               disabled={endOfGame()}
@@ -201,6 +219,108 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     </HomeContainer>
   );
 };
+
+const ScoringFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 16px;
+  border-top: 1px solid #ccc;
+  margin-top: 6px;
+  margin-bottom: 20px;
+`;
+
+const FooterHint = styled.span`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #666;
+`;
+
+const UndoButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
+const ScoringHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+`;
+
+const ScoringTitle = styled.p`
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin: 0;
+`;
+
+const TapLabel = styled.span`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #666;
+`;
+
+const RedSquareButton = styled(SquareButton)`
+  background-color: #b83320;
+  border-color: #b83320;
+  box-shadow: 0 2px 0 #7a2215;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background-color: #aa0000;
+    border-color: #aa0000;
+  }
+`;
+
+const GoldSquareButton = styled(SquareButton)`
+  background-color: #c9a84c;
+  border-color: #c9a84c;
+  box-shadow: 0 2px 0 #8a7030;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background-color: #b5943a;
+    border-color: #b5943a;
+  }
+`;
+
+const GhostSquareButton = styled(SquareButton)`
+  border-color: #ddd;
+  box-shadow: 0 2px 0 #ddd;
+  color: #1a1a1a;
+  opacity: 0.4;
+`;
+
+const ButtonSub = styled.span`
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: inherit;
+  margin-top: 0.2rem;
+`;
 
 const ScoringGrid = styled.div`
   transition: flex 0.3s;

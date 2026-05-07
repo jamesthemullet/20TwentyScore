@@ -25,12 +25,14 @@ const StyledHeader = styled.header`
   }
 `;
 
-const StyledHeading = styled.h1`
+const StyledHeading = styled.p`
   color: #fff;
   margin: 0;
   padding: 1rem 0.5rem;
   font-size: 2rem;
-  font-family: 'Pacifico', cursive;
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  text-decoration: underline;
   letter-spacing: 1px;
 `;
 

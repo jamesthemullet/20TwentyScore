@@ -1,8 +1,6 @@
 # 20TwentyScore
 
-A cricket scorecard web app for Twenty20 (T20) cricket games.
-
-Work in progress...do not use!
+A ball-by-ball scorecard app for Twenty20 (T20) cricket matches.
 
 ## Features
 

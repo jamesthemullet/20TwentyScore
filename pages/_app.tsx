@@ -19,7 +19,21 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <GameProvider>
       <GameStatePersister />
-      <Global styles={css`*, *::before, *::after { box-sizing: border-box; } body { margin: 0; }`} />
+      <Global styles={css`
+        *, *::before, *::after { box-sizing: border-box; }
+        body { margin: 0; }
+        .visually-hidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
+      `} />
       <Component {...pageProps} />
     </GameProvider>
   );

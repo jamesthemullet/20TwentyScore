@@ -8,7 +8,7 @@ const FooterContainer = styled.footer`
   background-color: #333;
   color: #fff;
   padding: 1rem;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Inter', sans-serif;
   position: relative;
   bottom: 0;
   width: 100%;

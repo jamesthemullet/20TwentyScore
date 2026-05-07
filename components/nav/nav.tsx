@@ -39,7 +39,7 @@ export default function Nav() {
 }
 
 const StyledNav = styled.nav`
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: 2px;
   display: flex;
   align-items: center;
@@ -71,6 +71,7 @@ const StyledNav = styled.nav`
     color: #fff;
     text-decoration: none;
     font-size: 1rem;
+    text-transform: uppercase;
     padding: 0.4rem 1.25rem;
     border: 2px solid rgba(255, 255, 255, 0.4);
     border-radius: 999px;

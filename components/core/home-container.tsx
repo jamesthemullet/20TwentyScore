@@ -4,7 +4,8 @@ export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 5px solid black;
+  border: 2px solid #1a1a1a;
+  border-radius: 12px;
   flex: 10;
   order: 2;
   p {

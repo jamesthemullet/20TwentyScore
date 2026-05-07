@@ -529,4 +529,129 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Player 1 current striker: true')).toBeInTheDocument();
     expect(screen.getByText('Player 1 current non-striker: false')).toBeInTheDocument();
   });
+
+  it('should set a player as current bowler via setCurrentBowler', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setCurrentBowler } = useGameScore();
+
+      React.useEffect(() => {
+        setCurrentBowler(1, 0);
+      }, []);
+
+      return <div>{gameScore[1].players[0].currentBowler ? 'bowler' : 'not-bowler'}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('bowler')).toBeInTheDocument();
+  });
+
+  it('should not update when setCurrentBowler receives an invalid team index', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setCurrentBowler } = useGameScore();
+
+      React.useEffect(() => {
+        setCurrentBowler(5, 0);
+      }, []);
+
+      return <div>{gameScore[1].players[0].currentBowler ? 'bowler' : 'not-bowler'}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('not-bowler')).toBeInTheDocument();
+  });
+
+  it('should update bowler allActions and wicketsTaken via setBowlingPlayerScore', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setCurrentBowler, setBowlingPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setCurrentBowler(1, 0);
+        setBowlingPlayerScore('Wicket', false);
+      }, []);
+
+      return (
+        <div>
+          <p>wickets: {gameScore[1].players[0].wicketsTaken}</p>
+          <p>actions: {gameScore[1].players[0].allActions.length}</p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('wickets: 1')).toBeInTheDocument();
+    expect(screen.getByText('actions: 1')).toBeInTheDocument();
+  });
+
+  it('should increment oversBowled when setBowlingPlayerScore is called with endOfOver=true', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setCurrentBowler, setBowlingPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setCurrentBowler(1, 0);
+        setBowlingPlayerScore(null, true);
+      }, []);
+
+      return <div>overs: {gameScore[1].players[0].oversBowled}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('overs: 1')).toBeInTheDocument();
+  });
+
+  it('should increment team wicketsTaken via setBowlingPlayerScore', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setCurrentBowler, setBowlingPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setCurrentBowler(1, 0);
+        setBowlingPlayerScore('Wicket', false);
+      }, []);
+
+      return <div>team-wickets: {gameScore[1].totalWicketsTaken}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('team-wickets: 1')).toBeInTheDocument();
+  });
+
+  it('should flip team batting status on endOfInnings', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setBattingPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setBattingPlayerScore(0, 0, 0, null, false, true, null);
+      }, []);
+
+      return (
+        <div>
+          <p>team0-batting: {gameScore[0].currentBattingTeam ? 'true' : 'false'}</p>
+          <p>team1-batting: {gameScore[1].currentBattingTeam ? 'true' : 'false'}</p>
+          <p>team0-finished: {gameScore[0].finishedBatting ? 'true' : 'false'}</p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('team0-batting: false')).toBeInTheDocument();
+    expect(screen.getByText('team1-batting: true')).toBeInTheDocument();
+    expect(screen.getByText('team0-finished: true')).toBeInTheDocument();
+  });
 });
