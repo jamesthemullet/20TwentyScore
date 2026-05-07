@@ -173,7 +173,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
         </SquareButton>
         {nextRunButtonDisabled ? (
           <GhostSquareButton
-            disabled={endOfGame() || awaitingMethodOfWicket}
+            disabled={nextRunButtonDisabled || endOfGame() || awaitingMethodOfWicket}
             onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
             ↵<ButtonSub>next ball</ButtonSub>
           </GhostSquareButton>
