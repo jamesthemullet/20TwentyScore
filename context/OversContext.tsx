@@ -1,2 +1,2 @@
 export type { OversContextType } from './GameContext';
-export { OversContext, useOvers, GameProvider as OversProvider } from './GameContext';
+export { GameProvider as OversProvider, OversContext, useOvers } from './GameContext';

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import { SquareButton } from '../core/buttons';
 import { useState } from 'react';
 import { useGameScore } from '../../context/GameScoreContext';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
 import { useOvers } from '../../context/OversContext';
+import { SquareButton } from '../core/buttons';
 import { HomeContainer } from '../core/home-container';
 
 const BALLS_PER_OVER = 6;
@@ -19,7 +19,8 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
   const [awaitingMethodOfWicket, setAwaitingMethodOfWicket] = useState(false);
 
-  const { setBattingPlayerScore, gameScore, swapBatsmen, setBowlingPlayerScore, undo, canUndo } = useGameScore();
+  const { setBattingPlayerScore, gameScore, swapBatsmen, setBowlingPlayerScore, undo, canUndo } =
+    useGameScore();
   const { setMostRecentAction } = useMostRecentAction();
   const {
     currentBallInThisOver,

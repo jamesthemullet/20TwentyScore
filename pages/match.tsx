@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import Layout from '../components/layout/layout';
 import styled from '@emotion/styled';
-import Scoring from '../components/scoring/scoring';
+import Link from 'next/link';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PrimaryButton } from '../components/core/buttons';
+import Layout from '../components/layout/layout';
+import Scoring from '../components/scoring/scoring';
 import { useGameScore } from '../context/GameScoreContext';
-import { useOvers } from '../context/OversContext';
 import { useMostRecentAction } from '../context/MostRecentActionContext';
+import { useOvers } from '../context/OversContext';
 
 const MatchPage: React.FC = () => {
   const [selectBowler, setSelectBowler] = useState(false);
@@ -63,8 +64,8 @@ const MatchPage: React.FC = () => {
   }, [currentBallInThisOver, currentOver, mostRecentAction]);
 
   const thisOverRuns = overBalls.reduce((sum, b) => {
-    const n = parseInt(b);
-    return sum + (isNaN(n) ? 0 : n);
+    const n = parseInt(b, 10);
+    return sum + (Number.isNaN(n) ? 0 : n);
   }, 0);
 
   const formatBallDescription = (label: string | undefined) => {
@@ -86,9 +87,7 @@ const MatchPage: React.FC = () => {
   };
   const hasGame = gameScore.length > 0;
 
-  const currentBowlerSet = gameScore.some((team) =>
-    team.players.some((p) => p.currentBowler)
-  );
+  const currentBowlerSet = gameScore.some((team) => team.players.some((p) => p.currentBowler));
 
   const showBowlerSelect = selectBowler || (hasGame && !currentBowlerSet);
 
@@ -138,7 +137,14 @@ const MatchPage: React.FC = () => {
             </TeamScore>
             <TeamOvers>
               overs {formatOvers(teamA?.overs ?? 0, !!teamA?.currentBattingTeam)}
-              <RunRate>RR {formatRunRate(teamA?.totalRuns ?? 0, teamA?.overs ?? 0, !!teamA?.currentBattingTeam)}</RunRate>
+              <RunRate>
+                RR{' '}
+                {formatRunRate(
+                  teamA?.totalRuns ?? 0,
+                  teamA?.overs ?? 0,
+                  !!teamA?.currentBattingTeam
+                )}
+              </RunRate>
             </TeamOvers>
           </TeamSide>
           <MatchCentre>
@@ -158,7 +164,14 @@ const MatchPage: React.FC = () => {
             </TeamScore>
             <TeamOvers>
               overs {formatOvers(team1?.overs ?? 0, !!team1?.currentBattingTeam)}
-              <RunRate>RR {formatRunRate(team1?.totalRuns ?? 0, team1?.overs ?? 0, !!team1?.currentBattingTeam)}</RunRate>
+              <RunRate>
+                RR{' '}
+                {formatRunRate(
+                  team1?.totalRuns ?? 0,
+                  team1?.overs ?? 0,
+                  !!team1?.currentBattingTeam
+                )}
+              </RunRate>
             </TeamOvers>
           </TeamSide>
         </MatchPanel>
@@ -174,7 +187,13 @@ const MatchPage: React.FC = () => {
             </LiveStat>
             <LiveStat>
               <LiveLabel>Run rate</LiveLabel>
-              <LiveValue>{formatRunRate(currentBattingTeam?.totalRuns ?? 0, currentBattingTeam?.overs ?? 0, true)}</LiveValue>
+              <LiveValue>
+                {formatRunRate(
+                  currentBattingTeam?.totalRuns ?? 0,
+                  currentBattingTeam?.overs ?? 0,
+                  true
+                )}
+              </LiveValue>
             </LiveStat>
             {target !== null && (
               <LiveStat>
@@ -205,20 +224,36 @@ const MatchPage: React.FC = () => {
                 </BoxHeader>
                 <BallRow>
                   {(() => {
-                    const legitimateBalls = overBalls.filter((b) => b !== 'Wd' && b !== 'NB').length;
+                    const legitimateBalls = overBalls.filter(
+                      (b) => b !== 'Wd' && b !== 'NB'
+                    ).length;
                     const remaining = Math.max(0, 6 - legitimateBalls);
                     return (
                       <>
                         {overBalls.map((label, i) => {
                           const isExtra = label === 'Wd' || label === 'NB';
                           return (
-                            <BallCircle key={i} filled={!isExtra} extra={isExtra} wicket={label === 'W'} four={label === '4'} six={label === '6'}>
+                            <BallCircle
+                              // biome-ignore lint/suspicious/noArrayIndexKey: ball position in over is stable
+                              key={i}
+                              filled={!isExtra}
+                              extra={isExtra}
+                              wicket={label === 'W'}
+                              four={label === '4'}
+                              six={label === '6'}>
                               {label}
                             </BallCircle>
                           );
                         })}
                         {Array.from({ length: remaining }).map((_, i) => (
-                          <BallCircle key={`empty-${i}`} filled={false} extra={false} wicket={false} four={false} six={false}>
+                          <BallCircle
+                            // biome-ignore lint/suspicious/noArrayIndexKey: placeholder slots have no stable identity
+                            key={`empty-${i}`}
+                            filled={false}
+                            extra={false}
+                            wicket={false}
+                            four={false}
+                            six={false}>
                             ·
                           </BallCircle>
                         ))}
@@ -229,7 +264,9 @@ const MatchPage: React.FC = () => {
                 <OverSummary>
                   <OverSummaryItem>
                     <StatLabel>This over</StatLabel>
-                    <StatValue>{thisOverRuns} run{thisOverRuns !== 1 ? 's' : ''}</StatValue>
+                    <StatValue>
+                      {thisOverRuns} run{thisOverRuns !== 1 ? 's' : ''}
+                    </StatValue>
                   </OverSummaryItem>
                   <OverSummaryItem>
                     <StatLabel>Last ball</StatLabel>
@@ -242,18 +279,46 @@ const MatchPage: React.FC = () => {
                   <BoxTitle>At the crease</BoxTitle>
                 </BoxHeader>
                 <CreasePlayers>
-                  {([
-                    { player: currentBattingTeam?.players.find((p) => p.currentStriker), label: '★ On strike', strike: true },
-                    { player: currentBattingTeam?.players.find((p) => p.currentNonStriker), label: 'Non-striker', strike: false },
-                  ] as const).map(({ player, label, strike }) => (
+                  {(
+                    [
+                      {
+                        player: currentBattingTeam?.players.find((p) => p.currentStriker),
+                        label: '★ On strike',
+                        strike: true
+                      },
+                      {
+                        player: currentBattingTeam?.players.find((p) => p.currentNonStriker),
+                        label: 'Non-striker',
+                        strike: false
+                      }
+                    ] as const
+                  ).map(({ player, label, strike }) => (
                     <CreasePlayer key={label}>
                       <CreaseRole strike={strike}>{label}</CreaseRole>
                       <CreasePlayerName>{player?.name ?? '—'}</CreasePlayerName>
                       <BatterStats>
-                        <BatterStat><StatLabel>R</StatLabel><StatValue>{player?.runs ?? 0}</StatValue></BatterStat>
-                        <BatterStat><StatLabel>B</StatLabel><StatValue>{player?.allActions.filter((a) => a !== 'Wide').length ?? 0}</StatValue></BatterStat>
-                        <BatterStat><StatLabel>4s</StatLabel><StatValue>{player?.allActions.filter((a) => a === '4').length ?? 0}</StatValue></BatterStat>
-                        <BatterStat><StatLabel>6s</StatLabel><StatValue>{player?.allActions.filter((a) => a === '6').length ?? 0}</StatValue></BatterStat>
+                        <BatterStat>
+                          <StatLabel>R</StatLabel>
+                          <StatValue>{player?.runs ?? 0}</StatValue>
+                        </BatterStat>
+                        <BatterStat>
+                          <StatLabel>B</StatLabel>
+                          <StatValue>
+                            {player?.allActions.filter((a) => a !== 'Wide').length ?? 0}
+                          </StatValue>
+                        </BatterStat>
+                        <BatterStat>
+                          <StatLabel>4s</StatLabel>
+                          <StatValue>
+                            {player?.allActions.filter((a) => a === '4').length ?? 0}
+                          </StatValue>
+                        </BatterStat>
+                        <BatterStat>
+                          <StatLabel>6s</StatLabel>
+                          <StatValue>
+                            {player?.allActions.filter((a) => a === '6').length ?? 0}
+                          </StatValue>
+                        </BatterStat>
                       </BatterStats>
                     </CreasePlayer>
                   ))}
@@ -278,18 +343,44 @@ const MatchPage: React.FC = () => {
               <BottomBoxRow>
                 <BottomBox>
                   <BoxMeta>Run rate</BoxMeta>
-                  <SplitStat>{formatRunRate(currentBattingTeam?.totalRuns ?? 0, currentBattingTeam?.overs ?? 0, true)}</SplitStat>
+                  <SplitStat>
+                    {formatRunRate(
+                      currentBattingTeam?.totalRuns ?? 0,
+                      currentBattingTeam?.overs ?? 0,
+                      true
+                    )}
+                  </SplitStat>
                   <GreenBarTrack>
-                    <GreenBar fill={Math.min(parseFloat(formatRunRate(currentBattingTeam?.totalRuns ?? 0, currentBattingTeam?.overs ?? 0, true)) / 12, 1)} />
+                    <GreenBar
+                      fill={Math.min(
+                        parseFloat(
+                          formatRunRate(
+                            currentBattingTeam?.totalRuns ?? 0,
+                            currentBattingTeam?.overs ?? 0,
+                            true
+                          )
+                        ) / 12,
+                        1
+                      )}
+                    />
                   </GreenBarTrack>
                   <RunsSummaryDivider />
                   <RunsSummary>
-                    {currentBattingTeam?.totalRuns ?? 0} runs from {(currentBattingTeam?.overs ?? 0) * 6 + (currentBallInThisOver - 1 - currentExtrasInThisOver)} balls
+                    {currentBattingTeam?.totalRuns ?? 0} runs from{' '}
+                    {(currentBattingTeam?.overs ?? 0) * 6 +
+                      (currentBallInThisOver - 1 - currentExtrasInThisOver)}{' '}
+                    balls
                   </RunsSummary>
                 </BottomBox>
                 <BottomBox>
                   {(() => {
-                    const rr = parseFloat(formatRunRate(currentBattingTeam?.totalRuns ?? 0, currentBattingTeam?.overs ?? 0, true));
+                    const rr = parseFloat(
+                      formatRunRate(
+                        currentBattingTeam?.totalRuns ?? 0,
+                        currentBattingTeam?.overs ?? 0,
+                        true
+                      )
+                    );
                     const validBallsInOver = currentBallInThisOver - 1 - currentExtrasInThisOver;
                     const ballsUsed = (currentBattingTeam?.overs ?? 0) * 6 + validBallsInOver;
                     const ballsRemaining = 120 - ballsUsed;
@@ -297,17 +388,21 @@ const MatchPage: React.FC = () => {
                     if (finishedTeam && target !== null) {
                       const runsNeeded = Math.max(0, target - (currentBattingTeam?.totalRuns ?? 0));
                       const oversRemaining = ballsRemaining / 6;
-                      const requiredRate = oversRemaining > 0 ? (runsNeeded / oversRemaining).toFixed(2) : '—';
+                      const requiredRate =
+                        oversRemaining > 0 ? (runsNeeded / oversRemaining).toFixed(2) : '—';
                       const rrFill = Math.min(parseFloat(requiredRate) / 12, 1);
                       return (
                         <>
                           <BoxMeta>Required rate</BoxMeta>
                           <SplitStat>{requiredRate}</SplitStat>
                           <RedBarTrack>
-                            <RedBar fill={isNaN(rrFill) ? 0 : rrFill} />
+                            <RedBar fill={Number.isNaN(rrFill) ? 0 : rrFill} />
                           </RedBarTrack>
                           <RunsSummaryDivider />
-                          <RunsSummary>Need {runsNeeded} from {ballsRemaining} ball{ballsRemaining !== 1 ? 's' : ''}</RunsSummary>
+                          <RunsSummary>
+                            Need {runsNeeded} from {ballsRemaining} ball
+                            {ballsRemaining !== 1 ? 's' : ''}
+                          </RunsSummary>
                         </>
                       );
                     }
@@ -407,7 +502,13 @@ const BallRow = styled.div`
   margin-top: 1rem;
 `;
 
-const BallCircle = styled.div<{ filled: boolean; extra: boolean; wicket: boolean; four: boolean; six: boolean }>`
+const BallCircle = styled.div<{
+  filled: boolean;
+  extra: boolean;
+  wicket: boolean;
+  four: boolean;
+  six: boolean;
+}>`
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -443,7 +544,7 @@ const CreaseRole = styled.p<{ strike?: boolean; bowling?: boolean }>`
   font-size: 0.65rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: ${({ strike, bowling }) => strike ? '#b83320' : bowling ? '#2d7a4f' : '#888'};
+  color: ${({ strike, bowling }) => (strike ? '#b83320' : bowling ? '#2d7a4f' : '#888')};
   margin: 0 0 0.25rem;
 `;
 
@@ -575,7 +676,7 @@ const SplitStat = styled.p`
   margin: 0.25rem 0 0;
 `;
 
-const EmptyBox = styled.div`
+const _EmptyBox = styled.div`
   border: 2px solid #1a1a1a;
   border-radius: 12px;
   flex: 1;

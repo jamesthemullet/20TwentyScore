@@ -6,9 +6,9 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit && eslint .",
-    "lint:fix": "eslint --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "lint": "tsc --noEmit && biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format --write .",
     "prepare": "husky install",
     "test": "yarn jest"
   },
@@ -26,9 +26,8 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
+    "@biomejs/biome": "^2.4.14",
     "@emotion/jest": "^11.11.0",
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^10.0.0",
     "@jest/globals": "^30.2.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
@@ -36,14 +35,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.0",
     "@types/react": "^19.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
     "babel-jest": "^30.0.0",
-    "eslint": "^10.0.0",
-    "eslint-config-prettier": "^10.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-react": "^7.37.5",
-    "globals": "^17.0.0",
     "jest": "^30.0.0",
     "jest-emotion": "^11.0.0",
     "jest-environment-jsdom": "^30.0.0",
@@ -51,17 +43,7 @@
     "postcss": "^8.4.39",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
-    "prettier": "^3.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.0",
-    "typescript-eslint": "^8.33.1"
-  },
-  "overrides": {
-    "eslint-plugin-react": {
-      "minimatch": "^10.0.0"
-    }
-  },
-  "resolutions": {
-    "eslint-plugin-react/minimatch": "^10.0.0"
+    "typescript": "^6.0.0"
   }
 }

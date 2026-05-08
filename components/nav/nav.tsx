@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styled from '@emotion/styled';
+import { useState } from 'react';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -22,16 +22,24 @@ export default function Nav() {
       </BurgerButton>
       <ul className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
         <li>
-          <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
+          <Link href="/" className={isActive('/') ? 'active' : ''}>
+            Home
+          </Link>
         </li>
         <li>
-          <Link href="/match" className={isActive('/match') ? 'active' : ''}>Match</Link>
+          <Link href="/match" className={isActive('/match') ? 'active' : ''}>
+            Match
+          </Link>
         </li>
         <li>
-          <Link href="/teams" className={isActive('/teams') ? 'active' : ''}>Teams</Link>
+          <Link href="/teams" className={isActive('/teams') ? 'active' : ''}>
+            Teams
+          </Link>
         </li>
         <li>
-          <Link href="/summary" className={isActive('/summary') ? 'active' : ''}>Summary</Link>
+          <Link href="/summary" className={isActive('/summary') ? 'active' : ''}>
+            Summary
+          </Link>
         </li>
       </ul>
     </StyledNav>
@@ -39,7 +47,7 @@ export default function Nav() {
 }
 
 const StyledNav = styled.nav`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   letter-spacing: 2px;
   display: flex;
   align-items: center;
@@ -112,9 +120,7 @@ const BurgerButton = styled.button`
       width: 100%;
       height: 2px;
       background-color: #fff;
-      transition:
-        transform 0.3s,
-        opacity 0.3s;
+      transition: transform 0.3s, opacity 0.3s;
     }
 
     span:nth-of-type(1) {

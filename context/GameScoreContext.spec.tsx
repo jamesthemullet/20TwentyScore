@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { GameScoreProvider, useGameScore, GameScore } from './GameScoreContext';
 import React from 'react';
 import testTeamData1 from '../__tests__/test-team-1.json';
 import testTeamData2 from '../__tests__/test-team-2.json';
+import { type GameScore, GameScoreProvider, useGameScore } from './GameScoreContext';
 
 describe('GameScoreProvider', () => {
   it('should provide the correct initial context values', () => {
@@ -25,7 +25,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setGameScore([testTeamData1, testTeamData2] as unknown as GameScore);
-      }, []);
+      }, [setGameScore]);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
@@ -43,7 +43,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setBattingPlayerScore(1, 0, 4, null, false, false, null);
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
     };
@@ -62,7 +62,7 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setBattingPlayerScore(1, 0, 4, null, false, false, null);
         setBattingPlayerScore(1, 0, 0, 'Wicket', false, false, 'LBW');
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return <div>Runs: {gameScore[1].players[0]?.runs}</div>;
     };
@@ -80,7 +80,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setBattingPlayerScore(0, 0, 0, 'Wicket', true, false, 'LBW');
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return (
         <div>
@@ -125,7 +125,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setBattingPlayerScore(0, 0, 1, null, false, false, null);
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return (
         <div>
@@ -163,7 +163,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setBattingPlayerScore(1, 11, 10, null, false, false, null);
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
@@ -181,7 +181,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setBattingPlayerScore(555, 0, 10, null, false, false, null);
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return <div>Runs: {gameScore[0].players[0]?.runs}</div>;
     };
@@ -296,7 +296,7 @@ describe('GameScoreProvider', () => {
             finishedBatting: false
           }
         ]);
-      }, []);
+      }, [setGameScore]);
 
       return (
         <div>
@@ -415,7 +415,7 @@ describe('GameScoreProvider', () => {
             finishedBatting: false
           }
         ]);
-      }, []);
+      }, [setGameScore]);
 
       return <div>{gameScore[0].players[0]?.currentStriker ? 'true' : 'false'}</div>;
     };
@@ -433,7 +433,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setBattingPlayerScore(0, 0, 10, 'Wicket', false, false, 'LBW');
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return (
         <div>
@@ -464,8 +464,6 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Player 2 current striker: true')).toBeInTheDocument();
   });
 
-
-
   it('should add each action to allActions', () => {
     const MockChildComponent = () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
@@ -474,7 +472,7 @@ describe('GameScoreProvider', () => {
         setBattingPlayerScore(0, 0, 1, null, false, false, null);
         setBattingPlayerScore(0, 0, 4, null, false, false, null);
         setBattingPlayerScore(0, 0, 1, 'No ball', false, false, null);
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return <div>{gameScore[0].players[0]?.allActions.join(', ')}</div>;
     };
@@ -496,9 +494,10 @@ describe('GameScoreProvider', () => {
         return <div>Players not found</div>;
       }
 
+      // biome-ignore lint/correctness/useHookAtTopLevel: guard is a test-only safety check, not a real re-render branch
       React.useEffect(() => {
         swapBatsmen();
-      }, []);
+      }, [swapBatsmen]);
 
       return (
         <div>
@@ -536,7 +535,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setCurrentBowler(1, 0);
-      }, []);
+      }, [setCurrentBowler]);
 
       return <div>{gameScore[1].players[0].currentBowler ? 'bowler' : 'not-bowler'}</div>;
     };
@@ -554,7 +553,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setCurrentBowler(5, 0);
-      }, []);
+      }, [setCurrentBowler]);
 
       return <div>{gameScore[1].players[0].currentBowler ? 'bowler' : 'not-bowler'}</div>;
     };
@@ -573,7 +572,7 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setCurrentBowler(1, 0);
         setBowlingPlayerScore('Wicket', false);
-      }, []);
+      }, [setCurrentBowler, setBowlingPlayerScore]);
 
       return (
         <div>
@@ -598,7 +597,7 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setCurrentBowler(1, 0);
         setBowlingPlayerScore(null, true);
-      }, []);
+      }, [setCurrentBowler, setBowlingPlayerScore]);
 
       return <div>overs: {gameScore[1].players[0].oversBowled}</div>;
     };
@@ -617,7 +616,7 @@ describe('GameScoreProvider', () => {
       React.useEffect(() => {
         setCurrentBowler(1, 0);
         setBowlingPlayerScore('Wicket', false);
-      }, []);
+      }, [setCurrentBowler, setBowlingPlayerScore]);
 
       return <div>team-wickets: {gameScore[1].totalWicketsTaken}</div>;
     };
@@ -635,7 +634,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setBattingPlayerScore(0, 0, 0, null, false, true, null);
-      }, []);
+      }, [setBattingPlayerScore]);
 
       return (
         <div>

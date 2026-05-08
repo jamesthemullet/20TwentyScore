@@ -1,6 +1,6 @@
+import { css, Global } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
-import { Global, css } from '@emotion/react';
 import { GameProvider } from '../context/GameContext';
 import { useGameScore } from '../context/GameScoreContext';
 
@@ -19,7 +19,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <GameProvider>
       <GameStatePersister />
-      <Global styles={css`
+      <Global
+        styles={css`
         *, *::before, *::after { box-sizing: border-box; }
         body { margin: 0; }
         .visually-hidden {
@@ -33,7 +34,8 @@ export default function App({ Component, pageProps }: AppProps) {
           white-space: nowrap;
           border: 0;
         }
-      `} />
+      `}
+      />
       <Component {...pageProps} />
     </GameProvider>
   );

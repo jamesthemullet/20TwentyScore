@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { useOvers, OversProvider } from './OversContext';
 import React from 'react';
+import { OversProvider, useOvers } from './OversContext';
 
 describe('OversProvider', () => {
   describe('setOvers', () => {
@@ -10,7 +10,7 @@ describe('OversProvider', () => {
 
         React.useEffect(() => {
           setCurrentExtrasInThisOver(1);
-        }, []);
+        }, [setCurrentExtrasInThisOver]);
 
         return <div>extras: {currentExtrasInThisOver}</div>;
       };
@@ -28,7 +28,7 @@ describe('OversProvider', () => {
 
         React.useEffect(() => {
           setCurrentExtrasInThisOver('reset');
-        }, []);
+        }, [setCurrentExtrasInThisOver]);
 
         return <div>extras: {currentExtrasInThisOver}</div>;
       };
@@ -46,7 +46,7 @@ describe('OversProvider', () => {
 
         React.useEffect(() => {
           setCurrentBallInThisOver(null);
-        }, []);
+        }, [setCurrentBallInThisOver]);
 
         return <div>Current ball: {currentBallInThisOver}</div>;
       };
@@ -64,7 +64,7 @@ describe('OversProvider', () => {
 
         React.useEffect(() => {
           setCurrentOvers(undefined);
-        }, []);
+        }, [setCurrentOvers]);
 
         return <div>Current over: {currentOver}</div>;
       };
@@ -93,7 +93,7 @@ describe('OversProvider', () => {
           setCurrentBallInThisOver(6);
           setCurrentExtrasInThisOver(2);
           resetOvers();
-        }, []);
+        }, [setCurrentOvers, setCurrentExtrasInThisOver, setCurrentBallInThisOver, resetOvers]);
 
         return (
           <>
@@ -113,6 +113,4 @@ describe('OversProvider', () => {
       expect(screen.queryByText('Current ball: 1')).toBeInTheDocument();
     });
   });
-
-
 });

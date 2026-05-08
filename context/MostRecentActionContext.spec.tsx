@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { useMostRecentAction, MostRecentActionProvider } from './MostRecentActionContext';
 import React from 'react';
+import { MostRecentActionProvider, useMostRecentAction } from './MostRecentActionContext';
 
 describe('RecentActionProvider', () => {
   describe('setMostRecentAction', () => {
@@ -10,7 +10,7 @@ describe('RecentActionProvider', () => {
 
         React.useEffect(() => {
           setMostRecentAction({ runs: 1, action: null });
-        }, []);
+        }, [setMostRecentAction]);
 
         return <div>Runs: {mostRecentAction.runs}</div>;
       };
@@ -28,7 +28,7 @@ describe('RecentActionProvider', () => {
 
         React.useEffect(() => {
           setMostRecentAction({ runs: 0, action: 'Wicket' });
-        }, []);
+        }, [setMostRecentAction]);
 
         return <div>Action: {mostRecentAction.action}</div>;
       };
@@ -40,6 +40,4 @@ describe('RecentActionProvider', () => {
       expect(screen.queryByText('Action: Wicket')).toBeVisible();
     });
   });
-
-
 });

@@ -1,7 +1,7 @@
-import React from 'react';
 import { render } from '@testing-library/react';
+import { type NextRouter, useRouter } from 'next/router';
+import type React from 'react';
 import Meta from './meta';
-import { NextRouter, useRouter } from 'next/router';
 
 const useRouterMock = useRouter as jest.MockedFunction<typeof useRouter>;
 
