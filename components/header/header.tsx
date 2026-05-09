@@ -20,7 +20,6 @@ const StyledHeader = styled.header`
   padding: 0 1rem;
 
   @media (max-width: 768px) {
-    flex-wrap: wrap;
     position: relative;
   }
 `;

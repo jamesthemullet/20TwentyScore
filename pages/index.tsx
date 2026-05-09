@@ -13,15 +13,6 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   });
 }
 
-const cricketQuotes = [
-  { text: "What do they know of cricket who only cricket know?", author: "C.L.R. James" },
-  { text: "Captaincy is 90 per cent luck and 10 per cent skill, but don't try it without that 10 per cent.", author: "Richie Benaud" },
-  { text: "Cricket is the greatest game that the wit of man has yet devised.", author: "Sir Pelham Warner" },
-  { text: "I never looked at the scoreboard. I just kept playing my game.", author: "Viv Richards" },
-  { text: "You don't play for the records. You play for the love of the game.", author: "Sachin Tendulkar" },
-  { text: "To me, cricket is a simple game. Keep it simple and enjoy it.", author: "Shane Warne" },
-  { text: "Cricket is not just a sport — it is an expression of who we are.", author: "Sir Garfield Sobers" },
-];
 
 const Index: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -75,8 +66,6 @@ const Index: React.FC = () => {
     router.push('/match');
   };
 
-  const dailyQuote = cricketQuotes[new Date().getDay()];
-
   return (
     <Layout>
       <Main>
@@ -107,11 +96,6 @@ const Index: React.FC = () => {
           <SecondaryButton onClick={() => loadGame()}>Resume Saved Match</SecondaryButton>
         </ButtonsContainer>
         {error && <p role="alert">{error}</p>}
-        <Divider />
-        <Quote>
-          <p>&ldquo;{dailyQuote.text}&rdquo;</p>
-          <cite>— {dailyQuote.author}</cite>
-        </Quote>
       </Main>
     </Layout>
   );
@@ -135,6 +119,13 @@ const ButtonsContainer = styled.div`
   gap: 10px;
   margin-top: 1rem;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    button {
+      font-size: 0.7rem;
+      padding: 0.45rem 1rem;
+    }
+  }
 `;
 
 const HeroSection = styled.div`
@@ -191,35 +182,6 @@ const Description = styled.p`
   font-family: Georgia, serif;
 `;
 
-const Divider = styled.hr`
-  width: 100%;
-  border: none;
-  border-top: 1px solid #ddd;
-  margin: 2rem 0 0;
-`;
-
-const Quote = styled.footer`
-  width: 100%;
-  padding: 1.25rem 1rem 2rem;
-  text-align: center;
-
-  p {
-    font-family: Georgia, serif;
-    font-size: 0.9rem;
-    font-style: italic;
-    color: #666;
-    margin: 0 0 0.25rem;
-  }
-
-  cite {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #767676;
-    font-style: normal;
-  }
-`;
 
 const FeatureList = styled.ul`
   list-style: none;

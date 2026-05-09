@@ -333,6 +333,16 @@ const ScoringGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    grid-gap: 6px;
+
+    button {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 0.5rem;
+    }
+  }
 `;
 
 export default Scoring;

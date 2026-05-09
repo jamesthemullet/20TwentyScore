@@ -59,10 +59,14 @@ const StyledNav = styled.nav`
       &.open {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        width: 100%;
-        padding: 0.75rem 0 1rem;
-        gap: 0.5rem;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #333;
+        padding: 0.75rem 1.25rem 1rem;
+        gap: 0.25rem;
+        z-index: 100;
       }
     }
   }
@@ -88,6 +92,28 @@ const StyledNav = styled.nav`
       border-color: #fff;
       color: #1a1a1a;
     }
+
+    @media (max-width: 768px) {
+      border: none;
+      border-radius: 0;
+      padding: 0.4rem 0;
+      font-size: 0.85rem;
+      opacity: 0.85;
+
+      &:hover {
+        background-color: transparent;
+        border-color: transparent;
+        opacity: 1;
+      }
+
+      &.active {
+        background-color: transparent;
+        border-color: transparent;
+        color: #fff;
+        opacity: 1;
+        font-weight: 700;
+      }
+    }
   }
 `;
 
@@ -105,6 +131,7 @@ const BurgerButton = styled.button`
     margin-right: 1rem;
     cursor: pointer;
     margin-left: auto;
+    flex-shrink: 0;
 
     span {
       display: block;
