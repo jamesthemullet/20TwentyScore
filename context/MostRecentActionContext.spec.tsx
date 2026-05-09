@@ -10,7 +10,7 @@ describe('RecentActionProvider', () => {
 
         React.useEffect(() => {
           setMostRecentAction({ runs: 1, action: null });
-        }, [setMostRecentAction]);
+        }, []);
 
         return <div>Runs: {mostRecentAction.runs}</div>;
       };
@@ -28,7 +28,7 @@ describe('RecentActionProvider', () => {
 
         React.useEffect(() => {
           setMostRecentAction({ runs: 0, action: 'Wicket' });
-        }, [setMostRecentAction]);
+        }, []);
 
         return <div>Action: {mostRecentAction.action}</div>;
       };
