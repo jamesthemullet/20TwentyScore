@@ -1,8 +1,7 @@
-import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import Scoring from './scoring';
-import { GameScore, GameScoreContext } from '../../context/GameScoreContext';
+import { type GameScore, GameScoreContext } from '../../context/GameScoreContext';
 import { OversContext } from '../../context/OversContext';
+import Scoring from './scoring';
 
 const gameScore = [
   {

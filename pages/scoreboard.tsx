@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
 import styled from '@emotion/styled';
+import Link from 'next/link';
+import type React from 'react';
 import Layout from '../components/layout/layout';
 
 const ScoreboardPage: React.FC = () => {

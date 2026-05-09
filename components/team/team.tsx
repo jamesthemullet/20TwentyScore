@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { Player } from '../player/player';
+import type React from 'react';
+import { useState } from 'react';
 import { useGameScore } from '../../context/GameScoreContext';
-import { HomeContainer } from '../core/home-container';
-import { StyledHeading2 } from '../core/heading';
 import { SecondaryButton } from '../core/buttons';
+import { StyledHeading2 } from '../core/heading';
+import { HomeContainer } from '../core/home-container';
+import { Player } from '../player/player';
 
 type TeamProps = {
   teamIndex: number;
 };
 
 const Team = ({ teamIndex }: TeamProps) => {
-  const [teamName, setTeamName] = useState('Team ' + teamIndex);
+  const [teamName, setTeamName] = useState(`Team ${teamIndex}`);
   const [editTeamName, setEditTeamName] = useState(false);
 
   const handleEditTeamName = () => {
@@ -57,6 +58,7 @@ const Team = ({ teamIndex }: TeamProps) => {
         {gameScore[teamIndex]?.players.map((player, index) => {
           return (
             <Player
+              // biome-ignore lint/suspicious/noArrayIndexKey: index is the stable player identity
               key={index}
               index={index}
               runs={player.runs}

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo, useReducer } from 'react';
+import type React from 'react';
+import { createContext, useContext, useMemo, useReducer } from 'react';
 import defaultPlayers from '../components/core/players';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -231,7 +232,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const teams = action.payload;
       const battingTeamIndex = teams.findIndex((t) => t.currentBattingTeam);
 
-      if (battingTeamIndex !== -1 && !teams[battingTeamIndex].players.find((p) => p.currentStriker)) {
+      if (
+        battingTeamIndex !== -1 &&
+        !teams[battingTeamIndex].players.find((p) => p.currentStriker)
+      ) {
         const updatedTeams = [...teams] as GameScore;
         updatedTeams[battingTeamIndex as 0 | 1] = {
           ...updatedTeams[battingTeamIndex as 0 | 1],
@@ -246,8 +250,15 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case 'SET_BATTING_PLAYER_SCORE': {
-      const { teamIndex, playerIndex, runs, action: ballAction, endOfOver, endOfInnings, methodOfWicket } =
-        action.payload;
+      const {
+        teamIndex,
+        playerIndex,
+        runs,
+        action: ballAction,
+        endOfOver,
+        endOfInnings,
+        methodOfWicket
+      } = action.payload;
 
       if (teamIndex < 0 || teamIndex > 1) return state;
 
@@ -344,9 +355,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         currentExtrasInThisOver:
-          action.payload === 'reset'
-            ? 0
-            : state.currentExtrasInThisOver + Number(action.payload)
+          action.payload === 'reset' ? 0 : state.currentExtrasInThisOver + Number(action.payload)
       };
 
     case 'SET_BALL_IN_OVER':
@@ -414,7 +423,15 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     () => ({
       gameScore: state.teams,
       setGameScore: (gs) => dispatch({ type: 'SET_GAME_SCORE', payload: gs }),
-      setBattingPlayerScore: (teamIndex, playerIndex, runs, action, endOfOver, endOfInnings, methodOfWicket) =>
+      setBattingPlayerScore: (
+        teamIndex,
+        playerIndex,
+        runs,
+        action,
+        endOfOver,
+        endOfInnings,
+        methodOfWicket
+      ) =>
         dispatch({
           type: 'SET_BATTING_PLAYER_SCORE',
           payload: { teamIndex, playerIndex, runs, action, endOfOver, endOfInnings, methodOfWicket }
@@ -469,4 +486,5 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
 export const useGameScore = (): GameScoreContextType => useContext(GameScoreContext);
 export const useOvers = (): OversContextType => useContext(OversContext);
-export const useMostRecentAction = (): MostRecentActionContextType => useContext(MostRecentActionContext);
+export const useMostRecentAction = (): MostRecentActionContextType =>
+  useContext(MostRecentActionContext);
