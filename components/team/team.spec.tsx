@@ -1,7 +1,6 @@
-import React from 'react';
-import Team from './team';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { GameScoreProvider } from '../../context/GameScoreContext';
+import Team from './team';
 
 const teamProps = {
   teamIndex: 1

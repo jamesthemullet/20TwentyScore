@@ -1,18 +1,7 @@
 {
   "compilerOptions": {
-    "types": [
-      "react",
-      "react-dom",
-      "node",
-      "jest",
-      "@testing-library/jest-dom"
-    ],
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "es2017"
-    ],
+    "types": ["react", "react-dom", "node", "jest", "@testing-library/jest-dom"],
+    "lib": ["dom", "dom.iterable", "esnext", "es2017"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -28,12 +17,6 @@
     "moduleResolution": "nodenext",
     "target": "ES2017"
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

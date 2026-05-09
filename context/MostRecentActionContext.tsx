@@ -1,6 +1,6 @@
 export type { MostRecentActionContextType } from './GameContext';
 export {
+  GameProvider as MostRecentActionProvider,
   MostRecentActionContext,
-  useMostRecentAction,
-  GameProvider as MostRecentActionProvider
+  useMostRecentAction
 } from './GameContext';

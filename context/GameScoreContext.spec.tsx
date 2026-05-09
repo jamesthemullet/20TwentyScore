@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { GameScoreProvider, useGameScore, GameScore } from './GameScoreContext';
 import React from 'react';
 import testTeamData1 from '../__tests__/test-team-1.json';
 import testTeamData2 from '../__tests__/test-team-2.json';
+import { type GameScore, GameScoreProvider, useGameScore } from './GameScoreContext';
 
 describe('GameScoreProvider', () => {
   it('should provide the correct initial context values', () => {
@@ -464,8 +464,6 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('Player 2 current striker: true')).toBeInTheDocument();
   });
 
-
-
   it('should add each action to allActions', () => {
     const MockChildComponent = () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
@@ -496,6 +494,7 @@ describe('GameScoreProvider', () => {
         return <div>Players not found</div>;
       }
 
+      // biome-ignore lint/correctness/useHookAtTopLevel: guard is a test-only safety check, not a real re-render branch
       React.useEffect(() => {
         swapBatsmen();
       }, []);

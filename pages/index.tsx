@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-import Layout from '../components/layout/layout';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+import type React from 'react';
+import { useState } from 'react';
 import { PrimaryButton, SecondaryButton } from '../components/core/buttons';
-import { useGameScore } from '../context/GameScoreContext';
 import defaultPlayers from '../components/core/players';
+import Layout from '../components/layout/layout';
 import PitchDiagram from '../components/pitch/pitch-diagram';
+import { useGameScore } from '../context/GameScoreContext';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   import('accented').then(({ accented }) => {
@@ -13,6 +14,30 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   });
 }
 
+const cricketQuotes = [
+  { text: 'What do they know of cricket who only cricket know?', author: 'C.L.R. James' },
+  {
+    text: "Captaincy is 90 per cent luck and 10 per cent skill, but don't try it without that 10 per cent.",
+    author: 'Richie Benaud'
+  },
+  {
+    text: 'Cricket is the greatest game that the wit of man has yet devised.',
+    author: 'Sir Pelham Warner'
+  },
+  {
+    text: 'I never looked at the scoreboard. I just kept playing my game.',
+    author: 'Viv Richards'
+  },
+  {
+    text: "You don't play for the records. You play for the love of the game.",
+    author: 'Sachin Tendulkar'
+  },
+  { text: 'To me, cricket is a simple game. Keep it simple and enjoy it.', author: 'Shane Warne' },
+  {
+    text: 'Cricket is not just a sport — it is an expression of who we are.',
+    author: 'Sir Garfield Sobers'
+  }
+];
 
 const Index: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -81,8 +106,8 @@ const Index: React.FC = () => {
               one scoresheet.
             </Tagline>
             <Description>
-              A hand-kept ledger for your Saturday-afternoon T20s — ball by ball, over by
-              over, with a running tally any pavilion would be proud of.
+              A hand-kept ledger for your Saturday-afternoon T20s — ball by ball, over by over, with
+              a running tally any pavilion would be proud of.
             </Description>
             <FeatureList>
               <li>Ball-by-ball</li>

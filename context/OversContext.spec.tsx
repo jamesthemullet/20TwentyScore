@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { useOvers, OversProvider } from './OversContext';
 import React from 'react';
+import { OversProvider, useOvers } from './OversContext';
 
 describe('OversProvider', () => {
   describe('setOvers', () => {
@@ -113,6 +113,4 @@ describe('OversProvider', () => {
       expect(screen.queryByText('Current ball: 1')).toBeInTheDocument();
     });
   });
-
-
 });

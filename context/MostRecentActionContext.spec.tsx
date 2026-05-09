@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { useMostRecentAction, MostRecentActionProvider } from './MostRecentActionContext';
 import React from 'react';
+import { MostRecentActionProvider, useMostRecentAction } from './MostRecentActionContext';
 
 describe('RecentActionProvider', () => {
   describe('setMostRecentAction', () => {
@@ -40,6 +40,4 @@ describe('RecentActionProvider', () => {
       expect(screen.queryByText('Action: Wicket')).toBeVisible();
     });
   });
-
-
 });

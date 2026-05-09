@@ -1,6 +1,5 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { NextRouter, useRouter } from 'next/router';
+import { type NextRouter, useRouter } from 'next/router';
 import Header from './header';
 
 const useRouterMock = useRouter as jest.MockedFunction<typeof useRouter>;

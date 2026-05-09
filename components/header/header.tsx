@@ -1,6 +1,6 @@
-import React from 'react';
-import Nav from '../nav/nav';
 import styled from '@emotion/styled';
+import type React from 'react';
+import Nav from '../nav/nav';
 
 const Header: React.FC = () => {
   return (

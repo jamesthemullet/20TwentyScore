@@ -1,10 +1,9 @@
-import React from 'react';
-import Nav from './nav';
-import { act, fireEvent, render, screen } from '@testing-library/react';
 import { matchers } from '@emotion/jest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import Nav from './nav';
 
 jest.mock('next/router', () => ({
-  useRouter: () => ({ pathname: '/' }),
+  useRouter: () => ({ pathname: '/' })
 }));
 
 expect.extend(matchers);

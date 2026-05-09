@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type PlayerProps = {
   index: number;
@@ -22,7 +23,7 @@ export const Player = ({
   status,
   oversBowled
 }: PlayerProps) => {
-  const [name, setName] = useState('Player ' + (index + 1));
+  const [name, setName] = useState(`Player ${index + 1}`);
   const [editPlayer, setEditPlayer] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 

@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react';
-import Header from '../header/header';
-import Footer from '../footer/footer';
-import Meta from '../meta/meta';
 import styled from '@emotion/styled';
+import type React from 'react';
+import type { ReactNode } from 'react';
+import Footer from '../footer/footer';
+import Header from '../header/header';
+import Meta from '../meta/meta';
 
 type Props = {
   children: ReactNode;

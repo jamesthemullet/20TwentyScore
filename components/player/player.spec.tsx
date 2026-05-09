@@ -1,6 +1,5 @@
-import React from 'react';
-import { Player } from './player';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import { Player } from './player';
 
 describe('Player', () => {
   it('should render a Player component successfully', () => {
