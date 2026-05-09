@@ -104,10 +104,13 @@ const MatchPage: React.FC = () => {
     return (
       <Layout>
         <Main>
-          <PageHeading>
-            <span>Today&apos;s Match</span>
-            <HeadingLine />
-          </PageHeading>
+          <PageHeader>
+            <PageTitleGroup>
+              <PageNumber>No. I</PageNumber>
+              <PageTitle>Today&apos;s Match</PageTitle>
+              <TitleRule />
+            </PageTitleGroup>
+          </PageHeader>
           <EmptyState>
             <p>No active match found.</p>
             <Link href="/">Start a new match</Link>
@@ -120,10 +123,13 @@ const MatchPage: React.FC = () => {
   return (
     <Layout>
       <Main>
-        <PageHeading>
-          <span>Today&apos;s Match</span>
-          <HeadingLine />
-        </PageHeading>
+        <PageHeader>
+          <PageTitleGroup>
+            <PageNumber>No. I</PageNumber>
+            <PageTitle>Today&apos;s Match</PageTitle>
+            <TitleRule />
+          </PageTitleGroup>
+        </PageHeader>
         <MatchPanel>
           <TeamSide>
             <StatusLabel>
@@ -479,7 +485,7 @@ const BoxMeta = styled.p`
   font-size: 0.75rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #888;
+  color: #767676;
   margin: 0;
 `;
 
@@ -544,7 +550,7 @@ const CreaseRole = styled.p<{ strike?: boolean; bowling?: boolean }>`
   font-size: 0.65rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: ${({ strike, bowling }) => (strike ? '#b83320' : bowling ? '#2d7a4f' : '#888')};
+  color: ${({ strike, bowling }) => (strike ? '#b83320' : bowling ? '#2d7a4f' : '#767676')};
   margin: 0 0 0.25rem;
 `;
 
@@ -573,7 +579,7 @@ const StatLabel = styled.span`
   font-size: 0.6rem;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #888;
+  color: #767676;
 `;
 
 const StatValue = styled.span`
@@ -704,28 +710,43 @@ const BowlerSelect = styled.div`
   margin-top: 20px;
 `;
 
-const PageHeading = styled.h1`
+const PageHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.5rem 1.5rem 0;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #1a1a1a;
-
-  span {
-    white-space: nowrap;
-  }
+  padding: 2rem 1.5rem 1.5rem;
 `;
 
-const HeadingLine = styled.span`
-  display: block;
+const PageTitleGroup = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
   flex: 1;
-  height: 2px;
-  background-color: #1a1a1a;
+`;
+
+const PageNumber = styled.span`
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  color: #b83320;
+  font-size: 1.25rem;
+  white-space: nowrap;
+`;
+
+const PageTitle = styled.h1`
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1a1a1a;
+  white-space: nowrap;
+`;
+
+const TitleRule = styled.hr`
+  flex: 1;
+  border: none;
+  border-top: 1px solid #1a1a1a;
+  margin: 0;
 `;
 
 const LiveBar = styled.div`
@@ -784,6 +805,10 @@ const MatchPanel = styled.div`
   padding: 1.25rem 1.5rem;
   max-width: 1400px;
   width: calc(100% - 3rem);
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+  }
 `;
 
 const TeamSide = styled.div<{ align?: string }>`
@@ -801,6 +826,10 @@ const TeamName = styled.p`
   font-style: italic;
   color: #1a1a1a;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const TeamScore = styled.p`
@@ -816,6 +845,10 @@ const Runs = styled.span`
   font-size: 5rem;
   font-weight: 700;
   color: #1a1a1a;
+
+  @media (max-width: 768px) {
+    font-size: 2.75rem;
+  }
 `;
 
 const Wickets = styled.span`
@@ -823,6 +856,10 @@ const Wickets = styled.span`
   font-size: 2rem;
   font-weight: 700;
   color: #1a1a1a;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const TeamOvers = styled.p`
@@ -831,10 +868,16 @@ const TeamOvers = styled.p`
   gap: 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
-  color: #888;
+  color: #767676;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
+
+  @media (max-width: 768px) {
+    font-size: 0.6rem;
+    gap: 0.5rem;
+    letter-spacing: 1px;
+  }
 `;
 
 const RunRate = styled.span`
@@ -869,12 +912,21 @@ const MatchCentre = styled.div`
   gap: 0.25rem;
   flex-shrink: 0;
   margin: 0 1.5rem;
+
+  @media (max-width: 768px) {
+    margin: 0 0.5rem;
+  }
 `;
 
 const BallIcon = styled.img`
   width: 48px;
   height: 48px;
   object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 const Vs = styled.p`
@@ -883,6 +935,10 @@ const Vs = styled.p`
   font-size: 1.75rem;
   color: #1a1a1a;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const Format = styled.p`
@@ -890,7 +946,7 @@ const Format = styled.p`
   font-size: 0.65rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #888;
+  color: #767676;
   margin: 0;
   white-space: nowrap;
 `;
