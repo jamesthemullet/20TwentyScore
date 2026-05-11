@@ -1,30 +1,35 @@
-import styled from '@emotion/styled';
-import Link from 'next/link';
-import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { PrimaryButton } from '../components/core/buttons';
-import Layout from '../components/layout/layout';
-import Scoring from '../components/scoring/scoring';
-import { useGameScore } from '../context/GameScoreContext';
-import { useMostRecentAction } from '../context/MostRecentActionContext';
-import { useOvers } from '../context/OversContext';
+import styled from "@emotion/styled";
+import Link from "next/link";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import { PrimaryButton } from "../components/core/buttons";
+import Layout from "../components/layout/layout";
+import Scoring from "../components/scoring/scoring";
+import { useGameScore } from "../context/GameScoreContext";
+import { useMostRecentAction } from "../context/MostRecentActionContext";
+import { useOvers } from "../context/OversContext";
 
 const MatchPage: React.FC = () => {
   const [selectBowler, setSelectBowler] = useState(false);
 
   const { gameScore, setCurrentBowler } = useGameScore();
-  const { currentOver, currentBallInThisOver, currentExtrasInThisOver } = useOvers();
+  const { currentOver, currentBallInThisOver, currentExtrasInThisOver } =
+    useOvers();
   const { mostRecentAction } = useMostRecentAction();
 
   const formatOvers = (overs: number, isBatting: boolean) => {
-    const balls = isBatting ? currentBallInThisOver - 1 - currentExtrasInThisOver : 0;
+    const balls = isBatting
+      ? currentBallInThisOver - 1 - currentExtrasInThisOver
+      : 0;
     return `${overs}.${balls}`;
   };
 
   const formatRunRate = (runs: number, overs: number, isBatting: boolean) => {
-    const balls = isBatting ? currentBallInThisOver - 1 - currentExtrasInThisOver : 0;
+    const balls = isBatting
+      ? currentBallInThisOver - 1 - currentExtrasInThisOver
+      : 0;
     const decimalOvers = overs + balls / 6;
-    if (decimalOvers === 0) return '0.00';
+    if (decimalOvers === 0) return "0.00";
     return (runs / decimalOvers).toFixed(2);
   };
 
@@ -32,7 +37,9 @@ const MatchPage: React.FC = () => {
   const team1 = gameScore.find((team) => team.index === 1);
   const currentBattingTeam = gameScore.find((t) => t.currentBattingTeam);
   const currentBowlingTeam = gameScore.find((t) => t.currentBowlingTeam);
-  const currentBowler = currentBowlingTeam?.players.find((p) => p.currentBowler);
+  const currentBowler = currentBowlingTeam?.players.find(
+    (p) => p.currentBowler
+  );
   const finishedTeam = gameScore.find((t) => t.finishedBatting);
   const target = finishedTeam ? finishedTeam.totalRuns + 1 : null;
 
@@ -53,9 +60,9 @@ const MatchPage: React.FC = () => {
       } else {
         const { runs, action } = mostRecentAction;
         let label: string;
-        if (action === 'Wicket') label = 'W';
-        else if (action === 'Wide') label = 'Wd';
-        else if (action === 'No Ball') label = 'NB';
+        if (action === "Wicket") label = "W";
+        else if (action === "Wide") label = "Wd";
+        else if (action === "No Ball") label = "NB";
         else label = String(runs);
         setOverBalls((prev) => [...prev, label]);
       }
@@ -69,25 +76,28 @@ const MatchPage: React.FC = () => {
   }, 0);
 
   const formatBallDescription = (label: string | undefined) => {
-    if (!label) return '—';
-    if (label === '4') return 'FOUR';
-    if (label === '6') return 'SIX';
-    if (label === 'W') return 'WICKET';
-    if (label === 'Wd') return 'WIDE';
-    if (label === 'NB') return 'NO BALL';
-    if (label === '0') return 'DOT BALL';
-    return `${label} RUN${label === '1' ? '' : 'S'}`;
+    if (!label) return "—";
+    if (label === "4") return "FOUR";
+    if (label === "6") return "SIX";
+    if (label === "W") return "WICKET";
+    if (label === "Wd") return "WIDE";
+    if (label === "NB") return "NO BALL";
+    if (label === "0") return "DOT BALL";
+    return `${label} RUN${label === "1" ? "" : "S"}`;
   };
 
   const formatLatestAction = () => {
     const { runs, action } = mostRecentAction;
-    if (action === null || action === 'Next Ball') return `${runs} run${runs !== 1 ? 's' : ''}`;
+    if (action === null || action === "Next Ball")
+      return `${runs} run${runs !== 1 ? "s" : ""}`;
     if (runs > 0) return `${action} + ${runs}`;
     return action;
   };
   const hasGame = gameScore.length > 0;
 
-  const currentBowlerSet = gameScore.some((team) => team.players.some((p) => p.currentBowler));
+  const currentBowlerSet = gameScore.some((team) =>
+    team.players.some((p) => p.currentBowler)
+  );
 
   const showBowlerSelect = selectBowler || (hasGame && !currentBowlerSet);
 
@@ -133,8 +143,8 @@ const MatchPage: React.FC = () => {
         <MatchPanel>
           <TeamSide>
             <StatusLabel>
-              <Ball color={teamA?.currentBattingTeam ? '#b83320' : '#aaa'} />
-              {teamA?.currentBattingTeam ? 'Batting' : 'Bowling'}
+              <Ball color={teamA?.currentBattingTeam ? "#b83320" : "#aaa"} />
+              {teamA?.currentBattingTeam ? "Batting" : "Bowling"}
             </StatusLabel>
             <TeamName>{teamA?.name}</TeamName>
             <TeamScore>
@@ -142,9 +152,10 @@ const MatchPage: React.FC = () => {
               <Wickets>/{teamA?.totalWicketsConceded}</Wickets>
             </TeamScore>
             <TeamOvers>
-              overs {formatOvers(teamA?.overs ?? 0, !!teamA?.currentBattingTeam)}
+              overs{" "}
+              {formatOvers(teamA?.overs ?? 0, !!teamA?.currentBattingTeam)}
               <RunRate>
-                RR{' '}
+                RR{" "}
                 {formatRunRate(
                   teamA?.totalRuns ?? 0,
                   teamA?.overs ?? 0,
@@ -160,8 +171,8 @@ const MatchPage: React.FC = () => {
           </MatchCentre>
           <TeamSide align="right">
             <StatusLabel reverse>
-              {team1?.currentBattingTeam ? 'Batting' : 'Bowling'}
-              <Ball color={team1?.currentBattingTeam ? '#b83320' : '#aaa'} />
+              {team1?.currentBattingTeam ? "Batting" : "Bowling"}
+              <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} />
             </StatusLabel>
             <TeamName>{team1?.name}</TeamName>
             <TeamScore>
@@ -169,9 +180,10 @@ const MatchPage: React.FC = () => {
               <Wickets>/{team1?.totalWicketsConceded}</Wickets>
             </TeamScore>
             <TeamOvers>
-              overs {formatOvers(team1?.overs ?? 0, !!team1?.currentBattingTeam)}
+              overs{" "}
+              {formatOvers(team1?.overs ?? 0, !!team1?.currentBattingTeam)}
               <RunRate>
-                RR{' '}
+                RR{" "}
                 {formatRunRate(
                   team1?.totalRuns ?? 0,
                   team1?.overs ?? 0,
@@ -189,7 +201,9 @@ const MatchPage: React.FC = () => {
           <LiveStats>
             <LiveStat>
               <LiveLabel>Overs</LiveLabel>
-              <LiveValue>{formatOvers(currentBattingTeam?.overs ?? 0, true)}</LiveValue>
+              <LiveValue>
+                {formatOvers(currentBattingTeam?.overs ?? 0, true)}
+              </LiveValue>
             </LiveStat>
             <LiveStat>
               <LiveLabel>Run rate</LiveLabel>
@@ -215,7 +229,8 @@ const MatchPage: React.FC = () => {
             {team1?.players.map((player) => (
               <PrimaryButton
                 key={player.name}
-                onClick={() => settingBowler(team1.index, player.index)}>
+                onClick={() => settingBowler(team1.index, player.index)}
+              >
                 {player.name}
               </PrimaryButton>
             ))}
@@ -231,22 +246,23 @@ const MatchPage: React.FC = () => {
                 <BallRow>
                   {(() => {
                     const legitimateBalls = overBalls.filter(
-                      (b) => b !== 'Wd' && b !== 'NB'
+                      (b) => b !== "Wd" && b !== "NB"
                     ).length;
                     const remaining = Math.max(0, 6 - legitimateBalls);
                     return (
                       <>
                         {overBalls.map((label, i) => {
-                          const isExtra = label === 'Wd' || label === 'NB';
+                          const isExtra = label === "Wd" || label === "NB";
                           return (
                             <BallCircle
                               // biome-ignore lint/suspicious/noArrayIndexKey: ball position in over is stable
                               key={i}
                               filled={!isExtra}
                               extra={isExtra}
-                              wicket={label === 'W'}
-                              four={label === '4'}
-                              six={label === '6'}>
+                              wicket={label === "W"}
+                              four={label === "4"}
+                              six={label === "6"}
+                            >
                               {label}
                             </BallCircle>
                           );
@@ -259,7 +275,8 @@ const MatchPage: React.FC = () => {
                             extra={false}
                             wicket={false}
                             four={false}
-                            six={false}>
+                            six={false}
+                          >
                             ·
                           </BallCircle>
                         ))}
@@ -271,12 +288,14 @@ const MatchPage: React.FC = () => {
                   <OverSummaryItem>
                     <StatLabel>This over</StatLabel>
                     <StatValue>
-                      {thisOverRuns} run{thisOverRuns !== 1 ? 's' : ''}
+                      {thisOverRuns} run{thisOverRuns !== 1 ? "s" : ""}
                     </StatValue>
                   </OverSummaryItem>
                   <OverSummaryItem>
                     <StatLabel>Last ball</StatLabel>
-                    <StatValue>{formatBallDescription(overBalls[overBalls.length - 1])}</StatValue>
+                    <StatValue>
+                      {formatBallDescription(overBalls[overBalls.length - 1])}
+                    </StatValue>
                   </OverSummaryItem>
                 </OverSummary>
               </ThisOverBox>
@@ -288,20 +307,24 @@ const MatchPage: React.FC = () => {
                   {(
                     [
                       {
-                        player: currentBattingTeam?.players.find((p) => p.currentStriker),
-                        label: '★ On strike',
-                        strike: true
+                        player: currentBattingTeam?.players.find(
+                          (p) => p.currentStriker
+                        ),
+                        label: "★ On strike",
+                        strike: true,
                       },
                       {
-                        player: currentBattingTeam?.players.find((p) => p.currentNonStriker),
-                        label: 'Non-striker',
-                        strike: false
-                      }
+                        player: currentBattingTeam?.players.find(
+                          (p) => p.currentNonStriker
+                        ),
+                        label: "Non-striker",
+                        strike: false,
+                      },
                     ] as const
                   ).map(({ player, label, strike }) => (
                     <CreasePlayer key={label}>
                       <CreaseRole strike={strike}>{label}</CreaseRole>
-                      <CreasePlayerName>{player?.name ?? '—'}</CreasePlayerName>
+                      <CreasePlayerName>{player?.name ?? "—"}</CreasePlayerName>
                       <BatterStats>
                         <BatterStat>
                           <StatLabel>R</StatLabel>
@@ -310,19 +333,22 @@ const MatchPage: React.FC = () => {
                         <BatterStat>
                           <StatLabel>B</StatLabel>
                           <StatValue>
-                            {player?.allActions.filter((a) => a !== 'Wide').length ?? 0}
+                            {player?.allActions.filter((a) => a !== "Wide")
+                              .length ?? 0}
                           </StatValue>
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>4s</StatLabel>
                           <StatValue>
-                            {player?.allActions.filter((a) => a === '4').length ?? 0}
+                            {player?.allActions.filter((a) => a === "4")
+                              .length ?? 0}
                           </StatValue>
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>6s</StatLabel>
                           <StatValue>
-                            {player?.allActions.filter((a) => a === '6').length ?? 0}
+                            {player?.allActions.filter((a) => a === "6")
+                              .length ?? 0}
                           </StatValue>
                         </BatterStat>
                       </BatterStats>
@@ -332,7 +358,9 @@ const MatchPage: React.FC = () => {
                 <BowlerSection>
                   <CreaseRole bowling>Bowling</CreaseRole>
                   <BowlerRow>
-                    <CreasePlayerName>{currentBowler?.name ?? '—'}</CreasePlayerName>
+                    <CreasePlayerName>
+                      {currentBowler?.name ?? "—"}
+                    </CreasePlayerName>
                     <BatterStats>
                       <BatterStat>
                         <StatLabel>Ov</StatLabel>
@@ -340,7 +368,9 @@ const MatchPage: React.FC = () => {
                       </BatterStat>
                       <BatterStat>
                         <StatLabel>Wk</StatLabel>
-                        <StatValue>{currentBowler?.wicketsTaken ?? 0}</StatValue>
+                        <StatValue>
+                          {currentBowler?.wicketsTaken ?? 0}
+                        </StatValue>
                       </BatterStat>
                     </BatterStats>
                   </BowlerRow>
@@ -372,9 +402,11 @@ const MatchPage: React.FC = () => {
                   </GreenBarTrack>
                   <RunsSummaryDivider />
                   <RunsSummary>
-                    {currentBattingTeam?.totalRuns ?? 0} runs from{' '}
+                    {currentBattingTeam?.totalRuns ?? 0} runs from{" "}
                     {(currentBattingTeam?.overs ?? 0) * 6 +
-                      (currentBallInThisOver - 1 - currentExtrasInThisOver)}{' '}
+                      (currentBallInThisOver -
+                        1 -
+                        currentExtrasInThisOver)}{" "}
                     balls
                   </RunsSummary>
                 </BottomBox>
@@ -387,15 +419,22 @@ const MatchPage: React.FC = () => {
                         true
                       )
                     );
-                    const validBallsInOver = currentBallInThisOver - 1 - currentExtrasInThisOver;
-                    const ballsUsed = (currentBattingTeam?.overs ?? 0) * 6 + validBallsInOver;
+                    const validBallsInOver =
+                      currentBallInThisOver - 1 - currentExtrasInThisOver;
+                    const ballsUsed =
+                      (currentBattingTeam?.overs ?? 0) * 6 + validBallsInOver;
                     const ballsRemaining = 120 - ballsUsed;
 
                     if (finishedTeam && target !== null) {
-                      const runsNeeded = Math.max(0, target - (currentBattingTeam?.totalRuns ?? 0));
+                      const runsNeeded = Math.max(
+                        0,
+                        target - (currentBattingTeam?.totalRuns ?? 0)
+                      );
                       const oversRemaining = ballsRemaining / 6;
                       const requiredRate =
-                        oversRemaining > 0 ? (runsNeeded / oversRemaining).toFixed(2) : '—';
+                        oversRemaining > 0
+                          ? (runsNeeded / oversRemaining).toFixed(2)
+                          : "—";
                       const rrFill = Math.min(parseFloat(requiredRate) / 12, 1);
                       return (
                         <>
@@ -407,7 +446,7 @@ const MatchPage: React.FC = () => {
                           <RunsSummaryDivider />
                           <RunsSummary>
                             Need {runsNeeded} from {ballsRemaining} ball
-                            {ballsRemaining !== 1 ? 's' : ''}
+                            {ballsRemaining !== 1 ? "s" : ""}
                           </RunsSummary>
                         </>
                       );
@@ -473,7 +512,7 @@ const BoxHeader = styled.div`
 `;
 
 const BoxTitle = styled.p`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
   color: #1a1a1a;
@@ -481,7 +520,7 @@ const BoxTitle = styled.p`
 `;
 
 const BoxMeta = styled.p`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.75rem;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -518,16 +557,29 @@ const BallCircle = styled.div<{
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  border: 2px ${({ filled }) => (filled ? 'solid' : 'dashed')}
+  border: 2px ${({ filled }) => (filled ? "solid" : "dashed")}
     ${({ wicket, four, six, extra }) =>
-      wicket || four ? '#b83320' : six ? '#c9a84c' : extra ? '#1a1a1a' : '#aaa'};
+      wicket || four
+        ? "#b83320"
+        : six
+        ? "#c9a84c"
+        : extra
+        ? "#1a1a1a"
+        : "#aaa"};
   background-color: ${({ filled, wicket, four, six }) =>
-    !filled ? 'transparent' : wicket || four ? '#b83320' : six ? '#c9a84c' : '#1a1a1a'};
-  color: ${({ filled, extra }) => (filled ? '#fff' : extra ? '#1a1a1a' : '#ccc')};
+    !filled
+      ? "transparent"
+      : wicket || four
+      ? "#b83320"
+      : six
+      ? "#c9a84c"
+      : "#1a1a1a"};
+  color: ${({ filled, extra }) =>
+    filled ? "#fff" : extra ? "#1a1a1a" : "#ccc"};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   font-weight: 700;
 `;
@@ -546,16 +598,17 @@ const CreasePlayer = styled.div`
 `;
 
 const CreaseRole = styled.p<{ strike?: boolean; bowling?: boolean }>`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: ${({ strike, bowling }) => (strike ? '#b83320' : bowling ? '#2d7a4f' : '#767676')};
+  color: ${({ strike, bowling }) =>
+    strike ? "#b83320" : bowling ? "#2d7a4f" : "#767676"};
   margin: 0 0 0.25rem;
 `;
 
 const CreasePlayerName = styled.p`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1rem;
   color: #1a1a1a;
@@ -575,7 +628,7 @@ const BatterStat = styled.div`
 `;
 
 const StatLabel = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.6rem;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -583,7 +636,7 @@ const StatLabel = styled.span`
 `;
 
 const StatValue = styled.span`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.85rem;
   font-weight: 700;
   color: #1a1a1a;
@@ -633,7 +686,7 @@ const RunsSummaryDivider = styled.hr`
 `;
 
 const RunsSummary = styled.p`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 0.8rem;
   color: #555;
@@ -675,7 +728,7 @@ const GreenBar = styled.div<{ fill: number }>`
 `;
 
 const SplitStat = styled.p`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 2.5rem;
   font-weight: 700;
   color: #1a1a1a;
@@ -725,7 +778,7 @@ const PageTitleGroup = styled.div`
 `;
 
 const PageNumber = styled.span`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   color: #b83320;
   font-size: 1.25rem;
@@ -733,7 +786,7 @@ const PageNumber = styled.span`
 `;
 
 const PageTitle = styled.h1`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.75rem;
   font-weight: 400;
@@ -781,7 +834,7 @@ const LiveStat = styled.div`
 `;
 
 const LiveLabel = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.7rem;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -789,7 +842,7 @@ const LiveLabel = styled.span`
 `;
 
 const LiveValue = styled.span`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.85rem;
   font-weight: 700;
   color: #fff;
@@ -816,12 +869,13 @@ const TeamSide = styled.div<{ align?: string }>`
   flex-direction: column;
   gap: 0.25rem;
   flex: 1;
-  text-align: ${({ align }) => align ?? 'left'};
-  align-items: ${({ align }) => (align === 'right' ? 'flex-end' : 'flex-start')};
+  text-align: ${({ align }) => align ?? "left"};
+  align-items: ${({ align }) =>
+    align === "right" ? "flex-end" : "flex-start"};
 `;
 
 const TeamName = styled.p`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-size: 1.5rem;
   font-style: italic;
   color: #1a1a1a;
@@ -841,7 +895,7 @@ const TeamScore = styled.p`
 `;
 
 const Runs = styled.span`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 5rem;
   font-weight: 700;
   color: #1a1a1a;
@@ -852,7 +906,7 @@ const Runs = styled.span`
 `;
 
 const Wickets = styled.span`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 2rem;
   font-weight: 700;
   color: #1a1a1a;
@@ -866,7 +920,7 @@ const TeamOvers = styled.p`
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.8rem;
   color: #767676;
   margin: 0;
@@ -881,15 +935,15 @@ const TeamOvers = styled.p`
 `;
 
 const RunRate = styled.span`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 `;
 
 const StatusLabel = styled.span<{ reverse?: boolean }>`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  flex-direction: ${({ reverse }) => (reverse ? 'row-reverse' : 'row')};
-  font-family: 'Inter', sans-serif;
+  flex-direction: ${({ reverse }) => (reverse ? "row-reverse" : "row")};
+  font-family: "Inter", sans-serif;
   font-size: 0.7rem;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -930,7 +984,7 @@ const BallIcon = styled.img`
 `;
 
 const Vs = styled.p`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.75rem;
   color: #1a1a1a;
@@ -942,7 +996,7 @@ const Vs = styled.p`
 `;
 
 const Format = styled.p`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 2px;
   text-transform: uppercase;
