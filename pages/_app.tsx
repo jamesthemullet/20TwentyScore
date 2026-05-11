@@ -1,6 +1,7 @@
 import { css, Global } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/next';
 import { GameProvider } from '../context/GameContext';
 import { useGameScore } from '../context/GameScoreContext';
 
@@ -37,6 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
       `}
       />
       <Component {...pageProps} />
+      <Analytics />
     </GameProvider>
   );
 }
