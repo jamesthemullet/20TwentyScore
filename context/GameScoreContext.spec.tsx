@@ -213,7 +213,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               },
               {
                 name: 'Player 2',
@@ -227,7 +227,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               },
               {
                 name: 'Player 3',
@@ -241,7 +241,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               },
               {
                 name: 'Player 4',
@@ -255,7 +255,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               }
             ],
             name: 'Team 1',
@@ -282,7 +282,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               }
             ],
             name: 'Team 2',
@@ -332,7 +332,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               },
               {
                 name: 'Player 2',
@@ -346,7 +346,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               },
               {
                 name: 'Player 3',
@@ -360,7 +360,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               },
               {
                 name: 'Player 4',
@@ -374,7 +374,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               }
             ],
             name: 'Team 1',
@@ -401,7 +401,7 @@ describe('GameScoreProvider', () => {
                 currentBowler: false,
                 status: 'Not out',
                 methodOfWicket: null,
-                oversBowled: 0
+                oversBowled: 0, runsConceded: 0
               }
             ],
             name: 'Team 2',
@@ -571,7 +571,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setCurrentBowler(1, 0);
-        setBowlingPlayerScore('Wicket', false);
+        setBowlingPlayerScore('Wicket', 0, false);
       }, []);
 
       return (
@@ -596,7 +596,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setCurrentBowler(1, 0);
-        setBowlingPlayerScore(null, true);
+        setBowlingPlayerScore(null, 0, true);
       }, []);
 
       return <div>overs: {gameScore[1].players[0].oversBowled}</div>;
@@ -615,7 +615,7 @@ describe('GameScoreProvider', () => {
 
       React.useEffect(() => {
         setCurrentBowler(1, 0);
-        setBowlingPlayerScore('Wicket', false);
+        setBowlingPlayerScore('Wicket', 0, false);
       }, []);
 
       return <div>team-wickets: {gameScore[1].totalWicketsTaken}</div>;
