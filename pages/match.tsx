@@ -77,7 +77,7 @@ const MatchPage: React.FC = () => {
       }
       prevBallRef.current = currentBallInThisOver;
     }
-  }, [currentBallInThisOver, currentOver, mostRecentAction]);
+  }, [currentBallInThisOver, currentOver, mostRecentAction, overBalls, currentBowler?.name]);
 
   const thisOverRuns = overBalls.reduce((sum, b) => {
     const n = parseInt(b, 10);

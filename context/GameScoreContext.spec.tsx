@@ -628,6 +628,87 @@ describe('GameScoreProvider', () => {
     expect(screen.getByText('team-wickets: 1')).toBeInTheDocument();
   });
 
+  it('should not change state when undo is called with no previous action', () => {
+    const MockChildComponent = () => {
+      const { gameScore, undo, canUndo } = useGameScore();
+
+      React.useEffect(() => {
+        undo();
+      }, []);
+
+      return (
+        <div>
+          <p>runs: {gameScore[0].players[0].runs}</p>
+          <p>can-undo: {canUndo ? 'true' : 'false'}</p>
+        </div>
+      );
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('runs: 0')).toBeInTheDocument();
+    expect(screen.getByText('can-undo: false')).toBeInTheDocument();
+  });
+
+  it('should revert to the previous state when undo is called after scoring', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setBattingPlayerScore, undo } = useGameScore();
+
+      React.useEffect(() => {
+        setBattingPlayerScore(0, 0, 4, null, false, false, null);
+        undo();
+      }, []);
+
+      return <div>runs: {gameScore[0].players[0].runs}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('runs: 0')).toBeInTheDocument();
+  });
+
+  it('should not update player stats when setBowlingPlayerScore is called without a current bowler', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setBowlingPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setBowlingPlayerScore('Wicket', 0, false);
+      }, []);
+
+      return <div>player-wickets: {gameScore[1].players[0].wicketsTaken}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('player-wickets: 0')).toBeInTheDocument();
+  });
+
+  it('should accumulate runsConceded on the current bowler', () => {
+    const MockChildComponent = () => {
+      const { gameScore, setCurrentBowler, setBowlingPlayerScore } = useGameScore();
+
+      React.useEffect(() => {
+        setCurrentBowler(1, 0);
+        setBowlingPlayerScore(null, 4, false);
+        setBowlingPlayerScore(null, 6, false);
+      }, []);
+
+      return <div>runs-conceded: {gameScore[1].players[0].runsConceded}</div>;
+    };
+    render(
+      <GameScoreProvider>
+        <MockChildComponent />
+      </GameScoreProvider>
+    );
+    expect(screen.getByText('runs-conceded: 10')).toBeInTheDocument();
+  });
+
   it('should flip team batting status on endOfInnings', () => {
     const MockChildComponent = () => {
       const { gameScore, setBattingPlayerScore } = useGameScore();
