@@ -121,7 +121,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
       endOfInnings(action),
       methodOfWicket || null
     );
-    setBowlingPlayerScore(action, endOfOver());
+    setBowlingPlayerScore(action, runs, endOfOver());
     setMostRecentAction({ runs, action });
   };
 

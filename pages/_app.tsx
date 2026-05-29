@@ -1,6 +1,7 @@
 import { css, Global } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
+import Head from 'next/head';
 import { Analytics } from '@vercel/analytics/next';
 import { GameProvider } from '../context/GameContext';
 import { useGameScore } from '../context/GameScoreContext';
@@ -19,6 +20,7 @@ function GameStatePersister() {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <GameProvider>
+      <Head><title>20Twenty Score</title></Head>
       <GameStatePersister />
       <Global
         styles={css`

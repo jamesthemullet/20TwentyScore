@@ -13,7 +13,8 @@ const defaultPlayers = () => {
       onTheCrease: true,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 1,
@@ -28,7 +29,8 @@ const defaultPlayers = () => {
       onTheCrease: true,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 2,
@@ -43,7 +45,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 3,
@@ -58,7 +61,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 4,
@@ -73,7 +77,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 5,
@@ -88,7 +93,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 6,
@@ -103,7 +109,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 7,
@@ -118,7 +125,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 8,
@@ -133,7 +141,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 9,
@@ -148,7 +157,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     },
     {
       index: 10,
@@ -163,7 +173,8 @@ const defaultPlayers = () => {
       onTheCrease: false,
       status: 'Not out',
       methodOfWicket: null,
-      oversBowled: 0
+      oversBowled: 0,
+      runsConceded: 0
     }
   ];
 };
