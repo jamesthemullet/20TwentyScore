@@ -8,6 +8,9 @@ import { useGameScore } from "../context/GameScoreContext";
 import { useMostRecentAction } from "../context/MostRecentActionContext";
 import { useOvers } from "../context/OversContext";
 
+const TOTAL_OVERS = 20;
+const TOTAL_BALLS = TOTAL_OVERS * 6;
+
 const MatchPage: React.FC = () => {
   const [selectBowler, setSelectBowler] = useState(false);
 
@@ -237,7 +240,7 @@ const MatchPage: React.FC = () => {
               <ThisOverBox>
                 <BoxHeader>
                   <BoxTitle>This over</BoxTitle>
-                  <BoxMeta>Over {currentOver} of 20</BoxMeta>
+                  <BoxMeta>Over {currentOver} of {TOTAL_OVERS}</BoxMeta>
                 </BoxHeader>
                 <BallRow>
                   {(() => {
@@ -419,7 +422,7 @@ const MatchPage: React.FC = () => {
                       currentBallInThisOver - 1 - currentExtrasInThisOver;
                     const ballsUsed =
                       (currentBattingTeam?.overs ?? 0) * 6 + validBallsInOver;
-                    const ballsRemaining = 120 - ballsUsed;
+                    const ballsRemaining = TOTAL_BALLS - ballsUsed;
 
                     if (finishedTeam && target !== null) {
                       const runsNeeded = Math.max(
@@ -448,7 +451,7 @@ const MatchPage: React.FC = () => {
                       );
                     }
 
-                    const projected = Math.round(rr * 20);
+                    const projected = Math.round(rr * TOTAL_OVERS);
                     return (
                       <>
                         <BoxMeta>Projected</BoxMeta>
@@ -457,7 +460,7 @@ const MatchPage: React.FC = () => {
                           <RedBar fill={Math.min(projected / 300, 1)} />
                         </RedBarTrack>
                         <RunsSummaryDivider />
-                        <RunsSummary>At this rate over 20 overs</RunsSummary>
+                        <RunsSummary>At this rate over {TOTAL_OVERS} overs</RunsSummary>
                       </>
                     );
                   })()}
