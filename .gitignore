@@ -13,3 +13,6 @@ tsbuildinfo*
 .claude/settings.local.json
 .claude/settings.local.json
 tsbuildinfo
+
+test-results/
+playwright-report/
