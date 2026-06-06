@@ -15,7 +15,8 @@
       "Bash(awk '{print $NF}')",
       "Bash(gh label *)",
       "Bash(yarn biome *)",
-      "Bash(yarn lint *)"
+      "Bash(yarn lint *)",
+      "Skill(update-config)"
     ]
   }
 }
