@@ -57,6 +57,12 @@ Run `yarn test --coverage 2>&1 | tail -60` again and confirm coverage moved in t
 - Old vs new line/branch coverage for those files
 - What the next logical improvement would be
 
+### Step 6 — create a PR
+After verifying coverage improved, commit and open a pull request:
+1. Stage only the new/modified spec file(s): `git add <spec files>`
+2. Commit with a message describing what was tested (e.g. `test: add coverage for pages/index.tsx`)
+3. Push the branch and create a PR using `gh pr create` targeting `main`, with a summary of which files were covered and the coverage change
+
 ## Coverage targets (per file)
 | Priority | Target |
 |----------|--------|
