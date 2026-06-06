@@ -16,7 +16,8 @@
       "Bash(gh label *)",
       "Bash(yarn biome *)",
       "Bash(yarn lint *)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Bash(Remove-Item *)"
     ]
   }
 }

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { GameScoreContext } from '../context/GameScoreContext';
-import type { GameScore, GameScoreContextType } from '../context/GameContext';
-import Index from './index';
+import { GameScoreContext } from '../../context/GameScoreContext';
+import type { GameScore, GameScoreContextType } from '../../context/GameContext';
+import Index from '../../pages/index';
 
 jest.mock('next/router', () => ({
   useRouter: () => ({ push: mockPush }),
@@ -9,7 +9,7 @@ jest.mock('next/router', () => ({
 
 const mockPush = jest.fn();
 
-jest.mock('../components/pitch/pitch-diagram', () => ({
+jest.mock('../../components/pitch/pitch-diagram', () => ({
   __esModule: true,
   default: () => <div data-testid="pitch-diagram" />,
 }));
