@@ -29,7 +29,7 @@ Files that have source code but no spec file are automatic coverage gaps. Known 
 ### Step 3 — decide: unit or e2e improvement this round
 
 **Unit/integration** (prefer when coverage < 80% on a file, or a file has no spec at all):
-- Write or extend a `*.spec.tsx` next to the source file
+- Write or extend a `*.spec.tsx` next to the source file — **exception**: specs for `pages/` must go in `__tests__/pages/` (not inside `pages/`) to avoid Next.js treating them as routes
 - Use React Testing Library; import contexts directly from `context/GameContext.tsx`
 - Follow patterns in `components/scoring/scoring.spec.tsx` for context wiring
 

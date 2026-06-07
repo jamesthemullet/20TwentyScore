@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ScoreboardPage from './scoreboard';
+import ScoreboardPage from '../../pages/scoreboard';
 
 jest.mock('next/router', () => ({
   useRouter: () => ({ asPath: '/' }),
