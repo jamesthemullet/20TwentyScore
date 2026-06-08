@@ -15,12 +15,12 @@ export default function Nav() {
 
   return (
     <StyledNav aria-label="Navigation Bar">
-      <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu">
+      <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu" aria-expanded={isDropdownOpen} aria-controls="mobile-nav-menu">
         <span></span>
         <span></span>
         <span></span>
       </BurgerButton>
-      <ul className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
+      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
         <li>
           <Link href="/" className={isActive('/') ? 'active' : ''}>
             Home
