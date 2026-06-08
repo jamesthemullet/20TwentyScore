@@ -21,9 +21,9 @@
     "@vercel/analytics": "^2.0.1",
     "accented": "^1.2.0",
     "husky": "^9.0.0",
-    "next": "16.2.6",
-    "react": "19.2.6",
-    "react-dom": "19.2.6"
+    "next": "16.2.7",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
