@@ -145,6 +145,11 @@ const initialState: GameState = {
 
 // ── Reducer helpers ───────────────────────────────────────────────────────────
 
+function toTeamIndex(n: number): 0 | 1 {
+  if (n !== 0 && n !== 1) throw new Error(`Expected team index 0 or 1, got ${n}`);
+  return n;
+}
+
 function swapStrikers(players: TeamPlayer[]): TeamPlayer[] {
   return players.map((p) => ({
     ...p,
@@ -240,9 +245,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         !teams[battingTeamIndex].players.find((p) => p.currentStriker)
       ) {
         const updatedTeams = [...teams] as GameScore;
-        updatedTeams[battingTeamIndex as 0 | 1] = {
-          ...updatedTeams[battingTeamIndex as 0 | 1],
-          players: updatedTeams[battingTeamIndex as 0 | 1].players.map((p, i) =>
+        const bi = toTeamIndex(battingTeamIndex);
+        updatedTeams[bi] = {
+          ...updatedTeams[bi],
+          players: updatedTeams[bi].players.map((p, i) =>
             i === 0 ? { ...p, currentStriker: true } : p
           )
         };
@@ -274,7 +280,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
 
       const teams = [...state.teams] as GameScore;
-      const team = teams[teamIndex as 0 | 1];
+      const ti = toTeamIndex(teamIndex);
+      const team = teams[ti];
 
       const updatedPlayers = applyBattingUpdate(
         team.players,
@@ -287,7 +294,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
       if (updatedPlayers === null) return state;
 
-      teams[teamIndex as 0 | 1] = {
+      teams[ti] = {
         ...team,
         players: updatedPlayers,
         totalRuns: team.totalRuns + runs,
@@ -298,7 +305,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
 
       if (endOfInnings) {
-        const otherIndex = (teamIndex === 0 ? 1 : 0) as 0 | 1;
+        const otherIndex = teamIndex === 0 ? 1 : 0;
         teams[otherIndex] = {
           ...teams[otherIndex],
           currentBattingTeam: !teams[otherIndex].currentBattingTeam
@@ -343,9 +350,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       if (teamIndex < 0 || teamIndex > 1) return state;
 
       const teams = [...state.teams] as GameScore;
-      teams[teamIndex as 0 | 1] = {
-        ...teams[teamIndex as 0 | 1],
-        players: teams[teamIndex as 0 | 1].players.map((p) => ({
+      const ti = toTeamIndex(teamIndex);
+      teams[ti] = {
+        ...teams[ti],
+        players: teams[ti].players.map((p) => ({
           ...p,
           currentBowler: p.index === playerIndex
         }))
