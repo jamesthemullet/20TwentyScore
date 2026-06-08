@@ -8,7 +8,6 @@ type PlayerProps = {
   runs: number;
   wicketsTaken: number;
   currentStriker: boolean;
-  allActions: (string | null)[];
   currentNonStriker: boolean;
   status: string;
   oversBowled: number;
