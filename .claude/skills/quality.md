@@ -31,7 +31,26 @@ Read the relevant source files in `components/`, `context/`, `pages/`, and `util
 
 Make the fix. Keep scope tight — one issue, one or two files. Do not refactor beyond what is needed to address the specific finding.
 
-### Step 4 — Report
+### Step 4 — Commit and open a PR
+
+1. Stage only the files you changed: `git add <file1> [file2]`
+2. Commit with a short, descriptive message (no Co-Authored-By line needed here).
+3. Push the branch and open a PR against `main` using:
+   ```
+   gh pr create --title "<title>" --body "$(cat <<'EOF'
+   ## Summary
+   - <one bullet describing the fix>
+
+   ## Category
+   <chosen category name>
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+   EOF
+   )"
+   ```
+4. Return the PR URL.
+
+### Step 5 — Report
 
 Output exactly this structure:
 
@@ -42,6 +61,7 @@ Output exactly this structure:
 **File:** <path:line>
 **Issue:** <one sentence describing the problem>
 **Fix:** <what was changed and why>
+**PR:** <URL>
 **Next suggestion:** <the next candidate worth tackling in this category, with file path>
 ```
 
