@@ -6,6 +6,10 @@ jest.mock('next/router', () => ({
   useRouter: () => ({ pathname: '/' })
 }));
 
+jest.mock('next-auth/react', () => ({
+  useSession: () => ({ data: null, status: 'unauthenticated' })
+}));
+
 expect.extend(matchers);
 
 describe('Nav Component', () => {

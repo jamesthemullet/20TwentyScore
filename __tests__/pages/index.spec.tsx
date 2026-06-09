@@ -7,6 +7,10 @@ jest.mock('next/router', () => ({
   useRouter: () => ({ push: mockPush }),
 }));
 
+jest.mock('next-auth/react', () => ({
+  useSession: () => ({ data: null, status: 'unauthenticated' })
+}));
+
 const mockPush = jest.fn();
 
 jest.mock('../../components/pitch/pitch-diagram', () => ({
