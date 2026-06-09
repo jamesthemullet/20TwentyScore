@@ -1,19 +1,22 @@
-import styled from '@emotion/styled';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Layout from '../components/layout/layout';
-import SaveCard from '../components/saves/SaveCard';
-import { useAccount } from '../context/AccountContext';
-import { generateSaveTitle } from '../lib/gameSaveTitle';
-import { useGameScore } from '../context/GameScoreContext';
-import type { GameSave } from '@prisma/client';
+import styled from "@emotion/styled";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Layout from "../components/layout/layout";
+import SaveCard from "../components/saves/SaveCard";
+import { useAccount } from "../context/AccountContext";
+import { generateSaveTitle } from "../lib/gameSaveTitle";
+import { useGameScore } from "../context/GameScoreContext";
+import type { GameSave } from "@prisma/client";
 
-type SaveSummary = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed' | 'seasonId'>;
+type SaveSummary = Pick<
+  GameSave,
+  "id" | "title" | "createdAt" | "completed" | "seasonId"
+>;
 
 export default function DashboardPage() {
   const { data: session } = useSession();
-  const { user, tier, isLoading: accountLoading } = useAccount();
+  const { tier, isLoading: accountLoading } = useAccount();
   const { gameScore } = useGameScore();
   const [saves, setSaves] = useState<SaveSummary[]>([]);
   const [savesLoading, setSavesLoading] = useState(true);
@@ -22,11 +25,11 @@ export default function DashboardPage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const hasLocalGame =
-    typeof window !== 'undefined' && Boolean(localStorage.getItem('gameData'));
+    typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
 
   useEffect(() => {
     if (!session) return;
-    fetch('/api/saves')
+    fetch("/api/saves")
       .then((r) => r.json())
       .then((data) => setSaves(data))
       .finally(() => setSavesLoading(false));
@@ -37,36 +40,36 @@ export default function DashboardPage() {
     setSaveError(null);
     setSaveSuccess(false);
 
-    const cloudSaveId = localStorage.getItem('cloudSaveId');
+    const cloudSaveId = localStorage.getItem("cloudSaveId");
     const title = generateSaveTitle(gameScore);
 
     try {
       let res: Response;
       if (cloudSaveId) {
         res = await fetch(`/api/saves/${cloudSaveId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ gameData: gameScore, title }),
         });
       } else {
-        res = await fetch('/api/saves', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        res = await fetch("/api/saves", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ gameData: gameScore, title }),
         });
       }
 
       if (res.status === 402) {
-        setSaveError('FREE_LIMIT_REACHED');
+        setSaveError("FREE_LIMIT_REACHED");
         return;
       }
       if (!res.ok) {
-        setSaveError('Something went wrong. Please try again.');
+        setSaveError("Something went wrong. Please try again.");
         return;
       }
 
-      const saved = await res.json() as SaveSummary;
-      if (!cloudSaveId) localStorage.setItem('cloudSaveId', saved.id);
+      const saved = (await res.json()) as SaveSummary;
+      if (!cloudSaveId) localStorage.setItem("cloudSaveId", saved.id);
       setSaves((prev) => {
         const idx = prev.findIndex((s) => s.id === saved.id);
         return idx >= 0
@@ -83,7 +86,10 @@ export default function DashboardPage() {
     return (
       <Layout>
         <PageWrapper>
-          <p>Please <Link href="/auth/signin">sign in</Link> to view your dashboard.</p>
+          <p>
+            Please <Link href="/auth/signin">sign in</Link> to view your
+            dashboard.
+          </p>
         </PageWrapper>
       </Layout>
     );
@@ -96,10 +102,20 @@ export default function DashboardPage() {
           <Avatar>
             {session.user?.image ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={session.user.image} alt={session.user.name ?? ''} width={56} height={56} />
+              <img
+                src={session.user.image}
+                alt={session.user.name ?? ""}
+                width={56}
+                height={56}
+              />
             ) : (
               <AvatarInitials>
-                {session.user?.name?.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2) ?? '?'}
+                {session.user?.name
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()
+                  .slice(0, 2) ?? "?"}
               </AvatarInitials>
             )}
           </Avatar>
@@ -108,8 +124,8 @@ export default function DashboardPage() {
             <AccountEmail>{session.user?.email}</AccountEmail>
           </AccountInfo>
           {!accountLoading && (
-            <TierBadge premium={tier === 'premium'}>
-              {tier === 'premium' ? 'Premium' : 'Free'}
+            <TierBadge premium={tier === "premium"}>
+              {tier === "premium" ? "Premium" : "Free"}
             </TierBadge>
           )}
         </AccountSection>
@@ -118,18 +134,18 @@ export default function DashboardPage() {
           <SectionTitle>Cloud saves</SectionTitle>
           {hasLocalGame && (
             <SaveButton onClick={saveToCloud} disabled={saving}>
-              {saving ? 'Saving…' : 'Save current game to cloud'}
+              {saving ? "Saving…" : "Save current game to cloud"}
             </SaveButton>
           )}
         </SectionHeader>
 
-        {saveError === 'FREE_LIMIT_REACHED' && (
+        {saveError === "FREE_LIMIT_REACHED" && (
           <UpgradePrompt>
-            You&apos;ve reached the free save limit.{' '}
+            You&apos;ve reached the free save limit.{" "}
             <Link href="/account">Upgrade to Premium</Link> for unlimited saves.
           </UpgradePrompt>
         )}
-        {saveError && saveError !== 'FREE_LIMIT_REACHED' && (
+        {saveError && saveError !== "FREE_LIMIT_REACHED" && (
           <ErrorMessage role="alert">{saveError}</ErrorMessage>
         )}
         {saveSuccess && <SuccessMessage>Game saved!</SuccessMessage>}
@@ -137,7 +153,9 @@ export default function DashboardPage() {
         {savesLoading ? (
           <EmptyState>Loading saves…</EmptyState>
         ) : saves.length === 0 ? (
-          <EmptyState>No cloud saves yet. Finish a game and save it from the Summary page.</EmptyState>
+          <EmptyState>
+            No cloud saves yet. Finish a game and save it from the Summary page.
+          </EmptyState>
         ) : (
           <SavesGrid>
             {saves.map((s) => (
@@ -147,7 +165,7 @@ export default function DashboardPage() {
         )}
 
         <SeasonsSection>
-          {tier === 'premium' ? (
+          {tier === "premium" ? (
             <SeasonsLink href="/seasons">View Seasons →</SeasonsLink>
           ) : (
             <LockedLink>
@@ -199,7 +217,7 @@ const Avatar = styled.div`
 `;
 
 const AvatarInitials = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 1rem;
   color: #fff;
@@ -210,7 +228,7 @@ const AccountInfo = styled.div`
 `;
 
 const AccountName = styled.p`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.25rem;
   margin: 0;
@@ -218,21 +236,21 @@ const AccountName = styled.p`
 `;
 
 const AccountEmail = styled.p`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.8rem;
   color: #767676;
   margin: 0;
 `;
 
 const TierBadge = styled.span<{ premium: boolean }>`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  background-color: ${({ premium }) => (premium ? '#2d7a4f' : '#767676')};
+  background-color: ${({ premium }) => (premium ? "#2d7a4f" : "#767676")};
   color: #fff;
 `;
 
@@ -244,7 +262,7 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
   font-weight: 400;
@@ -253,7 +271,7 @@ const SectionTitle = styled.h2`
 `;
 
 const SaveButton = styled.button`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -284,14 +302,14 @@ const SavesGrid = styled.div`
 `;
 
 const EmptyState = styled.p`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   color: #767676;
   margin: 0;
 `;
 
 const UpgradePrompt = styled.div`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   background-color: #fff8e1;
   border: 1px solid #e8a020;
@@ -303,19 +321,21 @@ const UpgradePrompt = styled.div`
     color: #b83320;
     font-weight: 700;
     text-decoration: none;
-    &:hover { text-decoration: underline; }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 
 const ErrorMessage = styled.p`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   color: #b83320;
   margin: 0;
 `;
 
 const SuccessMessage = styled.p`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   color: #2d7a4f;
   font-weight: 700;
@@ -328,16 +348,18 @@ const SeasonsSection = styled.div`
 `;
 
 const SeasonsLink = styled(Link)`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   color: #1a1a1a;
   text-decoration: none;
-  &:hover { text-decoration: underline; }
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const LockedLink = styled.p`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   color: #767676;
   margin: 0;
@@ -349,7 +371,9 @@ const LockedLink = styled.p`
     color: #b83320;
     font-weight: 700;
     text-decoration: none;
-    &:hover { text-decoration: underline; }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 
