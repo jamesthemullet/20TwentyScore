@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import type React from 'react';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Layout from '../components/layout/layout';
 import { useGameScore } from '../context/GameScoreContext';
 import type { Team } from '../context/GameContext';
+import { generateSaveTitle } from '../lib/gameSaveTitle';
 
 const TEAM_COLORS = ['#b83320', '#2d7a4f'] as const;
 
@@ -34,10 +37,56 @@ function determineResult(teams: [Team, Team]): string | null {
 
 const SummaryPage: React.FC = () => {
   const { gameScore } = useGameScore();
+  const { data: session } = useSession();
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const battingTeam = gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0];
   const bowlingTeam = gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1];
   const result = determineResult(gameScore as [Team, Team]);
+
+  const saveToCloud = async () => {
+    setSaving(true);
+    setSaveError(null);
+    setSaveSuccess(false);
+
+    const cloudSaveId = localStorage.getItem('cloudSaveId');
+    const title = generateSaveTitle(gameScore);
+    const completed = Boolean(result);
+
+    try {
+      let res: Response;
+      if (cloudSaveId) {
+        res = await fetch(`/api/saves/${cloudSaveId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ gameData: gameScore, title, completed }),
+        });
+      } else {
+        res = await fetch('/api/saves', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ gameData: gameScore, title, completed }),
+        });
+      }
+
+      if (res.status === 402) {
+        setSaveError('FREE_LIMIT_REACHED');
+        return;
+      }
+      if (!res.ok) {
+        setSaveError('Something went wrong. Please try again.');
+        return;
+      }
+
+      const saved = await res.json() as { id: string };
+      if (!cloudSaveId) localStorage.setItem('cloudSaveId', saved.id);
+      setSaveSuccess(true);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <Layout>
@@ -111,6 +160,24 @@ const SummaryPage: React.FC = () => {
                 Head to <Link href="/match">Match</Link> to keep scoring.
               </ResultBody>
             </>
+          )}
+
+          {session && (
+            <CloudSaveSection>
+              <CloudSaveButton onClick={saveToCloud} disabled={saving}>
+                {saving ? 'Saving…' : localStorage.getItem('cloudSaveId') ? 'Update cloud save' : 'Save to cloud'}
+              </CloudSaveButton>
+              {saveError === 'FREE_LIMIT_REACHED' && (
+                <UpgradePrompt>
+                  You&apos;ve reached the free save limit.{' '}
+                  <Link href="/account">Upgrade to Premium</Link> for unlimited saves.
+                </UpgradePrompt>
+              )}
+              {saveError && saveError !== 'FREE_LIMIT_REACHED' && (
+                <SaveMessage error role="alert">{saveError}</SaveMessage>
+              )}
+              {saveSuccess && <SaveMessage>Saved to cloud!</SaveMessage>}
+            </CloudSaveSection>
           )}
         </ResultPanel>
       </PageWrapper>
@@ -319,6 +386,65 @@ const ResultHeading = styled.h2`
   font-weight: 400;
   color: #1a1a1a;
   margin: 0 0 0.5rem;
+`;
+
+const CloudSaveSection = styled.div`
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const CloudSaveButton = styled.button`
+  align-self: flex-start;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 2px solid #333;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #f0f0f0;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const UpgradePrompt = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  background-color: #fff8e1;
+  border: 1px solid #e8a020;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  color: #1a1a1a;
+
+  a {
+    color: #b83320;
+    font-weight: 700;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+`;
+
+const SaveMessage = styled.p<{ error?: boolean }>`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: ${({ error }) => (error ? '#b83320' : '#2d7a4f')};
+  font-weight: 700;
+  margin: 0;
 `;
 
 const ResultBody = styled.p`
