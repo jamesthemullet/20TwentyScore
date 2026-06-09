@@ -85,7 +85,7 @@ model Subscription {
   userId                 String   @unique
   stripeSubscriptionId   String   @unique
   stripePriceId          String
-  stripeCurrentPeriodEnd DateTime
+  stripeCurrentPeriodEnd DateTime?
   status                 String
   plan                   String
   user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
