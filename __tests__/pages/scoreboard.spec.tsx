@@ -5,6 +5,10 @@ jest.mock('next/router', () => ({
   useRouter: () => ({ asPath: '/' }),
 }));
 
+jest.mock('next-auth/react', () => ({
+  useSession: () => ({ data: null, status: 'unauthenticated' })
+}));
+
 describe('ScoreboardPage', () => {
   it('renders the coming soon message', () => {
     render(<ScoreboardPage />);

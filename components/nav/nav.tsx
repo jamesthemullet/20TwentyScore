@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import UserMenu from '../auth/UserMenu';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -42,6 +43,7 @@ export default function Nav() {
           </Link>
         </li>
       </ul>
+      <UserMenu />
     </StyledNav>
   );
 }
