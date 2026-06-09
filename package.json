@@ -9,6 +9,7 @@
     "lint": "tsc --noEmit && biome lint .",
     "lint:fix": "biome lint --write .",
     "format": "biome format --write .",
+    "postinstall": "prisma generate",
     "prepare": "husky install",
     "test": "yarn jest",
     "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers playwright test"
