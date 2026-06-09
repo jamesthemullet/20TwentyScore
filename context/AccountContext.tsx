@@ -1,5 +1,5 @@
 import type React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import type { Subscription, User } from '@prisma/client';
 
@@ -10,6 +10,7 @@ type AccountContextType = {
   tier: Tier;
   subscription: Subscription | null;
   isLoading: boolean;
+  refresh: () => void;
 };
 
 const AccountContext = createContext<AccountContextType>({
@@ -17,6 +18,7 @@ const AccountContext = createContext<AccountContextType>({
   tier: 'free',
   subscription: null,
   isLoading: false,
+  refresh: () => {},
 });
 
 export function AccountProvider({ children }: { children: React.ReactNode }) {
@@ -26,15 +28,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      setUser(null);
-      setTier('free');
-      setSubscription(null);
-      return;
-    }
-    if (status !== 'authenticated') return;
-
+  const fetchAccount = useCallback(() => {
     setIsLoading(true);
     fetch('/api/account')
       .then((r) => r.json())
@@ -44,10 +38,21 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
         setSubscription(data.subscription);
       })
       .finally(() => setIsLoading(false));
-  }, [status]);
+  }, []);
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      setUser(null);
+      setTier('free');
+      setSubscription(null);
+      return;
+    }
+    if (status !== 'authenticated') return;
+    fetchAccount();
+  }, [status, fetchAccount]);
 
   return (
-    <AccountContext.Provider value={{ user, tier, subscription, isLoading }}>
+    <AccountContext.Provider value={{ user, tier, subscription, isLoading, refresh: fetchAccount }}>
       {children}
     </AccountContext.Provider>
   );

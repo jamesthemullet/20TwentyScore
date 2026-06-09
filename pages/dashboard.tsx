@@ -2,8 +2,10 @@ import styled from "@emotion/styled";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Layout from "../components/layout/layout";
 import SaveCard from "../components/saves/SaveCard";
+import UpgradeCTA from "../components/premium/UpgradeCTA";
 import { useAccount } from "../context/AccountContext";
 import { generateSaveTitle } from "../lib/gameSaveTitle";
 import { useGameScore } from "../context/GameScoreContext";
@@ -18,11 +20,13 @@ export default function DashboardPage() {
   const { data: session } = useSession();
   const { tier, isLoading: accountLoading } = useAccount();
   const { gameScore } = useGameScore();
+  const router = useRouter();
   const [saves, setSaves] = useState<SaveSummary[]>([]);
   const [savesLoading, setSavesLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   const hasLocalGame =
     typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
@@ -34,6 +38,21 @@ export default function DashboardPage() {
       .then((data) => setSaves(data))
       .finally(() => setSavesLoading(false));
   }, [session]);
+
+  useEffect(() => {
+    if (!session || router.query.checkout !== "success") return;
+    fetch("/api/stripe/sync-subscription", { method: "POST" }).then(() => {
+      sessionStorage.setItem("checkoutSuccess", "1");
+      window.location.replace("/dashboard");
+    });
+  }, [session, router.query.checkout]);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("checkoutSuccess")) {
+      sessionStorage.removeItem("checkoutSuccess");
+      setCheckoutSuccess(true);
+    }
+  }, []);
 
   const saveToCloud = async () => {
     setSaving(true);
@@ -98,6 +117,12 @@ export default function DashboardPage() {
   return (
     <Layout>
       <PageWrapper>
+        {checkoutSuccess && (
+          <CheckoutBanner>
+            Welcome to Premium! Your subscription is now active.
+          </CheckoutBanner>
+        )}
+
         <AccountSection>
           <Avatar>
             {session.user?.image ? (
@@ -168,10 +193,15 @@ export default function DashboardPage() {
           {tier === "premium" ? (
             <SeasonsLink href="/seasons">View Seasons →</SeasonsLink>
           ) : (
-            <LockedLink>
-              <LockIcon aria-hidden>🔒</LockIcon>
-              Seasons — <Link href="/account">Upgrade to Premium</Link>
-            </LockedLink>
+            <>
+              <LockedLink>
+                <LockIcon aria-hidden>🔒</LockIcon>
+                Seasons — <UpgradeLink href="/dashboard#upgrade">Upgrade to Premium</UpgradeLink>
+              </LockedLink>
+              <UpgradeSection id="upgrade">
+                <UpgradeCTA />
+              </UpgradeSection>
+            </>
           )}
         </SeasonsSection>
       </PageWrapper>
@@ -379,4 +409,26 @@ const LockedLink = styled.p`
 
 const LockIcon = styled.span`
   font-size: 0.85rem;
+`;
+
+const UpgradeLink = styled(Link)`
+  color: #b83320;
+  font-weight: 700;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+`;
+
+const UpgradeSection = styled.div`
+  margin-top: 1.5rem;
+`;
+
+const CheckoutBanner = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: #e8f5e9;
+  border: 1px solid #2d7a4f;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #2d7a4f;
 `;
