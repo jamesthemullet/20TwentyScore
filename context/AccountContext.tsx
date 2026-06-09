@@ -1,5 +1,5 @@
 import type React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import type { Subscription, User } from '@prisma/client';
 
@@ -28,7 +28,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchAccount = () => {
+  const fetchAccount = useCallback(() => {
     setIsLoading(true);
     fetch('/api/account')
       .then((r) => r.json())
@@ -38,7 +38,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
         setSubscription(data.subscription);
       })
       .finally(() => setIsLoading(false));
-  };
+  }, []);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -49,7 +49,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
     }
     if (status !== 'authenticated') return;
     fetchAccount();
-  }, [status]);
+  }, [status, fetchAccount]);
 
   return (
     <AccountContext.Provider value={{ user, tier, subscription, isLoading, refresh: fetchAccount }}>
