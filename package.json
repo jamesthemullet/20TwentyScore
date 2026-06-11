@@ -12,7 +12,8 @@
     "postinstall": "prisma generate",
     "prepare": "husky install",
     "test": "yarn jest",
-    "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers playwright test"
+    "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers playwright test",
+    "knip": "knip"
   },
   "keywords": [],
   "author": "",
