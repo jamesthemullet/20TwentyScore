@@ -418,7 +418,7 @@ export const OversContext = createContext<OversContextType>({
   resetOvers: () => undefined
 });
 
-export const MostRecentActionContext = createContext<MostRecentActionContextType>({
+const MostRecentActionContext = createContext<MostRecentActionContextType>({
   mostRecentAction: { runs: 0, action: null },
   setMostRecentAction: () => undefined
 });
