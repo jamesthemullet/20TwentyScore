@@ -21,15 +21,18 @@ export default function SeasonsPage() {
   const { tier, isLoading: accountLoading } = useAccount();
   const [seasons, setSeasons] = useState<SeasonSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [seasonsError, setSeasonsError] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
   const [formOpen, setFormOpen] = useState(false);
 
   useEffect(() => {
     if (!session || tier !== 'premium') return;
     fetch('/api/seasons')
-      .then((r) => r.json())
+      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
       .then((data) => setSeasons(data))
+      .catch(() => setSeasonsError(true))
       .finally(() => setLoading(false));
   }, [session, tier]);
 
@@ -48,7 +51,11 @@ export default function SeasonsPage() {
         setSeasons((prev) => [{ ...season, gameCount: season.gameCount ?? 0 }, ...prev]);
         setNewName('');
         setFormOpen(false);
+      } else {
+        setCreateError('Could not create season. Please try again.');
       }
+    } catch {
+      setCreateError('Something went wrong. Please try again.');
     } finally {
       setCreating(false);
     }
@@ -87,6 +94,8 @@ export default function SeasonsPage() {
           </NewButton>
         </PageHeader>
 
+        {createError && <ErrorMessage role="alert">{createError}</ErrorMessage>}
+
         {formOpen && (
           <Form onSubmit={createSeason}>
             <Input
@@ -104,6 +113,8 @@ export default function SeasonsPage() {
 
         {loading ? (
           <EmptyState>Loading seasons…</EmptyState>
+        ) : seasonsError ? (
+          <ErrorMessage role="alert">Could not load seasons. Please refresh.</ErrorMessage>
         ) : seasons.length === 0 ? (
           <EmptyState>No seasons yet. Create one to group your games.</EmptyState>
         ) : (
@@ -219,5 +230,12 @@ const EmptyState = styled.p`
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   color: #767676;
+  margin: 0;
+`;
+
+const ErrorMessage = styled.p`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #b83320;
   margin: 0;
 `;
