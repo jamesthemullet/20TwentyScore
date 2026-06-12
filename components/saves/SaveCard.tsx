@@ -67,7 +67,7 @@ const Card = styled(Link)`
   }
 `;
 
-const CardTitle = styled.p`
+const CardTitle = styled.h3`
   font-family: 'Bodoni Moda', serif;
   font-style: italic;
   font-size: 1.1rem;

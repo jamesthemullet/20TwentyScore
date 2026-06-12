@@ -40,6 +40,7 @@ const Index: React.FC = () => {
 
   const newGame = () => {
     localStorage.removeItem("gameData");
+    localStorage.removeItem("cloudSaveId");
     setGameScore([
       {
         players: defaultPlayers(),
