@@ -16,12 +16,15 @@ type SaveSummary = Pick<
   "id" | "title" | "createdAt" | "completed" | "seasonId"
 >;
 
+type SeasonSummary = { id: string; name: string };
+
 export default function DashboardPage() {
   const { data: session } = useSession();
   const { tier, isLoading: accountLoading } = useAccount();
   const { gameScore } = useGameScore();
   const router = useRouter();
   const [saves, setSaves] = useState<SaveSummary[]>([]);
+  const [seasons, setSeasons] = useState<SeasonSummary[]>([]);
   const [savesLoading, setSavesLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -40,6 +43,13 @@ export default function DashboardPage() {
   }, [session]);
 
   useEffect(() => {
+    if (!session || tier !== "premium") return;
+    fetch("/api/seasons")
+      .then((r) => r.json())
+      .then((data: SeasonSummary[]) => setSeasons(data));
+  }, [session, tier]);
+
+  useEffect(() => {
     if (!session || router.query.checkout !== "success") return;
     fetch("/api/stripe/sync-subscription", { method: "POST" }).then(() => {
       sessionStorage.setItem("checkoutSuccess", "1");
@@ -53,6 +63,19 @@ export default function DashboardPage() {
       setCheckoutSuccess(true);
     }
   }, []);
+
+  const assignSeason = async (saveId: string, seasonId: string | null) => {
+    const res = await fetch(`/api/saves/${saveId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ seasonId }),
+    });
+    if (res.ok) {
+      setSaves((prev) =>
+        prev.map((s) => (s.id === saveId ? { ...s, seasonId } : s))
+      );
+    }
+  };
 
   const saveToCloud = async () => {
     setSaving(true);
@@ -184,7 +207,12 @@ export default function DashboardPage() {
         ) : (
           <SavesGrid>
             {saves.map((s) => (
-              <SaveCard key={s.id} {...s} />
+              <SaveCard
+                key={s.id}
+                {...s}
+                seasons={tier === "premium" ? seasons : undefined}
+                onSeasonChange={tier === "premium" ? assignSeason : undefined}
+              />
             ))}
           </SavesGrid>
         )}
