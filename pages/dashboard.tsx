@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [savesError, setSavesError] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   const hasLocalGame =
@@ -37,16 +38,18 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!session) return;
     fetch("/api/saves")
-      .then((r) => r.json())
+      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
       .then((data) => setSaves(data))
+      .catch(() => setSavesError(true))
       .finally(() => setSavesLoading(false));
   }, [session]);
 
   useEffect(() => {
     if (!session || tier !== "premium") return;
     fetch("/api/seasons")
-      .then((r) => r.json())
-      .then((data: SeasonSummary[]) => setSeasons(data));
+      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
+      .then((data: SeasonSummary[]) => setSeasons(data))
+      .catch(() => {});
   }, [session, tier]);
 
   useEffect(() => {
@@ -119,6 +122,8 @@ export default function DashboardPage() {
           : [saved, ...prev];
       });
       setSaveSuccess(true);
+    } catch {
+      setSaveError("Something went wrong. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -200,6 +205,8 @@ export default function DashboardPage() {
 
         {savesLoading ? (
           <EmptyState>Loading saves…</EmptyState>
+        ) : savesError ? (
+          <ErrorMessage role="alert">Could not load saves. Please refresh.</ErrorMessage>
         ) : saves.length === 0 ? (
           <EmptyState>
             No cloud saves yet. Finish a game and save it from the Summary page.
