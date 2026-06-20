@@ -12,6 +12,9 @@ export default function Footer() {
         <FooterRight>
           <FooterBrand>20Twenty &amp; Score &middot; MMXXVI</FooterBrand>
           <FooterAttribution>
+            <a href="mailto:hello@20twentyscore.co.uk">hello@20twentyscore.co.uk</a>
+          </FooterAttribution>
+          <FooterAttribution>
             Icons by{' '}
             <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">
               Smashicons
