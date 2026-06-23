@@ -97,7 +97,6 @@ const SummaryPage: React.FC = () => {
             <PageTitle>Match summary</PageTitle>
             <TitleRule />
           </PageTitleGroup>
-          <ScorecardLabel>SCORECARD</ScorecardLabel>
         </PageHeader>
 
         <ScorePanel>
@@ -231,14 +230,6 @@ const TitleRule = styled.hr`
   border: none;
   border-top: 1px solid #1a1a1a;
   margin: 0;
-`;
-
-const ScorecardLabel = styled.span`
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  color: #767676;
-  white-space: nowrap;
 `;
 
 const ScorePanel = styled.div`
