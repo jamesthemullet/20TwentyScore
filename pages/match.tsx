@@ -2,11 +2,13 @@ import styled from "@emotion/styled";
 import Link from "next/link";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
 import { useGameScore } from "../context/GameScoreContext";
 import { useMostRecentAction } from "../context/MostRecentActionContext";
 import { useOvers } from "../context/OversContext";
+import { useMilestone } from "../utils/useMilestone";
 
 const TOTAL_OVERS = 20;
 const BALLS_PER_OVER = 6;
@@ -21,6 +23,7 @@ const MatchPage: React.FC = () => {
   const { currentOver, currentBallInThisOver, currentExtrasInThisOver } =
     useOvers();
   const { mostRecentAction } = useMostRecentAction();
+  const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
   const formatOvers = (overs: number, isBatting: boolean) => {
     const balls = isBatting
@@ -147,6 +150,7 @@ const MatchPage: React.FC = () => {
 
   return (
     <Layout>
+      {milestone && <MilestoneToast message={milestone.message} accent={milestone.accent} />}
       <Main>
         <PageHeader>
           <PageTitleGroup>
