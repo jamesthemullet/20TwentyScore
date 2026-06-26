@@ -1,7 +1,19 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-export default function Meta() {
+type MetaProps = {
+  title?: string;
+  description?: string;
+};
+
+const DEFAULT_TITLE = '20Twenty Score';
+const DEFAULT_DESCRIPTION =
+  'Score T20 cricket matches ball by ball — track runs, wickets, overs and run rates.';
+
+export default function Meta({
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+}: MetaProps) {
   const router = useRouter();
   const currentUrl = router.asPath ?? '';
   const siteAddress = 'https://20-twenty-score.vercel.app/';
@@ -20,20 +32,14 @@ export default function Meta() {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta property="og:locale" content="en_GB" />
       <meta property="og:type" content="article" />
-      <meta property="og:title" content={'20 Twenty Scorecard'} />
-      <meta
-        property="og:description"
-        content={'20 Twenty Scorecard - keep scores of your 20 Twenty games'}
-      />
-      <meta property="og:site_name" content={'20 Twenty Scorecard'} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:site_name" content="20Twenty Score" />
       <meta property="og:url" content={`${siteAddress}${currentUrl}`} />
       <meta property="og:image" content={defaultImageUrl} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-      <meta
-        name="description"
-        content={'20 Twenty Scorecard - keep scores of your 20 Twenty games'}
-      />
-      <title>20Twenty Scorecard</title>
+      <meta name="description" content={description} />
+      <title>{title}</title>
     </Head>
   );
 }

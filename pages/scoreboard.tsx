@@ -5,7 +5,10 @@ import Layout from "../components/layout/layout";
 
 const ScoreboardPage: React.FC = () => {
   return (
-    <Layout>
+    <Layout
+      title="Scoreboard | 20Twenty Score"
+      description="Full match scoreboard for your T20 cricket game."
+    >
       <Main>
         <EmptyState>
           <p>Scoreboard coming soon. </p>

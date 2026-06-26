@@ -63,7 +63,10 @@ export default function SeasonsPage() {
 
   if (!session) {
     return (
-      <Layout>
+      <Layout
+        title="Seasons | 20Twenty Score"
+        description="View and manage your T20 cricket seasons. Group saved matches into seasons to track performance over time."
+      >
         <PageWrapper>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view your seasons.
@@ -75,7 +78,10 @@ export default function SeasonsPage() {
 
   if (!accountLoading && tier === 'free') {
     return (
-      <Layout>
+      <Layout
+        title="Seasons | 20Twenty Score"
+        description="View and manage your T20 cricket seasons. Group saved matches into seasons to track performance over time."
+      >
         <PageWrapper>
           <PageTitle>Seasons</PageTitle>
           <UpgradeCTA />
@@ -85,7 +91,10 @@ export default function SeasonsPage() {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Seasons | 20Twenty Score"
+      description="View and manage your T20 cricket seasons. Group saved matches into seasons to track performance over time."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitle>Seasons</PageTitle>

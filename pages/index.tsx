@@ -71,7 +71,10 @@ const Index: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      title="20Twenty Score — T20 Cricket Scorer"
+      description="Score T20 cricket matches ball by ball. Track runs, wickets, overs and run rates for your Saturday-afternoon T20s."
+    >
       <Main>
         <Welcome>Welcome to 20Twenty Score</Welcome>
         <HeroSection>

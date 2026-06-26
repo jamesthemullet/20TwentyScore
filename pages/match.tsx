@@ -130,7 +130,10 @@ const MatchPage: React.FC = () => {
 
   if (!hasGame) {
     return (
-      <Layout>
+      <Layout
+        title="Today's Match | 20Twenty Score"
+        description="Live T20 match scoring — track runs, wickets, overs and ball-by-ball progress."
+      >
         <Main>
           <PageHeader>
             <PageTitleGroup>
@@ -149,7 +152,10 @@ const MatchPage: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Today's Match | 20Twenty Score"
+      description="Live T20 match scoring — track runs, wickets, overs and ball-by-ball progress."
+    >
       {milestone && <MilestoneToast message={milestone.message} accent={milestone.accent} />}
       <Main>
         <PageHeader>
@@ -521,17 +527,24 @@ const MatchPage: React.FC = () => {
                       economyVal !== null && Number.isFinite(economyVal)
                         ? economyVal.toFixed(2)
                         : null;
+                    const handleBowlerSelect = !isJustBowled
+                      ? () => settingBowler(currentBowlingTeam.index, player.index)
+                      : undefined;
                     return (
                       <BowlerListItem
                         key={player.name}
                         disabled={isJustBowled}
-                        onClick={
+                        onClick={handleBowlerSelect}
+                        role={!isJustBowled ? 'button' : undefined}
+                        tabIndex={!isJustBowled ? 0 : undefined}
+                        onKeyDown={
                           !isJustBowled
-                            ? () =>
-                                settingBowler(
-                                  currentBowlingTeam.index,
-                                  player.index
-                                )
+                            ? (e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  settingBowler(currentBowlingTeam.index, player.index);
+                                }
+                              }
                             : undefined
                         }
                       >

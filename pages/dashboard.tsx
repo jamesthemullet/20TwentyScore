@@ -131,7 +131,10 @@ export default function DashboardPage() {
 
   if (!session) {
     return (
-      <Layout>
+      <Layout
+        title="Dashboard | 20Twenty Score"
+        description="View and manage your saved T20 cricket matches in the cloud."
+      >
         <PageWrapper>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view your
@@ -143,7 +146,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Dashboard | 20Twenty Score"
+      description="View and manage your saved T20 cricket matches in the cloud."
+    >
       <PageWrapper>
         {checkoutSuccess && (
           <CheckoutBanner>
@@ -157,7 +163,7 @@ export default function DashboardPage() {
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={session.user.image}
-                alt={session.user.name ?? ""}
+                alt={session.user.name ?? "Profile picture"}
                 width={56}
                 height={56}
               />
