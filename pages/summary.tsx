@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import Link from 'next/link';
 import type React from 'react';
 import { useState } from 'react';
@@ -127,7 +128,7 @@ const SummaryPage: React.FC = () => {
           </TeamSide>
 
           <MatchCentre>
-            <BallIcon src="/icons/png/006-cricket-1.png" alt="cricket ball" />
+            <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" width={56} height={56} style={{ objectFit: "contain" }} />
             <Vs>vs</Vs>
             <Format>T20 · 20 Overs</Format>
           </MatchCentre>
@@ -354,11 +355,6 @@ const MatchCentre = styled.div`
   margin: 0 2rem;
 `;
 
-const BallIcon = styled.img`
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-`;
 
 const Vs = styled.p`
   font-family: 'Bodoni Moda', serif;
