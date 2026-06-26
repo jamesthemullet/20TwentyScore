@@ -89,7 +89,10 @@ const SummaryPage: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      title="Match Summary | 20Twenty Score"
+      description="View the final scores, player figures and match result for your T20 game."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitleGroup>

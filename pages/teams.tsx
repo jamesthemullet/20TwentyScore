@@ -35,7 +35,10 @@ const TeamsPage: React.FC = () => {
   const battingTeamIndex = battingTeam?.index ?? 0;
 
   return (
-    <Layout>
+    <Layout
+      title="The Two XIs | 20Twenty Score"
+      description="View batting and bowling figures for both teams in the current T20 match."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitleGroup>

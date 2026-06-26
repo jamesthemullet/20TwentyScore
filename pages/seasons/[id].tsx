@@ -50,7 +50,10 @@ export default function SeasonDetailPage() {
 
   if (!session) {
     return (
-      <Layout>
+      <Layout
+        title="Season | 20Twenty Score"
+        description="View matches and statistics for this T20 cricket season."
+      >
         <PageWrapper>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view this season.
@@ -62,7 +65,10 @@ export default function SeasonDetailPage() {
 
   if (loading) {
     return (
-      <Layout>
+      <Layout
+        title="Season | 20Twenty Score"
+        description="View matches and statistics for this T20 cricket season."
+      >
         <PageWrapper>
           <EmptyState>Loading season…</EmptyState>
         </PageWrapper>
@@ -72,7 +78,10 @@ export default function SeasonDetailPage() {
 
   if (notFound || !season) {
     return (
-      <Layout>
+      <Layout
+        title="Season not found | 20Twenty Score"
+        description="This T20 cricket season could not be found."
+      >
         <PageWrapper>
           <EmptyState>Season not found.</EmptyState>
           <BackLink href="/seasons">← Back to seasons</BackLink>
@@ -82,7 +91,10 @@ export default function SeasonDetailPage() {
   }
 
   return (
-    <Layout>
+    <Layout
+      title={`${season.name} | 20Twenty Score`}
+      description={`View matches and statistics for the ${season.name} T20 cricket season.`}
+    >
       <PageWrapper>
         <BackLink href="/seasons">← Back to seasons</BackLink>
         <PageTitle>{season.name}</PageTitle>

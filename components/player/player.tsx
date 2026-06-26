@@ -72,6 +72,7 @@ export const Player = ({
               value={name}
               onChange={handlePlayerNameChange}
               onKeyDown={handleKeyDown}
+              aria-label="Player name"
             />
             <StyledButton onClick={handleSavePlayerName} aria-label="Save player">
               <Image

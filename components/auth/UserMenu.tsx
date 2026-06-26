@@ -38,7 +38,7 @@ export default function UserMenu() {
       <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen}>
         {session.user?.image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} />
+          <img src={session.user.image} alt={session.user.name ?? 'Profile picture'} width={32} height={32} />
         ) : (
           initials
         )}

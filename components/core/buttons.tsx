@@ -89,7 +89,12 @@ export const SquareButton = styled.button`
   }
 
   &:focus {
-    outline: 0;
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1a1a1a;
+    outline-offset: 3px;
   }
 
   &:disabled {
