@@ -35,7 +35,7 @@
     "stripe": "^22.2.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-env": "^8.0.0",
     "@biomejs/biome": "^2.4.14",
     "@emotion/jest": "^11.11.0",
     "@jest/globals": "^30.2.0",
