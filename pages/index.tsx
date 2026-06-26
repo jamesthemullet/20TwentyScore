@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import type React from "react";
 import { useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { PrimaryButton, SecondaryButton } from "../components/core/buttons";
 import defaultPlayers from "../components/core/players";
 import Layout from "../components/layout/layout";
@@ -17,6 +19,7 @@ if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
 const Index: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const { setGameScore } = useGameScore();
 
@@ -37,6 +40,7 @@ const Index: React.FC = () => {
 
   const newGame = () => {
     localStorage.removeItem("gameData");
+    localStorage.removeItem("cloudSaveId");
     setGameScore([
       {
         players: defaultPlayers(),
@@ -99,6 +103,9 @@ const Index: React.FC = () => {
           <SecondaryButton onClick={() => loadGame()}>
             Resume Saved Match
           </SecondaryButton>
+          {session && (
+            <DashboardLink href="/dashboard">Dashboard</DashboardLink>
+          )}
         </ButtonsContainer>
         {error && <p role="alert">{error}</p>}
       </Main>
@@ -115,6 +122,27 @@ const Main = styled.main`
   margin: 0 auto;
   flex: 1;
   justify-content: center;
+`;
+
+const DashboardLink = styled(Link)`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.5rem;
+  border-radius: 999px;
+  border: 2px solid #333;
+  background-color: transparent;
+  color: #333;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 const ButtonsContainer = styled.div`

@@ -1,14 +1,14 @@
-import styled from '@emotion/styled';
-import Link from 'next/link';
-import type React from 'react';
-import Layout from '../components/layout/layout';
+import styled from "@emotion/styled";
+import Link from "next/link";
+import type React from "react";
+import Layout from "../components/layout/layout";
 
 const ScoreboardPage: React.FC = () => {
   return (
     <Layout>
       <Main>
         <EmptyState>
-          <p>Scoreboard coming soon.</p>
+          <p>Scoreboard coming soon. </p>
           <Link href="/">Go home</Link>
         </EmptyState>
       </Main>

@@ -3,14 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
 import { useGameScore } from "../context/GameScoreContext";
 import { useMostRecentAction } from "../context/MostRecentActionContext";
 import { useOvers } from "../context/OversContext";
+import { useMilestone } from "../utils/useMilestone";
 
 const TOTAL_OVERS = 20;
-const TOTAL_BALLS = TOTAL_OVERS * 6;
+const BALLS_PER_OVER = 6;
+const TOTAL_BALLS = TOTAL_OVERS * BALLS_PER_OVER;
+const MAX_RUN_RATE_DISPLAY = 12;
+const MAX_PROJECTED_SCORE = 300;
 
 const MatchPage: React.FC = () => {
   const [selectBowler, setSelectBowler] = useState(false);
@@ -19,6 +24,7 @@ const MatchPage: React.FC = () => {
   const { currentOver, currentBallInThisOver, currentExtrasInThisOver } =
     useOvers();
   const { mostRecentAction } = useMostRecentAction();
+  const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
   const formatOvers = (overs: number, isBatting: boolean) => {
     const balls = isBatting
@@ -31,7 +37,7 @@ const MatchPage: React.FC = () => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
-    const decimalOvers = overs + balls / 6;
+    const decimalOvers = overs + balls / BALLS_PER_OVER;
     if (decimalOvers === 0) return "0.00";
     return (runs / decimalOvers).toFixed(2);
   };
@@ -169,6 +175,7 @@ const MatchPage: React.FC = () => {
 
   return (
     <Layout>
+      {milestone && <MilestoneToast message={milestone.message} accent={milestone.accent} />}
       <Main>
         <PageHeader>
           <PageTitleGroup>
@@ -399,13 +406,13 @@ const MatchPage: React.FC = () => {
                   </SplitStat>
                   <GreenBarTrack>
                     <GreenBar
-                      fill={Math.min(parseFloat(currentRunRate) / 12, 1)}
+                      fill={Math.min(parseFloat(currentRunRate) / MAX_RUN_RATE_DISPLAY, 1)}
                     />
                   </GreenBarTrack>
                   <RunsSummaryDivider />
                   <RunsSummary>
                     {currentBattingTeam?.totalRuns ?? 0} runs from{" "}
-                    {(currentBattingTeam?.overs ?? 0) * 6 +
+                    {(currentBattingTeam?.overs ?? 0) * BALLS_PER_OVER +
                       (currentBallInThisOver -
                         1 -
                         currentExtrasInThisOver)}{" "}
@@ -418,7 +425,7 @@ const MatchPage: React.FC = () => {
                     const validBallsInOver =
                       currentBallInThisOver - 1 - currentExtrasInThisOver;
                     const ballsUsed =
-                      (currentBattingTeam?.overs ?? 0) * 6 + validBallsInOver;
+                      (currentBattingTeam?.overs ?? 0) * BALLS_PER_OVER + validBallsInOver;
                     const ballsRemaining = TOTAL_BALLS - ballsUsed;
 
                     if (finishedTeam && target !== null) {
@@ -426,12 +433,12 @@ const MatchPage: React.FC = () => {
                         0,
                         target - (currentBattingTeam?.totalRuns ?? 0)
                       );
-                      const oversRemaining = ballsRemaining / 6;
+                      const oversRemaining = ballsRemaining / BALLS_PER_OVER;
                       const requiredRate =
                         oversRemaining > 0
                           ? (runsNeeded / oversRemaining).toFixed(2)
                           : "—";
-                      const rrFill = Math.min(parseFloat(requiredRate) / 12, 1);
+                      const rrFill = Math.min(parseFloat(requiredRate) / MAX_RUN_RATE_DISPLAY, 1);
                       return (
                         <>
                           <BoxMeta>Required rate</BoxMeta>
@@ -454,7 +461,7 @@ const MatchPage: React.FC = () => {
                         <BoxMeta>Projected</BoxMeta>
                         <SplitStat>{projected}</SplitStat>
                         <RedBarTrack>
-                          <RedBar fill={Math.min(projected / 300, 1)} />
+                          <RedBar fill={Math.min(projected / MAX_PROJECTED_SCORE, 1)} />
                         </RedBarTrack>
                         <RunsSummaryDivider />
                         <RunsSummary>At this rate over {TOTAL_OVERS} overs</RunsSummary>

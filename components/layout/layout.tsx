@@ -14,6 +14,10 @@ const Layout: React.FC<Props> = (props) => {
     <SiteContainer>
       <Meta />
       <Header />
+      <BetaBanner role="region" aria-label="Beta notice">
+        This site is new and may have rough edges. For suggestions or issues, email{' '}
+        <a href="mailto:hello@20twentyscore.co.uk">hello@20twentyscore.co.uk</a>
+      </BetaBanner>
       <Content>{props.children}</Content>
       <Footer />
     </SiteContainer>
@@ -24,6 +28,19 @@ const SiteContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+`;
+
+const BetaBanner = styled.div`
+  background-color: #f5a623;
+  color: #333;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+
+  a {
+    color: #333;
+    font-weight: bold;
+  }
 `;
 
 const Content = styled.div`

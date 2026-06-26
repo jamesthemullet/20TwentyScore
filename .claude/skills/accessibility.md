@@ -51,10 +51,38 @@ Output exactly this structure:
 **Next suggestion:** <the next candidate worth tackling in this or another category, with file path>
 ```
 
+### Step 5 — Create a pull request
+
+After reporting, commit the fix and open a PR:
+
+1. Stage the changed file(s): `git add <file>`
+2. Commit with a message following the pattern:
+   `fix(a11y): <short description of fix> (WCAG <criterion>)`
+3. Push the branch: `git push origin HEAD`
+4. Create a PR with `gh pr create` targeting `main`, using this body template:
+
+```
+## Accessibility fix
+
+**Category:** <category>
+**WCAG criterion:** <criterion>
+
+### Problem
+<one sentence>
+
+### Solution
+<what changed>
+
+### Testing
+- [ ] All existing tests pass (`yarn test`)
+- [ ] Verified with keyboard navigation
+- [ ] Verified with a screen reader (or noted as untested)
+```
+
 ## Known accessibility issues in this codebase (seed list)
 
 - `components/core/buttons.tsx` — `SquareButton` has `&:focus { outline: 0 }` which removes the visible focus indicator (WCAG 2.4.7)
-- `components/nav/nav.tsx` — `BurgerButton` is missing `aria-expanded` to communicate open/closed state to assistive technology (WCAG 4.1.2)
+- `components/nav/nav.tsx` — `BurgerButton` now has `aria-expanded` and `aria-controls` ✓ (fixed)
 - `components/header/header.tsx` — site title "20Twenty Score" is rendered as a `<p>` tag; it should be a semantic heading or, if purely decorative branding, a `<span>` — but the heading hierarchy of the page depends on this decision (WCAG 1.3.1)
 - `pages/summary.tsx` — `BallIcon` `<img>` has alt="cricket ball" which is fine, but the `MatchCentre` section has no accessible heading to announce the score comparison section to screen readers
 - `components/nav/nav.tsx` — the mobile dropdown `<ul>` is hidden via CSS (`display: none`) but does not use `aria-hidden` or `hidden` attribute, so its links remain in the accessibility tree when collapsed (WCAG 4.1.2)
