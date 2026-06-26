@@ -18,7 +18,10 @@
       "Bash(yarn lint *)",
       "Skill(update-config)",
       "Bash(Remove-Item *)",
-      "Bash(yarn audit *)"
+      "Bash(yarn audit *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)",
+      "Bash(git fetch *)"
     ]
   }
 }
