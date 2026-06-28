@@ -7,18 +7,20 @@ import Meta from '../meta/meta';
 
 type Props = {
   children: ReactNode;
+  title?: string;
+  description?: string;
 };
 
-const Layout: React.FC<Props> = (props) => {
+const Layout: React.FC<Props> = ({ children, title, description }) => {
   return (
     <SiteContainer>
-      <Meta />
+      <Meta title={title} description={description} />
       <Header />
       <BetaBanner role="region" aria-label="Beta notice">
         This site is new and may have rough edges. For suggestions or issues, email{' '}
         <a href="mailto:hello@20twentyscore.co.uk">hello@20twentyscore.co.uk</a>
       </BetaBanner>
-      <Content>{props.children}</Content>
+      <Content>{children}</Content>
       <Footer />
     </SiteContainer>
   );

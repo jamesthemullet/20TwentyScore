@@ -98,7 +98,10 @@ const SummaryPage: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      title="Match Summary"
+      description="Final scores, run rates, and batting and bowling figures from your T20 cricket match."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitleGroup>

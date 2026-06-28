@@ -63,7 +63,10 @@ export default function SeasonsPage() {
 
   if (!session) {
     return (
-      <Layout>
+      <Layout
+        title="Seasons"
+        description="Create and manage your T20 cricket seasons to group and track your matches."
+      >
         <PageWrapper>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view your seasons.
@@ -75,7 +78,10 @@ export default function SeasonsPage() {
 
   if (!accountLoading && tier === 'free') {
     return (
-      <Layout>
+      <Layout
+        title="Seasons"
+        description="Create and manage your T20 cricket seasons to group and track your matches."
+      >
         <PageWrapper>
           <PageTitle>Seasons</PageTitle>
           <UpgradeCTA />
@@ -85,7 +91,10 @@ export default function SeasonsPage() {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Seasons"
+      description="Create and manage your T20 cricket seasons to group and track your matches."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitle>Seasons</PageTitle>
@@ -98,7 +107,9 @@ export default function SeasonsPage() {
 
         {formOpen && (
           <Form onSubmit={createSeason}>
+            <label htmlFor="season-name" className="visually-hidden">Season name</label>
             <Input
+              id="season-name"
               type="text"
               placeholder="Season name"
               value={newName}

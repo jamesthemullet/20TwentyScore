@@ -35,7 +35,10 @@ const TeamsPage: React.FC = () => {
   const battingTeamIndex = battingTeam?.index ?? 0;
 
   return (
-    <Layout>
+    <Layout
+      title="The Two XIs"
+      description="View squad lists and current player stats for both teams in the match."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitleGroup>
