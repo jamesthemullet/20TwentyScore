@@ -31,6 +31,14 @@ const Index: React.FC = () => {
     }
     try {
       const parsedGameData = JSON.parse(gameData);
+      if (
+        !Array.isArray(parsedGameData) ||
+        parsedGameData.length !== 2 ||
+        !parsedGameData.every((team) => Array.isArray(team?.players))
+      ) {
+        setError("Saved game data is corrupted");
+        return;
+      }
       setGameScore(parsedGameData);
       router.push("/match");
     } catch {
