@@ -9,6 +9,7 @@ import defaultPlayers from "../components/core/players";
 import Layout from "../components/layout/layout";
 import PitchDiagram from "../components/pitch/pitch-diagram";
 import { useGameScore } from "../context/GameScoreContext";
+import type { GameScore } from "../context/GameScoreContext";
 
 if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   import("accented").then(({ accented }) => {
@@ -39,7 +40,7 @@ const Index: React.FC = () => {
         setError("Saved game data is corrupted");
         return;
       }
-      setGameScore(parsedGameData);
+      setGameScore(parsedGameData as GameScore);
       router.push("/match");
     } catch {
       setError("Saved game data is corrupted");
