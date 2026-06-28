@@ -4081,9 +4081,9 @@ json5@^2.2.3:
   integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
 knip@^6.0.0:
-  version "6.20.0"
-  resolved "https://registry.yarnpkg.com/knip/-/knip-6.20.0.tgz#e7b1ac1accf6ef4e556e648479a76012f4ca37a1"
-  integrity sha512-q+HYrS7FOERk32GM7g43IdTG7TurN7+YMLZrNpCxubZPYZyQwliBgd18yH4oYQL7YgGtOxP2fCqess3K2XaK2Q==
+  version "6.22.0"
+  resolved "https://registry.yarnpkg.com/knip/-/knip-6.22.0.tgz#82c24fcda583455d4d11b8e9686ea24dd84776bb"
+  integrity sha512-HTqtalzPNERFiyTj/3pERGss8oBzgxL9ZWiEQ29N9/+cTMZ1guIIEtcczrYpaoE76//XSHO11uuc66O9feY8wA==
   dependencies:
     fdir "^6.5.0"
     formatly "^0.3.0"
