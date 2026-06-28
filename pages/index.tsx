@@ -80,7 +80,9 @@ const Index: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      description="Track your T20 cricket match ball by ball. Start a new game or resume a saved match."
+    >
       <Main>
         <Welcome>Welcome to 20Twenty Score</Welcome>
         <HeroSection>

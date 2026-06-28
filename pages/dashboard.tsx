@@ -131,7 +131,10 @@ export default function DashboardPage() {
 
   if (!session) {
     return (
-      <Layout>
+      <Layout
+        title="Dashboard"
+        description="View and manage your cloud saves and cricket seasons."
+      >
         <PageWrapper>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view your
@@ -143,7 +146,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Dashboard"
+      description="View and manage your cloud saves and cricket seasons."
+    >
       <PageWrapper>
         {checkoutSuccess && (
           <CheckoutBanner>
