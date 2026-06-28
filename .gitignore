@@ -8,7 +8,6 @@ tsbuildinfo
 **/*.tsbuildinfo
 yarn.lock
 coverage/
-tsbuildinfo
-tsbuildinfo*
 .claude/settings.local.json
-.claude/settings.local.json
+test-results/
+playwright-report/

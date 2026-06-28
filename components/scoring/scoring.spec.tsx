@@ -18,7 +18,7 @@ const gameScore = [
         currentNonStriker: false,
         status: 'Not out',
         methodOfWicket: null,
-        oversBowled: 0
+        oversBowled: 0, runsConceded: 0
       },
       {
         name: 'Player 2',
@@ -32,7 +32,7 @@ const gameScore = [
         currentNonStriker: true,
         status: 'Not out',
         methodOfWicket: null,
-        oversBowled: 0
+        oversBowled: 0, runsConceded: 0
       }
     ],
     name: 'Team 1',
@@ -59,7 +59,7 @@ const gameScore = [
         currentNonStriker: false,
         status: 'Not out',
         methodOfWicket: null,
-        oversBowled: 0
+        oversBowled: 0, runsConceded: 0
       }
     ],
     name: 'Team 2',
@@ -540,7 +540,7 @@ describe('Scoring Component', () => {
             currentNonStriker: false,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           },
           {
             name: 'Player 2',
@@ -554,7 +554,7 @@ describe('Scoring Component', () => {
             currentNonStriker: true,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           }
         ],
         name: 'Team 1',
@@ -581,7 +581,7 @@ describe('Scoring Component', () => {
             currentNonStriker: false,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           }
         ],
         name: 'Team 2',
@@ -649,7 +649,7 @@ describe('Scoring Component', () => {
             currentNonStriker: false,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           },
           {
             name: 'Player 2',
@@ -663,7 +663,7 @@ describe('Scoring Component', () => {
             currentNonStriker: true,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           }
         ],
         name: 'Team 1',
@@ -690,7 +690,7 @@ describe('Scoring Component', () => {
             currentNonStriker: false,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           }
         ],
         name: 'Team 2',
@@ -776,7 +776,7 @@ describe('Scoring Component', () => {
             currentNonStriker: true,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           }
         ],
         name: 'Team 1',
@@ -803,7 +803,7 @@ describe('Scoring Component', () => {
             currentNonStriker: false,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           }
         ],
         name: 'Team 2',
@@ -871,7 +871,7 @@ describe('Scoring Component', () => {
             currentBowler: false,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           },
           {
             name: 'Player 2',
@@ -885,7 +885,7 @@ describe('Scoring Component', () => {
             currentBowler: false,
             status: 'Not out',
             methodOfWicket: null,
-            oversBowled: 0
+            oversBowled: 0, runsConceded: 0
           }
         ],
         name: 'Team 1',

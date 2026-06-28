@@ -1,13 +1,21 @@
 import styled from "@emotion/styled";
+import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
-import { PrimaryButton } from "../components/core/buttons";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
 import { useGameScore } from "../context/GameScoreContext";
 import { useMostRecentAction } from "../context/MostRecentActionContext";
 import { useOvers } from "../context/OversContext";
+import { useMilestone } from "../utils/useMilestone";
+
+const TOTAL_OVERS = 20;
+const BALLS_PER_OVER = 6;
+const TOTAL_BALLS = TOTAL_OVERS * BALLS_PER_OVER;
+const MAX_RUN_RATE_DISPLAY = 12;
+const MAX_PROJECTED_SCORE = 300;
 
 const MatchPage: React.FC = () => {
   const [selectBowler, setSelectBowler] = useState(false);
@@ -16,6 +24,7 @@ const MatchPage: React.FC = () => {
   const { currentOver, currentBallInThisOver, currentExtrasInThisOver } =
     useOvers();
   const { mostRecentAction } = useMostRecentAction();
+  const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
   const formatOvers = (overs: number, isBatting: boolean) => {
     const balls = isBatting
@@ -28,7 +37,7 @@ const MatchPage: React.FC = () => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
-    const decimalOvers = overs + balls / 6;
+    const decimalOvers = overs + balls / BALLS_PER_OVER;
     if (decimalOvers === 0) return "0.00";
     return (runs / decimalOvers).toFixed(2);
   };
@@ -43,12 +52,42 @@ const MatchPage: React.FC = () => {
   const finishedTeam = gameScore.find((t) => t.finishedBatting);
   const target = finishedTeam ? finishedTeam.totalRuns + 1 : null;
 
+  const currentRunRate = useMemo(() => {
+    const runs = currentBattingTeam?.totalRuns ?? 0;
+    const overs = currentBattingTeam?.overs ?? 0;
+    const balls = currentBallInThisOver - 1 - currentExtrasInThisOver;
+    const decimalOvers = overs + balls / 6;
+    if (decimalOvers === 0) return "0.00";
+    return (runs / decimalOvers).toFixed(2);
+  }, [currentBattingTeam, currentBallInThisOver, currentExtrasInThisOver]);
+
+  const batterStats = useMemo(() => {
+    const derive = (actions: (string | null)[] | undefined) => ({
+      balls: actions?.filter((a) => a !== null && a !== "Wide").length ?? 0,
+      fours: actions?.filter((a) => a === "4").length ?? 0,
+      sixes: actions?.filter((a) => a === "6").length ?? 0,
+    });
+    const striker = currentBattingTeam?.players.find((p) => p.currentStriker);
+    const nonStriker = currentBattingTeam?.players.find((p) => p.currentNonStriker);
+    return { striker: derive(striker?.allActions), nonStriker: derive(nonStriker?.allActions) };
+  }, [currentBattingTeam]);
+
   const [overBalls, setOverBalls] = useState<string[]>([]);
+  const [lastOverBalls, setLastOverBalls] = useState<string[]>([]);
+  const [lastOverBowlerName, setLastOverBowlerName] = useState<string>("");
   const prevBallRef = useRef(currentBallInThisOver);
   const prevOverRef = useRef(currentOver);
 
   useEffect(() => {
     if (currentOver !== prevOverRef.current) {
+      const { runs, action } = mostRecentAction;
+      let lastLabel: string;
+      if (action === "Wicket") lastLabel = "W";
+      else if (action === "Wide") lastLabel = "Wd";
+      else if (action === "No Ball") lastLabel = "NB";
+      else lastLabel = String(runs);
+      setLastOverBalls([...overBalls, lastLabel]);
+      setLastOverBowlerName(currentBowler?.name ?? "");
       setOverBalls([]);
       prevOverRef.current = currentOver;
       prevBallRef.current = currentBallInThisOver;
@@ -68,12 +107,16 @@ const MatchPage: React.FC = () => {
       }
       prevBallRef.current = currentBallInThisOver;
     }
-  }, [currentBallInThisOver, currentOver, mostRecentAction]);
+  }, [currentBallInThisOver, currentOver, mostRecentAction, overBalls, currentBowler?.name]);
 
-  const thisOverRuns = overBalls.reduce((sum, b) => {
-    const n = parseInt(b, 10);
-    return sum + (Number.isNaN(n) ? 0 : n);
-  }, 0);
+  const thisOverRuns = useMemo(
+    () =>
+      overBalls.reduce((sum, b) => {
+        const n = parseInt(b, 10);
+        return sum + (Number.isNaN(n) ? 0 : n);
+      }, 0),
+    [overBalls]
+  );
 
   const formatBallDescription = (label: string | undefined) => {
     if (!label) return "—";
@@ -132,6 +175,7 @@ const MatchPage: React.FC = () => {
 
   return (
     <Layout>
+      {milestone && <MilestoneToast message={milestone.message} accent={milestone.accent} />}
       <Main>
         <PageHeader>
           <PageTitleGroup>
@@ -165,7 +209,9 @@ const MatchPage: React.FC = () => {
             </TeamOvers>
           </TeamSide>
           <MatchCentre>
-            <BallIcon src="/icons/png/006-cricket-1.png" alt="cricket ball" />
+            <BallIconWrapper>
+              <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" fill style={{ objectFit: "contain" }} />
+            </BallIconWrapper>
             <Vs>vs</Vs>
             <Format>T20 — 20 Overs</Format>
           </MatchCentre>
@@ -208,11 +254,7 @@ const MatchPage: React.FC = () => {
             <LiveStat>
               <LiveLabel>Run rate</LiveLabel>
               <LiveValue>
-                {formatRunRate(
-                  currentBattingTeam?.totalRuns ?? 0,
-                  currentBattingTeam?.overs ?? 0,
-                  true
-                )}
+                {currentRunRate}
               </LiveValue>
             </LiveStat>
             {target !== null && (
@@ -223,25 +265,12 @@ const MatchPage: React.FC = () => {
             )}
           </LiveStats>
         </LiveBar>
-        {showBowlerSelect ? (
-          <BowlerSelect>
-            <h2>Select the bowler for over {currentOver}.</h2>
-            {team1?.players.map((player) => (
-              <PrimaryButton
-                key={player.name}
-                onClick={() => settingBowler(team1.index, player.index)}
-              >
-                {player.name}
-              </PrimaryButton>
-            ))}
-          </BowlerSelect>
-        ) : (
-          <Board>
-            <BoxStack>
+        <Board>
+          <BoxStack>
               <ThisOverBox>
                 <BoxHeader>
                   <BoxTitle>This over</BoxTitle>
-                  <BoxMeta>Over {currentOver} of 20</BoxMeta>
+                  <BoxMeta>Over {currentOver} of {TOTAL_OVERS}</BoxMeta>
                 </BoxHeader>
                 <BallRow>
                   {(() => {
@@ -310,6 +339,7 @@ const MatchPage: React.FC = () => {
                         player: currentBattingTeam?.players.find(
                           (p) => p.currentStriker
                         ),
+                        stats: batterStats.striker,
                         label: "★ On strike",
                         strike: true,
                       },
@@ -317,11 +347,12 @@ const MatchPage: React.FC = () => {
                         player: currentBattingTeam?.players.find(
                           (p) => p.currentNonStriker
                         ),
+                        stats: batterStats.nonStriker,
                         label: "Non-striker",
                         strike: false,
                       },
                     ] as const
-                  ).map(({ player, label, strike }) => (
+                  ).map(({ player, stats, label, strike }) => (
                     <CreasePlayer key={label}>
                       <CreaseRole strike={strike}>{label}</CreaseRole>
                       <CreasePlayerName>{player?.name ?? "—"}</CreasePlayerName>
@@ -332,24 +363,15 @@ const MatchPage: React.FC = () => {
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>B</StatLabel>
-                          <StatValue>
-                            {player?.allActions.filter((a) => a !== "Wide")
-                              .length ?? 0}
-                          </StatValue>
+                          <StatValue>{stats.balls}</StatValue>
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>4s</StatLabel>
-                          <StatValue>
-                            {player?.allActions.filter((a) => a === "4")
-                              .length ?? 0}
-                          </StatValue>
+                          <StatValue>{stats.fours}</StatValue>
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>6s</StatLabel>
-                          <StatValue>
-                            {player?.allActions.filter((a) => a === "6")
-                              .length ?? 0}
-                          </StatValue>
+                          <StatValue>{stats.sixes}</StatValue>
                         </BatterStat>
                       </BatterStats>
                     </CreasePlayer>
@@ -380,30 +402,17 @@ const MatchPage: React.FC = () => {
                 <BottomBox>
                   <BoxMeta>Run rate</BoxMeta>
                   <SplitStat>
-                    {formatRunRate(
-                      currentBattingTeam?.totalRuns ?? 0,
-                      currentBattingTeam?.overs ?? 0,
-                      true
-                    )}
+                    {currentRunRate}
                   </SplitStat>
                   <GreenBarTrack>
                     <GreenBar
-                      fill={Math.min(
-                        parseFloat(
-                          formatRunRate(
-                            currentBattingTeam?.totalRuns ?? 0,
-                            currentBattingTeam?.overs ?? 0,
-                            true
-                          )
-                        ) / 12,
-                        1
-                      )}
+                      fill={Math.min(parseFloat(currentRunRate) / MAX_RUN_RATE_DISPLAY, 1)}
                     />
                   </GreenBarTrack>
                   <RunsSummaryDivider />
                   <RunsSummary>
                     {currentBattingTeam?.totalRuns ?? 0} runs from{" "}
-                    {(currentBattingTeam?.overs ?? 0) * 6 +
+                    {(currentBattingTeam?.overs ?? 0) * BALLS_PER_OVER +
                       (currentBallInThisOver -
                         1 -
                         currentExtrasInThisOver)}{" "}
@@ -412,30 +421,24 @@ const MatchPage: React.FC = () => {
                 </BottomBox>
                 <BottomBox>
                   {(() => {
-                    const rr = parseFloat(
-                      formatRunRate(
-                        currentBattingTeam?.totalRuns ?? 0,
-                        currentBattingTeam?.overs ?? 0,
-                        true
-                      )
-                    );
+                    const rr = parseFloat(currentRunRate);
                     const validBallsInOver =
                       currentBallInThisOver - 1 - currentExtrasInThisOver;
                     const ballsUsed =
-                      (currentBattingTeam?.overs ?? 0) * 6 + validBallsInOver;
-                    const ballsRemaining = 120 - ballsUsed;
+                      (currentBattingTeam?.overs ?? 0) * BALLS_PER_OVER + validBallsInOver;
+                    const ballsRemaining = TOTAL_BALLS - ballsUsed;
 
                     if (finishedTeam && target !== null) {
                       const runsNeeded = Math.max(
                         0,
                         target - (currentBattingTeam?.totalRuns ?? 0)
                       );
-                      const oversRemaining = ballsRemaining / 6;
+                      const oversRemaining = ballsRemaining / BALLS_PER_OVER;
                       const requiredRate =
                         oversRemaining > 0
                           ? (runsNeeded / oversRemaining).toFixed(2)
                           : "—";
-                      const rrFill = Math.min(parseFloat(requiredRate) / 12, 1);
+                      const rrFill = Math.min(parseFloat(requiredRate) / MAX_RUN_RATE_DISPLAY, 1);
                       return (
                         <>
                           <BoxMeta>Required rate</BoxMeta>
@@ -452,25 +455,113 @@ const MatchPage: React.FC = () => {
                       );
                     }
 
-                    const projected = Math.round(rr * 20);
+                    const projected = Math.round(rr * TOTAL_OVERS);
                     return (
                       <>
                         <BoxMeta>Projected</BoxMeta>
                         <SplitStat>{projected}</SplitStat>
                         <RedBarTrack>
-                          <RedBar fill={Math.min(projected / 300, 1)} />
+                          <RedBar fill={Math.min(projected / MAX_PROJECTED_SCORE, 1)} />
                         </RedBarTrack>
                         <RunsSummaryDivider />
-                        <RunsSummary>At this rate over 20 overs</RunsSummary>
+                        <RunsSummary>At this rate over {TOTAL_OVERS} overs</RunsSummary>
                       </>
                     );
                   })()}
                 </BottomBox>
               </BottomBoxRow>
             </BoxStack>
-            <Scoring setSelectBowler={handleSelectBowler} />
+            {showBowlerSelect ? (
+              <BowlerSelectPanel>
+                {lastOverBowlerName && (
+                  <EndOfOverSection>
+                    <EndOfOverHeader>
+                      <EndOfOverItalic>End of over</EndOfOverItalic>
+                      <EndOfOverRule />
+                      <EndOfOverMeta>Over {currentOver - 1} complete</EndOfOverMeta>
+                    </EndOfOverHeader>
+                    <LastOverRow>
+                      <LastOverLabel>Last over from</LastOverLabel>
+                      <LastOverBowler>{lastOverBowlerName}</LastOverBowler>
+                    </LastOverRow>
+                    <BallRow>
+                      {lastOverBalls.map((label, i) => {
+                        const isExtra = label === "Wd" || label === "NB";
+                        return (
+                          <BallCircle
+                            // biome-ignore lint/suspicious/noArrayIndexKey: ball position in over is stable
+                            key={i}
+                            filled={!isExtra}
+                            extra={isExtra}
+                            wicket={label === "W"}
+                            four={label === "4"}
+                            six={label === "6"}
+                          >
+                            {label}
+                          </BallCircle>
+                        );
+                      })}
+                    </BallRow>
+                  </EndOfOverSection>
+                )}
+                <BowlerPickHeader>
+                  <BowlerPickNumber>II.</BowlerPickNumber>
+                  <BowlerPickTitle>Captain — who&apos;s bowling next?</BowlerPickTitle>
+                </BowlerPickHeader>
+                <BowlerList>
+                  {currentBowlingTeam?.players.map((player, idx) => {
+                    const isJustBowled = player.currentBowler;
+                    const hasBowled = player.oversBowled > 0;
+                    const runsConceded = player.runsConceded ?? 0;
+                    const economyVal = hasBowled ? runsConceded / player.oversBowled : null;
+                    const economy =
+                      economyVal !== null && Number.isFinite(economyVal)
+                        ? economyVal.toFixed(2)
+                        : null;
+                    return (
+                      <BowlerListItem
+                        key={player.name}
+                        disabled={isJustBowled}
+                        onClick={
+                          !isJustBowled
+                            ? () =>
+                                settingBowler(
+                                  currentBowlingTeam.index,
+                                  player.index
+                                )
+                            : undefined
+                        }
+                      >
+                        <BowlerItemNumber disabled={isJustBowled}>
+                          {idx + 1}
+                        </BowlerItemNumber>
+                        <BowlerItemInfo>
+                          <BowlerItemName disabled={isJustBowled}>
+                            {player.name}
+                          </BowlerItemName>
+                          <BowlerItemStatus disabled={isJustBowled}>
+                            {isJustBowled
+                              ? "Just bowled — needs a rest"
+                              : hasBowled
+                              ? `${player.oversBowled} ov · ${runsConceded} runs · ${player.wicketsTaken} wkt${player.wicketsTaken !== 1 ? "s" : ""}`
+                              : "Fresh"}
+                          </BowlerItemStatus>
+                        </BowlerItemInfo>
+                        {!isJustBowled && (
+                          <BowlerItemEcon>
+                            {economy ? `${economy} econ` : "— econ"}
+                          </BowlerItemEcon>
+                        )}
+                        {!isJustBowled && <BowlerItemArrow>→</BowlerItemArrow>}
+                      </BowlerListItem>
+                    );
+                  })}
+                </BowlerList>
+              </BowlerSelectPanel>
+            ) : (
+              <Scoring setSelectBowler={handleSelectBowler} />
+            )}
           </Board>
-        )}
       </Main>
     </Layout>
   );
@@ -755,12 +846,176 @@ const Board = styled.div`
   }
 `;
 
-const BowlerSelect = styled.div`
+const BowlerSelectPanel = styled.div`
   display: flex;
   flex-direction: column;
+  border: 2px solid #1a1a1a;
+  border-radius: 12px;
+  flex: 10;
+  order: 2;
+  padding: 20px;
+  overflow: hidden;
+`;
+
+const EndOfOverSection = styled.div`
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+`;
+
+const EndOfOverHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+`;
+
+const EndOfOverItalic = styled.p`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin: 0;
+  white-space: nowrap;
+`;
+
+const EndOfOverRule = styled.hr`
+  flex: 1;
+  border: none;
+  border-top: 1px solid #1a1a1a;
+  margin: 0;
+`;
+
+const EndOfOverMeta = styled.span`
+  font-family: "Inter", sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #767676;
+  white-space: nowrap;
+`;
+
+const LastOverRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+`;
+
+const LastOverLabel = styled.span`
+  font-family: "Inter", sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #767676;
+`;
+
+const LastOverBowler = styled.span`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #1a1a1a;
+`;
+
+const BowlerPickHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const BowlerPickNumber = styled.span`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  color: #b83320;
+  font-size: 1.25rem;
+`;
+
+const BowlerPickTitle = styled.p`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin: 0;
+`;
+
+const BowlerList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  flex: 1;
+`;
+
+const BowlerListItem = styled.div<{ disabled?: boolean }>`
+  display: flex;
   align-items: center;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 0.75rem;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #eee;
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
+  opacity: ${({ disabled }) => (disabled ? 0.45 : 1)};
+  transition: background-color 0.15s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: ${({ disabled }) => (disabled ? "transparent" : "#f7f5f0")};
+    border-radius: 8px;
+  }
+`;
+
+const BowlerItemNumber = styled.div<{ disabled?: boolean }>`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid ${({ disabled }) => (disabled ? "#aaa" : "#1a1a1a")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: ${({ disabled }) => (disabled ? "#aaa" : "#1a1a1a")};
+  flex-shrink: 0;
+`;
+
+const BowlerItemInfo = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+`;
+
+const BowlerItemName = styled.p<{ disabled?: boolean }>`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: ${({ disabled }) => (disabled ? "#aaa" : "#1a1a1a")};
+  margin: 0;
+`;
+
+const BowlerItemStatus = styled.span<{ disabled?: boolean }>`
+  font-family: "Inter", sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: ${({ disabled }) => (disabled ? "#aaa" : "#767676")};
+`;
+
+const BowlerItemEcon = styled.span`
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  color: #767676;
+  flex-shrink: 0;
+`;
+
+const BowlerItemArrow = styled.span`
+  font-size: 1rem;
+  color: #b83320;
+  flex-shrink: 0;
 `;
 
 const PageHeader = styled.div`
@@ -972,10 +1227,10 @@ const MatchCentre = styled.div`
   }
 `;
 
-const BallIcon = styled.img`
+const BallIconWrapper = styled.span`
+  position: relative;
   width: 48px;
   height: 48px;
-  object-fit: contain;
 
   @media (max-width: 768px) {
     width: 28px;

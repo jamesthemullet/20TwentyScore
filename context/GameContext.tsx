@@ -17,6 +17,7 @@ export type TeamPlayer = {
   status: string;
   methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null;
   oversBowled: number;
+  runsConceded: number;
 };
 
 export type Team = {
@@ -46,7 +47,7 @@ export type GameScoreContextType = {
     endOfInnings: boolean,
     methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null
   ) => void;
-  setBowlingPlayerScore: (action: string | null, endOfOver: boolean) => void;
+  setBowlingPlayerScore: (action: string | null, runs: number, endOfOver: boolean) => void;
   swapBatsmen: () => void;
   setCurrentBowler: (teamIndex: number, playerIndex: number) => void;
   undo: () => void;
@@ -97,7 +98,7 @@ type GameAction =
         methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null;
       };
     }
-  | { type: 'SET_BOWLING_PLAYER_SCORE'; payload: { action: string | null; endOfOver: boolean } }
+  | { type: 'SET_BOWLING_PLAYER_SCORE'; payload: { action: string | null; runs: number; endOfOver: boolean } }
   | { type: 'SWAP_BATSMEN' }
   | { type: 'SET_CURRENT_BOWLER'; payload: { teamIndex: number; playerIndex: number } }
   | { type: 'SET_EXTRAS_IN_OVER'; payload: number | 'reset' }
@@ -143,6 +144,11 @@ const initialState: GameState = {
 };
 
 // ── Reducer helpers ───────────────────────────────────────────────────────────
+
+function toTeamIndex(n: number): 0 | 1 {
+  if (n !== 0 && n !== 1) throw new Error(`Expected team index 0 or 1, got ${n}`);
+  return n;
+}
 
 function swapStrikers(players: TeamPlayer[]): TeamPlayer[] {
   return players.map((p) => ({
@@ -203,6 +209,7 @@ function applyBattingUpdate(
 function applyBowlingUpdate(
   players: TeamPlayer[],
   action: string | null,
+  runs: number,
   endOfOver: boolean
 ): TeamPlayer[] {
   const currentBowler = players.find((p) => p.currentBowler);
@@ -214,7 +221,8 @@ function applyBowlingUpdate(
           ...p,
           wicketsTaken: p.wicketsTaken + (action === 'Wicket' ? 1 : 0),
           allActions: [...p.allActions, action || ''],
-          oversBowled: endOfOver ? p.oversBowled + 1 : p.oversBowled
+          oversBowled: endOfOver ? p.oversBowled + 1 : p.oversBowled,
+          runsConceded: (p.runsConceded ?? 0) + runs
         }
       : p
   );
@@ -237,9 +245,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         !teams[battingTeamIndex].players.find((p) => p.currentStriker)
       ) {
         const updatedTeams = [...teams] as GameScore;
-        updatedTeams[battingTeamIndex as 0 | 1] = {
-          ...updatedTeams[battingTeamIndex as 0 | 1],
-          players: updatedTeams[battingTeamIndex as 0 | 1].players.map((p, i) =>
+        const bi = toTeamIndex(battingTeamIndex);
+        updatedTeams[bi] = {
+          ...updatedTeams[bi],
+          players: updatedTeams[bi].players.map((p, i) =>
             i === 0 ? { ...p, currentStriker: true } : p
           )
         };
@@ -271,7 +280,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
 
       const teams = [...state.teams] as GameScore;
-      const team = teams[teamIndex as 0 | 1];
+      const ti = toTeamIndex(teamIndex);
+      const team = teams[ti];
 
       const updatedPlayers = applyBattingUpdate(
         team.players,
@@ -284,7 +294,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
       if (updatedPlayers === null) return state;
 
-      teams[teamIndex as 0 | 1] = {
+      teams[ti] = {
         ...team,
         players: updatedPlayers,
         totalRuns: team.totalRuns + runs,
@@ -295,7 +305,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
 
       if (endOfInnings) {
-        const otherIndex = (teamIndex === 0 ? 1 : 0) as 0 | 1;
+        const otherIndex = teamIndex === 0 ? 1 : 0;
         teams[otherIndex] = {
           ...teams[otherIndex],
           currentBattingTeam: !teams[otherIndex].currentBattingTeam
@@ -306,7 +316,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case 'SET_BOWLING_PLAYER_SCORE': {
-      const { action: ballAction, endOfOver } = action.payload;
+      const { action: ballAction, runs, endOfOver } = action.payload;
       const bowlingTeamIndex = state.teams.findIndex((t) => t.currentBowlingTeam);
 
       if (bowlingTeamIndex === -1) return state;
@@ -314,7 +324,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const teams = [...state.teams] as GameScore;
       teams[bowlingTeamIndex] = {
         ...teams[bowlingTeamIndex],
-        players: applyBowlingUpdate(teams[bowlingTeamIndex].players, ballAction, endOfOver),
+        players: applyBowlingUpdate(teams[bowlingTeamIndex].players, ballAction, runs, endOfOver),
         totalWicketsTaken:
           teams[bowlingTeamIndex].totalWicketsTaken + (ballAction === 'Wicket' ? 1 : 0)
       };
@@ -340,9 +350,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       if (teamIndex < 0 || teamIndex > 1) return state;
 
       const teams = [...state.teams] as GameScore;
-      teams[teamIndex as 0 | 1] = {
-        ...teams[teamIndex as 0 | 1],
-        players: teams[teamIndex as 0 | 1].players.map((p) => ({
+      const ti = toTeamIndex(teamIndex);
+      teams[ti] = {
+        ...teams[ti],
+        players: teams[ti].players.map((p) => ({
           ...p,
           currentBowler: p.index === playerIndex
         }))
@@ -407,7 +418,7 @@ export const OversContext = createContext<OversContextType>({
   resetOvers: () => undefined
 });
 
-export const MostRecentActionContext = createContext<MostRecentActionContextType>({
+const MostRecentActionContext = createContext<MostRecentActionContextType>({
   mostRecentAction: { runs: 0, action: null },
   setMostRecentAction: () => undefined
 });
@@ -436,8 +447,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           type: 'SET_BATTING_PLAYER_SCORE',
           payload: { teamIndex, playerIndex, runs, action, endOfOver, endOfInnings, methodOfWicket }
         }),
-      setBowlingPlayerScore: (action, endOfOver) =>
-        dispatch({ type: 'SET_BOWLING_PLAYER_SCORE', payload: { action, endOfOver } }),
+      setBowlingPlayerScore: (action, runs, endOfOver) =>
+        dispatch({ type: 'SET_BOWLING_PLAYER_SCORE', payload: { action, runs, endOfOver } }),
       swapBatsmen: () => dispatch({ type: 'SWAP_BATSMEN' }),
       setCurrentBowler: (teamIndex, playerIndex) =>
         dispatch({ type: 'SET_CURRENT_BOWLER', payload: { teamIndex, playerIndex } }),

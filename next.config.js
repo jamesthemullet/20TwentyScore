@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-undef
 module.exports = {
+  serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg'],
   compiler: {
     // Enables the styled-components SWC transform
     styledComponents: true

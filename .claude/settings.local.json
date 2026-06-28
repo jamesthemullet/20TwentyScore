@@ -14,7 +14,14 @@
       "Bash(tree -L 2 -d /c/Users/james/Documents/GitHub/20TwentyScore --ignore 'node_modules|.next|.git|coverage')",
       "Bash(awk '{print $NF}')",
       "Bash(gh label *)",
-      "Bash(yarn biome *)"
+      "Bash(yarn biome *)",
+      "Bash(yarn lint *)",
+      "Skill(update-config)",
+      "Bash(Remove-Item *)",
+      "Bash(yarn audit *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)",
+      "Bash(git fetch *)"
     ]
   }
 }

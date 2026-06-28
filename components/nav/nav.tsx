@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import UserMenu from '../auth/UserMenu';
 
 export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -15,12 +16,12 @@ export default function Nav() {
 
   return (
     <StyledNav aria-label="Navigation Bar">
-      <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu">
+      <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu" aria-expanded={isDropdownOpen} aria-controls="mobile-nav-menu">
         <span></span>
         <span></span>
         <span></span>
       </BurgerButton>
-      <ul className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
+      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
         <li>
           <Link href="/" className={isActive('/') ? 'active' : ''}>
             Home
@@ -42,6 +43,7 @@ export default function Nav() {
           </Link>
         </li>
       </ul>
+      <UserMenu />
     </StyledNav>
   );
 }

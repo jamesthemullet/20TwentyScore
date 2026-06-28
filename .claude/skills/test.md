@@ -29,7 +29,7 @@ Files that have source code but no spec file are automatic coverage gaps. Known 
 ### Step 3 — decide: unit or e2e improvement this round
 
 **Unit/integration** (prefer when coverage < 80% on a file, or a file has no spec at all):
-- Write or extend a `*.spec.tsx` next to the source file
+- Write or extend a `*.spec.tsx` next to the source file — **exception**: specs for `pages/` must go in `__tests__/pages/` (not inside `pages/`) to avoid Next.js treating them as routes
 - Use React Testing Library; import contexts directly from `context/GameContext.tsx`
 - Follow patterns in `components/scoring/scoring.spec.tsx` for context wiring
 
@@ -56,6 +56,12 @@ Run `yarn test --coverage 2>&1 | tail -60` again and confirm coverage moved in t
 - Which file(s) you improved
 - Old vs new line/branch coverage for those files
 - What the next logical improvement would be
+
+### Step 6 — create a PR
+After verifying coverage improved, commit and open a pull request:
+1. Stage only the new/modified spec file(s): `git add <spec files>`
+2. Commit with a message describing what was tested (e.g. `test: add coverage for pages/index.tsx`)
+3. Push the branch and create a PR using `gh pr create` targeting `main`, with a summary of which files were covered and the coverage change
 
 ## Coverage targets (per file)
 | Priority | Target |
