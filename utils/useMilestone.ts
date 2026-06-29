@@ -22,7 +22,7 @@ export function useMilestone(
   const currentBattingTeam = gameScore.find((t) => t.currentBattingTeam);
   const striker = currentBattingTeam?.players.find((p) => p.currentStriker);
 
-  const triggerMilestone = (milestone: MilestoneEvent) => {
+  const triggerMilestone = (milestone: MilestoneEvent): void => {
     if (timerRef.current) clearTimeout(timerRef.current);
     setEvent(milestone);
     timerRef.current = setTimeout(() => setEvent(null), MILESTONE_DURATION_MS);

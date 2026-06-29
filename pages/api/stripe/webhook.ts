@@ -14,7 +14,9 @@ async function getRawBody(req: NextApiRequest): Promise<Buffer> {
   });
 }
 
-function getPlan(priceId: string): string {
+type Plan = 'monthly' | 'annual' | 'unknown';
+
+function getPlan(priceId: string): Plan {
   if (priceId === process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID) return 'monthly';
   if (priceId === process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID) return 'annual';
   return 'unknown';
