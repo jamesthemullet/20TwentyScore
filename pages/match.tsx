@@ -26,14 +26,14 @@ const MatchPage: React.FC = () => {
   const { mostRecentAction } = useMostRecentAction();
   const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
-  const formatOvers = (overs: number, isBatting: boolean) => {
+  const formatOvers = (overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
     return `${overs}.${balls}`;
   };
 
-  const formatRunRate = (runs: number, overs: number, isBatting: boolean) => {
+  const formatRunRate = (runs: number, overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
@@ -118,7 +118,7 @@ const MatchPage: React.FC = () => {
     [overBalls]
   );
 
-  const formatBallDescription = (label: string | undefined) => {
+  const formatBallDescription = (label: string | undefined): string => {
     if (!label) return "—";
     if (label === "4") return "FOUR";
     if (label === "6") return "SIX";
@@ -129,7 +129,7 @@ const MatchPage: React.FC = () => {
     return `${label} RUN${label === "1" ? "" : "S"}`;
   };
 
-  const formatLatestAction = () => {
+  const formatLatestAction = (): string => {
     const { runs, action } = mostRecentAction;
     if (action === null || action === "Next Ball")
       return `${runs} run${runs !== 1 ? "s" : ""}`;
@@ -144,7 +144,7 @@ const MatchPage: React.FC = () => {
 
   const showBowlerSelect = selectBowler || (hasGame && !currentBowlerSet);
 
-  const settingBowler = (teamIndex: number, playerIndex: number) => {
+  const settingBowler = (teamIndex: number, playerIndex: number): void => {
     setCurrentBowler(teamIndex, playerIndex);
     setSelectBowler(false);
   };

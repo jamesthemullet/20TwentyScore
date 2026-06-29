@@ -8,11 +8,11 @@ export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (): void => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const isActive = (href: string) => router.pathname === href;
+  const isActive = (href: string): boolean => router.pathname === href;
 
   return (
     <StyledNav aria-label="Navigation Bar">
