@@ -1,6 +1,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styled from '@emotion/styled';
 
 export default function UserMenu() {
@@ -37,8 +38,7 @@ export default function UserMenu() {
     <Wrapper ref={ref}>
       <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen}>
         {session.user?.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} />
+          <Image src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} style={{ objectFit: 'cover' }} />
         ) : (
           initials
         )}
