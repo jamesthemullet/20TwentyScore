@@ -10,7 +10,7 @@ const SITE_NAME = '20Twenty Score';
 const SITE_URL = 'https://20-twenty-score.vercel.app';
 const DEFAULT_DESCRIPTION =
   'Track your T20 cricket match ball by ball — runs, wickets, extras, and live run rates.';
-const OG_IMAGE = '/images/temp-seo-image.jpg';
+const OG_IMAGE = `${SITE_URL}/images/temp-seo-image.jpg`;
 
 export default function Meta({ title, description }: Props) {
   const router = useRouter();
@@ -44,7 +44,6 @@ export default function Meta({ title, description }: Props) {
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={pageDescription} />
       <meta name="twitter:image" content={OG_IMAGE} />
-      <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
     </Head>
   );
 }

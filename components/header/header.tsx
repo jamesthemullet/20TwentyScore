@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import type React from 'react';
 import Nav from '../nav/nav';
 
 const Header: React.FC = () => {
   return (
     <StyledHeader>
-      <StyledHeading>20Twenty Score</StyledHeading>
+      <StyledHeading href="/" aria-label="20Twenty Score — go to home">20Twenty Score</StyledHeading>
       <Nav />
     </StyledHeader>
   );
@@ -24,7 +25,7 @@ const StyledHeader = styled.header`
   }
 `;
 
-const StyledHeading = styled.p`
+const StyledHeading = styled(Link)`
   color: #fff;
   margin: 0;
   padding: 1rem 0.5rem;

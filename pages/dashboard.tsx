@@ -153,7 +153,7 @@ export default function DashboardPage() {
     >
       <PageWrapper>
         {checkoutSuccess && (
-          <CheckoutBanner>
+          <CheckoutBanner role="status">
             Welcome to Premium! Your subscription is now active.
           </CheckoutBanner>
         )}

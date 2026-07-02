@@ -34,7 +34,10 @@ export default function SaveCard({ id, title, createdAt, completed, seasonId, se
       </Card>
       {seasons && onSeasonChange && (
         <SeasonRow onClick={(e) => e.stopPropagation()}>
-          <SeasonSelect value={seasonId ?? ''} onChange={handleSeasonChange}>
+          <label htmlFor={`season-select-${id}`} className="visually-hidden">
+            Assign to season
+          </label>
+          <SeasonSelect id={`season-select-${id}`} value={seasonId ?? ''} onChange={handleSeasonChange}>
             <option value="">No season</option>
             {seasons.map((s) => (
               <option key={s.id} value={s.id}>{s.name}</option>
