@@ -118,9 +118,11 @@ const SeasonSelect = styled.select`
   background: transparent;
   cursor: pointer;
   width: 100%;
-  outline: none;
 
   &:focus {
     color: #1a1a1a;
+    outline: 2px solid #005fcc;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 `;
