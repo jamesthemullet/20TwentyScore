@@ -177,6 +177,9 @@ const SummaryPage: React.FC = () => {
             <CopyButton onClick={copyScorecard} data-analytics="copy-scorecard">
               {copied ? 'Copied ✓' : 'Copy scorecard'}
             </CopyButton>
+            <span role="status" className="visually-hidden">
+              {copied ? 'Scorecard copied to clipboard' : ''}
+            </span>
           </CopySection>
 
           {session && (
@@ -193,7 +196,7 @@ const SummaryPage: React.FC = () => {
               {saveError && saveError !== 'FREE_LIMIT_REACHED' && (
                 <SaveMessage error role="alert">{saveError}</SaveMessage>
               )}
-              {saveSuccess && <SaveMessage>Saved to cloud!</SaveMessage>}
+              {saveSuccess && <SaveMessage role="status">Saved to cloud!</SaveMessage>}
             </CloudSaveSection>
           )}
         </ResultPanel>

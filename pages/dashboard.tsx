@@ -208,7 +208,7 @@ export default function DashboardPage() {
         {saveError && saveError !== "FREE_LIMIT_REACHED" && (
           <ErrorMessage role="alert">{saveError}</ErrorMessage>
         )}
-        {saveSuccess && <SuccessMessage>Game saved!</SuccessMessage>}
+        {saveSuccess && <SuccessMessage role="status">Game saved!</SuccessMessage>}
 
         {savesLoading ? (
           <EmptyState>Loading saves…</EmptyState>
