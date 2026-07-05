@@ -35,7 +35,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
   const currentBowlingTeam = gameScore.find((team) => team.currentBowlingTeam);
 
   if (!currentBattingTeam || !currentBowlingTeam) {
-    return;
+    return null;
   }
 
   const currentBattingTeamIndex = currentBattingTeam.index;

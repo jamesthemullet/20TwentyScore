@@ -46,14 +46,14 @@ const SummaryPage: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const copyScorecard = async () => {
-    await navigator.clipboard.writeText(formatShareText(gameScore as [Team, Team]));
+    await navigator.clipboard.writeText(formatShareText(gameScore));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const battingTeam = gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0];
   const bowlingTeam = gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1];
-  const result = determineResult(gameScore as [Team, Team]);
+  const result = determineResult(gameScore);
 
   const saveToCloud = async () => {
     setSaving(true);
