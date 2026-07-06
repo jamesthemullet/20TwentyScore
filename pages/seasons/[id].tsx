@@ -66,27 +66,27 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
     return { redirect: { destination: '/seasons', permanent: false } };
   }
 
-  const { id } = context.params as { id: string };
+  const id = context.params?.id;
+  if (typeof id !== 'string') return { notFound: true };
   const season = await prisma.season.findUnique({ where: { id } });
   if (!season || season.userId !== userId) {
     return { notFound: true };
   }
 
-  type DbSave = { id: string; title: string | null; createdAt: Date; completed: boolean; seasonId: string | null };
-  const saves = (await prisma.gameSave.findMany({
+  const saves = await prisma.gameSave.findMany({
     where: { seasonId: id },
     select: { id: true, title: true, createdAt: true, completed: true, seasonId: true },
     orderBy: { createdAt: 'desc' },
-  })) as DbSave[];
+  });
 
   return {
     props: {
       season: {
-        id: season.id as string,
-        name: season.name as string,
-        description: season.description as string | null,
-        createdAt: (season.createdAt as Date).toISOString(),
-        updatedAt: (season.updatedAt as Date).toISOString(),
+        id: season.id,
+        name: season.name,
+        description: season.description,
+        createdAt: season.createdAt.toISOString(),
+        updatedAt: season.updatedAt.toISOString(),
         gameSaves: saves.map((s) => ({
           id: s.id,
           title: s.title,
