@@ -21,7 +21,7 @@ export default function Nav() {
         <span></span>
         <span></span>
       </BurgerButton>
-      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''} aria-label="Main navigation">
+      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''}>
         <li>
           <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined}>
             Home
