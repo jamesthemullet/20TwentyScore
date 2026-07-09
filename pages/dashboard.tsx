@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import Layout from "../components/layout/layout";
 import SaveCard from "../components/saves/SaveCard";
@@ -152,7 +153,7 @@ export default function DashboardPage() {
     >
       <PageWrapper>
         {checkoutSuccess && (
-          <CheckoutBanner>
+          <CheckoutBanner role="status">
             Welcome to Premium! Your subscription is now active.
           </CheckoutBanner>
         )}
@@ -160,12 +161,12 @@ export default function DashboardPage() {
         <AccountSection>
           <Avatar>
             {session.user?.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={session.user.image}
                 alt={session.user.name ?? ""}
                 width={56}
                 height={56}
+                style={{ objectFit: "cover" }}
               />
             ) : (
               <AvatarInitials>
@@ -207,7 +208,7 @@ export default function DashboardPage() {
         {saveError && saveError !== "FREE_LIMIT_REACHED" && (
           <ErrorMessage role="alert">{saveError}</ErrorMessage>
         )}
-        {saveSuccess && <SuccessMessage>Game saved!</SuccessMessage>}
+        {saveSuccess && <SuccessMessage role="status">Game saved!</SuccessMessage>}
 
         {savesLoading ? (
           <EmptyState>Loading saves…</EmptyState>

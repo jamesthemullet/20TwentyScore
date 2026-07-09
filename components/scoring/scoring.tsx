@@ -35,7 +35,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
   const currentBowlingTeam = gameScore.find((team) => team.currentBowlingTeam);
 
   if (!currentBattingTeam || !currentBowlingTeam) {
-    return;
+    return null;
   }
 
   const currentBattingTeamIndex = currentBattingTeam.index;
@@ -192,31 +192,32 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
           ↩ Undo
         </UndoButton>
       </ScoringFooter>
-      {awaitingMethodOfWicket && (
-        <>
-          {' '}
-          <ScoringHeader>
-            <ScoringTitle>Method of wicket</ScoringTitle>
-          </ScoringHeader>
-          <ScoringGrid>
-            <SquareButton
-              disabled={endOfGame()}
-              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'LBW')}>
-              LBW
-            </SquareButton>
-            <SquareButton
-              disabled={endOfGame()}
-              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Caught')}>
-              Caught
-            </SquareButton>
-            <SquareButton
-              disabled={endOfGame()}
-              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Run Out')}>
-              Run Out
-            </SquareButton>
-          </ScoringGrid>
-        </>
-      )}
+      <MethodOfWicketRegion aria-live="polite">
+        {awaitingMethodOfWicket && (
+          <>
+            <ScoringHeader>
+              <ScoringTitle>Method of wicket</ScoringTitle>
+            </ScoringHeader>
+            <ScoringGrid>
+              <SquareButton
+                disabled={endOfGame()}
+                onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'LBW')}>
+                LBW
+              </SquareButton>
+              <SquareButton
+                disabled={endOfGame()}
+                onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Caught')}>
+                Caught
+              </SquareButton>
+              <SquareButton
+                disabled={endOfGame()}
+                onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Run Out')}>
+                Run Out
+              </SquareButton>
+            </ScoringGrid>
+          </>
+        )}
+      </MethodOfWicketRegion>
     </HomeContainer>
   );
 };
@@ -326,6 +327,10 @@ const ButtonSub = styled.span`
   text-transform: uppercase;
   color: inherit;
   margin-top: 0.2rem;
+`;
+
+const MethodOfWicketRegion = styled.div`
+  width: 100%;
 `;
 
 const ScoringGrid = styled.div`
