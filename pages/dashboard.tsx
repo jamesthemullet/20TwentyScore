@@ -39,7 +39,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!session) return;
     fetch("/api/saves")
-      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
+      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json() as Promise<SaveSummary[]>; })
       .then((data) => setSaves(data))
       .catch(() => setSavesError(true))
       .finally(() => setSavesLoading(false));

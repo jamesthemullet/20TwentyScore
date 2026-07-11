@@ -31,7 +31,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
   const fetchAccount = useCallback(() => {
     setIsLoading(true);
     fetch('/api/account')
-      .then((r) => r.json())
+      .then((r) => r.json() as Promise<{ user: User | null; tier: Tier; subscription: Subscription | null }>)
       .then((data) => {
         setUser(data.user);
         setTier(data.tier);
