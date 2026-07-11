@@ -47,13 +47,13 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     (player) => player.currentNonStriker
   );
 
-  const endOfOver = () => currentBallInThisOver === BALLS_PER_OVER + currentExtrasInThisOver;
+  const endOfOver = (): boolean => currentBallInThisOver === BALLS_PER_OVER + currentExtrasInThisOver;
 
-  const endOfInnings = (action: string | null) =>
+  const endOfInnings = (action: string | null): boolean =>
     (currentBattingTeam.totalWicketsConceded === WICKETS_FOR_ALL_OUT && action === 'Wicket') ||
     (currentBattingTeam.overs === FINAL_OVER_INDEX && endOfOver());
 
-  const endOfGame = () => gameScore.every((team) => team.finishedBatting === true);
+  const endOfGame = (): boolean => gameScore.every((team) => team.finishedBatting === true);
 
   const handleScoreClick = (
     playerIndex: number | undefined,
