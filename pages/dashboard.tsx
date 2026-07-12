@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -33,8 +33,9 @@ export default function DashboardPage() {
   const [savesError, setSavesError] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
-  const hasLocalGame =
-    typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
+  const [hasLocalGame] = useState<boolean>(
+    () => typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"))
+  );
 
   useEffect(() => {
     if (!session) return;
@@ -68,7 +69,7 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const assignSeason = async (saveId: string, seasonId: string | null) => {
+  const assignSeason = useCallback(async (saveId: string, seasonId: string | null) => {
     const res = await fetch(`/api/saves/${saveId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -79,9 +80,9 @@ export default function DashboardPage() {
         prev.map((s) => (s.id === saveId ? { ...s, seasonId } : s))
       );
     }
-  };
+  }, []);
 
-  const saveToCloud = async () => {
+  const saveToCloud = useCallback(async () => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
@@ -128,7 +129,7 @@ export default function DashboardPage() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [gameScore]);
 
   if (!session) {
     return (

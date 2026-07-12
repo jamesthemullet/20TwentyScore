@@ -1,5 +1,5 @@
 import type React from 'react';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import type { Subscription, User } from '@prisma/client';
 
@@ -51,8 +51,13 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
     fetchAccount();
   }, [status, fetchAccount]);
 
+  const value = useMemo(
+    () => ({ user, tier, subscription, isLoading, refresh: fetchAccount }),
+    [user, tier, subscription, isLoading, fetchAccount]
+  );
+
   return (
-    <AccountContext.Provider value={{ user, tier, subscription, isLoading, refresh: fetchAccount }}>
+    <AccountContext.Provider value={value}>
       {children}
     </AccountContext.Provider>
   );
