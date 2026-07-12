@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import type React from 'react';
+import { useMemo } from 'react';
 import Layout from '../components/layout/layout';
 import { useGameScore } from '../context/GameScoreContext';
 import type { Team, TeamPlayer } from '../context/GameContext';
@@ -31,7 +32,7 @@ function getStatusBadge(player: TeamPlayer, teamIndex: number, battingTeamIndex:
 const TeamsPage: React.FC = () => {
   const { gameScore } = useGameScore();
 
-  const battingTeam = gameScore.find((t) => t.currentBattingTeam);
+  const battingTeam = useMemo(() => gameScore.find((t) => t.currentBattingTeam), [gameScore]);
   const battingTeamIndex = battingTeam?.index ?? 0;
 
   return (

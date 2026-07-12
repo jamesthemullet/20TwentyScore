@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
@@ -149,9 +149,9 @@ const MatchPage: React.FC = () => {
     setSelectBowler(false);
   };
 
-  const handleSelectBowler = () => {
+  const handleSelectBowler = useCallback(() => {
     setSelectBowler(true);
-  };
+  }, []);
 
   if (!hasGame) {
     return (
