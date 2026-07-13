@@ -19,6 +19,15 @@ export default function UserMenu() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setIsOpen(false);
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   if (status === 'loading') return null;
 
   if (!session) {
@@ -36,7 +45,7 @@ export default function UserMenu() {
 
   return (
     <Wrapper ref={ref}>
-      <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="true">
+      <Avatar type="button" onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
         {session.user?.image ? (
           <Image src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} style={{ objectFit: 'cover' }} />
         ) : (
@@ -44,14 +53,14 @@ export default function UserMenu() {
         )}
       </Avatar>
       {isOpen && (
-        <Dropdown role="menu">
-          <DropdownLink href="/dashboard" role="menuitem" onClick={() => setIsOpen(false)}>
+        <Dropdown>
+          <DropdownLink href="/dashboard" onClick={() => setIsOpen(false)}>
             Dashboard
           </DropdownLink>
-          <DropdownLink href="/account" role="menuitem" onClick={() => setIsOpen(false)}>
+          <DropdownLink href="/account" onClick={() => setIsOpen(false)}>
             Account
           </DropdownLink>
-          <DropdownButton role="menuitem" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
+          <DropdownButton type="button" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
         </Dropdown>
       )}
     </Wrapper>

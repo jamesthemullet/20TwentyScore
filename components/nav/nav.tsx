@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserMenu from '../auth/UserMenu';
 
 export default function Nav() {
@@ -14,14 +14,23 @@ export default function Nav() {
 
   const isActive = (href: string) => router.pathname === href;
 
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setIsDropdownOpen(false);
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isDropdownOpen]);
+
   return (
     <StyledNav aria-label="Navigation Bar">
-      <BurgerButton onClick={toggleDropdown} aria-label="Navigation Menu" aria-expanded={isDropdownOpen} aria-controls="mobile-nav-menu">
+      <BurgerButton type="button" onClick={toggleDropdown} aria-label="Navigation Menu" aria-expanded={isDropdownOpen} aria-controls="mobile-nav-menu">
         <span></span>
         <span></span>
         <span></span>
       </BurgerButton>
-      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''} aria-label="Main navigation">
+      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''}>
         <li>
           <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined}>
             Home
