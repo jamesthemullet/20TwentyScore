@@ -152,6 +152,7 @@ export default function DashboardPage() {
       description="View and manage your cloud saves and cricket seasons."
     >
       <PageWrapper>
+        <PageTitle>Dashboard</PageTitle>
         {checkoutSuccess && (
           <CheckoutBanner role="status">
             Welcome to Premium! Your subscription is now active.
@@ -193,7 +194,7 @@ export default function DashboardPage() {
         <SectionHeader>
           <SectionTitle>Cloud saves</SectionTitle>
           {hasLocalGame && (
-            <SaveButton onClick={saveToCloud} disabled={saving}>
+            <SaveButton type="button" onClick={saveToCloud} disabled={saving}>
               {saving ? "Saving…" : "Save current game to cloud"}
             </SaveButton>
           )}
@@ -337,6 +338,15 @@ const SectionTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1a1a1a;
+`;
+
+const PageTitle = styled.h1`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 2rem;
   font-weight: 400;
   margin: 0;
   color: #1a1a1a;

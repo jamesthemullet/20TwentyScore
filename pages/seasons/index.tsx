@@ -77,7 +77,7 @@ export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps
       <PageWrapper>
         <PageHeader>
           <PageTitle>Seasons</PageTitle>
-          <NewButton onClick={() => setFormOpen((v) => !v)}>
+          <NewButton type="button" onClick={() => setFormOpen((v) => !v)}>
             {formOpen ? 'Cancel' : 'New season'}
           </NewButton>
         </PageHeader>
@@ -209,10 +209,14 @@ const Input = styled.input`
   border: 2px solid #1a1a1a;
   border-radius: 8px;
   flex: 1;
-  outline: none;
 
   &:focus {
     border-color: #555;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #005fcc;
+    outline-offset: 2px;
   }
 `;
 

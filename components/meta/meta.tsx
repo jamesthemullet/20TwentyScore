@@ -14,7 +14,7 @@ const OG_IMAGE = `${SITE_URL}/images/temp-seo-image.jpg`;
 
 export default function Meta({ title, description }: Props) {
   const router = useRouter();
-  const currentUrl = router.asPath ?? '/';
+  const currentUrl = (router.asPath ?? '/').split('?')[0];
   const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
   const pageDescription = description ?? DEFAULT_DESCRIPTION;
   const canonicalUrl = `${SITE_URL}${currentUrl}`;
