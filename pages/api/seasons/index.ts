@@ -3,6 +3,16 @@ import { requireSession } from '../../../lib/apiAuth';
 import { getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
 
+type SeasonWithCount = {
+  id: string;
+  userId: string;
+  name: string;
+  description: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  _count: { gameSaves: number };
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await requireSession(req, res);
   if (!session) return;
@@ -21,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       orderBy: { createdAt: 'desc' },
     });
     return res.json(
-      seasons.map(({ _count, ...s }) => ({ ...s, gameCount: _count.gameSaves }))
+      (seasons as SeasonWithCount[]).map(({ _count, ...s }) => ({ ...s, gameCount: _count.gameSaves }))
     );
   }
 
