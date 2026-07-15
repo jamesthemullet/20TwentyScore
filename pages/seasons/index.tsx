@@ -2,12 +2,12 @@ import styled from '@emotion/styled';
 import type { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { useState } from 'react';
-import { authOptions } from '../../lib/authOptions';
-import { prisma } from '../../lib/prisma';
-import { getUserTier } from '../../lib/subscription';
 import Layout from '../../components/layout/layout';
 import SeasonCard from '../../components/seasons/SeasonCard';
 import UpgradeCTA from '../../components/premium/UpgradeCTA';
+import { authOptions } from '../../lib/authOptions';
+import { getUserTier } from '../../lib/subscription';
+import { prisma } from '../../lib/prisma';
 
 type SeasonSummary = {
   id: string;
@@ -18,14 +18,13 @@ type SeasonSummary = {
   updatedAt: string;
 };
 
-type Props =
-  | { tier: 'free' }
-  | { tier: 'premium'; initialSeasons: SeasonSummary[] };
+type PageProps = {
+  tier: 'free' | 'premium';
+  seasons: SeasonSummary[];
+};
 
-export default function SeasonsPage(props: Props) {
-  const [seasons, setSeasons] = useState<SeasonSummary[]>(
-    props.tier === 'premium' ? props.initialSeasons : []
-  );
+export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps) {
+  const [seasons, setSeasons] = useState<SeasonSummary[]>(initialSeasons);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
@@ -56,9 +55,12 @@ export default function SeasonsPage(props: Props) {
     }
   };
 
-  if (props.tier === 'free') {
+  if (tier === 'free') {
     return (
-      <Layout>
+      <Layout
+        title="Seasons"
+        description="Create and manage your T20 cricket seasons to group and track your matches."
+      >
         <PageWrapper>
           <PageTitle>Seasons</PageTitle>
           <UpgradeCTA />
@@ -68,7 +70,10 @@ export default function SeasonsPage(props: Props) {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Seasons"
+      description="Create and manage your T20 cricket seasons to group and track your matches."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitle>Seasons</PageTitle>
@@ -81,7 +86,9 @@ export default function SeasonsPage(props: Props) {
 
         {formOpen && (
           <Form onSubmit={createSeason}>
+            <label htmlFor="season-name" className="visually-hidden">Season name</label>
             <Input
+              id="season-name"
               type="text"
               placeholder="Season name"
               value={newName}
@@ -108,7 +115,7 @@ export default function SeasonsPage(props: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return { redirect: { destination: '/auth/signin', permanent: false } };
@@ -118,25 +125,26 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   const tier = await getUserTier(userId);
 
   if (tier === 'free') {
-    return { props: { tier: 'free' } };
+    return { props: { tier: 'free', seasons: [] } };
   }
 
-  const seasons = await prisma.season.findMany({
+  type DbSeasonRow = { _count: { gameSaves: number }; id: string; name: string; description: string | null; createdAt: Date; updatedAt: Date };
+  const seasons = (await prisma.season.findMany({
     where: { userId },
     include: { _count: { select: { gameSaves: true } } },
     orderBy: { createdAt: 'desc' },
-  });
+  })) as DbSeasonRow[];
 
   return {
     props: {
       tier: 'premium',
-      initialSeasons: seasons.map(({ _count, ...s }) => ({
-        id: s.id,
-        name: s.name,
-        description: s.description,
+      seasons: seasons.map(({ _count, id, name, description, createdAt, updatedAt }) => ({
+        id,
+        name,
+        description,
         gameCount: _count.gameSaves,
-        createdAt: s.createdAt.toISOString(),
-        updatedAt: s.updatedAt.toISOString(),
+        createdAt: createdAt.toISOString(),
+        updatedAt: updatedAt.toISOString(),
       })),
     },
   };

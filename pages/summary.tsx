@@ -46,14 +46,14 @@ const SummaryPage: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const copyScorecard = async () => {
-    await navigator.clipboard.writeText(formatShareText(gameScore as [Team, Team]));
+    await navigator.clipboard.writeText(formatShareText(gameScore));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const battingTeam = gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0];
   const bowlingTeam = gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1];
-  const result = determineResult(gameScore as [Team, Team]);
+  const result = determineResult(gameScore);
 
   const saveToCloud = async () => {
     setSaving(true);
@@ -98,7 +98,10 @@ const SummaryPage: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      title="Match Summary"
+      description="Final scores, run rates, and batting and bowling figures from your T20 cricket match."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitleGroup>
@@ -174,6 +177,9 @@ const SummaryPage: React.FC = () => {
             <CopyButton onClick={copyScorecard} data-analytics="copy-scorecard">
               {copied ? 'Copied ✓' : 'Copy scorecard'}
             </CopyButton>
+            <span role="status" className="visually-hidden">
+              {copied ? 'Scorecard copied to clipboard' : ''}
+            </span>
           </CopySection>
 
           {session && (
@@ -190,7 +196,7 @@ const SummaryPage: React.FC = () => {
               {saveError && saveError !== 'FREE_LIMIT_REACHED' && (
                 <SaveMessage error role="alert">{saveError}</SaveMessage>
               )}
-              {saveSuccess && <SaveMessage>Saved to cloud!</SaveMessage>}
+              {saveSuccess && <SaveMessage role="status">Saved to cloud!</SaveMessage>}
             </CloudSaveSection>
           )}
         </ResultPanel>

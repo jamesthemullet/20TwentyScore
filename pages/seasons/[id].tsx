@@ -2,11 +2,11 @@ import styled from '@emotion/styled';
 import type { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import Link from 'next/link';
-import { authOptions } from '../../lib/authOptions';
-import { prisma } from '../../lib/prisma';
-import { getUserTier } from '../../lib/subscription';
 import Layout from '../../components/layout/layout';
 import SaveCard from '../../components/saves/SaveCard';
+import { authOptions } from '../../lib/authOptions';
+import { getUserTier } from '../../lib/subscription';
+import { prisma } from '../../lib/prisma';
 
 type SaveSummary = {
   id: string;
@@ -25,13 +25,16 @@ type SeasonDetail = {
   gameSaves: SaveSummary[];
 };
 
-type Props = {
+type PageProps = {
   season: SeasonDetail;
 };
 
-export default function SeasonDetailPage({ season }: Props) {
+export default function SeasonDetailPage({ season }: PageProps) {
   return (
-    <Layout>
+    <Layout
+      title={season.name}
+      description={`Season: ${season.name} — match saves on 20Twenty Score.`}
+    >
       <PageWrapper>
         <BackLink href="/seasons">← Back to seasons</BackLink>
         <PageTitle>{season.name}</PageTitle>
@@ -51,7 +54,7 @@ export default function SeasonDetailPage({ season }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return { redirect: { destination: '/auth/signin', permanent: false } };
@@ -60,38 +63,36 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   const userId = session.user.id;
   const tier = await getUserTier(userId);
   if (tier === 'free') {
-    return { redirect: { destination: '/dashboard', permanent: false } };
+    return { redirect: { destination: '/seasons', permanent: false } };
   }
 
-  const id = context.params?.id as string;
-  const season = await prisma.season.findUnique({
-    where: { id },
-    include: {
-      gameSaves: {
-        select: { id: true, title: true, createdAt: true, completed: true, seasonId: true },
-        orderBy: { createdAt: 'desc' },
-      },
-    },
-  });
-
+  const { id } = context.params as { id: string };
+  const season = await prisma.season.findUnique({ where: { id } });
   if (!season || season.userId !== userId) {
     return { notFound: true };
   }
 
+  type DbSave = { id: string; title: string | null; createdAt: Date; completed: boolean; seasonId: string | null };
+  const saves = (await prisma.gameSave.findMany({
+    where: { seasonId: id },
+    select: { id: true, title: true, createdAt: true, completed: true, seasonId: true },
+    orderBy: { createdAt: 'desc' },
+  })) as DbSave[];
+
   return {
     props: {
       season: {
-        id: season.id,
-        name: season.name,
-        description: season.description,
-        createdAt: season.createdAt.toISOString(),
-        updatedAt: season.updatedAt.toISOString(),
-        gameSaves: season.gameSaves.map((s) => ({
+        id: season.id as string,
+        name: season.name as string,
+        description: season.description as string | null,
+        createdAt: (season.createdAt as Date).toISOString(),
+        updatedAt: (season.updatedAt as Date).toISOString(),
+        gameSaves: saves.map((s) => ({
           id: s.id,
           title: s.title,
-          createdAt: s.createdAt.toISOString(),
           completed: s.completed,
           seasonId: s.seasonId,
+          createdAt: s.createdAt.toISOString(),
         })),
       },
     },

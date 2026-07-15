@@ -21,7 +21,12 @@
       "Bash(yarn audit *)",
       "Bash(git merge *)",
       "Bash(git stash *)",
-      "Bash(git fetch *)"
+      "Bash(git fetch *)",
+      "Bash(gh issue *)",
+      "Bash(npx tsc *)",
+      "Bash(npx jest *)",
+      "Bash(git pull *)",
+      "Bash(git rm *)"
     ]
   }
 }

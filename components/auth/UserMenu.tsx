@@ -1,6 +1,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styled from '@emotion/styled';
 
 export default function UserMenu() {
@@ -35,23 +36,22 @@ export default function UserMenu() {
 
   return (
     <Wrapper ref={ref}>
-      <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen}>
+      <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="true">
         {session.user?.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} />
+          <Image src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} style={{ objectFit: 'cover' }} />
         ) : (
           initials
         )}
       </Avatar>
       {isOpen && (
-        <Dropdown>
-          <DropdownLink href="/dashboard" onClick={() => setIsOpen(false)}>
+        <Dropdown role="menu">
+          <DropdownLink href="/dashboard" role="menuitem" onClick={() => setIsOpen(false)}>
             Dashboard
           </DropdownLink>
-          <DropdownLink href="/account" onClick={() => setIsOpen(false)}>
+          <DropdownLink href="/account" role="menuitem" onClick={() => setIsOpen(false)}>
             Account
           </DropdownLink>
-          <DropdownButton onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
+          <DropdownButton role="menuitem" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
         </Dropdown>
       )}
     </Wrapper>

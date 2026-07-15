@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const MilestoneToast: React.FC<Props> = ({ message, accent }) => (
-  <Toast accent={accent}>
+  <Toast accent={accent} role="status" aria-live="polite" aria-atomic="true">
     <Message>{message}</Message>
   </Toast>
 );

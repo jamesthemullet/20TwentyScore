@@ -82,7 +82,7 @@ describe('Player', () => {
       oversBowled: 0, runsConceded: 0
     };
     render(<Player {...props} />);
-    expect(screen.getByTitle('Current striker')).toBeVisible();
+    expect(screen.getByAltText('Current striker')).toBeVisible();
   });
 
   it('should not show current striker icon if player is not batting', () => {
@@ -112,6 +112,6 @@ describe('Player', () => {
       oversBowled: 0, runsConceded: 0
     };
     render(<Player {...props} />);
-    expect(screen.getByTitle('Current non striker')).toBeVisible();
+    expect(screen.getByAltText('Current non-striker')).toBeVisible();
   });
 });
