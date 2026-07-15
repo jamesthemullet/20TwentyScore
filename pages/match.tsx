@@ -12,6 +12,7 @@ import { useOvers } from "../context/OversContext";
 import { useMilestone } from "../utils/useMilestone";
 
 const TOTAL_OVERS = 20;
+const CONTAIN_STYLE = { objectFit: 'contain' as const };
 const BALLS_PER_OVER = 6;
 const TOTAL_BALLS = TOTAL_OVERS * BALLS_PER_OVER;
 const MAX_RUN_RATE_DISPLAY = 12;
@@ -216,7 +217,7 @@ const MatchPage: React.FC = () => {
           </TeamSide>
           <MatchCentre>
             <BallIconWrapper>
-              <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" fill style={{ objectFit: "contain" }} />
+              <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" fill style={CONTAIN_STYLE} />
             </BallIconWrapper>
             <Vs>vs</Vs>
             <Format>T20 — 20 Overs</Format>

@@ -11,6 +11,7 @@ import { generateSaveTitle } from '../lib/gameSaveTitle';
 import { formatShareText } from '../utils/formatShareText';
 
 const TEAM_COLORS = ['#b83320', '#2d7a4f'] as const;
+const CONTAIN_STYLE = { objectFit: 'contain' as const };
 
 function getInitials(name: string): string {
   return name
@@ -131,7 +132,7 @@ const SummaryPage: React.FC = () => {
           </TeamSide>
 
           <MatchCentre>
-            <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" width={56} height={56} style={{ objectFit: "contain" }} />
+            <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" width={56} height={56} style={CONTAIN_STYLE} />
             <Vs>vs</Vs>
             <Format>T20 · 20 Overs</Format>
           </MatchCentre>

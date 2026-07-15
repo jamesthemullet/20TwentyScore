@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import type { GameSave } from '@prisma/client';
 
 type Season = { id: string; name: string };
 
-type SaveCardProps = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed'> & {
+type SaveCardProps = {
+  id: string;
+  title: string | null;
+  createdAt: Date | string;
+  completed: boolean;
   seasonId?: string | null;
   seasons?: Season[];
   onSeasonChange?: (saveId: string, seasonId: string | null) => void;
