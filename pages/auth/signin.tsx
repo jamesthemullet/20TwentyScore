@@ -1,9 +1,9 @@
 import { signIn } from 'next-auth/react';
-import Head from 'next/head';
 import styled from '@emotion/styled';
 import { PrimaryButton } from '../../components/core/buttons';
+import Meta from '../../components/meta/meta';
 
-const Container = styled.div`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,10 +37,10 @@ const ButtonGroup = styled.div`
 export default function SignIn() {
   return (
     <Container>
-      <Head>
-        <title>Sign In | 20Twenty Score</title>
-        <meta name="description" content="Sign in to 20Twenty Score to save your T20 cricket matches and seasons to the cloud." />
-      </Head>
+      <Meta
+        title="Sign In"
+        description="Sign in to 20Twenty Score to save your games and manage your cricket seasons."
+      />
       <Title>20Twenty Score</Title>
       <Subtitle>Sign in to save your games and seasons</Subtitle>
       <ButtonGroup>

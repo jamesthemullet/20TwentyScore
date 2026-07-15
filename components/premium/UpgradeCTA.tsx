@@ -4,7 +4,8 @@ import styled from '@emotion/styled';
 export default function UpgradeCTA() {
   const [loading, setLoading] = useState<'monthly' | 'annual' | null>(null);
 
-  const subscribe = async (priceId: string, plan: 'monthly' | 'annual') => {
+  const subscribe = async (priceId: string | undefined, plan: 'monthly' | 'annual') => {
+    if (!priceId) return;
     setLoading(plan);
     try {
       const res = await fetch('/api/stripe/create-checkout-session', {
@@ -28,7 +29,7 @@ export default function UpgradeCTA() {
           <PriceAmount>£2.99</PriceAmount>
           <PricePeriod>per month</PricePeriod>
           <SubscribeButton
-            onClick={() => subscribe(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!, 'monthly')}
+            onClick={() => subscribe(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID, 'monthly')}
             disabled={loading !== null}
           >
             {loading === 'monthly' ? 'Redirecting…' : 'Subscribe monthly'}
@@ -42,7 +43,7 @@ export default function UpgradeCTA() {
           <PricePeriod>per year</PricePeriod>
           <AnnualBadge>Save 72%</AnnualBadge>
           <SubscribeButton
-            onClick={() => subscribe(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!, 'annual')}
+            onClick={() => subscribe(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID, 'annual')}
             disabled={loading !== null}
           >
             {loading === 'annual' ? 'Redirecting…' : 'Subscribe annually'}

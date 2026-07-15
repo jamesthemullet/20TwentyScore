@@ -9,6 +9,7 @@ import defaultPlayers from "../components/core/players";
 import Layout from "../components/layout/layout";
 import PitchDiagram from "../components/pitch/pitch-diagram";
 import { useGameScore } from "../context/GameScoreContext";
+import type { GameScore } from "../context/GameScoreContext";
 
 if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   import("accented").then(({ accented }) => {
@@ -31,7 +32,15 @@ const Index: React.FC = () => {
     }
     try {
       const parsedGameData = JSON.parse(gameData);
-      setGameScore(parsedGameData);
+      if (
+        !Array.isArray(parsedGameData) ||
+        parsedGameData.length !== 2 ||
+        !parsedGameData.every((team) => Array.isArray(team?.players))
+      ) {
+        setError("Saved game data is corrupted");
+        return;
+      }
+      setGameScore(parsedGameData as GameScore);
       router.push("/match");
     } catch {
       setError("Saved game data is corrupted");
@@ -72,8 +81,7 @@ const Index: React.FC = () => {
 
   return (
     <Layout
-      title="20Twenty Score — T20 Cricket Scorer"
-      description="Score T20 cricket matches ball by ball. Track runs, wickets, overs and run rates for your Saturday-afternoon T20s."
+      description="Track your T20 cricket match ball by ball. Start a new game or resume a saved match."
     >
       <Main>
         <Welcome>Welcome to 20Twenty Score</Welcome>

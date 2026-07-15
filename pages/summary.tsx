@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import Link from 'next/link';
 import type React from 'react';
 import { useState } from 'react';
@@ -7,6 +8,7 @@ import Layout from '../components/layout/layout';
 import { useGameScore } from '../context/GameScoreContext';
 import type { Team } from '../context/GameContext';
 import { generateSaveTitle } from '../lib/gameSaveTitle';
+import { formatShareText } from '../utils/formatShareText';
 
 const TEAM_COLORS = ['#b83320', '#2d7a4f'] as const;
 
@@ -41,10 +43,17 @@ const SummaryPage: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const copyScorecard = async () => {
+    await navigator.clipboard.writeText(formatShareText(gameScore));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const battingTeam = gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0];
   const bowlingTeam = gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1];
-  const result = determineResult(gameScore as [Team, Team]);
+  const result = determineResult(gameScore);
 
   const saveToCloud = async () => {
     setSaving(true);
@@ -90,8 +99,8 @@ const SummaryPage: React.FC = () => {
 
   return (
     <Layout
-      title="Match Summary | 20Twenty Score"
-      description="View the final scores, player figures and match result for your T20 game."
+      title="Match Summary"
+      description="Final scores, run rates, and batting and bowling figures from your T20 cricket match."
     >
       <PageWrapper>
         <PageHeader>
@@ -122,7 +131,7 @@ const SummaryPage: React.FC = () => {
           </TeamSide>
 
           <MatchCentre>
-            <BallIcon src="/icons/png/006-cricket-1.png" alt="cricket ball" />
+            <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" width={56} height={56} style={{ objectFit: "contain" }} />
             <Vs>vs</Vs>
             <Format>T20 · 20 Overs</Format>
           </MatchCentre>
@@ -164,6 +173,15 @@ const SummaryPage: React.FC = () => {
             </>
           )}
 
+          <CopySection>
+            <CopyButton onClick={copyScorecard} data-analytics="copy-scorecard">
+              {copied ? 'Copied ✓' : 'Copy scorecard'}
+            </CopyButton>
+            <span role="status" className="visually-hidden">
+              {copied ? 'Scorecard copied to clipboard' : ''}
+            </span>
+          </CopySection>
+
           {session && (
             <CloudSaveSection>
               <CloudSaveButton onClick={saveToCloud} disabled={saving}>
@@ -178,7 +196,7 @@ const SummaryPage: React.FC = () => {
               {saveError && saveError !== 'FREE_LIMIT_REACHED' && (
                 <SaveMessage error role="alert">{saveError}</SaveMessage>
               )}
-              {saveSuccess && <SaveMessage>Saved to cloud!</SaveMessage>}
+              {saveSuccess && <SaveMessage role="status">Saved to cloud!</SaveMessage>}
             </CloudSaveSection>
           )}
         </ResultPanel>
@@ -343,11 +361,6 @@ const MatchCentre = styled.div`
   margin: 0 2rem;
 `;
 
-const BallIcon = styled.img`
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-`;
 
 const Vs = styled.p`
   font-family: 'Bodoni Moda', serif;
@@ -439,6 +452,31 @@ const SaveMessage = styled.p<{ error?: boolean }>`
   color: ${({ error }) => (error ? '#b83320' : '#2d7a4f')};
   font-weight: 700;
   margin: 0;
+`;
+
+const CopySection = styled.div`
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e0e0e0;
+`;
+
+const CopyButton = styled.button`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 2px solid #333;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 const ResultBody = styled.p`

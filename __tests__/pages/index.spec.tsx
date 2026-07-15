@@ -78,7 +78,7 @@ describe('Index page', () => {
     });
 
     it('loads saved game, calls setGameScore, and navigates to /match', () => {
-      const savedGame = [{ name: 'Team A' }, { name: 'Team B' }];
+      const savedGame = [{ name: 'Team A', players: [] }, { name: 'Team B', players: [] }];
       localStorage.setItem('gameData', JSON.stringify(savedGame));
       renderIndex();
       fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));

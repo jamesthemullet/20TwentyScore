@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
+import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
@@ -51,6 +52,26 @@ const MatchPage: React.FC = () => {
   const finishedTeam = gameScore.find((t) => t.finishedBatting);
   const target = finishedTeam ? finishedTeam.totalRuns + 1 : null;
 
+  const currentRunRate = useMemo(() => {
+    const runs = currentBattingTeam?.totalRuns ?? 0;
+    const overs = currentBattingTeam?.overs ?? 0;
+    const balls = currentBallInThisOver - 1 - currentExtrasInThisOver;
+    const decimalOvers = overs + balls / 6;
+    if (decimalOvers === 0) return "0.00";
+    return (runs / decimalOvers).toFixed(2);
+  }, [currentBattingTeam, currentBallInThisOver, currentExtrasInThisOver]);
+
+  const batterStats = useMemo(() => {
+    const derive = (actions: (string | null)[] | undefined) => ({
+      balls: actions?.filter((a) => a !== null && a !== "Wide").length ?? 0,
+      fours: actions?.filter((a) => a === "4").length ?? 0,
+      sixes: actions?.filter((a) => a === "6").length ?? 0,
+    });
+    const striker = currentBattingTeam?.players.find((p) => p.currentStriker);
+    const nonStriker = currentBattingTeam?.players.find((p) => p.currentNonStriker);
+    return { striker: derive(striker?.allActions), nonStriker: derive(nonStriker?.allActions) };
+  }, [currentBattingTeam]);
+
   const [overBalls, setOverBalls] = useState<string[]>([]);
   const [lastOverBalls, setLastOverBalls] = useState<string[]>([]);
   const [lastOverBowlerName, setLastOverBowlerName] = useState<string>("");
@@ -88,10 +109,14 @@ const MatchPage: React.FC = () => {
     }
   }, [currentBallInThisOver, currentOver, mostRecentAction, overBalls, currentBowler?.name]);
 
-  const thisOverRuns = overBalls.reduce((sum, b) => {
-    const n = parseInt(b, 10);
-    return sum + (Number.isNaN(n) ? 0 : n);
-  }, 0);
+  const thisOverRuns = useMemo(
+    () =>
+      overBalls.reduce((sum, b) => {
+        const n = parseInt(b, 10);
+        return sum + (Number.isNaN(n) ? 0 : n);
+      }, 0),
+    [overBalls]
+  );
 
   const formatBallDescription = (label: string | undefined) => {
     if (!label) return "—";
@@ -131,8 +156,8 @@ const MatchPage: React.FC = () => {
   if (!hasGame) {
     return (
       <Layout
-        title="Today's Match | 20Twenty Score"
-        description="Live T20 match scoring — track runs, wickets, overs and ball-by-ball progress."
+        title="Today's Match"
+        description="Live scoring for your T20 cricket match. Record runs, wickets, and extras ball by ball."
       >
         <Main>
           <PageHeader>
@@ -153,8 +178,8 @@ const MatchPage: React.FC = () => {
 
   return (
     <Layout
-      title="Today's Match | 20Twenty Score"
-      description="Live T20 match scoring — track runs, wickets, overs and ball-by-ball progress."
+      title="Today's Match"
+      description="Live scoring for your T20 cricket match. Record runs, wickets, and extras ball by ball."
     >
       {milestone && <MilestoneToast message={milestone.message} accent={milestone.accent} />}
       <Main>
@@ -168,7 +193,7 @@ const MatchPage: React.FC = () => {
         <MatchPanel>
           <TeamSide>
             <StatusLabel>
-              <Ball color={teamA?.currentBattingTeam ? "#b83320" : "#aaa"} />
+              <Ball color={teamA?.currentBattingTeam ? "#b83320" : "#aaa"} aria-hidden="true" />
               {teamA?.currentBattingTeam ? "Batting" : "Bowling"}
             </StatusLabel>
             <TeamName>{teamA?.name}</TeamName>
@@ -190,14 +215,16 @@ const MatchPage: React.FC = () => {
             </TeamOvers>
           </TeamSide>
           <MatchCentre>
-            <BallIcon src="/icons/png/006-cricket-1.png" alt="cricket ball" />
+            <BallIconWrapper>
+              <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" fill style={{ objectFit: "contain" }} />
+            </BallIconWrapper>
             <Vs>vs</Vs>
             <Format>T20 — 20 Overs</Format>
           </MatchCentre>
           <TeamSide align="right">
             <StatusLabel reverse>
               {team1?.currentBattingTeam ? "Batting" : "Bowling"}
-              <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} />
+              <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} aria-hidden="true" />
             </StatusLabel>
             <TeamName>{team1?.name}</TeamName>
             <TeamScore>
@@ -218,7 +245,7 @@ const MatchPage: React.FC = () => {
             </TeamOvers>
           </TeamSide>
         </MatchPanel>
-        <LiveBar>
+        <LiveBar aria-live="polite" aria-label="Live match stats">
           <LiveAction>
             <LiveLabel>Last ball</LiveLabel>
             <LiveValue>{formatLatestAction()}</LiveValue>
@@ -233,11 +260,7 @@ const MatchPage: React.FC = () => {
             <LiveStat>
               <LiveLabel>Run rate</LiveLabel>
               <LiveValue>
-                {formatRunRate(
-                  currentBattingTeam?.totalRuns ?? 0,
-                  currentBattingTeam?.overs ?? 0,
-                  true
-                )}
+                {currentRunRate}
               </LiveValue>
             </LiveStat>
             {target !== null && (
@@ -322,6 +345,7 @@ const MatchPage: React.FC = () => {
                         player: currentBattingTeam?.players.find(
                           (p) => p.currentStriker
                         ),
+                        stats: batterStats.striker,
                         label: "★ On strike",
                         strike: true,
                       },
@@ -329,11 +353,12 @@ const MatchPage: React.FC = () => {
                         player: currentBattingTeam?.players.find(
                           (p) => p.currentNonStriker
                         ),
+                        stats: batterStats.nonStriker,
                         label: "Non-striker",
                         strike: false,
                       },
                     ] as const
-                  ).map(({ player, label, strike }) => (
+                  ).map(({ player, stats, label, strike }) => (
                     <CreasePlayer key={label}>
                       <CreaseRole strike={strike}>{label}</CreaseRole>
                       <CreasePlayerName>{player?.name ?? "—"}</CreasePlayerName>
@@ -344,24 +369,15 @@ const MatchPage: React.FC = () => {
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>B</StatLabel>
-                          <StatValue>
-                            {player?.allActions.filter((a) => a !== "Wide")
-                              .length ?? 0}
-                          </StatValue>
+                          <StatValue>{stats.balls}</StatValue>
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>4s</StatLabel>
-                          <StatValue>
-                            {player?.allActions.filter((a) => a === "4")
-                              .length ?? 0}
-                          </StatValue>
+                          <StatValue>{stats.fours}</StatValue>
                         </BatterStat>
                         <BatterStat>
                           <StatLabel>6s</StatLabel>
-                          <StatValue>
-                            {player?.allActions.filter((a) => a === "6")
-                              .length ?? 0}
-                          </StatValue>
+                          <StatValue>{stats.sixes}</StatValue>
                         </BatterStat>
                       </BatterStats>
                     </CreasePlayer>
@@ -392,24 +408,11 @@ const MatchPage: React.FC = () => {
                 <BottomBox>
                   <BoxMeta>Run rate</BoxMeta>
                   <SplitStat>
-                    {formatRunRate(
-                      currentBattingTeam?.totalRuns ?? 0,
-                      currentBattingTeam?.overs ?? 0,
-                      true
-                    )}
+                    {currentRunRate}
                   </SplitStat>
-                  <GreenBarTrack>
+                  <GreenBarTrack aria-hidden="true">
                     <GreenBar
-                      fill={Math.min(
-                        parseFloat(
-                          formatRunRate(
-                            currentBattingTeam?.totalRuns ?? 0,
-                            currentBattingTeam?.overs ?? 0,
-                            true
-                          )
-                        ) / MAX_RUN_RATE_DISPLAY,
-                        1
-                      )}
+                      fill={Math.min(parseFloat(currentRunRate) / MAX_RUN_RATE_DISPLAY, 1)}
                     />
                   </GreenBarTrack>
                   <RunsSummaryDivider />
@@ -424,13 +427,7 @@ const MatchPage: React.FC = () => {
                 </BottomBox>
                 <BottomBox>
                   {(() => {
-                    const rr = parseFloat(
-                      formatRunRate(
-                        currentBattingTeam?.totalRuns ?? 0,
-                        currentBattingTeam?.overs ?? 0,
-                        true
-                      )
-                    );
+                    const rr = parseFloat(currentRunRate);
                     const validBallsInOver =
                       currentBallInThisOver - 1 - currentExtrasInThisOver;
                     const ballsUsed =
@@ -452,7 +449,7 @@ const MatchPage: React.FC = () => {
                         <>
                           <BoxMeta>Required rate</BoxMeta>
                           <SplitStat>{requiredRate}</SplitStat>
-                          <RedBarTrack>
+                          <RedBarTrack aria-hidden="true">
                             <RedBar fill={Number.isNaN(rrFill) ? 0 : rrFill} />
                           </RedBarTrack>
                           <RunsSummaryDivider />
@@ -469,7 +466,7 @@ const MatchPage: React.FC = () => {
                       <>
                         <BoxMeta>Projected</BoxMeta>
                         <SplitStat>{projected}</SplitStat>
-                        <RedBarTrack>
+                        <RedBarTrack aria-hidden="true">
                           <RedBar fill={Math.min(projected / MAX_PROJECTED_SCORE, 1)} />
                         </RedBarTrack>
                         <RunsSummaryDivider />
@@ -527,25 +524,13 @@ const MatchPage: React.FC = () => {
                       economyVal !== null && Number.isFinite(economyVal)
                         ? economyVal.toFixed(2)
                         : null;
-                    const handleBowlerSelect = !isJustBowled
-                      ? () => settingBowler(currentBowlingTeam.index, player.index)
-                      : undefined;
                     return (
                       <BowlerListItem
                         key={player.name}
+                        type="button"
                         disabled={isJustBowled}
-                        onClick={handleBowlerSelect}
-                        role={!isJustBowled ? 'button' : undefined}
-                        tabIndex={!isJustBowled ? 0 : undefined}
-                        onKeyDown={
-                          !isJustBowled
-                            ? (e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                  e.preventDefault();
-                                  settingBowler(currentBowlingTeam.index, player.index);
-                                }
-                              }
-                            : undefined
+                        onClick={() =>
+                          settingBowler(currentBowlingTeam.index, player.index)
                         }
                       >
                         <BowlerItemNumber disabled={isJustBowled}>
@@ -963,12 +948,18 @@ const BowlerList = styled.div`
   flex: 1;
 `;
 
-const BowlerListItem = styled.div<{ disabled?: boolean }>`
+const BowlerListItem = styled.button`
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 0.5rem;
+  background: none;
+  border: none;
   border-bottom: 1px solid #eee;
+  border-radius: 0;
+  width: 100%;
+  text-align: left;
+  font: inherit;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   opacity: ${({ disabled }) => (disabled ? 0.45 : 1)};
   transition: background-color 0.15s;
@@ -977,8 +968,8 @@ const BowlerListItem = styled.div<{ disabled?: boolean }>`
     border-bottom: none;
   }
 
-  &:hover {
-    background-color: ${({ disabled }) => (disabled ? "transparent" : "#f7f5f0")};
+  &:hover:not(:disabled) {
+    background-color: #f7f5f0;
     border-radius: 8px;
   }
 `;
@@ -1243,10 +1234,10 @@ const MatchCentre = styled.div`
   }
 `;
 
-const BallIcon = styled.img`
+const BallIconWrapper = styled.span`
+  position: relative;
   width: 48px;
   height: 48px;
-  object-fit: contain;
 
   @media (max-width: 768px) {
     width: 28px;

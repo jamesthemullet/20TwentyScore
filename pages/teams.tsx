@@ -36,8 +36,8 @@ const TeamsPage: React.FC = () => {
 
   return (
     <Layout
-      title="The Two XIs | 20Twenty Score"
-      description="View batting and bowling figures for both teams in the current T20 match."
+      title="The Two XIs"
+      description="View squad lists and current player stats for both teams in the match."
     >
       <PageWrapper>
         <PageHeader>

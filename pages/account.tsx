@@ -31,8 +31,8 @@ export default function AccountPage() {
   if (isLoading) {
     return (
       <Layout
-        title="Account | 20Twenty Score"
-        description="Manage your 20Twenty Score account, subscription and billing settings."
+        title="Account"
+        description="Manage your 20Twenty Score account and subscription."
       >
         <PageWrapper>
           <LoadingText>Loading…</LoadingText>
@@ -43,8 +43,8 @@ export default function AccountPage() {
 
   return (
     <Layout
-      title="Account | 20Twenty Score"
-      description="Manage your 20Twenty Score account, subscription and billing settings."
+      title="Account"
+      description="Manage your 20Twenty Score account and subscription."
     >
       <PageWrapper>
         <PageTitle>Account</PageTitle>
