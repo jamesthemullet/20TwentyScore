@@ -209,10 +209,14 @@ const Input = styled.input`
   border: 2px solid #1a1a1a;
   border-radius: 8px;
   flex: 1;
-  outline: none;
 
   &:focus {
     border-color: #555;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
   }
 `;
 

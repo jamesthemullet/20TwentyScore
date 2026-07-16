@@ -60,7 +60,7 @@ export const Player = ({
           <>
             <p>{name}</p>
             <StyledButton onClick={handleEditPlayerName} aria-label="Edit player">
-              <Image alt="" title="Edit player" width={16} height={16} src="/icons/png/edit.png" />
+              <Image alt="" width={16} height={16} src="/icons/png/edit.png" />
             </StyledButton>
           </>
         )}
@@ -77,7 +77,6 @@ export const Player = ({
             <StyledButton onClick={handleSavePlayerName} aria-label="Save player">
               <Image
                 alt=""
-                title="Save player"
                 width={16}
                 height={16}
                 src="/icons/png/009-save.png"
