@@ -270,7 +270,7 @@ const ScoringHeader = styled.div`
   margin-bottom: 20px;
 `;
 
-const ScoringTitle = styled.p`
+const ScoringTitle = styled.h2`
   font-family: 'Bodoni Moda', serif;
   font-style: italic;
   font-size: 1.5rem;

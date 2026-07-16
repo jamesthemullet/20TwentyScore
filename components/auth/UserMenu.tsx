@@ -36,7 +36,7 @@ export default function UserMenu() {
 
   return (
     <Wrapper ref={ref}>
-      <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="true">
+      <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
         {session.user?.image ? (
           <Image src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} style={{ objectFit: 'cover' }} />
         ) : (
