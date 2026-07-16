@@ -35,7 +35,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
   const currentBowlingTeam = gameScore.find((team) => team.currentBowlingTeam);
 
   if (!currentBattingTeam || !currentBowlingTeam) {
-    return;
+    return null;
   }
 
   const currentBattingTeamIndex = currentBattingTeam.index;
@@ -47,13 +47,13 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     (player) => player.currentNonStriker
   );
 
-  const endOfOver = () => currentBallInThisOver === BALLS_PER_OVER + currentExtrasInThisOver;
+  const endOfOver = (): boolean => currentBallInThisOver === BALLS_PER_OVER + currentExtrasInThisOver;
 
-  const endOfInnings = (action: string | null) =>
+  const endOfInnings = (action: string | null): boolean =>
     (currentBattingTeam.totalWicketsConceded === WICKETS_FOR_ALL_OUT && action === 'Wicket') ||
     (currentBattingTeam.overs === FINAL_OVER_INDEX && endOfOver());
 
-  const endOfGame = () => gameScore.every((team) => team.finishedBatting === true);
+  const endOfGame = (): boolean => gameScore.every((team) => team.finishedBatting === true);
 
   const handleScoreClick = (
     playerIndex: number | undefined,
@@ -78,7 +78,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     setNextRunButtonDisabled(true);
   };
 
-  const updateOver = (action: null | string) => {
+  const updateOver = (action: null | string): void => {
     if (action === 'No Ball' || action === 'Wide') {
       setCurrentExtrasInThisOver(1);
       setCurrentBallInThisOver(null);
@@ -111,7 +111,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     runs: number,
     action: null | string,
     methodOfWicket?: 'LBW' | 'Caught' | 'Run Out'
-  ) => {
+  ): void => {
     setBattingPlayerScore(
       currentBattingTeamIndex,
       currentStriker,
@@ -192,31 +192,32 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
           ↩ Undo
         </UndoButton>
       </ScoringFooter>
-      {awaitingMethodOfWicket && (
-        <>
-          {' '}
-          <ScoringHeader>
-            <ScoringTitle>Method of wicket</ScoringTitle>
-          </ScoringHeader>
-          <ScoringGrid>
-            <SquareButton
-              disabled={endOfGame()}
-              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'LBW')}>
-              LBW
-            </SquareButton>
-            <SquareButton
-              disabled={endOfGame()}
-              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Caught')}>
-              Caught
-            </SquareButton>
-            <SquareButton
-              disabled={endOfGame()}
-              onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Run Out')}>
-              Run Out
-            </SquareButton>
-          </ScoringGrid>
-        </>
-      )}
+      <MethodOfWicketRegion aria-live="polite">
+        {awaitingMethodOfWicket && (
+          <>
+            <ScoringHeader>
+              <ScoringTitle>Method of wicket</ScoringTitle>
+            </ScoringHeader>
+            <ScoringGrid>
+              <SquareButton
+                disabled={endOfGame()}
+                onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'LBW')}>
+                LBW
+              </SquareButton>
+              <SquareButton
+                disabled={endOfGame()}
+                onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Caught')}>
+                Caught
+              </SquareButton>
+              <SquareButton
+                disabled={endOfGame()}
+                onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Run Out')}>
+                Run Out
+              </SquareButton>
+            </ScoringGrid>
+          </>
+        )}
+      </MethodOfWicketRegion>
     </HomeContainer>
   );
 };
@@ -326,6 +327,10 @@ const ButtonSub = styled.span`
   text-transform: uppercase;
   color: inherit;
   margin-top: 0.2rem;
+`;
+
+const MethodOfWicketRegion = styled.div`
+  width: 100%;
 `;
 
 const ScoringGrid = styled.div`

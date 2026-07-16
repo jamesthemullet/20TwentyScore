@@ -26,14 +26,14 @@ const MatchPage: React.FC = () => {
   const { mostRecentAction } = useMostRecentAction();
   const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
-  const formatOvers = (overs: number, isBatting: boolean) => {
+  const formatOvers = (overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
     return `${overs}.${balls}`;
   };
 
-  const formatRunRate = (runs: number, overs: number, isBatting: boolean) => {
+  const formatRunRate = (runs: number, overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
@@ -118,7 +118,7 @@ const MatchPage: React.FC = () => {
     [overBalls]
   );
 
-  const formatBallDescription = (label: string | undefined) => {
+  const formatBallDescription = (label: string | undefined): string => {
     if (!label) return "—";
     if (label === "4") return "FOUR";
     if (label === "6") return "SIX";
@@ -129,7 +129,7 @@ const MatchPage: React.FC = () => {
     return `${label} RUN${label === "1" ? "" : "S"}`;
   };
 
-  const formatLatestAction = () => {
+  const formatLatestAction = (): string => {
     const { runs, action } = mostRecentAction;
     if (action === null || action === "Next Ball")
       return `${runs} run${runs !== 1 ? "s" : ""}`;
@@ -144,7 +144,7 @@ const MatchPage: React.FC = () => {
 
   const showBowlerSelect = selectBowler || (hasGame && !currentBowlerSet);
 
-  const settingBowler = (teamIndex: number, playerIndex: number) => {
+  const settingBowler = (teamIndex: number, playerIndex: number): void => {
     setCurrentBowler(teamIndex, playerIndex);
     setSelectBowler(false);
   };
@@ -193,7 +193,7 @@ const MatchPage: React.FC = () => {
         <MatchPanel>
           <TeamSide>
             <StatusLabel>
-              <Ball color={teamA?.currentBattingTeam ? "#b83320" : "#aaa"} />
+              <Ball color={teamA?.currentBattingTeam ? "#b83320" : "#aaa"} aria-hidden="true" />
               {teamA?.currentBattingTeam ? "Batting" : "Bowling"}
             </StatusLabel>
             <TeamName>{teamA?.name}</TeamName>
@@ -224,7 +224,7 @@ const MatchPage: React.FC = () => {
           <TeamSide align="right">
             <StatusLabel reverse>
               {team1?.currentBattingTeam ? "Batting" : "Bowling"}
-              <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} />
+              <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} aria-hidden="true" />
             </StatusLabel>
             <TeamName>{team1?.name}</TeamName>
             <TeamScore>
@@ -245,7 +245,7 @@ const MatchPage: React.FC = () => {
             </TeamOvers>
           </TeamSide>
         </MatchPanel>
-        <LiveBar>
+        <LiveBar aria-live="polite" aria-label="Live match stats">
           <LiveAction>
             <LiveLabel>Last ball</LiveLabel>
             <LiveValue>{formatLatestAction()}</LiveValue>
@@ -410,7 +410,7 @@ const MatchPage: React.FC = () => {
                   <SplitStat>
                     {currentRunRate}
                   </SplitStat>
-                  <GreenBarTrack>
+                  <GreenBarTrack aria-hidden="true">
                     <GreenBar
                       fill={Math.min(parseFloat(currentRunRate) / MAX_RUN_RATE_DISPLAY, 1)}
                     />
@@ -449,7 +449,7 @@ const MatchPage: React.FC = () => {
                         <>
                           <BoxMeta>Required rate</BoxMeta>
                           <SplitStat>{requiredRate}</SplitStat>
-                          <RedBarTrack>
+                          <RedBarTrack aria-hidden="true">
                             <RedBar fill={Number.isNaN(rrFill) ? 0 : rrFill} />
                           </RedBarTrack>
                           <RunsSummaryDivider />
@@ -466,7 +466,7 @@ const MatchPage: React.FC = () => {
                       <>
                         <BoxMeta>Projected</BoxMeta>
                         <SplitStat>{projected}</SplitStat>
-                        <RedBarTrack>
+                        <RedBarTrack aria-hidden="true">
                           <RedBar fill={Math.min(projected / MAX_PROJECTED_SCORE, 1)} />
                         </RedBarTrack>
                         <RunsSummaryDivider />

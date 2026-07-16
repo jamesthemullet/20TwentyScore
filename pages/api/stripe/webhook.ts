@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type Stripe from 'stripe';
 import { stripe } from '../../../lib/stripe';
 import { prisma } from '../../../lib/prisma';
+import { requireEnv } from '../../../lib/env';
 
 export const config = { api: { bodyParser: false } };
 
@@ -14,7 +15,9 @@ async function getRawBody(req: NextApiRequest): Promise<Buffer> {
   });
 }
 
-function getPlan(priceId: string): string {
+type Plan = 'monthly' | 'annual' | 'unknown';
+
+function getPlan(priceId: string): Plan {
   if (priceId === process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID) return 'monthly';
   if (priceId === process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID) return 'annual';
   return 'unknown';
@@ -27,11 +30,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const rawBody = await getRawBody(req);
-  const sig = req.headers['stripe-signature'] as string;
+  const sig = req.headers['stripe-signature'];
+  if (!sig) {
+    return res.status(400).json({ error: 'Missing stripe-signature header' });
+  }
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = stripe.webhooks.constructEvent(rawBody, sig, requireEnv('STRIPE_WEBHOOK_SECRET'));
   } catch (err) {
     return res.status(400).json({ error: `Webhook signature verification failed: ${err}` });
   }

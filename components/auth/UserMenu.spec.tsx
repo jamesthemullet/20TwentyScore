@@ -1,24 +1,20 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { useSession } from 'next-auth/react';
 import UserMenu from './UserMenu';
 
+const mockUseSession = jest.fn();
+const mockSignOut = jest.fn();
+
 jest.mock('next-auth/react', () => ({
-  useSession: jest.fn(),
-  signOut: jest.fn(),
+  useSession: () => mockUseSession(),
+  signOut: (...args: unknown[]) => mockSignOut(...args),
 }));
 
-const mockUseSession = useSession as unknown as jest.Mock;
+jest.mock('next/router', () => ({
+  useRouter: () => ({ pathname: '/' }),
+}));
 
 describe('UserMenu', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('renders a Sign In link when not authenticated', () => {
-    mockUseSession.mockReturnValue({ data: null, status: 'unauthenticated' });
-    render(<UserMenu />);
-    expect(screen.getByRole('link', { name: 'Sign In' })).toBeInTheDocument();
-  });
+  beforeEach(() => jest.clearAllMocks());
 
   it('renders nothing while the session is loading', () => {
     mockUseSession.mockReturnValue({ data: null, status: 'loading' });
@@ -26,25 +22,60 @@ describe('UserMenu', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it('shows user initials in the avatar button when authenticated without an image', () => {
-    mockUseSession.mockReturnValue({
-      data: { user: { name: 'James Smith', email: 'j@example.com', image: null }, expires: '' },
-      status: 'authenticated',
-    });
+  it('renders a Sign In link when there is no session', () => {
+    mockUseSession.mockReturnValue({ data: null, status: 'unauthenticated' });
     render(<UserMenu />);
-    const avatar = screen.getByRole('button', { name: 'User menu' });
-    expect(avatar).toHaveTextContent('JS');
+    const link = screen.getByRole('link', { name: /sign in/i });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', '/auth/signin');
   });
 
-  it('opens a dropdown with navigation links when the avatar is clicked', () => {
+  it('renders an avatar button with initials when authenticated without an image', () => {
     mockUseSession.mockReturnValue({
-      data: { user: { name: 'James Smith', email: 'j@example.com', image: null }, expires: '' },
+      data: { user: { name: 'Alice Smith', image: null } },
       status: 'authenticated',
     });
     render(<UserMenu />);
-    fireEvent.click(screen.getByRole('button', { name: 'User menu' }));
-    expect(screen.getByRole('link', { name: 'Dashboard' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Account' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Sign out' })).toBeInTheDocument();
+    const btn = screen.getByRole('button', { name: /user menu/i });
+    expect(btn).toBeInTheDocument();
+    expect(btn).toHaveTextContent('AS');
+  });
+
+  it('shows the dropdown menu when the avatar button is clicked', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Bob Jones', image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /user menu/i }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /dashboard/i })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /account/i })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /sign out/i })).toBeInTheDocument();
+  });
+
+  it('closes the dropdown when clicking outside the menu', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Bob Jones', image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    fireEvent.click(screen.getByRole('button', { name: /user menu/i }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+
+    fireEvent.mouseDown(document.body);
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
+
+  it('calls signOut with callbackUrl "/" when Sign out is clicked', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Alice Smith', image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    fireEvent.click(screen.getByRole('button', { name: /user menu/i }));
+    fireEvent.click(screen.getByRole('menuitem', { name: /sign out/i }));
+    expect(mockSignOut).toHaveBeenCalledWith({ callbackUrl: '/' });
   });
 });

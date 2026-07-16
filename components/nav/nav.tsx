@@ -8,11 +8,11 @@ export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (): void => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const isActive = (href: string) => router.pathname === href;
+  const isActive = (href: string): boolean => router.pathname === href;
 
   return (
     <StyledNav aria-label="Navigation Bar">
@@ -21,24 +21,24 @@ export default function Nav() {
         <span></span>
         <span></span>
       </BurgerButton>
-      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''} aria-label="Expanded Menu">
+      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''} aria-label="Main navigation">
         <li>
-          <Link href="/" className={isActive('/') ? 'active' : ''}>
+          <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined}>
             Home
           </Link>
         </li>
         <li>
-          <Link href="/match" className={isActive('/match') ? 'active' : ''}>
+          <Link href="/match" className={isActive('/match') ? 'active' : ''} aria-current={isActive('/match') ? 'page' : undefined}>
             Match
           </Link>
         </li>
         <li>
-          <Link href="/teams" className={isActive('/teams') ? 'active' : ''}>
+          <Link href="/teams" className={isActive('/teams') ? 'active' : ''} aria-current={isActive('/teams') ? 'page' : undefined}>
             Teams
           </Link>
         </li>
         <li>
-          <Link href="/summary" className={isActive('/summary') ? 'active' : ''}>
+          <Link href="/summary" className={isActive('/summary') ? 'active' : ''} aria-current={isActive('/summary') ? 'page' : undefined}>
             Summary
           </Link>
         </li>
