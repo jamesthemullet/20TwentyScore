@@ -76,13 +76,47 @@ describe('Setup page', () => {
     expect(teams[0].players[1].name).toBe('Player 2');
   });
 
-  it('quick fill populates numbered defaults into the visible inputs', () => {
-    renderSetup();
-    fireEvent.click(screen.getByRole('button', { name: /quick fill/i }));
+  describe('bulk paste', () => {
+    const paste = (element: HTMLElement, text: string) =>
+      fireEvent.paste(element, { clipboardData: { getData: () => text } });
 
-    expect(screen.getByLabelText('Team 1 name')).toHaveValue('Team 1');
-    expect(screen.getByLabelText('Team 2 name')).toHaveValue('Team 2');
-    expect(screen.getByLabelText('Team 1 player 1 name')).toHaveValue('Player 1');
-    expect(screen.getByLabelText('Team 2 player 11 name')).toHaveValue('Player 11');
+    it('pasting a comma-separated list into a player field distributes it across subsequent players', () => {
+      renderSetup();
+      paste(screen.getByLabelText('Team 1 player 1 name'), 'Alice, Bob, Carol');
+      fireEvent.click(screen.getByRole('button', { name: /start match/i }));
+
+      const [teams] = setGameScore.mock.calls[0] as [GameScore];
+      expect(teams[0].players[0].name).toBe('Alice');
+      expect(teams[0].players[1].name).toBe('Bob');
+      expect(teams[0].players[2].name).toBe('Carol');
+      expect(teams[0].players[3].name).toBe('Player 4');
+    });
+
+    it('pasting a newline-separated list starting mid-roster fills from that slot onward', () => {
+      renderSetup();
+      paste(screen.getByLabelText('Team 2 player 10 name'), 'Player Ten\nPlayer Eleven\nOverflow');
+
+      expect(screen.getByLabelText('Team 2 player 10 name')).toHaveValue('Player Ten');
+      expect(screen.getByLabelText('Team 2 player 11 name')).toHaveValue('Player Eleven');
+    });
+
+    it('a single-value paste is left to the default paste behaviour', () => {
+      renderSetup();
+      paste(screen.getByLabelText('Team 1 player 1 name'), 'Alice');
+
+      expect(screen.getByLabelText('Team 1 player 1 name')).toHaveValue('');
+    });
+
+    it('pasting a roster into the team name field sets the team name and all player names', () => {
+      renderSetup();
+      paste(screen.getByLabelText('Team 1 name'), 'Runswick CC, Alice, Bob');
+      fireEvent.click(screen.getByRole('button', { name: /start match/i }));
+
+      const [teams] = setGameScore.mock.calls[0] as [GameScore];
+      expect(teams[0].name).toBe('Runswick CC');
+      expect(teams[0].players[0].name).toBe('Alice');
+      expect(teams[0].players[1].name).toBe('Bob');
+      expect(teams[0].players[2].name).toBe('Player 3');
+    });
   });
 });

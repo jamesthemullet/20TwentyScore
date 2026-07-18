@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import type React from "react";
 import { useState } from "react";
-import { PrimaryButton, SecondaryButton } from "../components/core/buttons";
+import { PrimaryButton } from "../components/core/buttons";
 import Layout from "../components/layout/layout";
 import { makeInitialTeams, useGameScore } from "../context/GameScoreContext";
 
@@ -19,10 +19,13 @@ const emptyTeam = (): TeamFormState => ({
   playerNames: Array(PLAYERS_PER_TEAM).fill(""),
 });
 
-const quickFilledTeam = (teamNumber: 1 | 2): TeamFormState => ({
-  name: `Team ${teamNumber}`,
-  playerNames: Array.from({ length: PLAYERS_PER_TEAM }, (_, i) => `Player ${i + 1}`),
-});
+const NAME_LIST_SEPARATOR = /[,;\n\r\t]+/;
+
+const parseNameList = (text: string): string[] =>
+  text
+    .split(NAME_LIST_SEPARATOR)
+    .map((name) => name.trim())
+    .filter(Boolean);
 
 const SetupPage: React.FC = () => {
   const router = useRouter();
@@ -50,8 +53,42 @@ const SetupPage: React.FC = () => {
     });
   };
 
-  const quickFill = () => {
-    setTeams([quickFilledTeam(1), quickFilledTeam(2)]);
+  const pasteTeamRoster = (teamIndex: 0 | 1, e: React.ClipboardEvent<HTMLInputElement>) => {
+    const names = parseNameList(e.clipboardData.getData("text"));
+    if (names.length <= 1) return;
+
+    e.preventDefault();
+    const [name, ...playerNames] = names;
+    setTeams((prev) => {
+      const next = [...prev] as [TeamFormState, TeamFormState];
+      const nextPlayerNames = [...next[teamIndex].playerNames];
+      playerNames.forEach((playerName, index) => {
+        if (index < PLAYERS_PER_TEAM) nextPlayerNames[index] = playerName;
+      });
+      next[teamIndex] = { name, playerNames: nextPlayerNames };
+      return next;
+    });
+  };
+
+  const pastePlayerNames = (
+    teamIndex: 0 | 1,
+    playerIndex: number,
+    e: React.ClipboardEvent<HTMLInputElement>
+  ) => {
+    const names = parseNameList(e.clipboardData.getData("text"));
+    if (names.length <= 1) return;
+
+    e.preventDefault();
+    setTeams((prev) => {
+      const next = [...prev] as [TeamFormState, TeamFormState];
+      const playerNames = [...next[teamIndex].playerNames];
+      names.forEach((name, offset) => {
+        const index = playerIndex + offset;
+        if (index < PLAYERS_PER_TEAM) playerNames[index] = name;
+      });
+      next[teamIndex] = { ...next[teamIndex], playerNames };
+      return next;
+    });
   };
 
   const startMatch = () => {
@@ -72,9 +109,6 @@ const SetupPage: React.FC = () => {
       <PageWrapper>
         <PageHeader>
           <PageTitle>Match setup</PageTitle>
-          <SecondaryButton type="button" onClick={quickFill}>
-            Quick fill
-          </SecondaryButton>
         </PageHeader>
 
         <TeamsGrid>
@@ -87,6 +121,7 @@ const SetupPage: React.FC = () => {
                 value={team.name}
                 color={TEAM_COLORS[teamIndex]}
                 onChange={(e) => updateTeamName(teamIndex as 0 | 1, e.target.value)}
+                onPaste={(e) => pasteTeamRoster(teamIndex as 0 | 1, e)}
               />
               <PlayerList>
                 {team.playerNames.map((playerName, playerIndex) => (
@@ -100,10 +135,12 @@ const SetupPage: React.FC = () => {
                       onChange={(e) =>
                         updatePlayerName(teamIndex as 0 | 1, playerIndex, e.target.value)
                       }
+                      onPaste={(e) => pastePlayerNames(teamIndex as 0 | 1, playerIndex, e)}
                     />
                   </PlayerRow>
                 ))}
               </PlayerList>
+              <PasteHint>Tip: paste a comma or line-separated list to fill several names at once</PasteHint>
             </TeamPanel>
           ))}
         </TeamsGrid>
@@ -224,4 +261,11 @@ const ButtonsContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+`;
+
+const PasteHint = styled.p`
+  font-family: "Inter", sans-serif;
+  font-size: 0.75rem;
+  color: #767676;
+  margin: 0.75rem 0 0;
 `;
