@@ -3442,10 +3442,10 @@ hoist-non-react-statics@^3.3.1:
   dependencies:
     react-is "^16.7.0"
 
-hono@^4.12.8:
-  version "4.12.24"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.12.24.tgz#193c8d65ab463747fdde9d05c0d7a67859270da7"
-  integrity sha512-I36D1s+HgQc55KbhEr4iybfxv/9o1zdpw+XEM6dJa91LqQD0HCoSGdxpRJCZE+aavs87j4V3Ls2OJzq8C/U4iw==
+hono@^4.12.25, hono@^4.12.8:
+  version "4.12.30"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.12.30.tgz#4d57b051c66617b003b7ba318910cb5b79c4c7ac"
+  integrity sha512-emn+JoJjrN9YTpRDS5it/UI2SO9BAE37T6I3d963RxcZ81G9A4pr2SZTEiiaiKbzx+NKRg5BZ89fCL7gCJCUog==
 
 html-encoding-sniffer@^4.0.0:
   version "4.0.0"
