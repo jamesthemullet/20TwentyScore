@@ -14,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(402).json({ error: 'PREMIUM_REQUIRED' });
   }
 
-  const { id } = req.query as { id: string };
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id) return res.status(400).json({ error: 'Missing id' });
 
   const season = await prisma.season.findUnique({ where: { id } });
   if (!season) return res.status(404).json({ error: 'Not found' });
