@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import type { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
+import type React from 'react';
 import { useState } from 'react';
 import Layout from '../../components/layout/layout';
 import SeasonCard from '../../components/seasons/SeasonCard';
@@ -30,7 +31,7 @@ export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps
   const [newName, setNewName] = useState('');
   const [formOpen, setFormOpen] = useState(false);
 
-  const createSeason = async (e: React.FormEvent) => {
+  const createSeason = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newName.trim()) return;
     setCreating(true);
@@ -128,12 +129,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
     return { props: { tier: 'free', seasons: [] } };
   }
 
-  type DbSeasonRow = { _count: { gameSaves: number }; id: string; name: string; description: string | null; createdAt: Date; updatedAt: Date };
-  const seasons = (await prisma.season.findMany({
+  const seasons = await prisma.season.findMany({
     where: { userId },
     include: { _count: { select: { gameSaves: true } } },
     orderBy: { createdAt: 'desc' },
-  })) as DbSeasonRow[];
+  });
 
   return {
     props: {

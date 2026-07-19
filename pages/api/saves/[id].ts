@@ -7,7 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const session = await requireSession(req, res);
   if (!session) return;
 
-  const { id } = req.query as { id: string };
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id) return res.status(400).json({ error: 'Missing id' });
   const userId = session.user.id;
 
   const save = await prisma.gameSave.findUnique({ where: { id } });

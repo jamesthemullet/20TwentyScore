@@ -14,7 +14,7 @@ export type TeamPlayer = {
   currentNonStriker: boolean;
   currentBowler: boolean;
   onTheCrease: boolean;
-  status: string;
+  status: 'Not out' | 'Out';
   methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null;
   oversBowled: number;
   runsConceded: number;
@@ -56,7 +56,7 @@ export type GameScoreContextType = {
 
 export type OversContextType = {
   currentExtrasInThisOver: number;
-  setCurrentExtrasInThisOver: (extras: number | string) => void;
+  setCurrentExtrasInThisOver: (extras: number | 'reset') => void;
   currentBallInThisOver: number;
   setCurrentBallInThisOver: (ball: number | null) => void;
   currentOver: number;
@@ -467,7 +467,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     () => ({
       currentExtrasInThisOver: state.currentExtrasInThisOver,
       setCurrentExtrasInThisOver: (extras) =>
-        dispatch({ type: 'SET_EXTRAS_IN_OVER', payload: extras as number | 'reset' }),
+        dispatch({ type: 'SET_EXTRAS_IN_OVER', payload: extras }),
       currentBallInThisOver: state.currentBallInThisOver,
       setCurrentBallInThisOver: (ball) => dispatch({ type: 'SET_BALL_IN_OVER', payload: ball }),
       currentOver: state.currentOver,
