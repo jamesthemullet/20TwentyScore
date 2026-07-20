@@ -7,7 +7,7 @@ import { AccountProvider } from '../context/AccountContext';
 import { GameProvider } from '../context/GameContext';
 import { useGameScore } from '../context/GameScoreContext';
 
-function GameStatePersister() {
+function GameStatePersister(): null {
   const { gameScore } = useGameScore();
   useEffect(() => {
     const gameStarted = gameScore.some((team) => team.players.some((p) => p.currentBowler));

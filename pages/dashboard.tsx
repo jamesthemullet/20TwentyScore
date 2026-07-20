@@ -68,7 +68,7 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const assignSeason = async (saveId: string, seasonId: string | null) => {
+  const assignSeason = async (saveId: string, seasonId: string | null): Promise<void> => {
     const res = await fetch(`/api/saves/${saveId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -81,7 +81,7 @@ export default function DashboardPage() {
     }
   };
 
-  const saveToCloud = async () => {
+  const saveToCloud = async (): Promise<void> => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);

@@ -1,9 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { GameSave, Season } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type SaveListItem = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed' | 'seasonId'>;
+type SeasonDetail = Season & { gameSaves: SaveListItem[] };
+type SeasonsIdResponse = SeasonDetail | Season | { error: string };
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<SeasonsIdResponse>) {
   const session = await requireSession(req, res);
   if (!session) return;
 

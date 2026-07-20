@@ -149,7 +149,7 @@ const MatchPage: React.FC = () => {
     setSelectBowler(false);
   };
 
-  const handleSelectBowler = () => {
+  const handleSelectBowler = (): void => {
     setSelectBowler(true);
   };
 

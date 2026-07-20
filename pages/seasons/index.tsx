@@ -31,7 +31,7 @@ export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps
   const [newName, setNewName] = useState('');
   const [formOpen, setFormOpen] = useState(false);
 
-  const createSeason = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createSeason = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     if (!newName.trim()) return;
     setCreating(true);

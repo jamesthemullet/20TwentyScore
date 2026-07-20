@@ -10,7 +10,7 @@ export default function UserMenu() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handleClickOutside(e: MouseEvent): void {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
