@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
@@ -9,7 +10,7 @@ type SeasonCardProps = {
   updatedAt: string | Date;
 };
 
-export default function SeasonCard({ id, name, gameCount, createdAt, updatedAt }: SeasonCardProps) {
+const SeasonCard = memo(function SeasonCard({ id, name, gameCount, createdAt, updatedAt }: SeasonCardProps) {
   const start = new Date(createdAt).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',
@@ -30,7 +31,9 @@ export default function SeasonCard({ id, name, gameCount, createdAt, updatedAt }
       </CardMeta>
     </Card>
   );
-}
+});
+
+export default SeasonCard;
 
 const Card = styled(Link)`
   display: flex;
