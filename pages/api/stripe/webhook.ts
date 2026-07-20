@@ -23,7 +23,9 @@ function getPlan(priceId: string): Plan {
   return 'unknown';
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type WebhookResponse = { received: boolean } | { error: string };
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<WebhookResponse>) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).end();

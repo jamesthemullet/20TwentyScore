@@ -20,7 +20,7 @@ function formatScore(team: Team): string {
   return `${team.totalRuns}/${team.totalWicketsConceded} (${overs})`;
 }
 
-function getStatusBadge(player: TeamPlayer, teamIndex: number, battingTeamIndex: number) {
+function getStatusBadge(player: TeamPlayer, teamIndex: number, battingTeamIndex: number): 'STRIKE' | 'NON' | 'BOWLING' | null {
   const isBattingTeam = teamIndex === battingTeamIndex;
   if (isBattingTeam && player.currentStriker) return 'STRIKE';
   if (isBattingTeam && player.currentNonStriker) return 'NON';

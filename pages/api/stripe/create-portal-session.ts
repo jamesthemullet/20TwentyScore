@@ -3,7 +3,9 @@ import { requireSession } from '../../../lib/apiAuth';
 import { stripe } from '../../../lib/stripe';
 import { prisma } from '../../../lib/prisma';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type PortalSessionResponse = { url: string } | { error: string };
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<PortalSessionResponse>) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).end();
