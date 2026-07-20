@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import type React from 'react';
+import type { GameSave } from '@prisma/client';
 
 type Season = { id: string; name: string };
 

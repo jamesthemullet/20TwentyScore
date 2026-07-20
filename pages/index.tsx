@@ -5,7 +5,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { PrimaryButton, SecondaryButton } from "../components/core/buttons";
-import defaultPlayers from "../components/core/players";
 import Layout from "../components/layout/layout";
 import PitchDiagram from "../components/pitch/pitch-diagram";
 import { useGameScore } from "../context/GameScoreContext";
@@ -50,33 +49,7 @@ const Index: React.FC = () => {
   const newGame = () => {
     localStorage.removeItem("gameData");
     localStorage.removeItem("cloudSaveId");
-    setGameScore([
-      {
-        players: defaultPlayers(),
-        name: "Team 1",
-        index: 0,
-        totalRuns: 0,
-        totalWicketsConceded: 0,
-        totalWicketsTaken: 0,
-        overs: 0,
-        currentBattingTeam: true,
-        currentBowlingTeam: false,
-        finishedBatting: false,
-      },
-      {
-        players: defaultPlayers(),
-        name: "Team 2",
-        index: 1,
-        totalRuns: 0,
-        totalWicketsConceded: 0,
-        totalWicketsTaken: 0,
-        overs: 0,
-        currentBattingTeam: false,
-        currentBowlingTeam: true,
-        finishedBatting: false,
-      },
-    ]);
-    router.push("/match");
+    router.push("/setup");
   };
 
   return (

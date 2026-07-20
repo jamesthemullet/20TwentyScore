@@ -26,19 +26,19 @@ export const Player = ({
   const [editPlayer, setEditPlayer] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleEditPlayerName = () => {
+  const handleEditPlayerName = (): void => {
     setEditPlayer(true);
   };
 
-  const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
 
-  const handleSavePlayerName = () => {
+  const handleSavePlayerName = (): void => {
     setEditPlayer(false);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
       handleSavePlayerName();
     }

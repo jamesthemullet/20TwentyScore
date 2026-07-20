@@ -14,7 +14,7 @@ export type TeamPlayer = {
   currentNonStriker: boolean;
   currentBowler: boolean;
   onTheCrease: boolean;
-  status: string;
+  status: 'Not out' | 'Out';
   methodOfWicket: 'LBW' | 'Caught' | 'Run Out' | null;
   oversBowled: number;
   runsConceded: number;
@@ -22,7 +22,7 @@ export type TeamPlayer = {
 
 export type Team = {
   players: TeamPlayer[];
-  name: 'Team 1' | 'Team 2';
+  name: string;
   index: 0 | 1;
   totalRuns: number;
   totalWicketsConceded: number;
@@ -56,7 +56,7 @@ export type GameScoreContextType = {
 
 export type OversContextType = {
   currentExtrasInThisOver: number;
-  setCurrentExtrasInThisOver: (extras: number | string) => void;
+  setCurrentExtrasInThisOver: (extras: number | 'reset') => void;
   currentBallInThisOver: number;
   setCurrentBallInThisOver: (ball: number | null) => void;
   currentOver: number;
@@ -107,10 +107,15 @@ type GameAction =
   | { type: 'RESET_OVERS' }
   | { type: 'SET_MOST_RECENT_ACTION'; payload: { runs: number; action: string | null } };
 
-const makeInitialTeams = (): GameScore => [
+export type TeamSetup = {
+  name?: string;
+  playerNames?: string[];
+};
+
+export const makeInitialTeams = (team1?: TeamSetup, team2?: TeamSetup): GameScore => [
   {
-    players: defaultPlayers(),
-    name: 'Team 1',
+    players: defaultPlayers(team1?.playerNames),
+    name: team1?.name?.trim() || 'Team 1',
     index: 0,
     totalRuns: 0,
     totalWicketsConceded: 0,
@@ -121,8 +126,8 @@ const makeInitialTeams = (): GameScore => [
     finishedBatting: false
   },
   {
-    players: defaultPlayers(),
-    name: 'Team 2',
+    players: defaultPlayers(team2?.playerNames),
+    name: team2?.name?.trim() || 'Team 2',
     index: 1,
     totalRuns: 0,
     totalWicketsConceded: 0,
@@ -462,7 +467,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     () => ({
       currentExtrasInThisOver: state.currentExtrasInThisOver,
       setCurrentExtrasInThisOver: (extras) =>
-        dispatch({ type: 'SET_EXTRAS_IN_OVER', payload: extras as number | 'reset' }),
+        dispatch({ type: 'SET_EXTRAS_IN_OVER', payload: extras }),
       currentBallInThisOver: state.currentBallInThisOver,
       setCurrentBallInThisOver: (ball) => dispatch({ type: 'SET_BALL_IN_OVER', payload: ball }),
       currentOver: state.currentOver,
