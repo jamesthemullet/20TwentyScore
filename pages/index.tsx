@@ -54,6 +54,7 @@ const Index: React.FC = () => {
 
   return (
     <Layout
+      title="T20 Cricket Scorer"
       description="Track your T20 cricket match ball by ball. Start a new game or resume a saved match."
     >
       <Main>
