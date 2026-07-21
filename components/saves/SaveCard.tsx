@@ -1,17 +1,21 @@
+import { memo } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import type React from 'react';
-import type { GameSave } from '@prisma/client';
 
 type Season = { id: string; name: string };
 
-type SaveCardProps = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed'> & {
+type SaveCardProps = {
+  id: string;
+  title: string | null;
+  createdAt: string | Date;
+  completed: boolean;
   seasonId?: string | null;
   seasons?: Season[];
   onSeasonChange?: (saveId: string, seasonId: string | null) => void;
 };
 
-export default function SaveCard({ id, title, createdAt, completed, seasonId, seasons, onSeasonChange }: SaveCardProps) {
+const SaveCard = memo(function SaveCard({ id, title, createdAt, completed, seasonId, seasons, onSeasonChange }: SaveCardProps) {
   const date = new Date(createdAt).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',
@@ -48,7 +52,9 @@ export default function SaveCard({ id, title, createdAt, completed, seasonId, se
       )}
     </CardWrapper>
   );
-}
+});
+
+export default SaveCard;
 
 const CardWrapper = styled.div`
   display: flex;
