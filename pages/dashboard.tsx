@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -11,6 +11,7 @@ import SaveCard from "../components/saves/SaveCard";
 import UpgradeCTA from "../components/premium/UpgradeCTA";
 import { authOptions } from "../lib/authOptions";
 import { getUserTier } from "../lib/subscription";
+import { syncSubscriptionForUser } from "../lib/syncSubscription";
 import { prisma } from "../lib/prisma";
 import { generateSaveTitle } from "../lib/gameSaveTitle";
 import { useGameScore } from "../context/GameScoreContext";
@@ -29,9 +30,10 @@ type DashboardProps = {
   tier: "free" | "premium";
   initialSaves: SaveSummary[];
   initialSeasons: SeasonSummary[];
+  checkoutSuccess: boolean;
 };
 
-export default function DashboardPage({ tier, initialSaves, initialSeasons }: DashboardProps) {
+export default function DashboardPage({ tier, initialSaves, initialSeasons, checkoutSuccess }: DashboardProps) {
   const { data: session } = useSession();
   const { gameScore } = useGameScore();
   const router = useRouter();
@@ -40,25 +42,19 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const didCleanUrl = useRef(false);
 
   const hasLocalGame =
     typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
 
+  // Strip ?checkout=success from the URL after a successful checkout without triggering
+  // a full page reload, so the URL is clean if the user bookmarks or shares it.
   useEffect(() => {
-    if (!session || router.query.checkout !== "success") return;
-    fetch("/api/stripe/sync-subscription", { method: "POST" }).then(() => {
-      sessionStorage.setItem("checkoutSuccess", "1");
-      window.location.replace("/dashboard");
-    });
-  }, [session, router.query.checkout]);
-
-  useEffect(() => {
-    if (sessionStorage.getItem("checkoutSuccess")) {
-      sessionStorage.removeItem("checkoutSuccess");
-      setCheckoutSuccess(true);
+    if (checkoutSuccess && !didCleanUrl.current) {
+      didCleanUrl.current = true;
+      void router.replace("/dashboard", undefined, { shallow: true });
     }
-  }, []);
+  }, [checkoutSuccess, router]);
 
   const assignSeason = useCallback(async (saveId: string, seasonId: string | null) => {
     const res = await fetch(`/api/saves/${saveId}`, {
@@ -245,6 +241,19 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async (con
   }
 
   const userId = session.user.id;
+  const isCheckoutSuccess = context.query.checkout === "success";
+
+  // Sync the user's Stripe subscription server-side when returning from checkout,
+  // so the correct tier is available immediately on first render without a client-side
+  // fetch-and-reload cycle.
+  if (isCheckoutSuccess) {
+    try {
+      await syncSubscriptionForUser(userId);
+    } catch {
+      // Non-fatal: the Stripe webhook will sync asynchronously as a fallback.
+    }
+  }
+
   const tier = await getUserTier(userId);
 
   const [saves, seasons] = await Promise.all([
@@ -273,6 +282,7 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async (con
         seasonId: s.seasonId,
       })),
       initialSeasons: seasons,
+      checkoutSuccess: isCheckoutSuccess,
     },
   };
 };
