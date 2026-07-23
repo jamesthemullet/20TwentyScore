@@ -14,17 +14,37 @@ type Props = {
 const Layout: React.FC<Props> = ({ children, title, description }) => {
   return (
     <SiteContainer>
+      <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Meta title={title} description={description} />
       <Header />
       <BetaBanner role="region" aria-label="Beta notice">
         This site is new and may have rough edges. For suggestions or issues, email{' '}
         <a href="mailto:hello@20twentyscore.co.uk">hello@20twentyscore.co.uk</a>
       </BetaBanner>
-      <Content>{children}</Content>
+      <Content id="main-content" tabIndex={-1}>{children}</Content>
       <Footer />
     </SiteContainer>
   );
 };
+
+const SkipLink = styled.a`
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 4px 4px;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  &:focus {
+    top: 0;
+  }
+`;
 
 const SiteContainer = styled.div`
   display: flex;

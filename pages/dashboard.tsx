@@ -129,6 +129,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
         description="View and manage your cloud saves and cricket seasons."
       >
         <PageWrapper>
+          <PageTitle>Dashboard</PageTitle>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view your
             dashboard.
@@ -144,6 +145,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
       description="View and manage your cloud saves and cricket seasons."
     >
       <PageWrapper>
+        <PageTitle>Dashboard</PageTitle>
         {checkoutSuccess && (
           <CheckoutBanner role="status">
             Welcome to Premium! Your subscription is now active.
@@ -285,6 +287,15 @@ const PageWrapper = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+`;
+
+const PageTitle = styled.h1`
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1a1a1a;
 `;
 
 const AccountSection = styled.div`

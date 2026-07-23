@@ -174,22 +174,26 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
         </SquareButton>
         {nextRunButtonDisabled ? (
           <GhostSquareButton
+            aria-label="Next ball"
             disabled={nextRunButtonDisabled || endOfGame() || awaitingMethodOfWicket}
             onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
-            ↵<ButtonSub>next ball</ButtonSub>
+            <span aria-hidden="true">↵</span>
+            <ButtonSub>next ball</ButtonSub>
           </GhostSquareButton>
         ) : (
           <RedSquareButton
+            aria-label="Next ball"
             disabled={endOfGame() || awaitingMethodOfWicket}
             onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
-            ↵<ButtonSub>next ball</ButtonSub>
+            <span aria-hidden="true">↵</span>
+            <ButtonSub>next ball</ButtonSub>
           </RedSquareButton>
         )}
       </ScoringGrid>
       <ScoringFooter>
         <FooterHint>Touch a result to record the ball</FooterHint>
         <UndoButton onClick={undo} disabled={!canUndo}>
-          ↩ Undo
+          <span aria-hidden="true">↩</span> Undo
         </UndoButton>
       </ScoringFooter>
       <MethodOfWicketRegion aria-live="polite">
