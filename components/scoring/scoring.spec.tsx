@@ -285,7 +285,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    const nextBallButton = screen.getByRole('button', { name: /↵/i });
+    const nextBallButton = screen.getByRole('button', { name: 'Next ball' });
     expect(nextBallButton).not.toBeDisabled();
   });
 
@@ -313,7 +313,7 @@ describe('Scoring Component', () => {
       fireEvent.click(button);
     });
 
-    const nextBallButton = screen.getByRole('button', { name: /↵/i });
+    const nextBallButton = screen.getByRole('button', { name: 'Next ball' });
 
     act(() => {
       fireEvent.click(nextBallButton);

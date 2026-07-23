@@ -10,6 +10,7 @@ export default function PitchDiagram() {
       role="img"
       aria-label="Cricket ground diagram"
       style={{ display: 'block' }}>
+      <title>Cricket ground diagram</title>
       {/* Outfield */}
       <circle cx={cx} cy={cy} r="108" fill="#5a9e3a" stroke="#4a8530" strokeWidth="1.5" />
 

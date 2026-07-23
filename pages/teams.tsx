@@ -222,12 +222,15 @@ const PanelDivider = styled.hr`
   margin: 0 0 0.25rem;
 `;
 
-const PlayerList = styled.div`
+const PlayerList = styled.ul`
   display: flex;
   flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 `;
 
-const PlayerRow = styled.div`
+const PlayerRow = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
