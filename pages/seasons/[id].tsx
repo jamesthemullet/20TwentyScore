@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import type { GetServerSideProps } from 'next';
+import { getServerSession } from 'next-auth/next';
 import Link from 'next/link';
 import Layout from '../../components/layout/layout';
 import SaveCard from '../../components/saves/SaveCard';
+import { authOptions } from '../../lib/authOptions';
+import { getUserTier } from '../../lib/subscription';
+import { prisma } from '../../lib/prisma';
 
 type SaveSummary = {
   id: string;
@@ -23,66 +25,16 @@ type SeasonDetail = {
   gameSaves: SaveSummary[];
 };
 
-export default function SeasonDetailPage() {
-  const { data: session } = useSession();
-  const router = useRouter();
-  const { id } = router.query as { id: string };
+type PageProps = {
+  season: SeasonDetail;
+};
 
-  const [season, setSeason] = useState<SeasonDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-
-  useEffect(() => {
-    if (!session || !id) return;
-    fetch(`/api/seasons/${id}`)
-      .then((r) => {
-        if (r.status === 404 || r.status === 403) {
-          setNotFound(true);
-          return null;
-        }
-        return r.json();
-      })
-      .then((data) => {
-        if (data) setSeason(data as SeasonDetail);
-      })
-      .finally(() => setLoading(false));
-  }, [session, id]);
-
-  if (!session) {
-    return (
-      <Layout>
-        <PageWrapper>
-          <p>
-            Please <Link href="/auth/signin">sign in</Link> to view this season.
-          </p>
-        </PageWrapper>
-      </Layout>
-    );
-  }
-
-  if (loading) {
-    return (
-      <Layout>
-        <PageWrapper>
-          <EmptyState>Loading season…</EmptyState>
-        </PageWrapper>
-      </Layout>
-    );
-  }
-
-  if (notFound || !season) {
-    return (
-      <Layout>
-        <PageWrapper>
-          <EmptyState>Season not found.</EmptyState>
-          <BackLink href="/seasons">← Back to seasons</BackLink>
-        </PageWrapper>
-      </Layout>
-    );
-  }
-
+export default function SeasonDetailPage({ season }: PageProps) {
   return (
-    <Layout>
+    <Layout
+      title={season.name}
+      description={`Season: ${season.name} — match saves on 20Twenty Score.`}
+    >
       <PageWrapper>
         <BackLink href="/seasons">← Back to seasons</BackLink>
         <PageTitle>{season.name}</PageTitle>
@@ -101,6 +53,51 @@ export default function SeasonDetailPage() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return { redirect: { destination: '/auth/signin', permanent: false } };
+  }
+
+  const userId = session.user.id;
+  const tier = await getUserTier(userId);
+  if (tier === 'free') {
+    return { redirect: { destination: '/seasons', permanent: false } };
+  }
+
+  const id = context.params?.id;
+  if (typeof id !== 'string') return { notFound: true };
+  const season = await prisma.season.findUnique({ where: { id } });
+  if (!season || season.userId !== userId) {
+    return { notFound: true };
+  }
+
+  const saves = await prisma.gameSave.findMany({
+    where: { seasonId: id },
+    select: { id: true, title: true, createdAt: true, completed: true, seasonId: true },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return {
+    props: {
+      season: {
+        id: season.id,
+        name: season.name,
+        description: season.description,
+        createdAt: season.createdAt.toISOString(),
+        updatedAt: season.updatedAt.toISOString(),
+        gameSaves: saves.map((s) => ({
+          id: s.id,
+          title: s.title,
+          completed: s.completed,
+          seasonId: s.seasonId,
+          createdAt: s.createdAt.toISOString(),
+        })),
+      },
+    },
+  };
+};
 
 const PageWrapper = styled.main`
   width: 100%;

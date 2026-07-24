@@ -15,15 +15,15 @@ const Team = ({ teamIndex }: TeamProps) => {
   const [teamName, setTeamName] = useState(`Team ${teamIndex}`);
   const [editTeamName, setEditTeamName] = useState(false);
 
-  const handleEditTeamName = () => {
+  const handleEditTeamName = (): void => {
     setEditTeamName(true);
   };
 
-  const handleTeamNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTeamNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTeamName(e.target.value);
   };
 
-  const handleSaveTeamName = () => {
+  const handleSaveTeamName = (): void => {
     setEditTeamName(false);
   };
 

@@ -5,6 +5,14 @@ module.exports = {
     // Enables the styled-components SWC transform
     styledComponents: true
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.googleusercontent.com',
+      },
+    ],
+  },
   async headers() {
     return [
       {

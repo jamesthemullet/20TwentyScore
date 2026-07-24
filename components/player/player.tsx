@@ -26,19 +26,19 @@ export const Player = ({
   const [editPlayer, setEditPlayer] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleEditPlayerName = () => {
+  const handleEditPlayerName = (): void => {
     setEditPlayer(true);
   };
 
-  const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
 
-  const handleSavePlayerName = () => {
+  const handleSavePlayerName = (): void => {
     setEditPlayer(false);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
       handleSavePlayerName();
     }
@@ -59,7 +59,7 @@ export const Player = ({
         {!editPlayer && (
           <>
             <p>{name}</p>
-            <StyledButton onClick={handleEditPlayerName} aria-label="Edit player">
+            <StyledButton onClick={handleEditPlayerName} aria-label={`Edit name for ${name}`}>
               <Image alt="" title="Edit player" width={16} height={16} src="/icons/png/edit.png" />
             </StyledButton>
           </>
@@ -70,10 +70,11 @@ export const Player = ({
               ref={inputRef}
               type="text"
               value={name}
+              aria-label={`Edit name for ${name}`}
               onChange={handlePlayerNameChange}
               onKeyDown={handleKeyDown}
             />
-            <StyledButton onClick={handleSavePlayerName} aria-label="Save player">
+            <StyledButton onClick={handleSavePlayerName} aria-label={`Save name for ${name}`}>
               <Image
                 alt=""
                 title="Save player"
@@ -90,8 +91,7 @@ export const Player = ({
       <p>Overs Bowled: {oversBowled}</p>
       {currentStriker && (
         <Image
-          alt=""
-          title="Current striker"
+          alt="Current striker"
           width={32}
           height={32}
           src="/icons/png/004-cricket-player.png"
@@ -99,8 +99,7 @@ export const Player = ({
       )}
       {currentNonStriker && (
         <Image
-          alt=""
-          title="Current non striker"
+          alt="Current non-striker"
           width={32}
           height={32}
           src="/icons/png/010-helmet.png"

@@ -26,14 +26,14 @@ const MatchPage: React.FC = () => {
   const { mostRecentAction } = useMostRecentAction();
   const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
-  const formatOvers = (overs: number, isBatting: boolean) => {
+  const formatOvers = (overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
     return `${overs}.${balls}`;
   };
 
-  const formatRunRate = (runs: number, overs: number, isBatting: boolean) => {
+  const formatRunRate = (runs: number, overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
@@ -118,7 +118,7 @@ const MatchPage: React.FC = () => {
     [overBalls]
   );
 
-  const formatBallDescription = (label: string | undefined) => {
+  const formatBallDescription = (label: string | undefined): string => {
     if (!label) return "—";
     if (label === "4") return "FOUR";
     if (label === "6") return "SIX";
@@ -129,7 +129,7 @@ const MatchPage: React.FC = () => {
     return `${label} RUN${label === "1" ? "" : "S"}`;
   };
 
-  const formatLatestAction = () => {
+  const formatLatestAction = (): string => {
     const { runs, action } = mostRecentAction;
     if (action === null || action === "Next Ball")
       return `${runs} run${runs !== 1 ? "s" : ""}`;
@@ -144,7 +144,7 @@ const MatchPage: React.FC = () => {
 
   const showBowlerSelect = selectBowler || (hasGame && !currentBowlerSet);
 
-  const settingBowler = (teamIndex: number, playerIndex: number) => {
+  const settingBowler = (teamIndex: number, playerIndex: number): void => {
     setCurrentBowler(teamIndex, playerIndex);
     setSelectBowler(false);
   };
@@ -155,7 +155,10 @@ const MatchPage: React.FC = () => {
 
   if (!hasGame) {
     return (
-      <Layout>
+      <Layout
+        title="Today's Match"
+        description="Live scoring for your T20 cricket match. Record runs, wickets, and extras ball by ball."
+      >
         <Main>
           <PageHeader>
             <PageTitleGroup>
@@ -174,7 +177,10 @@ const MatchPage: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Today's Match"
+      description="Live scoring for your T20 cricket match. Record runs, wickets, and extras ball by ball."
+    >
       {milestone && <MilestoneToast message={milestone.message} accent={milestone.accent} />}
       <Main>
         <PageHeader>
@@ -187,7 +193,7 @@ const MatchPage: React.FC = () => {
         <MatchPanel>
           <TeamSide>
             <StatusLabel>
-              <Ball color={teamA?.currentBattingTeam ? "#b83320" : "#aaa"} />
+              <Ball color={teamA?.currentBattingTeam ? "#b83320" : "#aaa"} aria-hidden="true" />
               {teamA?.currentBattingTeam ? "Batting" : "Bowling"}
             </StatusLabel>
             <TeamName>{teamA?.name}</TeamName>
@@ -218,7 +224,7 @@ const MatchPage: React.FC = () => {
           <TeamSide align="right">
             <StatusLabel reverse>
               {team1?.currentBattingTeam ? "Batting" : "Bowling"}
-              <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} />
+              <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} aria-hidden="true" />
             </StatusLabel>
             <TeamName>{team1?.name}</TeamName>
             <TeamScore>
@@ -239,7 +245,7 @@ const MatchPage: React.FC = () => {
             </TeamOvers>
           </TeamSide>
         </MatchPanel>
-        <LiveBar>
+        <LiveBar aria-live="polite" aria-label="Live match stats">
           <LiveAction>
             <LiveLabel>Last ball</LiveLabel>
             <LiveValue>{formatLatestAction()}</LiveValue>
@@ -404,7 +410,7 @@ const MatchPage: React.FC = () => {
                   <SplitStat>
                     {currentRunRate}
                   </SplitStat>
-                  <GreenBarTrack>
+                  <GreenBarTrack aria-hidden="true">
                     <GreenBar
                       fill={Math.min(parseFloat(currentRunRate) / MAX_RUN_RATE_DISPLAY, 1)}
                     />
@@ -443,7 +449,7 @@ const MatchPage: React.FC = () => {
                         <>
                           <BoxMeta>Required rate</BoxMeta>
                           <SplitStat>{requiredRate}</SplitStat>
-                          <RedBarTrack>
+                          <RedBarTrack aria-hidden="true">
                             <RedBar fill={Number.isNaN(rrFill) ? 0 : rrFill} />
                           </RedBarTrack>
                           <RunsSummaryDivider />
@@ -460,7 +466,7 @@ const MatchPage: React.FC = () => {
                       <>
                         <BoxMeta>Projected</BoxMeta>
                         <SplitStat>{projected}</SplitStat>
-                        <RedBarTrack>
+                        <RedBarTrack aria-hidden="true">
                           <RedBar fill={Math.min(projected / MAX_PROJECTED_SCORE, 1)} />
                         </RedBarTrack>
                         <RunsSummaryDivider />
@@ -521,15 +527,10 @@ const MatchPage: React.FC = () => {
                     return (
                       <BowlerListItem
                         key={player.name}
+                        type="button"
                         disabled={isJustBowled}
-                        onClick={
-                          !isJustBowled
-                            ? () =>
-                                settingBowler(
-                                  currentBowlingTeam.index,
-                                  player.index
-                                )
-                            : undefined
+                        onClick={() =>
+                          settingBowler(currentBowlingTeam.index, player.index)
                         }
                       >
                         <BowlerItemNumber disabled={isJustBowled}>
@@ -602,10 +603,11 @@ const BoxHeader = styled.div`
   justify-content: space-between;
 `;
 
-const BoxTitle = styled.p`
+const BoxTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
@@ -870,10 +872,11 @@ const EndOfOverHeader = styled.div`
   margin-bottom: 0.75rem;
 `;
 
-const EndOfOverItalic = styled.p`
+const EndOfOverItalic = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
   white-space: nowrap;
@@ -931,10 +934,11 @@ const BowlerPickNumber = styled.span`
   font-size: 1.25rem;
 `;
 
-const BowlerPickTitle = styled.p`
+const BowlerPickTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
@@ -947,12 +951,18 @@ const BowlerList = styled.div`
   flex: 1;
 `;
 
-const BowlerListItem = styled.div<{ disabled?: boolean }>`
+const BowlerListItem = styled.button`
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 0.5rem;
+  background: none;
+  border: none;
   border-bottom: 1px solid #eee;
+  border-radius: 0;
+  width: 100%;
+  text-align: left;
+  font: inherit;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   opacity: ${({ disabled }) => (disabled ? 0.45 : 1)};
   transition: background-color 0.15s;
@@ -961,8 +971,8 @@ const BowlerListItem = styled.div<{ disabled?: boolean }>`
     border-bottom: none;
   }
 
-  &:hover {
-    background-color: ${({ disabled }) => (disabled ? "transparent" : "#f7f5f0")};
+  &:hover:not(:disabled) {
+    background-color: #f7f5f0;
     border-radius: 8px;
   }
 `;

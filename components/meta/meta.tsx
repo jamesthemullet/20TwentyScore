@@ -1,11 +1,23 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-export default function Meta() {
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const SITE_NAME = '20Twenty Score';
+const SITE_URL = 'https://20-twenty-score.vercel.app';
+const DEFAULT_DESCRIPTION =
+  'Track your T20 cricket match ball by ball — runs, wickets, extras, and live run rates.';
+const OG_IMAGE = `${SITE_URL}/images/temp-seo-image.jpg`;
+
+export default function Meta({ title, description }: Props) {
   const router = useRouter();
-  const currentUrl = router.asPath ?? '';
-  const siteAddress = 'https://20-twenty-score.vercel.app/';
-  const defaultImageUrl = '/images/temp-seo-image.jpg';
+  const currentUrl = router.asPath ?? '/';
+  const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+  const pageDescription = description ?? DEFAULT_DESCRIPTION;
+  const canonicalUrl = `${SITE_URL}${currentUrl}`;
   return (
     <Head>
       <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
@@ -18,22 +30,20 @@ export default function Meta() {
       <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
       <meta name="theme-color" content="#000" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      <link rel="canonical" href={canonicalUrl} />
       <meta property="og:locale" content="en_GB" />
-      <meta property="og:type" content="article" />
-      <meta property="og:title" content={'20 Twenty Scorecard'} />
-      <meta
-        property="og:description"
-        content={'20 Twenty Scorecard - keep scores of your 20 Twenty games'}
-      />
-      <meta property="og:site_name" content={'20 Twenty Scorecard'} />
-      <meta property="og:url" content={`${siteAddress}${currentUrl}`} />
-      <meta property="og:image" content={defaultImageUrl} />
-      <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-      <meta
-        name="description"
-        content={'20 Twenty Scorecard - keep scores of your 20 Twenty games'}
-      />
-      <title>20Twenty Scorecard</title>
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:image" content={OG_IMAGE} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={pageTitle} />
+      <meta name="twitter:description" content={pageDescription} />
+      <meta name="twitter:image" content={OG_IMAGE} />
     </Head>
   );
 }

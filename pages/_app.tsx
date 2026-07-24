@@ -1,7 +1,6 @@
 import { css, Global } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
-import Head from 'next/head';
 import { Analytics } from '@vercel/analytics/next';
 import { SessionProvider } from 'next-auth/react';
 import { AccountProvider } from '../context/AccountContext';
@@ -24,7 +23,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <SessionProvider session={session}>
     <AccountProvider>
     <GameProvider>
-      <Head><title>20Twenty Score</title></Head>
       <GameStatePersister />
       <Global
         styles={css`

@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import type { GetServerSideProps } from 'next';
+import { getServerSession } from 'next-auth/next';
+import type React from 'react';
+import { useState } from 'react';
 import Layout from '../../components/layout/layout';
 import SeasonCard from '../../components/seasons/SeasonCard';
 import UpgradeCTA from '../../components/premium/UpgradeCTA';
-import { useAccount } from '../../context/AccountContext';
+import { authOptions } from '../../lib/authOptions';
+import { getUserTier } from '../../lib/subscription';
+import { prisma } from '../../lib/prisma';
 
 type SeasonSummary = {
   id: string;
@@ -16,27 +19,19 @@ type SeasonSummary = {
   updatedAt: string;
 };
 
-export default function SeasonsPage() {
-  const { data: session } = useSession();
-  const { tier, isLoading: accountLoading } = useAccount();
-  const [seasons, setSeasons] = useState<SeasonSummary[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [seasonsError, setSeasonsError] = useState(false);
+type PageProps = {
+  tier: 'free' | 'premium';
+  seasons: SeasonSummary[];
+};
+
+export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps) {
+  const [seasons, setSeasons] = useState<SeasonSummary[]>(initialSeasons);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
   const [formOpen, setFormOpen] = useState(false);
 
-  useEffect(() => {
-    if (!session || tier !== 'premium') return;
-    fetch('/api/seasons')
-      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
-      .then((data) => setSeasons(data))
-      .catch(() => setSeasonsError(true))
-      .finally(() => setLoading(false));
-  }, [session, tier]);
-
-  const createSeason = async (e: React.FormEvent) => {
+  const createSeason = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newName.trim()) return;
     setCreating(true);
@@ -61,21 +56,12 @@ export default function SeasonsPage() {
     }
   };
 
-  if (!session) {
+  if (tier === 'free') {
     return (
-      <Layout>
-        <PageWrapper>
-          <p>
-            Please <Link href="/auth/signin">sign in</Link> to view your seasons.
-          </p>
-        </PageWrapper>
-      </Layout>
-    );
-  }
-
-  if (!accountLoading && tier === 'free') {
-    return (
-      <Layout>
+      <Layout
+        title="Seasons"
+        description="Create and manage your T20 cricket seasons to group and track your matches."
+      >
         <PageWrapper>
           <PageTitle>Seasons</PageTitle>
           <UpgradeCTA />
@@ -85,7 +71,10 @@ export default function SeasonsPage() {
   }
 
   return (
-    <Layout>
+    <Layout
+      title="Seasons"
+      description="Create and manage your T20 cricket seasons to group and track your matches."
+    >
       <PageWrapper>
         <PageHeader>
           <PageTitle>Seasons</PageTitle>
@@ -98,7 +87,9 @@ export default function SeasonsPage() {
 
         {formOpen && (
           <Form onSubmit={createSeason}>
+            <label htmlFor="season-name" className="visually-hidden">Season name</label>
             <Input
+              id="season-name"
               type="text"
               placeholder="Season name"
               value={newName}
@@ -111,11 +102,7 @@ export default function SeasonsPage() {
           </Form>
         )}
 
-        {loading ? (
-          <EmptyState>Loading seasons…</EmptyState>
-        ) : seasonsError ? (
-          <ErrorMessage role="alert">Could not load seasons. Please refresh.</ErrorMessage>
-        ) : seasons.length === 0 ? (
+        {seasons.length === 0 ? (
           <EmptyState>No seasons yet. Create one to group your games.</EmptyState>
         ) : (
           <SeasonsGrid>
@@ -128,6 +115,40 @@ export default function SeasonsPage() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return { redirect: { destination: '/auth/signin', permanent: false } };
+  }
+
+  const userId = session.user.id;
+  const tier = await getUserTier(userId);
+
+  if (tier === 'free') {
+    return { props: { tier: 'free', seasons: [] } };
+  }
+
+  const seasons = await prisma.season.findMany({
+    where: { userId },
+    include: { _count: { select: { gameSaves: true } } },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return {
+    props: {
+      tier: 'premium',
+      seasons: seasons.map(({ _count, id, name, description, createdAt, updatedAt }) => ({
+        id,
+        name,
+        description,
+        gameCount: _count.gameSaves,
+        createdAt: createdAt.toISOString(),
+        updatedAt: updatedAt.toISOString(),
+      })),
+    },
+  };
+};
 
 const PageWrapper = styled.main`
   width: 100%;

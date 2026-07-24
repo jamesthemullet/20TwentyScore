@@ -1,11 +1,18 @@
 import styled from "@emotion/styled";
+import Head from "next/head";
 import Link from "next/link";
 import type React from "react";
 import Layout from "../components/layout/layout";
 
 const ScoreboardPage: React.FC = () => {
   return (
-    <Layout>
+    <Layout
+      title="Scoreboard"
+      description="Full scoreboard for the current T20 cricket match."
+    >
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
       <Main>
         <EmptyState>
           <p>Scoreboard coming soon. </p>

@@ -7,6 +7,7 @@ export default function PitchDiagram() {
       viewBox="0 0 220 220"
       width="220"
       height="220"
+      role="img"
       aria-label="Cricket ground diagram"
       style={{ display: 'block' }}>
       {/* Outfield */}
