@@ -577,7 +577,7 @@ describe('GameScoreProvider', () => {
       return (
         <div>
           <p>wickets: {gameScore[1].players[0].wicketsTaken}</p>
-          <p>actions: {gameScore[1].players[0].allActions.length}</p>
+          <p>actions: {gameScore[1].players[0].bowlingActions?.length ?? 0}</p>
         </div>
       );
     };
