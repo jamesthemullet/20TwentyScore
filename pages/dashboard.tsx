@@ -42,8 +42,9 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
-  const hasLocalGame =
-    typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
+  const [hasLocalGame] = useState<boolean>(
+    () => typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"))
+  );
 
   useEffect(() => {
     if (!session || router.query.checkout !== "success") return;
@@ -73,7 +74,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
     }
   }, []);
 
-  const saveToCloud = async () => {
+  const saveToCloud = useCallback(async () => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
@@ -120,7 +121,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
     } finally {
       setSaving(false);
     }
-  };
+  }, [gameScore]);
 
   if (!session) {
     return (
