@@ -8,6 +8,7 @@ export default function UserMenu() {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const avatarRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -20,9 +21,19 @@ export default function UserMenu() {
   }, []);
 
   useEffect(() => {
+    if (isOpen) {
+      const firstItem = ref.current?.querySelector<HTMLElement>('[role="menuitem"]');
+      firstItem?.focus();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     if (!isOpen) return;
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') setIsOpen(false);
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        avatarRef.current?.focus();
+      }
     }
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
@@ -45,7 +56,7 @@ export default function UserMenu() {
 
   return (
     <Wrapper ref={ref}>
-      <Avatar type="button" onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
+      <Avatar ref={avatarRef} type="button" onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
         {session.user?.image ? (
           <Image src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} style={{ objectFit: 'cover' }} />
         ) : (
@@ -53,14 +64,14 @@ export default function UserMenu() {
         )}
       </Avatar>
       {isOpen && (
-        <Dropdown>
-          <DropdownLink href="/dashboard" onClick={() => setIsOpen(false)}>
+        <Dropdown role="menu">
+          <DropdownLink href="/dashboard" role="menuitem" onClick={() => setIsOpen(false)}>
             Dashboard
           </DropdownLink>
-          <DropdownLink href="/account" onClick={() => setIsOpen(false)}>
+          <DropdownLink href="/account" role="menuitem" onClick={() => setIsOpen(false)}>
             Account
           </DropdownLink>
-          <DropdownButton type="button" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
+          <DropdownButton role="menuitem" type="button" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
         </Dropdown>
       )}
     </Wrapper>

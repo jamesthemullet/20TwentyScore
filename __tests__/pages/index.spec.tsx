@@ -52,19 +52,13 @@ describe('Index page', () => {
   });
 
   describe('newGame', () => {
-    it('clears localStorage, calls setGameScore with two teams, and navigates to /match', () => {
+    it('clears localStorage and navigates to /setup', () => {
       localStorage.setItem('gameData', JSON.stringify({ some: 'data' }));
       renderIndex();
       fireEvent.click(screen.getByRole('button', { name: /start new match/i }));
       expect(localStorage.getItem('gameData')).toBeNull();
-      expect(setGameScore).toHaveBeenCalledTimes(1);
-      const [teams] = setGameScore.mock.calls[0] as [GameScore];
-      expect(teams).toHaveLength(2);
-      expect(teams[0].name).toBe('Team 1');
-      expect(teams[1].name).toBe('Team 2');
-      expect(teams[0].currentBattingTeam).toBe(true);
-      expect(teams[1].currentBowlingTeam).toBe(true);
-      expect(mockPush).toHaveBeenCalledWith('/match');
+      expect(setGameScore).not.toHaveBeenCalled();
+      expect(mockPush).toHaveBeenCalledWith('/setup');
     });
   });
 

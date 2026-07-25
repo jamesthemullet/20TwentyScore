@@ -38,7 +38,7 @@ describe('Nav Component', () => {
     window.dispatchEvent(new Event('resize'));
     render(<Nav />);
 
-    const expandedMenu = screen.getByLabelText('Main navigation');
+    const expandedMenu = document.getElementById('mobile-nav-menu') as HTMLElement;
     expect(expandedMenu).not.toHaveClass('open');
 
     act(() => {

@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
@@ -26,14 +26,14 @@ const MatchPage: React.FC = () => {
   const { mostRecentAction } = useMostRecentAction();
   const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
-  const formatOvers = (overs: number, isBatting: boolean) => {
+  const formatOvers = (overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
     return `${overs}.${balls}`;
   };
 
-  const formatRunRate = (runs: number, overs: number, isBatting: boolean) => {
+  const formatRunRate = (runs: number, overs: number, isBatting: boolean): string => {
     const balls = isBatting
       ? currentBallInThisOver - 1 - currentExtrasInThisOver
       : 0;
@@ -118,7 +118,7 @@ const MatchPage: React.FC = () => {
     [overBalls]
   );
 
-  const formatBallDescription = (label: string | undefined) => {
+  const formatBallDescription = (label: string | undefined): string => {
     if (!label) return "—";
     if (label === "4") return "FOUR";
     if (label === "6") return "SIX";
@@ -129,7 +129,7 @@ const MatchPage: React.FC = () => {
     return `${label} RUN${label === "1" ? "" : "S"}`;
   };
 
-  const formatLatestAction = () => {
+  const formatLatestAction = (): string => {
     const { runs, action } = mostRecentAction;
     if (action === null || action === "Next Ball")
       return `${runs} run${runs !== 1 ? "s" : ""}`;
@@ -144,14 +144,14 @@ const MatchPage: React.FC = () => {
 
   const showBowlerSelect = selectBowler || (hasGame && !currentBowlerSet);
 
-  const settingBowler = (teamIndex: number, playerIndex: number) => {
+  const settingBowler = (teamIndex: number, playerIndex: number): void => {
     setCurrentBowler(teamIndex, playerIndex);
     setSelectBowler(false);
   };
 
-  const handleSelectBowler = () => {
+  const handleSelectBowler = useCallback((): void => {
     setSelectBowler(true);
-  };
+  }, []);
 
   if (!hasGame) {
     return (
@@ -603,10 +603,11 @@ const BoxHeader = styled.div`
   justify-content: space-between;
 `;
 
-const BoxTitle = styled.p`
+const BoxTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
@@ -871,10 +872,11 @@ const EndOfOverHeader = styled.div`
   margin-bottom: 0.75rem;
 `;
 
-const EndOfOverItalic = styled.p`
+const EndOfOverItalic = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
   white-space: nowrap;
@@ -932,10 +934,11 @@ const BowlerPickNumber = styled.span`
   font-size: 1.25rem;
 `;
 
-const BowlerPickTitle = styled.p`
+const BowlerPickTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
