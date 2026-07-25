@@ -60,10 +60,6 @@ const SummaryPage: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   }, [gameScore]);
 
-  const battingTeam = gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0];
-  const bowlingTeam = gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1];
-  const result = determineResult(gameScore);
-
   const [firstInningsTeam, secondInningsTeam] = gameScore as [Team, Team];
   const showSecondInnings = secondInningsTeam.players.some(hasBatted);
 
