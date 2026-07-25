@@ -603,10 +603,11 @@ const BoxHeader = styled.div`
   justify-content: space-between;
 `;
 
-const BoxTitle = styled.p`
+const BoxTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
@@ -871,10 +872,11 @@ const EndOfOverHeader = styled.div`
   margin-bottom: 0.75rem;
 `;
 
-const EndOfOverItalic = styled.p`
+const EndOfOverItalic = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
   white-space: nowrap;
@@ -932,10 +934,11 @@ const BowlerPickNumber = styled.span`
   font-size: 1.25rem;
 `;
 
-const BowlerPickTitle = styled.p`
+const BowlerPickTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;

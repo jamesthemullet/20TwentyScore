@@ -8,11 +8,11 @@ export default function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (): void => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const isActive = (href: string) => router.pathname === href;
+  const isActive = (href: string): boolean => router.pathname === href;
 
   return (
     <StyledNav aria-label="Navigation Bar">
@@ -21,7 +21,7 @@ export default function Nav() {
         <span></span>
         <span></span>
       </BurgerButton>
-      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''} aria-label="Main navigation">
+      <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''}>
         <li>
           <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined}>
             Home

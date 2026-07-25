@@ -8,6 +8,7 @@ export default function UserMenu() {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const avatarRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -18,6 +19,20 @@ export default function UserMenu() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      const firstItem = ref.current?.querySelector<HTMLElement>('[role="menuitem"]');
+      firstItem?.focus();
+    }
+  }, [isOpen]);
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Escape' && isOpen) {
+      setIsOpen(false);
+      avatarRef.current?.focus();
+    }
+  }
 
   if (status === 'loading') return null;
 
@@ -35,8 +50,8 @@ export default function UserMenu() {
     : '?';
 
   return (
-    <Wrapper ref={ref}>
-      <Avatar onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="true">
+    <Wrapper ref={ref} onKeyDown={handleKeyDown}>
+      <Avatar ref={avatarRef} onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
         {session.user?.image ? (
           <Image src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} style={{ objectFit: 'cover' }} />
         ) : (

@@ -11,7 +11,7 @@ const WICKETS_FOR_ALL_OUT = 9; // 9 conceded means 10th wicket falls next
 const FINAL_OVER_INDEX = 19; // T20: overs 0–19
 
 type ScoringProps = {
-  setSelectBowler: (setBowler: boolean) => void;
+  setSelectBowler: () => void;
 };
 
 const Scoring = ({ setSelectBowler }: ScoringProps) => {
@@ -78,7 +78,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     setNextRunButtonDisabled(true);
   };
 
-  const updateOver = (action: null | string) => {
+  const updateOver = (action: null | string): void => {
     if (action === 'No Ball' || action === 'Wide') {
       setCurrentExtrasInThisOver(1);
       setCurrentBallInThisOver(null);
@@ -94,7 +94,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
         swapBatsmen();
       }
 
-      setSelectBowler(false);
+      setSelectBowler();
     } else {
       setCurrentBallInThisOver(null);
       setAwaitingMethodOfWicket(false);
@@ -111,7 +111,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     runs: number,
     action: null | string,
     methodOfWicket?: 'LBW' | 'Caught' | 'Run Out'
-  ) => {
+  ): void => {
     setBattingPlayerScore(
       currentBattingTeamIndex,
       currentStriker,
@@ -270,10 +270,11 @@ const ScoringHeader = styled.div`
   margin-bottom: 20px;
 `;
 
-const ScoringTitle = styled.p`
+const ScoringTitle = styled.h2`
   font-family: 'Bodoni Moda', serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
