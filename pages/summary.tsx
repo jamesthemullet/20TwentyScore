@@ -5,10 +5,12 @@ import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../components/layout/layout';
+import Scorecard from '../components/scorecard/scorecard';
 import { useGameScore } from '../context/GameScoreContext';
 import type { Team } from '../context/GameContext';
 import { generateSaveTitle } from '../lib/gameSaveTitle';
 import { formatShareText } from '../utils/formatShareText';
+import { hasBatted } from '../utils/scorecardStats';
 
 const TEAM_COLORS = ['#b83320', '#2d7a4f'] as const;
 
@@ -57,6 +59,13 @@ const SummaryPage: React.FC = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, [gameScore]);
+
+  const battingTeam = gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0];
+  const bowlingTeam = gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1];
+  const result = determineResult(gameScore);
+
+  const [firstInningsTeam, secondInningsTeam] = gameScore as [Team, Team];
+  const showSecondInnings = secondInningsTeam.players.some(hasBatted);
 
   const saveToCloud = useCallback(async () => {
     setSaving(true);
@@ -205,6 +214,21 @@ const SummaryPage: React.FC = () => {
             </CloudSaveSection>
           )}
         </ResultPanel>
+
+        <ScorecardSection>
+          <Scorecard
+            label="1st Innings"
+            battingTeam={firstInningsTeam}
+            bowlingTeam={secondInningsTeam}
+          />
+          {showSecondInnings && (
+            <Scorecard
+              label="2nd Innings"
+              battingTeam={secondInningsTeam}
+              bowlingTeam={firstInningsTeam}
+            />
+          )}
+        </ScorecardSection>
       </PageWrapper>
     </Layout>
   );
@@ -389,6 +413,10 @@ const ResultPanel = styled.div`
   border: 2px solid #1a1a1a;
   border-radius: 12px;
   padding: 1.5rem 2rem;
+`;
+
+const ScorecardSection = styled.div`
+  margin-top: 1.5rem;
 `;
 
 const ResultHeading = styled.h2`
