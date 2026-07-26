@@ -225,7 +225,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
           ) : (
             <>
               <LockedLink>
-                <LockIcon aria-hidden>🔒</LockIcon>
+                <LockIcon aria-hidden="true">🔒</LockIcon>
                 Seasons — <UpgradeLink href="/dashboard#upgrade">Upgrade to Premium</UpgradeLink>
               </LockedLink>
               <UpgradeSection id="upgrade">

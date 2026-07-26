@@ -215,7 +215,7 @@ const Input = styled.input`
   }
 
   &:focus-visible {
-    outline: 2px solid #005fcc;
+    outline: 3px solid #005fcc;
     outline-offset: 2px;
   }
 `;
