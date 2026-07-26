@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
 import type React from 'react';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../components/layout/layout';
 import Scorecard from '../components/scorecard/scorecard';
@@ -46,26 +46,28 @@ const SummaryPage: React.FC = () => {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [cloudSaveId, setCloudSaveId] = useState<string | null>(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('cloudSaveId') : null
+  );
 
-  const copyScorecard = async () => {
+  const battingTeam = useMemo(() => gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0], [gameScore]);
+  const bowlingTeam = useMemo(() => gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1], [gameScore]);
+  const result = useMemo(() => determineResult(gameScore), [gameScore]);
+
+  const copyScorecard = useCallback(async () => {
     await navigator.clipboard.writeText(formatShareText(gameScore));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const battingTeam = gameScore.find((t) => t.currentBattingTeam) ?? gameScore[0];
-  const bowlingTeam = gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1];
-  const result = determineResult(gameScore);
+  }, [gameScore]);
 
   const [firstInningsTeam, secondInningsTeam] = gameScore as [Team, Team];
   const showSecondInnings = secondInningsTeam.players.some(hasBatted);
 
-  const saveToCloud = async () => {
+  const saveToCloud = useCallback(async () => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
 
-    const cloudSaveId = localStorage.getItem('cloudSaveId');
     const title = generateSaveTitle(gameScore);
     const completed = Boolean(result);
 
@@ -95,12 +97,15 @@ const SummaryPage: React.FC = () => {
       }
 
       const saved = await res.json() as { id: string };
-      if (!cloudSaveId) localStorage.setItem('cloudSaveId', saved.id);
+      if (!cloudSaveId) {
+        localStorage.setItem('cloudSaveId', saved.id);
+        setCloudSaveId(saved.id);
+      }
       setSaveSuccess(true);
     } finally {
       setSaving(false);
     }
-  };
+  }, [cloudSaveId, gameScore, result]);
 
   return (
     <Layout
@@ -190,7 +195,7 @@ const SummaryPage: React.FC = () => {
           {session && (
             <CloudSaveSection>
               <CloudSaveButton onClick={saveToCloud} disabled={saving}>
-                {saving ? 'Saving…' : localStorage.getItem('cloudSaveId') ? 'Update cloud save' : 'Save to cloud'}
+                {saving ? 'Saving…' : cloudSaveId ? 'Update cloud save' : 'Save to cloud'}
               </CloudSaveButton>
               {saveError === 'FREE_LIMIT_REACHED' && (
                 <UpgradePrompt>

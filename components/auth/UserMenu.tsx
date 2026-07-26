@@ -27,12 +27,17 @@ export default function UserMenu() {
     }
   }, [isOpen]);
 
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === 'Escape' && isOpen) {
-      setIsOpen(false);
-      avatarRef.current?.focus();
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        avatarRef.current?.focus();
+      }
     }
-  }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
 
   if (status === 'loading') return null;
 
@@ -50,8 +55,8 @@ export default function UserMenu() {
     : '?';
 
   return (
-    <Wrapper ref={ref} onKeyDown={handleKeyDown}>
-      <Avatar ref={avatarRef} onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
+    <Wrapper ref={ref}>
+      <Avatar ref={avatarRef} type="button" onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
         {session.user?.image ? (
           <Image src={session.user.image} alt={session.user.name ?? ''} width={32} height={32} style={{ objectFit: 'cover' }} />
         ) : (
@@ -66,7 +71,7 @@ export default function UserMenu() {
           <DropdownLink href="/account" role="menuitem" onClick={() => setIsOpen(false)}>
             Account
           </DropdownLink>
-          <DropdownButton role="menuitem" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
+          <DropdownButton role="menuitem" type="button" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</DropdownButton>
         </Dropdown>
       )}
     </Wrapper>
