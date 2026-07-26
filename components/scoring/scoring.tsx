@@ -11,7 +11,7 @@ const WICKETS_FOR_ALL_OUT = 9; // 9 conceded means 10th wicket falls next
 const FINAL_OVER_INDEX = 19; // T20: overs 0–19
 
 type ScoringProps = {
-  setSelectBowler: (setBowler: boolean) => void;
+  setSelectBowler: () => void;
 };
 
 const Scoring = ({ setSelectBowler }: ScoringProps) => {
@@ -94,7 +94,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
         swapBatsmen();
       }
 
-      setSelectBowler(false);
+      setSelectBowler();
     } else {
       setCurrentBallInThisOver(null);
       setAwaitingMethodOfWicket(false);
@@ -274,6 +274,7 @@ const ScoringTitle = styled.h2`
   font-family: 'Bodoni Moda', serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;

@@ -1,2 +1,2 @@
-export type { GameScore, GameScoreContextType } from './GameContext';
-export { GameProvider as GameScoreProvider, GameScoreContext, useGameScore } from './GameContext';
+export type { GameScore, GameScoreContextType, TeamSetup } from './GameContext';
+export { GameProvider as GameScoreProvider, GameScoreContext, useGameScore, makeInitialTeams } from './GameContext';
