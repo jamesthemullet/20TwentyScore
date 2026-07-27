@@ -21,14 +21,14 @@ const AccountContext = createContext<AccountContextType>({
   refresh: () => {},
 });
 
-export function AccountProvider({ children }: { children: React.ReactNode }) {
+export function AccountProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
   const { status } = useSession();
   const [user, setUser] = useState<User | null>(null);
   const [tier, setTier] = useState<Tier>('free');
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchAccount = useCallback(() => {
+  const fetchAccount = useCallback((): void => {
     setIsLoading(true);
     fetch('/api/account')
       .then((r) => r.json() as Promise<{ user: User | null; tier: Tier; subscription: Subscription | null }>)

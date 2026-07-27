@@ -23,14 +23,14 @@ const Index: React.FC = () => {
 
   const { setGameScore } = useGameScore();
 
-  const loadGame = () => {
+  const loadGame = (): void => {
     const gameData = localStorage.getItem("gameData");
     if (!gameData) {
       setError("No game data found");
       return;
     }
     try {
-      const parsedGameData = JSON.parse(gameData);
+      const parsedGameData: unknown = JSON.parse(gameData);
       if (
         !Array.isArray(parsedGameData) ||
         parsedGameData.length !== 2 ||
@@ -46,7 +46,7 @@ const Index: React.FC = () => {
     }
   };
 
-  const newGame = () => {
+  const newGame = (): void => {
     localStorage.removeItem("gameData");
     localStorage.removeItem("cloudSaveId");
     router.push("/setup");

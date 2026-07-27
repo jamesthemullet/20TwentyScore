@@ -16,7 +16,7 @@ export default function Nav() {
 
   useEffect(() => {
     if (!isDropdownOpen) return;
-    function handleKeyDown(e: KeyboardEvent) {
+    function handleKeyDown(e: KeyboardEvent): void {
       if (e.key === 'Escape') setIsDropdownOpen(false);
     }
     document.addEventListener('keydown', handleKeyDown);

@@ -60,7 +60,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     runs: number,
     action: null | string,
     methodOfWicket?: 'LBW' | 'Caught' | 'Run Out'
-  ) => {
+  ): void => {
     if (playerIndex === undefined) {
       return;
     }

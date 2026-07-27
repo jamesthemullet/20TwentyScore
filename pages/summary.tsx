@@ -54,7 +54,7 @@ const SummaryPage: React.FC = () => {
   const bowlingTeam = useMemo(() => gameScore.find((t) => t.currentBowlingTeam) ?? gameScore[1], [gameScore]);
   const result = useMemo(() => determineResult(gameScore), [gameScore]);
 
-  const copyScorecard = useCallback(async () => {
+  const copyScorecard = useCallback(async (): Promise<void> => {
     await navigator.clipboard.writeText(formatShareText(gameScore));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -63,7 +63,7 @@ const SummaryPage: React.FC = () => {
   const [firstInningsTeam, secondInningsTeam] = gameScore as [Team, Team];
   const showSecondInnings = secondInningsTeam.players.some(hasBatted);
 
-  const saveToCloud = useCallback(async () => {
+  const saveToCloud = useCallback(async (): Promise<void> => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
