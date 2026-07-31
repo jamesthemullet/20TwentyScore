@@ -11,7 +11,7 @@ export default function UserMenu() {
   const avatarRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handleClickOutside(e: MouseEvent): void {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsOpen(false);
       }

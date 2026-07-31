@@ -1,9 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { GameSave } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { getGameSaveCount, getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type SaveListItem = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed' | 'seasonId'>;
+type SavesIndexResponse = SaveListItem[] | GameSave | { error: string };
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<SavesIndexResponse>) {
   const session = await requireSession(req, res);
   if (!session) return;
 

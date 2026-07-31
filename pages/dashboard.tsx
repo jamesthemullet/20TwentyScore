@@ -61,7 +61,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
     }
   }, []);
 
-  const assignSeason = useCallback(async (saveId: string, seasonId: string | null) => {
+  const assignSeason = useCallback(async (saveId: string, seasonId: string | null): Promise<void> => {
     const res = await fetch(`/api/saves/${saveId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
     }
   }, []);
 
-  const saveToCloud = useCallback(async () => {
+  const saveToCloud = useCallback(async (): Promise<void> => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
