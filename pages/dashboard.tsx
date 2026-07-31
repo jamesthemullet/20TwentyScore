@@ -1,57 +1,50 @@
 import styled from "@emotion/styled";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { getServerSession } from "next-auth/next";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import type { GetServerSideProps } from "next";
 import Layout from "../components/layout/layout";
 import SaveCard from "../components/saves/SaveCard";
 import UpgradeCTA from "../components/premium/UpgradeCTA";
-import { useAccount } from "../context/AccountContext";
+import { authOptions } from "../lib/authOptions";
+import { getUserTier } from "../lib/subscription";
+import { prisma } from "../lib/prisma";
 import { generateSaveTitle } from "../lib/gameSaveTitle";
 import { useGameScore } from "../context/GameScoreContext";
-import type { GameSave } from "@prisma/client";
 
-type SaveSummary = Pick<
-  GameSave,
-  "id" | "title" | "createdAt" | "completed" | "seasonId"
->;
+type SaveSummary = {
+  id: string;
+  title: string | null;
+  createdAt: string;
+  completed: boolean;
+  seasonId: string | null;
+};
 
 type SeasonSummary = { id: string; name: string };
 
-export default function DashboardPage() {
+type DashboardProps = {
+  tier: "free" | "premium";
+  initialSaves: SaveSummary[];
+  initialSeasons: SeasonSummary[];
+};
+
+export default function DashboardPage({ tier, initialSaves, initialSeasons }: DashboardProps) {
   const { data: session } = useSession();
-  const { tier, isLoading: accountLoading } = useAccount();
   const { gameScore } = useGameScore();
   const router = useRouter();
-  const [saves, setSaves] = useState<SaveSummary[]>([]);
-  const [seasons, setSeasons] = useState<SeasonSummary[]>([]);
-  const [savesLoading, setSavesLoading] = useState(true);
+  const [saves, setSaves] = useState<SaveSummary[]>(initialSaves);
+  const [seasons] = useState<SeasonSummary[]>(initialSeasons);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [savesError, setSavesError] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
-  const hasLocalGame =
-    typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
-
-  useEffect(() => {
-    if (!session) return;
-    fetch("/api/saves")
-      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
-      .then((data) => setSaves(data))
-      .catch(() => setSavesError(true))
-      .finally(() => setSavesLoading(false));
-  }, [session]);
-
-  useEffect(() => {
-    if (!session || tier !== "premium") return;
-    fetch("/api/seasons")
-      .then((r) => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
-      .then((data: SeasonSummary[]) => setSeasons(data))
-      .catch(() => {});
-  }, [session, tier]);
+  const [hasLocalGame] = useState<boolean>(
+    () => typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"))
+  );
 
   useEffect(() => {
     if (!session || router.query.checkout !== "success") return;
@@ -68,7 +61,7 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const assignSeason = async (saveId: string, seasonId: string | null): Promise<void> => {
+  const assignSeason = useCallback(async (saveId: string, seasonId: string | null): Promise<void> => {
     const res = await fetch(`/api/saves/${saveId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -79,9 +72,9 @@ export default function DashboardPage() {
         prev.map((s) => (s.id === saveId ? { ...s, seasonId } : s))
       );
     }
-  };
+  }, []);
 
-  const saveToCloud = async (): Promise<void> => {
+  const saveToCloud = useCallback(async (): Promise<void> => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
@@ -128,7 +121,7 @@ export default function DashboardPage() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [gameScore]);
 
   if (!session) {
     return (
@@ -152,6 +145,7 @@ export default function DashboardPage() {
       description="View and manage your cloud saves and cricket seasons."
     >
       <PageWrapper>
+        <PageTitle>Dashboard</PageTitle>
         {checkoutSuccess && (
           <CheckoutBanner role="status">
             Welcome to Premium! Your subscription is now active.
@@ -183,17 +177,15 @@ export default function DashboardPage() {
             <AccountName>{session.user?.name}</AccountName>
             <AccountEmail>{session.user?.email}</AccountEmail>
           </AccountInfo>
-          {!accountLoading && (
-            <TierBadge premium={tier === "premium"}>
-              {tier === "premium" ? "Premium" : "Free"}
-            </TierBadge>
-          )}
+          <TierBadge premium={tier === "premium"}>
+            {tier === "premium" ? "Premium" : "Free"}
+          </TierBadge>
         </AccountSection>
 
         <SectionHeader>
           <SectionTitle>Cloud saves</SectionTitle>
           {hasLocalGame && (
-            <SaveButton onClick={saveToCloud} disabled={saving}>
+            <SaveButton type="button" onClick={saveToCloud} disabled={saving}>
               {saving ? "Saving…" : "Save current game to cloud"}
             </SaveButton>
           )}
@@ -210,11 +202,7 @@ export default function DashboardPage() {
         )}
         {saveSuccess && <SuccessMessage role="status">Game saved!</SuccessMessage>}
 
-        {savesLoading ? (
-          <EmptyState>Loading saves…</EmptyState>
-        ) : savesError ? (
-          <ErrorMessage role="alert">Could not load saves. Please refresh.</ErrorMessage>
-        ) : saves.length === 0 ? (
+        {saves.length === 0 ? (
           <EmptyState>
             No cloud saves yet. Finish a game and save it from the Summary page.
           </EmptyState>
@@ -237,7 +225,7 @@ export default function DashboardPage() {
           ) : (
             <>
               <LockedLink>
-                <LockIcon aria-hidden>🔒</LockIcon>
+                <LockIcon aria-hidden="true">🔒</LockIcon>
                 Seasons — <UpgradeLink href="/dashboard#upgrade">Upgrade to Premium</UpgradeLink>
               </LockedLink>
               <UpgradeSection id="upgrade">
@@ -250,6 +238,46 @@ export default function DashboardPage() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<DashboardProps> = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return { redirect: { destination: "/auth/signin", permanent: false } };
+  }
+
+  const userId = session.user.id;
+  const tier = await getUserTier(userId);
+
+  const [saves, seasons] = await Promise.all([
+    prisma.gameSave.findMany({
+      where: { userId },
+      select: { id: true, title: true, createdAt: true, completed: true, seasonId: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    tier === "premium"
+      ? prisma.season.findMany({
+          where: { userId },
+          select: { id: true, name: true },
+          orderBy: { createdAt: "desc" },
+        })
+      : Promise.resolve([] as SeasonSummary[]),
+  ]);
+
+  return {
+    props: {
+      tier,
+      initialSaves: saves.map((s) => ({
+        id: s.id,
+        title: s.title,
+        createdAt: s.createdAt.toISOString(),
+        completed: s.completed,
+        seasonId: s.seasonId,
+      })),
+      initialSeasons: seasons,
+    },
+  };
+};
 
 const PageWrapper = styled.main`
   width: 100%;
@@ -337,6 +365,15 @@ const SectionTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1a1a1a;
+`;
+
+const PageTitle = styled.h1`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 2rem;
   font-weight: 400;
   margin: 0;
   color: #1a1a1a;

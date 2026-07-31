@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
@@ -149,9 +149,9 @@ const MatchPage: React.FC = () => {
     setSelectBowler(false);
   };
 
-  const handleSelectBowler = (): void => {
+  const handleSelectBowler = useCallback((): void => {
     setSelectBowler(true);
-  };
+  }, []);
 
   if (!hasGame) {
     return (
@@ -603,10 +603,11 @@ const BoxHeader = styled.div`
   justify-content: space-between;
 `;
 
-const BoxTitle = styled.p`
+const BoxTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
@@ -871,10 +872,11 @@ const EndOfOverHeader = styled.div`
   margin-bottom: 0.75rem;
 `;
 
-const EndOfOverItalic = styled.p`
+const EndOfOverItalic = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
   white-space: nowrap;
@@ -932,10 +934,11 @@ const BowlerPickNumber = styled.span`
   font-size: 1.25rem;
 `;
 
-const BowlerPickTitle = styled.p`
+const BowlerPickTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 `;
