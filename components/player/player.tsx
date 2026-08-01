@@ -77,7 +77,6 @@ export const Player = ({
             <StyledButton onClick={handleSavePlayerName} aria-label={`Save name for ${name}`}>
               <Image
                 alt=""
-                title="Save player"
                 width={16}
                 height={16}
                 src="/icons/png/009-save.png"

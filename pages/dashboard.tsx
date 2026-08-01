@@ -42,8 +42,9 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
-  const hasLocalGame =
-    typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
+  const [hasLocalGame] = useState<boolean>(
+    () => typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"))
+  );
 
   useEffect(() => {
     if (!session || router.query.checkout !== "success") return;
@@ -60,7 +61,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
     }
   }, []);
 
-  const assignSeason = useCallback(async (saveId: string, seasonId: string | null) => {
+  const assignSeason = useCallback(async (saveId: string, seasonId: string | null): Promise<void> => {
     const res = await fetch(`/api/saves/${saveId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -73,7 +74,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
     }
   }, []);
 
-  const saveToCloud = async () => {
+  const saveToCloud = useCallback(async (): Promise<void> => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
@@ -120,7 +121,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
     } finally {
       setSaving(false);
     }
-  };
+  }, [gameScore]);
 
   if (!session) {
     return (
@@ -185,7 +186,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
         <SectionHeader>
           <SectionTitle>Cloud saves</SectionTitle>
           {hasLocalGame && (
-            <SaveButton onClick={saveToCloud} disabled={saving}>
+            <SaveButton type="button" onClick={saveToCloud} disabled={saving}>
               {saving ? "Saving…" : "Save current game to cloud"}
             </SaveButton>
           )}
@@ -225,7 +226,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
           ) : (
             <>
               <LockedLink>
-                <LockIcon aria-hidden>🔒</LockIcon>
+                <LockIcon aria-hidden="true">🔒</LockIcon>
                 Seasons — <UpgradeLink href="/dashboard#upgrade">Upgrade to Premium</UpgradeLink>
               </LockedLink>
               <UpgradeSection id="upgrade">
@@ -374,6 +375,15 @@ const SectionTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1a1a1a;
+`;
+
+const PageTitle = styled.h1`
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+  font-size: 2rem;
   font-weight: 400;
   margin: 0;
   color: #1a1a1a;

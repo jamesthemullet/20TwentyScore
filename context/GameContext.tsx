@@ -11,6 +11,7 @@ export type TeamPlayer = {
   wicketsTaken: number;
   currentStriker: boolean;
   allActions: (string | null)[];
+  bowlingActions?: (string | null)[];
   currentNonStriker: boolean;
   currentBowler: boolean;
   onTheCrease: boolean;
@@ -225,7 +226,7 @@ function applyBowlingUpdate(
       ? {
           ...p,
           wicketsTaken: p.wicketsTaken + (action === 'Wicket' ? 1 : 0),
-          allActions: [...p.allActions, action || ''],
+          bowlingActions: [...(p.bowlingActions ?? []), action || runs.toString()],
           oversBowled: endOfOver ? p.oversBowled + 1 : p.oversBowled,
           runsConceded: (p.runsConceded ?? 0) + runs
         }
