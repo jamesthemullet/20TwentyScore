@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { GameScoreContext } from '../../context/GameScoreContext';
-import type { GameScore, GameScoreContextType } from '../../context/GameContext';
+import type { GameScore, GameScoreContextType, TeamPlayer } from '../../context/GameContext';
 import SummaryPage from '../../pages/summary';
 
 jest.mock('next/router', () => ({
@@ -12,6 +12,23 @@ jest.mock('next-auth/react', () => ({
 }));
 
 const { useSession } = jest.requireMock<{ useSession: jest.Mock }>('next-auth/react');
+
+const makePlayer = (overrides: Partial<TeamPlayer> = {}): TeamPlayer => ({
+  index: 0,
+  name: 'Player 1',
+  runs: 0,
+  wicketsTaken: 0,
+  currentStriker: false,
+  allActions: [],
+  currentNonStriker: false,
+  currentBowler: false,
+  onTheCrease: false,
+  status: 'Not out',
+  methodOfWicket: null,
+  oversBowled: 0,
+  runsConceded: 0,
+  ...overrides,
+});
 
 const makeTeam = (overrides: Partial<GameScore[0]> = {}): GameScore[0] => ({
   index: 0,
@@ -105,5 +122,55 @@ describe('SummaryPage', () => {
   it('shows the match heading', () => {
     renderSummary();
     expect(screen.getByRole('heading', { name: /match summary/i })).toBeInTheDocument();
+  });
+
+  it('shows only the first innings scorecard when the match is in progress', () => {
+    const team1 = makeTeam({
+      name: 'Team 1',
+      index: 0,
+      totalRuns: 45,
+      currentBattingTeam: true,
+      currentBowlingTeam: false,
+      players: [makePlayer({ index: 0, name: 'Opener 1', runs: 45, allActions: ['4', '4'] })],
+    });
+    const team2 = makeTeam({
+      name: 'Team 2',
+      index: 1,
+      totalRuns: 0,
+      currentBattingTeam: false,
+      currentBowlingTeam: true,
+      players: [makePlayer({ index: 0, name: 'Batter 2' })],
+    });
+    renderSummary({ gameScore: [team1, team2] as GameScore });
+
+    expect(screen.getByText('1st Innings')).toBeInTheDocument();
+    expect(screen.queryByText('2nd Innings')).not.toBeInTheDocument();
+    expect(screen.getByText('Opener 1')).toBeInTheDocument();
+  });
+
+  it('shows both innings scorecards once the second team has started batting', () => {
+    const team1 = makeTeam({
+      name: 'Team 1',
+      index: 0,
+      totalRuns: 45,
+      finishedBatting: true,
+      currentBattingTeam: false,
+      currentBowlingTeam: false,
+      players: [makePlayer({ index: 0, name: 'Opener 1', runs: 45, allActions: ['4', '4'] })],
+    });
+    const team2 = makeTeam({
+      name: 'Team 2',
+      index: 1,
+      totalRuns: 20,
+      currentBattingTeam: true,
+      currentBowlingTeam: false,
+      players: [makePlayer({ index: 0, name: 'Opener 2', runs: 20, allActions: ['4', '6'] })],
+    });
+    renderSummary({ gameScore: [team1, team2] as GameScore });
+
+    expect(screen.getByText('1st Innings')).toBeInTheDocument();
+    expect(screen.getByText('2nd Innings')).toBeInTheDocument();
+    expect(screen.getByText('Opener 1')).toBeInTheDocument();
+    expect(screen.getByText('Opener 2')).toBeInTheDocument();
   });
 });

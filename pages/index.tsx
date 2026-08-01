@@ -23,7 +23,7 @@ const Index: React.FC = () => {
 
   const { setGameScore } = useGameScore();
 
-  const loadGame = () => {
+  const loadGame = (): void => {
     const gameData = localStorage.getItem("gameData");
     if (!gameData) {
       setError("No game data found");
@@ -46,7 +46,7 @@ const Index: React.FC = () => {
     }
   };
 
-  const newGame = () => {
+  const newGame = (): void => {
     localStorage.removeItem("gameData");
     localStorage.removeItem("cloudSaveId");
     router.push("/setup");
@@ -54,6 +54,7 @@ const Index: React.FC = () => {
 
   return (
     <Layout
+      title="T20 Cricket Scorer"
       description="Track your T20 cricket match ball by ball. Start a new game or resume a saved match."
     >
       <Main>

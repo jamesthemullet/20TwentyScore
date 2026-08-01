@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Season } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
@@ -13,7 +14,10 @@ type SeasonWithCount = {
   _count: { gameSaves: number };
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type SeasonListItem = Omit<SeasonWithCount, '_count'> & { gameCount: number };
+type SeasonsIndexResponse = SeasonListItem[] | Season | { error: string };
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<SeasonsIndexResponse>) {
   const session = await requireSession(req, res);
   if (!session) return;
 

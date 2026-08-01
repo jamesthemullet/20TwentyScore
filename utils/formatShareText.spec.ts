@@ -1,5 +1,5 @@
 import { formatShareText } from './formatShareText';
-import type { Team } from '../context/GameContext';
+import type { Team, TeamPlayer } from '../context/GameContext';
 
 const baseTeam = (overrides: Partial<Team>): Team => ({
   players: [],
@@ -12,6 +12,23 @@ const baseTeam = (overrides: Partial<Team>): Team => ({
   currentBattingTeam: false,
   currentBowlingTeam: false,
   finishedBatting: false,
+  ...overrides,
+});
+
+const basePlayer = (overrides: Partial<TeamPlayer>): TeamPlayer => ({
+  index: 0,
+  name: 'Player 1',
+  runs: 0,
+  wicketsTaken: 0,
+  currentStriker: false,
+  allActions: [],
+  currentNonStriker: false,
+  currentBowler: false,
+  onTheCrease: false,
+  status: 'Not out',
+  methodOfWicket: null,
+  oversBowled: 0,
+  runsConceded: 0,
   ...overrides,
 });
 
@@ -45,5 +62,50 @@ describe('formatShareText', () => {
     const t1 = baseTeam({ name: 'Team 2', index: 1, totalRuns: 100, overs: 20, finishedBatting: true });
     const text = formatShareText([t0, t1]);
     expect(text).toContain('Result: Match drawn');
+  });
+
+  it('includes a full batting and bowling scorecard once a team has batted', () => {
+    const t0 = baseTeam({
+      name: 'Team 1',
+      totalRuns: 45,
+      totalWicketsConceded: 1,
+      overs: 6,
+      players: [
+        basePlayer({ index: 0, name: 'Player 1', runs: 32, allActions: ['1', '4', '4', '0', '6', '0'] }),
+        basePlayer({
+          index: 1,
+          name: 'Player 2',
+          runs: 13,
+          status: 'Out',
+          methodOfWicket: 'LBW',
+          allActions: ['1', '0', 'Wicket']
+        }),
+        basePlayer({ index: 2, name: 'Player 3' })
+      ]
+    });
+    const t1 = baseTeam({
+      name: 'Team 2',
+      index: 1,
+      players: [
+        basePlayer({
+          index: 0,
+          name: 'Bowler 1',
+          runsConceded: 20,
+          wicketsTaken: 1,
+          bowlingActions: ['0', '4', '0', '1', '0', 'Wicket']
+        })
+      ]
+    });
+
+    const text = formatShareText([t0, t1]);
+
+    expect(text).toContain('Team 1 batting');
+    expect(text).toContain('Player 1');
+    expect(text).toContain('Player 2');
+    expect(text).toContain('Did not bat: Player 3');
+    expect(text).toContain('Total');
+    expect(text).toContain('Team 2 bowling');
+    expect(text).toContain('Bowler 1');
+    expect(text).not.toContain('Team 2 batting');
   });
 });
