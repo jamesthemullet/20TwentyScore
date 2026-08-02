@@ -553,7 +553,7 @@ const MatchPage: React.FC = () => {
                             {economy ? `${economy} econ` : "— econ"}
                           </BowlerItemEcon>
                         )}
-                        {!isJustBowled && <BowlerItemArrow>→</BowlerItemArrow>}
+                        {!isJustBowled && <BowlerItemArrow aria-hidden="true">→</BowlerItemArrow>}
                       </BowlerListItem>
                     );
                   })}

@@ -36,7 +36,7 @@ export default function SeasonDetailPage({ season }: PageProps) {
       description={`Season: ${season.name} — match saves on 20Twenty Score.`}
     >
       <PageWrapper>
-        <BackLink href="/seasons">← Back to seasons</BackLink>
+        <BackLink href="/seasons" aria-label="Back to seasons">← Back to seasons</BackLink>
         <PageTitle>{season.name}</PageTitle>
         {season.description && <Description>{season.description}</Description>}
 

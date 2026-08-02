@@ -14,8 +14,9 @@ const ScoreboardPage: React.FC = () => {
         <meta name="robots" content="noindex" />
       </Head>
       <Main>
+        <PageTitle>Scoreboard</PageTitle>
         <EmptyState>
-          <PageTitle>Scoreboard</PageTitle>
+          <EmptyStateTitle>Scoreboard</EmptyStateTitle>
           <p>Scoreboard coming soon.</p>
           <Link href="/">Go home</Link>
         </EmptyState>
@@ -26,6 +27,15 @@ const ScoreboardPage: React.FC = () => {
 
 export default ScoreboardPage;
 
+const PageTitle = styled.h1`
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin: 2rem 0 1rem 2rem;
+  color: #1a1a1a;
+`;
+
 const Main = styled.main`
   position: relative;
   width: 100%;
@@ -35,7 +45,7 @@ const Main = styled.main`
   justify-content: center;
 `;
 
-const PageTitle = styled.h1`
+const EmptyStateTitle = styled.h1`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 2rem;
