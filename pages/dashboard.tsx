@@ -380,15 +380,6 @@ const SectionTitle = styled.h2`
   color: #1a1a1a;
 `;
 
-const PageTitle = styled.h1`
-  font-family: "Bodoni Moda", serif;
-  font-style: italic;
-  font-size: 2rem;
-  font-weight: 400;
-  margin: 0;
-  color: #1a1a1a;
-`;
-
 const SaveButton = styled.button`
   font-family: "Inter", sans-serif;
   font-size: 0.8rem;

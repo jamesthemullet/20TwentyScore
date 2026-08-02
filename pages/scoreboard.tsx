@@ -16,7 +16,7 @@ const ScoreboardPage: React.FC = () => {
       <Main>
         <PageTitle>Scoreboard</PageTitle>
         <EmptyState>
-          <PageTitle>Scoreboard</PageTitle>
+          <EmptyStateTitle>Scoreboard</EmptyStateTitle>
           <p>Scoreboard coming soon.</p>
           <Link href="/">Go home</Link>
         </EmptyState>
@@ -45,7 +45,7 @@ const Main = styled.main`
   justify-content: center;
 `;
 
-const PageTitle = styled.h1`
+const EmptyStateTitle = styled.h1`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 2rem;
