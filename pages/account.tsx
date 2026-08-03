@@ -1,12 +1,25 @@
 import styled from '@emotion/styled';
+import { getServerSession } from 'next-auth/next';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
+import type { GetServerSideProps } from 'next';
 import Layout from '../components/layout/layout';
 import UpgradeCTA from '../components/premium/UpgradeCTA';
-import { useAccount } from '../context/AccountContext';
+import { authOptions } from '../lib/authOptions';
+import { getUserTier } from '../lib/subscription';
+import { prisma } from '../lib/prisma';
 
-export default function AccountPage() {
-  const { tier, subscription, isLoading } = useAccount();
+type SubscriptionSummary = {
+  status: string;
+  plan: string;
+};
+
+type AccountPageProps = {
+  tier: 'free' | 'premium';
+  subscription: SubscriptionSummary | null;
+};
+
+export default function AccountPage({ tier, subscription }: AccountPageProps) {
   const [billingLoading, setBillingLoading] = useState(false);
   const [billingError, setBillingError] = useState<string | null>(null);
 
@@ -27,19 +40,6 @@ export default function AccountPage() {
       setBillingLoading(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <Layout
-        title="Account"
-        description="Manage your 20Twenty Score account and subscription."
-      >
-        <PageWrapper>
-          <LoadingText>Loading…</LoadingText>
-        </PageWrapper>
-      </Layout>
-    );
-  }
 
   return (
     <Layout
@@ -86,6 +86,31 @@ export default function AccountPage() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<AccountPageProps> = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return { redirect: { destination: '/auth/signin', permanent: false } };
+  }
+
+  const userId = session.user.id;
+
+  const [tier, subscription] = await Promise.all([
+    getUserTier(userId),
+    prisma.subscription.findUnique({
+      where: { userId },
+      select: { status: true, plan: true },
+    }),
+  ]);
+
+  return {
+    props: {
+      tier,
+      subscription,
+    },
+  };
+};
 
 const PageWrapper = styled.main`
   width: 100%;
@@ -201,10 +226,4 @@ const SignOutButton = styled.button`
     background-color: #b83320;
     color: #fff;
   }
-`;
-
-const LoadingText = styled.p`
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  color: #767676;
 `;
