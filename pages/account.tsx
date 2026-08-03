@@ -23,7 +23,7 @@ export default function AccountPage({ tier, subscription }: AccountPageProps) {
   const [billingLoading, setBillingLoading] = useState(false);
   const [billingError, setBillingError] = useState<string | null>(null);
 
-  const openBillingPortal = async () => {
+  const openBillingPortal = async (): Promise<void> => {
     setBillingLoading(true);
     setBillingError(null);
     try {

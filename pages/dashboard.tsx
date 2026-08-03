@@ -44,8 +44,9 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
   const [saveSuccess, setSaveSuccess] = useState(false);
   const didCleanUrl = useRef(false);
 
-  const hasLocalGame =
-    typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"));
+  const [hasLocalGame] = useState<boolean>(
+    () => typeof window !== "undefined" && Boolean(localStorage.getItem("gameData"))
+  );
 
   // Strip ?checkout=success from the URL after a successful checkout without triggering
   // a full page reload, so the URL is clean if the user bookmarks or shares it.
@@ -56,7 +57,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
     }
   }, [checkoutSuccess, router]);
 
-  const assignSeason = useCallback(async (saveId: string, seasonId: string | null) => {
+  const assignSeason = useCallback(async (saveId: string, seasonId: string | null): Promise<void> => {
     const res = await fetch(`/api/saves/${saveId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -69,7 +70,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
     }
   }, []);
 
-  const saveToCloud = async () => {
+  const saveToCloud = useCallback(async (): Promise<void> => {
     setSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
@@ -116,7 +117,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
     } finally {
       setSaving(false);
     }
-  };
+  }, [gameScore]);
 
   if (!session) {
     return (
@@ -125,6 +126,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
         description="View and manage your cloud saves and cricket seasons."
       >
         <PageWrapper>
+          <PageTitle>Dashboard</PageTitle>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view your
             dashboard.
@@ -140,6 +142,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
       description="View and manage your cloud saves and cricket seasons."
     >
       <PageWrapper>
+        <PageTitle>Dashboard</PageTitle>
         {checkoutSuccess && (
           <CheckoutBanner role="status">
             Welcome to Premium! Your subscription is now active.
@@ -179,7 +182,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
         <SectionHeader>
           <SectionTitle>Cloud saves</SectionTitle>
           {hasLocalGame && (
-            <SaveButton onClick={saveToCloud} disabled={saving}>
+            <SaveButton type="button" onClick={saveToCloud} disabled={saving}>
               {saving ? "Saving…" : "Save current game to cloud"}
             </SaveButton>
           )}
@@ -219,7 +222,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
           ) : (
             <>
               <LockedLink>
-                <LockIcon aria-hidden>🔒</LockIcon>
+                <LockIcon aria-hidden="true">🔒</LockIcon>
                 Seasons — <UpgradeLink href="/dashboard#upgrade">Upgrade to Premium</UpgradeLink>
               </LockedLink>
               <UpgradeSection id="upgrade">
@@ -295,6 +298,15 @@ const PageWrapper = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+`;
+
+const PageTitle = styled.h1`
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1a1a1a;
 `;
 
 const AccountSection = styled.div`

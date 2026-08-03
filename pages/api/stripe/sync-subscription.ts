@@ -3,7 +3,9 @@ import { requireSession } from '../../../lib/apiAuth';
 import { getUserTier } from '../../../lib/subscription';
 import { syncSubscriptionForUser } from '../../../lib/syncSubscription';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type SyncSubscriptionResponse = { tier: 'free' | 'premium' } | { error: string };
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<SyncSubscriptionResponse>) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).end();

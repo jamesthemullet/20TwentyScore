@@ -35,7 +35,7 @@ const SetupPage: React.FC = () => {
     emptyTeam(),
   ]);
 
-  const updateTeamName = (teamIndex: 0 | 1, name: string) => {
+  const updateTeamName = (teamIndex: 0 | 1, name: string): void => {
     setTeams((prev) => {
       const next = [...prev] as [TeamFormState, TeamFormState];
       next[teamIndex] = { ...next[teamIndex], name };
@@ -43,7 +43,7 @@ const SetupPage: React.FC = () => {
     });
   };
 
-  const updatePlayerName = (teamIndex: 0 | 1, playerIndex: number, name: string) => {
+  const updatePlayerName = (teamIndex: 0 | 1, playerIndex: number, name: string): void => {
     setTeams((prev) => {
       const next = [...prev] as [TeamFormState, TeamFormState];
       const playerNames = [...next[teamIndex].playerNames];
@@ -53,7 +53,7 @@ const SetupPage: React.FC = () => {
     });
   };
 
-  const pasteTeamRoster = (teamIndex: 0 | 1, e: React.ClipboardEvent<HTMLInputElement>) => {
+  const pasteTeamRoster = (teamIndex: 0 | 1, e: React.ClipboardEvent<HTMLInputElement>): void => {
     const names = parseNameList(e.clipboardData.getData("text"));
     if (names.length <= 1) return;
 
@@ -74,7 +74,7 @@ const SetupPage: React.FC = () => {
     teamIndex: 0 | 1,
     playerIndex: number,
     e: React.ClipboardEvent<HTMLInputElement>
-  ) => {
+  ): void => {
     const names = parseNameList(e.clipboardData.getData("text"));
     if (names.length <= 1) return;
 
@@ -91,7 +91,7 @@ const SetupPage: React.FC = () => {
     });
   };
 
-  const startMatch = () => {
+  const startMatch = (): void => {
     setGameScore(
       makeInitialTeams(
         { name: teams[0].name, playerNames: teams[0].playerNames },
@@ -211,16 +211,20 @@ const TeamNameInput = styled.input<{ color: string }>`
   background: transparent;
 
   &:focus {
-    outline: none;
+    outline: 2px solid #005fcc;
+    outline-offset: 2px;
   }
 `;
 
-const PlayerList = styled.div`
+const PlayerList = styled.ul`
   display: flex;
   flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 `;
 
-const PlayerRow = styled.div`
+const PlayerRow = styled.li`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -252,7 +256,8 @@ const PlayerNameInput = styled.input`
   background: transparent;
 
   &:focus {
-    outline: none;
+    outline: 2px solid #005fcc;
+    outline-offset: 2px;
     border-bottom: 1px solid #1a1a1a;
   }
 `;

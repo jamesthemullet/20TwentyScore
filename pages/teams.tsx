@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import type React from 'react';
+import { useMemo } from 'react';
 import Layout from '../components/layout/layout';
 import { useGameScore } from '../context/GameScoreContext';
 import type { Team, TeamPlayer } from '../context/GameContext';
@@ -20,7 +21,7 @@ function formatScore(team: Team): string {
   return `${team.totalRuns}/${team.totalWicketsConceded} (${overs})`;
 }
 
-function getStatusBadge(player: TeamPlayer, teamIndex: number, battingTeamIndex: number) {
+function getStatusBadge(player: TeamPlayer, teamIndex: number, battingTeamIndex: number): 'STRIKE' | 'NON' | 'BOWLING' | null {
   const isBattingTeam = teamIndex === battingTeamIndex;
   if (isBattingTeam && player.currentStriker) return 'STRIKE';
   if (isBattingTeam && player.currentNonStriker) return 'NON';
@@ -31,7 +32,7 @@ function getStatusBadge(player: TeamPlayer, teamIndex: number, battingTeamIndex:
 const TeamsPage: React.FC = () => {
   const { gameScore } = useGameScore();
 
-  const battingTeam = gameScore.find((t) => t.currentBattingTeam);
+  const battingTeam = useMemo(() => gameScore.find((t) => t.currentBattingTeam), [gameScore]);
   const battingTeamIndex = battingTeam?.index ?? 0;
 
   return (
@@ -222,12 +223,15 @@ const PanelDivider = styled.hr`
   margin: 0 0 0.25rem;
 `;
 
-const PlayerList = styled.div`
+const PlayerList = styled.ul`
   display: flex;
   flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 `;
 
-const PlayerRow = styled.div`
+const PlayerRow = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;

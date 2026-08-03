@@ -4,7 +4,7 @@ import { requireEnv } from "./env";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-function createPrismaClient() {
+function createPrismaClient(): PrismaClient {
   const adapter = new PrismaPg({
     connectionString: requireEnv("DATABASE_URL"),
   });
