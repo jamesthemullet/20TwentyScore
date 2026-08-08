@@ -1,7 +1,7 @@
 import type { TeamPlayer } from '../../context/GameContext';
 
 const defaultPlayers = (names?: string[]): TeamPlayer[] => {
-  const nameAt = (i: number) => names?.[i]?.trim() || `Player ${i + 1}`;
+  const nameAt = (i: number): string => names?.[i]?.trim() || `Player ${i + 1}`;
 
   return [
     {
