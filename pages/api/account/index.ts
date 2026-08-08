@@ -1,9 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { User, Subscription } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type AccountResponse = {
+  user: User | null;
+  subscription: Subscription | null;
+  tier: 'free' | 'premium';
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<AccountResponse>) {
   const session = await requireSession(req, res);
   if (!session) return;
 

@@ -130,6 +130,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons }: Da
         description="View and manage your cloud saves and cricket seasons."
       >
         <PageWrapper>
+          <PageTitle>Dashboard</PageTitle>
           <p>
             Please <Link href="/auth/signin">sign in</Link> to view your
             dashboard.
@@ -289,6 +290,15 @@ const PageWrapper = styled.main`
   gap: 2rem;
 `;
 
+const PageTitle = styled.h1`
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1a1a1a;
+`;
+
 const AccountSection = styled.div`
   display: flex;
   align-items: center;
@@ -365,15 +375,6 @@ const SectionTitle = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-style: italic;
   font-size: 1.5rem;
-  font-weight: 400;
-  margin: 0;
-  color: #1a1a1a;
-`;
-
-const PageTitle = styled.h1`
-  font-family: "Bodoni Moda", serif;
-  font-style: italic;
-  font-size: 2rem;
   font-weight: 400;
   margin: 0;
   color: #1a1a1a;

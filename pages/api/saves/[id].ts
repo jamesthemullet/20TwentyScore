@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { Prisma } from '@prisma/client';
+import type { Prisma, GameSave } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { prisma } from '../../../lib/prisma';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type SavesIdResponse = GameSave | { error: string };
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<SavesIdResponse>) {
   const session = await requireSession(req, res);
   if (!session) return;
 
