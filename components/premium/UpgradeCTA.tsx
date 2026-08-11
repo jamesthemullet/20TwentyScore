@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 export default function UpgradeCTA() {
   const [loading, setLoading] = useState<'monthly' | 'annual' | null>(null);
 
-  const subscribe = async (priceId: string | undefined, plan: 'monthly' | 'annual') => {
+  const subscribe = async (priceId: string | undefined, plan: 'monthly' | 'annual'): Promise<void> => {
     if (!priceId) return;
     setLoading(plan);
     try {

@@ -22,7 +22,7 @@ const SaveCard = memo(function SaveCard({ id, title, createdAt, completed, seaso
     year: 'numeric',
   });
 
-  const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     e.preventDefault();
     const value = e.target.value;
     onSeasonChange?.(id, value === '' ? null : value);

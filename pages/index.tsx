@@ -30,7 +30,7 @@ const Index: React.FC = () => {
       return;
     }
     try {
-      const parsedGameData = JSON.parse(gameData);
+      const parsedGameData: unknown = JSON.parse(gameData);
       if (
         !Array.isArray(parsedGameData) ||
         parsedGameData.length !== 2 ||
