@@ -62,7 +62,7 @@ const MatchPage: React.FC = () => {
   }, [currentBattingTeam, currentBallInThisOver, currentExtrasInThisOver]);
 
   const batterStats = useMemo(() => {
-    const derive = (actions: (string | null)[] | undefined) => ({
+    const derive = (actions: (string | null)[] | undefined): { balls: number; fours: number; sixes: number } => ({
       balls: actions?.filter((a) => a !== null && a !== "Wide").length ?? 0,
       fours: actions?.filter((a) => a === "4").length ?? 0,
       sixes: actions?.filter((a) => a === "6").length ?? 0,

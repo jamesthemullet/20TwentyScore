@@ -21,7 +21,7 @@ const AccountContext = createContext<AccountContextType>({
   refresh: () => {},
 });
 
-export function AccountProvider({ children }: { children: React.ReactNode }) {
+export function AccountProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
   const { status } = useSession();
   const [user, setUser] = useState<User | null>(null);
   const [tier, setTier] = useState<Tier>('free');

@@ -29,7 +29,7 @@ export default function UserMenu() {
 
   useEffect(() => {
     if (!isOpen) return;
-    function handleKeyDown(e: KeyboardEvent) {
+    function handleKeyDown(e: KeyboardEvent): void {
       if (e.key === 'Escape') {
         setIsOpen(false);
         avatarRef.current?.focus();
