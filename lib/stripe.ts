@@ -1,6 +1,19 @@
 import Stripe from 'stripe';
 import { requireEnv } from './env';
 
-export const stripe = new Stripe(requireEnv('STRIPE_SECRET_KEY'), {
-  apiVersion: '2026-07-29.dahlia',
+let _stripe: Stripe | undefined;
+
+function getStripe(): Stripe {
+  if (!_stripe) {
+    _stripe = new Stripe(requireEnv('STRIPE_SECRET_KEY'), {
+      apiVersion: '2026-07-29.dahlia',
+    });
+  }
+  return _stripe;
+}
+
+export const stripe = new Proxy({} as Stripe, {
+  get(_target, prop, receiver) {
+    return Reflect.get(getStripe(), prop, receiver);
+  },
 });

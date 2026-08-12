@@ -22,6 +22,7 @@ jest.mock('next-auth/next', () => ({
 
 jest.mock('../../lib/authOptions', () => ({ authOptions: {} }));
 jest.mock('../../lib/subscription', () => ({ getUserTier: jest.fn() }));
+jest.mock('../../lib/syncSubscription', () => ({ syncSubscriptionForUser: jest.fn() }));
 jest.mock('../../lib/prisma', () => ({ prisma: {} }));
 jest.mock('../../lib/gameSaveTitle', () => ({ generateSaveTitle: jest.fn(() => 'Test Save') }));
 
@@ -52,6 +53,7 @@ const defaultProps: DashboardProps = {
   tier: 'free',
   initialSaves: [],
   initialSeasons: [],
+  checkoutSuccess: false,
 };
 
 const renderDashboard = (props: DashboardProps = defaultProps) =>
