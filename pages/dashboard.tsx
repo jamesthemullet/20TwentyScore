@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -32,6 +33,8 @@ type DashboardProps = {
   initialSeasons: SeasonSummary[];
   checkoutSuccess: boolean;
 };
+
+const avatarImageStyle: CSSProperties = { objectFit: "cover" };
 
 export default function DashboardPage({ tier, initialSaves, initialSeasons, checkoutSuccess }: DashboardProps) {
   const { data: session } = useSession();
@@ -157,7 +160,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
                 alt={session.user.name ?? ""}
                 width={56}
                 height={56}
-                style={{ objectFit: "cover" }}
+                style={avatarImageStyle}
               />
             ) : (
               <AvatarInitials>
