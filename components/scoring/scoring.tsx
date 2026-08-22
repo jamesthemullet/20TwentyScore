@@ -47,13 +47,15 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
     (player) => player.currentNonStriker
   );
 
-  const endOfOver = (): boolean => currentBallInThisOver === BALLS_PER_OVER + currentExtrasInThisOver;
+  const isEndOfOver = currentBallInThisOver === BALLS_PER_OVER + currentExtrasInThisOver;
+
+  const endOfOver = (): boolean => isEndOfOver;
 
   const endOfInnings = (action: string | null): boolean =>
     (currentBattingTeam.totalWicketsConceded === WICKETS_FOR_ALL_OUT && action === 'Wicket') ||
-    (currentBattingTeam.overs === FINAL_OVER_INDEX && endOfOver());
+    (currentBattingTeam.overs === FINAL_OVER_INDEX && isEndOfOver);
 
-  const endOfGame = (): boolean => gameScore.every((team) => team.finishedBatting === true);
+  const isEndOfGame = gameScore.every((team) => team.finishedBatting === true);
 
   const handleScoreClick = (
     playerIndex: number | undefined,
@@ -133,49 +135,49 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
       </ScoringHeader>
       <ScoringGrid>
         <SquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 0, null)}>
           0<ButtonSub>dot ball</ButtonSub>
         </SquareButton>
         <SquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, null)}>
           1<ButtonSub>and next ball</ButtonSub>
         </SquareButton>
         <SquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'wait')}>
           1+<ButtonSub>wait for run</ButtonSub>
         </SquareButton>
         <RedSquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 4, null)}>
           4<ButtonSub>four</ButtonSub>
         </RedSquareButton>
         <GoldSquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 6, null)}>
           6<ButtonSub>six</ButtonSub>
         </GoldSquareButton>
         <SquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'No Ball')}>
           No Ball
         </SquareButton>
         <SquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => setAwaitingMethodOfWicket(true)}>
           W<ButtonSub>wicket</ButtonSub>
         </SquareButton>
         <SquareButton
-          disabled={endOfGame() || awaitingMethodOfWicket}
+          disabled={isEndOfGame || awaitingMethodOfWicket}
           onClick={() => handleScoreClick(currentStriker?.index, 1, 'Wide')}>
           Wide
         </SquareButton>
         {nextRunButtonDisabled ? (
           <GhostSquareButton
             aria-label="Next ball"
-            disabled={nextRunButtonDisabled || endOfGame() || awaitingMethodOfWicket}
+            disabled={nextRunButtonDisabled || isEndOfGame || awaitingMethodOfWicket}
             onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
             <span aria-hidden="true">↵</span>
             <ButtonSub>next ball</ButtonSub>
@@ -183,7 +185,7 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
         ) : (
           <RedSquareButton
             aria-label="Next ball"
-            disabled={endOfGame() || awaitingMethodOfWicket}
+            disabled={isEndOfGame || awaitingMethodOfWicket}
             onClick={() => handleScoreClick(currentStriker?.index, 0, 'Next Ball')}>
             <span aria-hidden="true">↵</span>
             <ButtonSub>next ball</ButtonSub>
@@ -204,17 +206,17 @@ const Scoring = ({ setSelectBowler }: ScoringProps) => {
             </ScoringHeader>
             <ScoringGrid>
               <SquareButton
-                disabled={endOfGame()}
+                disabled={isEndOfGame}
                 onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'LBW')}>
                 LBW
               </SquareButton>
               <SquareButton
-                disabled={endOfGame()}
+                disabled={isEndOfGame}
                 onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Caught')}>
                 Caught
               </SquareButton>
               <SquareButton
-                disabled={endOfGame()}
+                disabled={isEndOfGame}
                 onClick={() => handleScoreClick(currentStriker?.index, 0, 'Wicket', 'Run Out')}>
                 Run Out
               </SquareButton>
