@@ -203,9 +203,9 @@ const MatchPage: React.FC = () => {
               {teamA?.currentBattingTeam ? "Batting" : "Bowling"}
             </StatusLabel>
             <TeamName>{teamA?.name}</TeamName>
-            <TeamScore>
-              <Runs>{teamA?.totalRuns}</Runs>
-              <Wickets>/{teamA?.totalWicketsConceded}</Wickets>
+            <TeamScore aria-label={`${teamA?.totalRuns ?? 0} for ${teamA?.totalWicketsConceded ?? 0}`}>
+              <Runs aria-hidden="true">{teamA?.totalRuns}</Runs>
+              <Wickets aria-hidden="true">/{teamA?.totalWicketsConceded}</Wickets>
             </TeamScore>
             <TeamOvers>
               overs{" "}
@@ -233,9 +233,9 @@ const MatchPage: React.FC = () => {
               <Ball color={team1?.currentBattingTeam ? "#b83320" : "#aaa"} aria-hidden="true" />
             </StatusLabel>
             <TeamName>{team1?.name}</TeamName>
-            <TeamScore>
-              <Runs>{team1?.totalRuns}</Runs>
-              <Wickets>/{team1?.totalWicketsConceded}</Wickets>
+            <TeamScore aria-label={`${team1?.totalRuns ?? 0} for ${team1?.totalWicketsConceded ?? 0}`}>
+              <Runs aria-hidden="true">{team1?.totalRuns}</Runs>
+              <Wickets aria-hidden="true">/{team1?.totalWicketsConceded}</Wickets>
             </TeamScore>
             <TeamOvers>
               overs{" "}
@@ -284,7 +284,7 @@ const MatchPage: React.FC = () => {
                   <BoxTitle>This over</BoxTitle>
                   <BoxMeta>Over {currentOver} of {TOTAL_OVERS}</BoxMeta>
                 </BoxHeader>
-                <BallRow>
+                <BallRow role="list" aria-label="Balls bowled this over">
                   {(() => {
                     const legitimateBalls = overBalls.filter(
                       (b) => b !== "Wd" && b !== "NB"
@@ -298,13 +298,15 @@ const MatchPage: React.FC = () => {
                             <BallCircle
                               // biome-ignore lint/suspicious/noArrayIndexKey: ball position in over is stable
                               key={i}
+                              role="listitem"
                               filled={!isExtra}
                               extra={isExtra}
                               wicket={label === "W"}
                               four={label === "4"}
                               six={label === "6"}
+                              aria-label={formatBallDescription(label)}
                             >
-                              {label}
+                              <span aria-hidden="true">{label}</span>
                             </BallCircle>
                           );
                         })}
@@ -317,6 +319,7 @@ const MatchPage: React.FC = () => {
                             wicket={false}
                             four={false}
                             six={false}
+                            aria-hidden="true"
                           >
                             ·
                           </BallCircle>
@@ -352,7 +355,7 @@ const MatchPage: React.FC = () => {
                           (p) => p.currentStriker
                         ),
                         stats: batterStats.striker,
-                        label: "★ On strike",
+                        label: "On strike",
                         strike: true,
                       },
                       {
@@ -366,7 +369,10 @@ const MatchPage: React.FC = () => {
                     ] as const
                   ).map(({ player, stats, label, strike }) => (
                     <CreasePlayer key={label}>
-                      <CreaseRole strike={strike}>{label}</CreaseRole>
+                      <CreaseRole strike={strike}>
+                        {strike && <span aria-hidden="true">★ </span>}
+                        {label}
+                      </CreaseRole>
                       <CreasePlayerName>{player?.name ?? "—"}</CreasePlayerName>
                       <BatterStats>
                         <BatterStat>
@@ -496,20 +502,22 @@ const MatchPage: React.FC = () => {
                       <LastOverLabel>Last over from</LastOverLabel>
                       <LastOverBowler>{lastOverBowlerName}</LastOverBowler>
                     </LastOverRow>
-                    <BallRow>
+                    <BallRow role="list" aria-label="Last over balls">
                       {lastOverBalls.map((label, i) => {
                         const isExtra = label === "Wd" || label === "NB";
                         return (
                           <BallCircle
                             // biome-ignore lint/suspicious/noArrayIndexKey: ball position in over is stable
                             key={i}
+                            role="listitem"
                             filled={!isExtra}
                             extra={isExtra}
                             wicket={label === "W"}
                             four={label === "4"}
                             six={label === "6"}
+                            aria-label={formatBallDescription(label)}
                           >
-                            {label}
+                            <span aria-hidden="true">{label}</span>
                           </BallCircle>
                         );
                       })}
@@ -531,8 +539,8 @@ const MatchPage: React.FC = () => {
                         ? economyVal.toFixed(2)
                         : null;
                     return (
+                      <BowlerListEntry key={player.name}>
                       <BowlerListItem
-                        key={player.name}
                         type="button"
                         disabled={isJustBowled}
                         onClick={() =>
@@ -561,6 +569,7 @@ const MatchPage: React.FC = () => {
                         )}
                         {!isJustBowled && <BowlerItemArrow aria-hidden="true">→</BowlerItemArrow>}
                       </BowlerListItem>
+                      </BowlerListEntry>
                     );
                   })}
                 </BowlerList>
@@ -951,12 +960,21 @@ const BowlerPickTitle = styled.h2`
   margin: 0;
 `;
 
-const BowlerList = styled.div`
+const BowlerList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0;
   overflow-y: auto;
   flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`;
+
+const BowlerListEntry = styled.li`
+  &:last-child button {
+    border-bottom: none;
+  }
 `;
 
 const BowlerListItem = styled.button`
@@ -974,10 +992,6 @@ const BowlerListItem = styled.button`
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   opacity: ${({ disabled }) => (disabled ? 0.45 : 1)};
   transition: background-color 0.15s;
-
-  &:last-child {
-    border-bottom: none;
-  }
 
   &:hover:not(:disabled) {
     background-color: #f7f5f0;

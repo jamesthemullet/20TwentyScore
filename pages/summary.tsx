@@ -131,9 +131,9 @@ const SummaryPage: React.FC = () => {
               <RoleLabel>BATTING</RoleLabel>
             </TeamMeta>
             <TeamName>{battingTeam.name}</TeamName>
-            <ScoreRow>
-              <Runs>{battingTeam.totalRuns}</Runs>
-              <Wickets>/{battingTeam.totalWicketsConceded}</Wickets>
+            <ScoreRow aria-label={`${battingTeam.totalRuns} for ${battingTeam.totalWicketsConceded}`}>
+              <Runs aria-hidden="true">{battingTeam.totalRuns}</Runs>
+              <Wickets aria-hidden="true">/{battingTeam.totalWicketsConceded}</Wickets>
             </ScoreRow>
             <OversRow>
               OVERS <strong>{battingTeam.overs.toFixed(1)}</strong>
@@ -155,9 +155,9 @@ const SummaryPage: React.FC = () => {
               </InitialsBadge>
             </TeamMeta>
             <TeamName muted>{bowlingTeam.name}</TeamName>
-            <ScoreRow>
-              <Runs muted>{bowlingTeam.totalRuns}</Runs>
-              <Wickets muted>/{bowlingTeam.totalWicketsConceded}</Wickets>
+            <ScoreRow aria-label={`${bowlingTeam.totalRuns} for ${bowlingTeam.totalWicketsConceded}`}>
+              <Runs muted aria-hidden="true">{bowlingTeam.totalRuns}</Runs>
+              <Wickets muted aria-hidden="true">/{bowlingTeam.totalWicketsConceded}</Wickets>
             </ScoreRow>
             <OversRow>
               OVERS <strong>{bowlingTeam.overs.toFixed(1)}</strong>
@@ -185,7 +185,7 @@ const SummaryPage: React.FC = () => {
           )}
 
           <CopySection>
-            <CopyButton onClick={copyScorecard} data-analytics="copy-scorecard">
+            <CopyButton type="button" onClick={copyScorecard} data-analytics="copy-scorecard">
               {copied ? 'Copied ✓' : 'Copy scorecard'}
             </CopyButton>
             <span role="status" className="visually-hidden">
@@ -195,7 +195,7 @@ const SummaryPage: React.FC = () => {
 
           {session && (
             <CloudSaveSection>
-              <CloudSaveButton onClick={saveToCloud} disabled={saving}>
+              <CloudSaveButton type="button" onClick={saveToCloud} disabled={saving}>
                 {saving ? 'Saving…' : cloudSaveId ? 'Update cloud save' : 'Save to cloud'}
               </CloudSaveButton>
               {saveError === 'FREE_LIMIT_REACHED' && (
