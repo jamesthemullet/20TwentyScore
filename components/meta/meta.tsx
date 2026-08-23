@@ -41,10 +41,13 @@ export default function Meta({ title, description }: Props) {
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={OG_IMAGE} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={pageDescription} />
       <meta name="twitter:image" content={OG_IMAGE} />
+      <meta name="twitter:image:alt" content="20Twenty Score — T20 cricket scoring app" />
     </Head>
   );
 }
