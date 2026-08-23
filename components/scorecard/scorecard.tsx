@@ -31,15 +31,16 @@ const Scorecard: React.FC<ScorecardProps> = ({ label, battingTeam, bowlingTeam }
 
       <TableWrap>
         <Table>
+          <caption className="visually-hidden">{label}: {battingTeam.name} batting</caption>
           <thead>
             <tr>
-              <Th align="left">Batsman</Th>
-              <Th align="left">Dismissal</Th>
-              <Th>R</Th>
-              <Th>B</Th>
-              <Th>4s</Th>
-              <Th>6s</Th>
-              <Th>SR</Th>
+              <Th scope="col" align="left">Batsman</Th>
+              <Th scope="col" align="left">Dismissal</Th>
+              <Th scope="col">R</Th>
+              <Th scope="col">B</Th>
+              <Th scope="col">4s</Th>
+              <Th scope="col">6s</Th>
+              <Th scope="col">SR</Th>
             </tr>
           </thead>
           <tbody>
@@ -83,14 +84,15 @@ const Scorecard: React.FC<ScorecardProps> = ({ label, battingTeam, bowlingTeam }
       {bowlers.length > 0 && (
         <TableWrap>
           <Table>
+            <caption className="visually-hidden">{label}: {bowlingTeam.name} bowling</caption>
             <thead>
               <tr>
-                <Th align="left">Bowler</Th>
-                <Th>O</Th>
-                <Th>M</Th>
-                <Th>R</Th>
-                <Th>W</Th>
-                <Th>Econ</Th>
+                <Th scope="col" align="left">Bowler</Th>
+                <Th scope="col">O</Th>
+                <Th scope="col">M</Th>
+                <Th scope="col">R</Th>
+                <Th scope="col">W</Th>
+                <Th scope="col">Econ</Th>
               </tr>
             </thead>
             <tbody>

@@ -66,7 +66,7 @@ export default function AccountPage({ tier, subscription }: AccountPageProps) {
           {tier === 'premium' && (
             <>
               {billingError && <ErrorMessage role="alert">{billingError}</ErrorMessage>}
-              <ManageBillingButton onClick={openBillingPortal} disabled={billingLoading}>
+              <ManageBillingButton type="button" onClick={openBillingPortal} disabled={billingLoading}>
                 {billingLoading ? 'Redirecting…' : 'Manage Billing'}
               </ManageBillingButton>
             </>
@@ -80,7 +80,7 @@ export default function AccountPage({ tier, subscription }: AccountPageProps) {
         )}
 
         <Section>
-          <SignOutButton onClick={() => signOut({ callbackUrl: '/' })}>Sign out</SignOutButton>
+          <SignOutButton type="button" onClick={() => signOut({ callbackUrl: '/' })}>Sign out</SignOutButton>
         </Section>
       </PageWrapper>
     </Layout>

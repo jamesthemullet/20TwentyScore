@@ -26,9 +26,9 @@ export default function Nav() {
   return (
     <StyledNav aria-label="Navigation Bar">
       <BurgerButton type="button" onClick={toggleDropdown} aria-label="Navigation Menu" aria-expanded={isDropdownOpen} aria-controls="mobile-nav-menu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
       </BurgerButton>
       <ul id="mobile-nav-menu" className={isDropdownOpen ? 'open' : ''}>
         <li>
