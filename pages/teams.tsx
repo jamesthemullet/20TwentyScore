@@ -39,6 +39,7 @@ const TeamsPage: React.FC = () => {
     <Layout
       title="The Two XIs"
       description="View squad lists and current player stats for both teams in the match."
+      noIndex
     >
       <PageWrapper>
         <PageHeader>
@@ -65,7 +66,7 @@ const TeamsPage: React.FC = () => {
 
               <PanelDivider />
 
-              <PlayerList>
+              <PlayerList role="list">
                 {team.players.map((player, i) => {
                   const badge = getStatusBadge(player, team.index, battingTeamIndex);
                   return (

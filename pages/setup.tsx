@@ -105,6 +105,7 @@ const SetupPage: React.FC = () => {
     <Layout
       title="Match Setup"
       description="Enter team and player names before starting your T20 match."
+      noIndex
     >
       <PageWrapper>
         <PageHeader>
@@ -123,7 +124,7 @@ const SetupPage: React.FC = () => {
                 onChange={(e) => updateTeamName(teamIndex as 0 | 1, e.target.value)}
                 onPaste={(e) => pasteTeamRoster(teamIndex as 0 | 1, e)}
               />
-              <PlayerList>
+              <PlayerList role="list">
                 {team.playerNames.map((playerName, playerIndex) => (
                   // biome-ignore lint/suspicious/noArrayIndexKey: batting-order slot is a stable identity
                   <PlayerRow key={`team-${teamIndex}-player-${playerIndex}`}>

@@ -45,6 +45,7 @@ export default function AccountPage({ tier, subscription }: AccountPageProps) {
     <Layout
       title="Account"
       description="Manage your 20Twenty Score account and subscription."
+      noIndex
     >
       <PageWrapper>
         <PageTitle>Account</PageTitle>
@@ -201,6 +202,11 @@ const ManageBillingButton = styled.button`
     color: #fff;
   }
 
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
+  }
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -225,5 +231,10 @@ const SignOutButton = styled.button`
   &:hover {
     background-color: #b83320;
     color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
   }
 `;
