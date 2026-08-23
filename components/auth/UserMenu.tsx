@@ -1,8 +1,11 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useRef, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from '@emotion/styled';
+
+const avatarImageStyle: CSSProperties = { objectFit: 'cover' };
 
 export default function UserMenu() {
   const { data: session, status } = useSession();
@@ -58,7 +61,7 @@ export default function UserMenu() {
     <Wrapper ref={ref}>
       <Avatar ref={avatarRef} type="button" onClick={() => setIsOpen(!isOpen)} aria-label="User menu" aria-expanded={isOpen} aria-haspopup="menu">
         {session.user?.image ? (
-          <Image src={session.user.image} alt={session.user.name ?? 'User avatar'} width={32} height={32} style={{ objectFit: 'cover' }} />
+          <Image src={session.user.image} alt={session.user.name ?? 'User Avatar'} width={32} height={32} style={avatarImageStyle} />
         ) : (
           initials
         )}

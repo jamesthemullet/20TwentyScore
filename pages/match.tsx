@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { MilestoneToast } from "../components/milestone/MilestoneToast";
 import Layout from "../components/layout/layout";
 import Scoring from "../components/scoring/scoring";
@@ -77,6 +78,11 @@ const MatchPage: React.FC = () => {
   const [lastOverBowlerName, setLastOverBowlerName] = useState<string>("");
   const prevBallRef = useRef(currentBallInThisOver);
   const prevOverRef = useRef(currentOver);
+  // Mirror overBalls in a ref so the effect can read the current value without
+  // listing overBalls as a dependency — avoids the extra effect cycle triggered
+  // when setOverBalls([]) clears the array at the end of each over.
+  const overBallsRef = useRef<string[]>([]);
+  overBallsRef.current = overBalls;
 
   useEffect(() => {
     if (currentOver !== prevOverRef.current) {
@@ -86,7 +92,7 @@ const MatchPage: React.FC = () => {
       else if (action === "Wide") lastLabel = "Wd";
       else if (action === "No Ball") lastLabel = "NB";
       else lastLabel = String(runs);
-      setLastOverBalls([...overBalls, lastLabel]);
+      setLastOverBalls([...overBallsRef.current, lastLabel]);
       setLastOverBowlerName(currentBowler?.name ?? "");
       setOverBalls([]);
       prevOverRef.current = currentOver;
@@ -107,7 +113,7 @@ const MatchPage: React.FC = () => {
       }
       prevBallRef.current = currentBallInThisOver;
     }
-  }, [currentBallInThisOver, currentOver, mostRecentAction, overBalls, currentBowler?.name]);
+  }, [currentBallInThisOver, currentOver, mostRecentAction, currentBowler?.name]);
 
   const thisOverRuns = useMemo(
     () =>
@@ -216,7 +222,7 @@ const MatchPage: React.FC = () => {
           </TeamSide>
           <MatchCentre>
             <BallIconWrapper>
-              <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" fill style={{ objectFit: "contain" }} />
+              <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" fill style={ballIconStyle} />
             </BallIconWrapper>
             <Vs>vs</Vs>
             <Format>T20 — 20 Overs</Format>
@@ -578,6 +584,8 @@ const MatchPage: React.FC = () => {
 };
 
 export default MatchPage;
+
+const ballIconStyle: CSSProperties = { objectFit: "contain" };
 
 const Main = styled.main`
   position: relative;

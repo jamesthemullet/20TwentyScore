@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../components/layout/layout';
 import Scorecard from '../components/scorecard/scorecard';
@@ -141,7 +142,7 @@ const SummaryPage: React.FC = () => {
           </TeamSide>
 
           <MatchCentre>
-            <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" width={56} height={56} style={{ objectFit: "contain" }} />
+            <Image src="/icons/png/006-cricket-1.png" alt="cricket ball" width={56} height={56} style={ballIconStyle} />
             <Vs>vs</Vs>
             <Format>T20 · 20 Overs</Format>
           </MatchCentre>
@@ -231,6 +232,8 @@ const SummaryPage: React.FC = () => {
 };
 
 export default SummaryPage;
+
+const ballIconStyle: CSSProperties = { objectFit: "contain" };
 
 const PageWrapper = styled.main`
   width: 100%;
