@@ -29,6 +29,7 @@ export default function UpgradeCTA() {
           <PriceAmount>£2.99</PriceAmount>
           <PricePeriod>per month</PricePeriod>
           <SubscribeButton
+            type="button"
             onClick={() => subscribe(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID, 'monthly')}
             disabled={loading !== null}
           >
@@ -43,6 +44,7 @@ export default function UpgradeCTA() {
           <PricePeriod>per year</PricePeriod>
           <AnnualBadge>Save 72%</AnnualBadge>
           <SubscribeButton
+            type="button"
             onClick={() => subscribe(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID, 'annual')}
             disabled={loading !== null}
           >

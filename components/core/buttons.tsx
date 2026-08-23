@@ -41,10 +41,6 @@ export const PrimaryButton = styled.button`
     border-color: #555;
   }
 
-  &:focus {
-    outline: 0;
-  }
-
   &:focus-visible {
     outline: 3px solid #005fcc;
     outline-offset: 2px;
@@ -63,10 +59,6 @@ export const SecondaryButton = styled.button`
 
   &:hover:not(:disabled) {
     background-color: #f0f0f0;
-  }
-
-  &:focus {
-    outline: 0;
   }
 
   &:focus-visible {
