@@ -1,4 +1,6 @@
-export default function PitchDiagram() {
+import type React from 'react';
+
+export default function PitchDiagram(): React.JSX.Element {
   const cx = 110;
   const cy = 110;
 

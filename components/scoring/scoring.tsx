@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import type React from 'react';
 import { useState } from 'react';
 import { useGameScore } from '../../context/GameScoreContext';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
@@ -14,7 +15,7 @@ type ScoringProps = {
   setSelectBowler: () => void;
 };
 
-const Scoring = ({ setSelectBowler }: ScoringProps) => {
+const Scoring = ({ setSelectBowler }: ScoringProps): React.JSX.Element | null => {
   const [countRuns, setCountRuns] = useState(0);
   const [nextRunButtonDisabled, setNextRunButtonDisabled] = useState(true);
   const [awaitingMethodOfWicket, setAwaitingMethodOfWicket] = useState(false);

@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import type React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import UserMenu from '../auth/UserMenu';
 
-export default function Nav() {
+export default function Nav(): React.JSX.Element {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
