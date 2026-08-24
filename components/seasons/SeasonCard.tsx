@@ -1,3 +1,4 @@
+import type React from 'react';
 import { memo } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ type SeasonCardProps = {
   updatedAt: string | Date;
 };
 
-const SeasonCard = memo(function SeasonCard({ id, name, gameCount, createdAt, updatedAt }: SeasonCardProps) {
+const SeasonCard = memo(function SeasonCard({ id, name, gameCount, createdAt, updatedAt }: SeasonCardProps): React.JSX.Element {
   const start = new Date(createdAt).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',

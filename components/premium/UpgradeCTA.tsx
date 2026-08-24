@@ -1,7 +1,8 @@
+import type React from 'react';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 
-export default function UpgradeCTA() {
+export default function UpgradeCTA(): React.JSX.Element {
   const [loading, setLoading] = useState<'monthly' | 'annual' | null>(null);
 
   const subscribe = async (priceId: string | undefined, plan: 'monthly' | 'annual'): Promise<void> => {

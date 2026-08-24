@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import type React from "react";
 import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -36,7 +37,7 @@ type DashboardProps = {
 
 const avatarImageStyle: CSSProperties = { objectFit: "cover" };
 
-export default function DashboardPage({ tier, initialSaves, initialSeasons, checkoutSuccess }: DashboardProps) {
+export default function DashboardPage({ tier, initialSaves, initialSeasons, checkoutSuccess }: DashboardProps): React.JSX.Element {
   const { data: session } = useSession();
   const { gameScore } = useGameScore();
   const router = useRouter();
