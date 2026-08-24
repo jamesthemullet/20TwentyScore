@@ -1,4 +1,5 @@
 import { css, Global } from '@emotion/react';
+import type React from 'react';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/next';
@@ -18,7 +19,7 @@ function GameStatePersister(): null {
   return null;
 }
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps): React.JSX.Element {
   return (
     <SessionProvider session={session}>
     <AccountProvider>

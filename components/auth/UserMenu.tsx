@@ -1,4 +1,5 @@
 import { useSession, signOut } from 'next-auth/react';
+import type React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import type { CSSProperties } from 'react';
 import Link from 'next/link';
@@ -7,7 +8,7 @@ import styled from '@emotion/styled';
 
 const avatarImageStyle: CSSProperties = { objectFit: 'cover' };
 
-export default function UserMenu() {
+export default function UserMenu(): React.JSX.Element | null {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

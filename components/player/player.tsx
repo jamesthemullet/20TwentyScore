@@ -21,7 +21,7 @@ export const Player = ({
   currentNonStriker,
   status,
   oversBowled
-}: PlayerProps) => {
+}: PlayerProps): React.JSX.Element => {
   const [name, setName] = useState(`Player ${index + 1}`);
   const [editPlayer, setEditPlayer] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
