@@ -18,6 +18,10 @@ const config: Config = {
     'components/**/*.ts',
     'context/**/*.tsx',
     'context/**/*.ts',
+    'utils/**/*.tsx',
+    'utils/**/*.ts',
+    'lib/**/*.tsx',
+    'lib/**/*.ts',
     '!**/node_modules/**'
   ]
 };
