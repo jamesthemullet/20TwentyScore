@@ -7,10 +7,11 @@ audit adds new findings to the bottom of each section and leaves checked items a
 ## Run log
 
 - 2026-09-01 — initial audit: 62 findings (24 unit coverage, 10 API test gaps, 5 e2e gaps, 10 a11y, 6 perf, 5 SEO, 8 responsive/UX, 5 security, 6 README, 20 code quality; some items span multiple categories in this count). 3 items independently verified as already fixed.
+- 2026-09-01 — scheduled maintenance: resolved "Jest `collectCoverageFrom` misses `utils/` and `lib/`" (section 1) by adding `utils/**` and `lib/**` globs to `jest.config.ts`.
 
 ## 1. Test coverage — unit gaps and e2e
 
-- [ ] Jest `collectCoverageFrom` (jest.config.ts) only globs `pages/**`, `components/**`, `context/**` — `utils/` and `lib/` are invisible to the coverage report even though both have real logic and their own spec files (e.g. `utils/scorecardStats.spec.ts`, `lib/subscription.spec.ts`), so regressions there won't show as coverage drops (found: 2026-09-01)
+- [x] Jest `collectCoverageFrom` (jest.config.ts) only globs `pages/**`, `components/**`, `context/**` — `utils/` and `lib/` are invisible to the coverage report even though both have real logic and their own spec files (e.g. `utils/scorecardStats.spec.ts`, `lib/subscription.spec.ts`), so regressions there won't show as coverage drops (found: 2026-09-01) (resolved: 2026-09-01, PR #TBD)
 - [ ] `lib/gameSaveTitle.spec.ts` currently fails: its regex `/\d{1,2} \w{3}$/` doesn't match a 4-char month abbreviation like `"1 Sept"` (found: 2026-09-01)
 - [ ] `pages/match.tsx` is at 81.08% stmts / 7.22% branch / 15.38% funcs — largest coverage gap in the app (uncovered: 31-35, 38-44, 62, 89-101, 103-115, 121-136, 139-156, 159, 289-329, 371, 442-577, 672-685) (found: 2026-09-01)
 - [ ] `pages/dashboard.tsx` is at 77.46% stmts / 70.83% branch / 50% funcs (uncovered: 59-74, 78-123, 159-166, 244-295) (found: 2026-09-01)
