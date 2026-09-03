@@ -7,7 +7,7 @@ export default function Footer() {
       <FooterInner>
         <FooterQuote>
           &ldquo;Cricket is not just a sport &mdash; it is an expression of who we are.&rdquo;
-          <FooterAttribution as="cite">&mdash; Sir Garfield Sobers</FooterAttribution>
+          <FooterAttribution>&mdash; Sir Garfield Sobers</FooterAttribution>
         </FooterQuote>
         <FooterRight>
           <FooterBrand>20Twenty &amp; Score &middot; MMXXVI</FooterBrand>
