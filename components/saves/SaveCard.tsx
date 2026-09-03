@@ -15,7 +15,7 @@ type SaveCardProps = {
   onSeasonChange?: (saveId: string, seasonId: string | null) => void;
 };
 
-const SaveCard = memo(function SaveCard({ id, title, createdAt, completed, seasonId, seasons, onSeasonChange }: SaveCardProps) {
+const SaveCard = memo(function SaveCard({ id, title, createdAt, completed, seasonId, seasons, onSeasonChange }: SaveCardProps): React.JSX.Element {
   const date = new Date(createdAt).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',

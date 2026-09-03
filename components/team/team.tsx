@@ -11,7 +11,7 @@ type TeamProps = {
   teamIndex: number;
 };
 
-const Team = ({ teamIndex }: TeamProps) => {
+const Team = ({ teamIndex }: TeamProps): React.JSX.Element | null => {
   const [teamName, setTeamName] = useState(`Team ${teamIndex}`);
   const [editTeamName, setEditTeamName] = useState(false);
 

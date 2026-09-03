@@ -24,7 +24,7 @@ type PageProps = {
   seasons: SeasonSummary[];
 };
 
-export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps) {
+export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps): React.JSX.Element {
   const [seasons, setSeasons] = useState<SeasonSummary[]>(initialSeasons);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
