@@ -9,15 +9,16 @@ type Props = {
   children: ReactNode;
   title?: string;
   description?: string;
+  noIndex?: boolean;
 };
 
-const Layout: React.FC<Props> = ({ children, title, description }) => {
+const Layout: React.FC<Props> = ({ children, title, description, noIndex }) => {
   return (
     <SiteContainer>
       <SkipLink href="#main-content">Skip to main content</SkipLink>
-      <Meta title={title} description={description} />
+      <Meta title={title} description={description} noIndex={noIndex} />
       <Header />
-      <BetaBanner role="region" aria-label="Beta notice">
+      <BetaBanner role="note" aria-label="Beta notice">
         This site is new and may have rough edges. For suggestions or issues, email{' '}
         <a href="mailto:hello@20twentyscore.co.uk">hello@20twentyscore.co.uk</a>
       </BetaBanner>

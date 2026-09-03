@@ -143,6 +143,11 @@ const SubscribeButton = styled.button`
     border-color: #555;
   }
 
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
+  }
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
