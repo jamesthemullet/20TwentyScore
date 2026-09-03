@@ -17,7 +17,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `pages/match.tsx` is at 81.08% stmts / 7.22% branch / 15.38% funcs — largest coverage gap in the app (uncovered: 31-35, 38-44, 62, 89-101, 103-115, 121-136, 139-156, 159, 289-329, 371, 442-577, 672-685) (found: 2026-09-01)
 - [ ] `pages/dashboard.tsx` is at 77.46% stmts / 70.83% branch / 50% funcs (uncovered: 59-74, 78-123, 159-166, 244-295) (found: 2026-09-01)
 - [ ] `pages/seasons/index.tsx` is at 79.32% stmts / 85.71% branch / 20% funcs (uncovered: 35-57, 120-151) (found: 2026-09-01)
-- [x] `pages/seasons/[id].tsx` has no spec file at all — 0% coverage; add `__tests__/pages/seasons-id.spec.tsx` (found: 2026-09-01) (resolved: 2026-09-03, PR #TBD)
+- [x] `pages/seasons/[id].tsx` has no spec file at all — 0% coverage; add `__tests__/pages/seasons-id.spec.tsx` (found: 2026-09-01) (resolved: 2026-09-03, PR #437)
 - [ ] `pages/account.tsx` is at 82.96% stmts / 87.5% branch / 25% funcs (uncovered: 27-42, 91-113) (found: 2026-09-01)
 - [ ] `pages/summary.tsx` is at 91.68% stmts / 84.61% branch (uncovered: 59-61, 68-108) (found: 2026-09-01)
 - [ ] `pages/index.tsx` is at 97.03% stmts / 78.57% branch (uncovered: 14-17, 39-41) (found: 2026-09-01)
