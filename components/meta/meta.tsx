@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 type Props = {
   title?: string;
   description?: string;
+  noIndex?: boolean;
 };
 
 const SITE_NAME = '20Twenty Score';
@@ -12,7 +13,7 @@ const DEFAULT_DESCRIPTION =
   'Track your T20 cricket match ball by ball — runs, wickets, extras, and live run rates.';
 const OG_IMAGE = `${SITE_URL}/images/temp-seo-image.jpg`;
 
-export default function Meta({ title, description }: Props) {
+export default function Meta({ title, description, noIndex }: Props) {
   const router = useRouter();
   const currentUrl = (router.asPath ?? '/').split('?')[0];
   const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
@@ -33,6 +34,7 @@ export default function Meta({ title, description }: Props) {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>{pageTitle}</title>
       <meta name="description" content={pageDescription} />
+      {noIndex && <meta name="robots" content="noindex,nofollow" />}
       <link rel="canonical" href={canonicalUrl} />
       <meta property="og:locale" content="en_GB" />
       <meta property="og:type" content="website" />
