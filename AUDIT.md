@@ -10,6 +10,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - 2026-09-01 — scheduled maintenance: resolved "Jest `collectCoverageFrom` misses `utils/` and `lib/`" (section 1) by adding `utils/**` and `lib/**` globs to `jest.config.ts`.
 - 2026-09-03 — scheduled maintenance: resolved "`pages/seasons/[id].tsx` has no spec file" (section 1) by adding `__tests__/pages/seasons-id.spec.tsx`, covering the season name/back-link, description, empty state, and rendered `SaveCard`s.
 - 2026-09-04 — scheduled maintenance: resolved "`pages/seasons/index.tsx` coverage gap" (section 1) by adding tests for `createSeason` (blank-name guard, success, API-error, and thrown-error paths) and `getServerSideProps` (unauthenticated redirect, free-tier short-circuit, premium-tier season mapping) to `__tests__/pages/seasons-index.spec.tsx`; file is now at 100% coverage.
+- 2026-09-05 — scheduled maintenance: resolved "`pages/account.tsx` coverage gap" (section 1) by adding tests for `openBillingPortal` (success, non-OK response, and thrown-error paths), the sign-out button's `onClick`, and `getServerSideProps` (unauthenticated redirect, authenticated tier/subscription mapping) to `__tests__/pages/account.spec.tsx`; file is now at 100% stmts/branch/funcs/lines coverage.
 
 ## 1. Test coverage — unit gaps and e2e
 
@@ -19,7 +20,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `pages/dashboard.tsx` is at 77.46% stmts / 70.83% branch / 50% funcs (uncovered: 59-74, 78-123, 159-166, 244-295) (found: 2026-09-01)
 - [x] `pages/seasons/index.tsx` is at 79.32% stmts / 85.71% branch / 20% funcs (uncovered: 35-57, 120-151) (found: 2026-09-01) (resolved: 2026-09-04, PR #438)
 - [x] `pages/seasons/[id].tsx` has no spec file at all — 0% coverage; add `__tests__/pages/seasons-id.spec.tsx` (found: 2026-09-01) (resolved: 2026-09-03, PR #437)
-- [ ] `pages/account.tsx` is at 82.96% stmts / 87.5% branch / 25% funcs (uncovered: 27-42, 91-113) (found: 2026-09-01)
+- [x] `pages/account.tsx` is at 82.96% stmts / 87.5% branch / 25% funcs (uncovered: 27-42, 91-113) (found: 2026-09-01) (resolved: 2026-09-05, PR #440)
 - [ ] `pages/summary.tsx` is at 91.68% stmts / 84.61% branch (uncovered: 59-61, 68-108) (found: 2026-09-01)
 - [ ] `pages/index.tsx` is at 97.03% stmts / 78.57% branch (uncovered: 14-17, 39-41) (found: 2026-09-01)
 - [ ] `pages/teams.tsx` is at 100% stmts / 95.65% branch (uncovered: line 36) (found: 2026-09-01)
