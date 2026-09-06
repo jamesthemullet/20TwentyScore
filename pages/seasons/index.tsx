@@ -61,6 +61,7 @@ export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps
       <Layout
         title="Seasons"
         description="Create and manage your T20 cricket seasons to group and track your matches."
+        noIndex
       >
         <PageWrapper>
           <PageTitle>Seasons</PageTitle>
@@ -74,6 +75,7 @@ export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps
     <Layout
       title="Seasons"
       description="Create and manage your T20 cricket seasons to group and track your matches."
+      noIndex
     >
       <PageWrapper>
         <PageHeader>
@@ -194,6 +196,11 @@ const NewButton = styled.button`
     background-color: #555;
     border-color: #555;
   }
+
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
+  }
 `;
 
 const Form = styled.form`
@@ -237,6 +244,11 @@ const SubmitButton = styled.button`
   &:hover:not(:disabled) {
     background-color: #23623f;
     border-color: #23623f;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
   }
 
   &:disabled {

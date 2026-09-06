@@ -112,6 +112,7 @@ const SummaryPage: React.FC = () => {
     <Layout
       title="Match Summary"
       description="Final scores, run rates, and batting and bowling figures from your T20 cricket match."
+      noIndex
     >
       <PageWrapper>
         <PageHeader>
@@ -337,7 +338,7 @@ const RoleLabel = styled.span`
   color: #767676;
 `;
 
-const TeamName = styled.p<{ muted?: boolean }>`
+const TeamName = styled.h2<{ muted?: boolean }>`
   font-family: 'Bodoni Moda', serif;
   font-style: italic;
   font-size: 1.75rem;
@@ -455,6 +456,11 @@ const CloudSaveButton = styled.button`
     background-color: #f0f0f0;
   }
 
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
+  }
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -508,6 +514,11 @@ const CopyButton = styled.button`
 
   &:hover {
     background-color: #f0f0f0;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
   }
 `;
 
