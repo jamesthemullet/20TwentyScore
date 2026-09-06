@@ -164,6 +164,7 @@ const MatchPage: React.FC = () => {
       <Layout
         title="Today's Match"
         description="Live scoring for your T20 cricket match. Record runs, wickets, and extras ball by ball."
+        noIndex
       >
         <Main>
           <PageHeader>
@@ -186,6 +187,7 @@ const MatchPage: React.FC = () => {
     <Layout
       title="Today's Match"
       description="Live scoring for your T20 cricket match. Record runs, wickets, and extras ball by ball."
+      noIndex
     >
       {milestone && <MilestoneToast message={milestone.message} accent={milestone.accent} />}
       <Main>
@@ -251,8 +253,8 @@ const MatchPage: React.FC = () => {
             </TeamOvers>
           </TeamSide>
         </MatchPanel>
-        <LiveBar aria-live="polite" aria-label="Live match stats">
-          <LiveAction>
+        <LiveBar role="region" aria-label="Live match stats">
+          <LiveAction aria-live="polite" aria-atomic="true">
             <LiveLabel>Last ball</LiveLabel>
             <LiveValue>{formatLatestAction()}</LiveValue>
           </LiveAction>
@@ -528,7 +530,7 @@ const MatchPage: React.FC = () => {
                   <BowlerPickNumber>II.</BowlerPickNumber>
                   <BowlerPickTitle>Captain — who&apos;s bowling next?</BowlerPickTitle>
                 </BowlerPickHeader>
-                <BowlerList>
+                <BowlerList role="list">
                   {currentBowlingTeam?.players.map((player, idx) => {
                     const isJustBowled = player.currentBowler;
                     const hasBowled = player.oversBowled > 0;
@@ -1161,10 +1163,11 @@ const TeamSide = styled.div<{ align?: string }>`
     align === "right" ? "flex-end" : "flex-start"};
 `;
 
-const TeamName = styled.p`
+const TeamName = styled.h2`
   font-family: "Bodoni Moda", serif;
   font-size: 1.5rem;
   font-style: italic;
+  font-weight: 400;
   color: #1a1a1a;
   margin: 0;
 

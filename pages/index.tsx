@@ -74,7 +74,7 @@ const Index: React.FC = () => {
               ball, over by over, with a running tally any pavilion would be
               proud of.
             </Description>
-            <FeatureList>
+            <FeatureList role="list">
               <li>Ball-by-ball</li>
               <li>Run rates</li>
               <li>Player figures</li>

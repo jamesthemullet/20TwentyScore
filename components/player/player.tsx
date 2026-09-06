@@ -60,7 +60,7 @@ export const Player = ({
           <>
             <p>{name}</p>
             <StyledButton onClick={handleEditPlayerName} aria-label={`Edit name for ${name}`}>
-              <Image alt="" title="Edit player" width={16} height={16} src="/icons/png/edit.png" />
+              <Image alt="" width={16} height={16} src="/icons/png/edit.png" />
             </StyledButton>
           </>
         )}

@@ -128,6 +128,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
       <Layout
         title="Dashboard"
         description="View and manage your cloud saves and cricket seasons."
+        noIndex
       >
         <PageWrapper>
           <PageTitle>Dashboard</PageTitle>
@@ -144,6 +145,7 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
     <Layout
       title="Dashboard"
       description="View and manage your cloud saves and cricket seasons."
+      noIndex
     >
       <PageWrapper>
         <PageTitle>Dashboard</PageTitle>
@@ -411,6 +413,11 @@ const SaveButton = styled.button`
   &:hover:not(:disabled) {
     background-color: #555;
     border-color: #555;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
   }
 
   &:disabled {
