@@ -55,6 +55,9 @@ test.describe('Full T20 game', () => {
     // ── 1. Start a new match ─────────────────────────────────────────────────
     await page.goto('/');
     await page.getByRole('button', { name: 'Start New Match' }).click();
+    await expect(page).toHaveURL('/setup');
+
+    await page.getByRole('button', { name: 'Start Match' }).click();
     await expect(page).toHaveURL('/match');
 
     // ── 2. Select the opening bowler for innings 1 ───────────────────────────
