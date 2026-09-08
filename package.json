@@ -60,7 +60,7 @@
   },
   "resolutions": {
     "hono": "^4.12.25",
-    "brace-expansion": "^1.1.18",
+    "brace-expansion": "^5.0.0",
     "js-yaml": "^3.15.1"
   }
 }
