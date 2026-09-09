@@ -11,6 +11,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - 2026-09-03 — scheduled maintenance: resolved "`pages/seasons/[id].tsx` has no spec file" (section 1) by adding `__tests__/pages/seasons-id.spec.tsx`, covering the season name/back-link, description, empty state, and rendered `SaveCard`s.
 - 2026-09-04 — scheduled maintenance: resolved "`pages/seasons/index.tsx` coverage gap" (section 1) by adding tests for `createSeason` (blank-name guard, success, API-error, and thrown-error paths) and `getServerSideProps` (unauthenticated redirect, free-tier short-circuit, premium-tier season mapping) to `__tests__/pages/seasons-index.spec.tsx`; file is now at 100% coverage.
 - 2026-09-05 — scheduled maintenance: resolved "`pages/account.tsx` coverage gap" (section 1) by adding tests for `openBillingPortal` (success, non-OK response, and thrown-error paths), the sign-out button's `onClick`, and `getServerSideProps` (unauthenticated redirect, authenticated tier/subscription mapping) to `__tests__/pages/account.spec.tsx`; file is now at 100% stmts/branch/funcs/lines coverage.
+- 2026-09-09 — scheduled maintenance: resolved "`pages/summary.tsx` coverage gap" (section 1) by adding tests for `copyScorecard` (clipboard write, "Copied ✓" state, and revert after 2s) and `saveToCloud` (new save via POST, update via PATCH, 402 free-limit prompt, and a generic non-OK error) to `__tests__/pages/summary.spec.tsx`; file is now at 100% stmts/funcs/lines coverage. Skipped "`lib/gameSaveTitle.spec.ts` regex" (line above) again: already fixed on `main` (PR #432); a doc-only PR to check it off (#434) was already closed unmerged by a human, so left unchecked rather than re-proposing. Skipped "`pages/match.tsx` coverage gap": far too large for a single reviewable PR (7.22% branch / 15.38% funcs coverage across a 1300-line file) — left for a dedicated effort. Skipped "`pages/dashboard.tsx` coverage gap": already has an open, unmerged PR (#443).
 
 ## 1. Test coverage — unit gaps and e2e
 
@@ -21,7 +22,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [x] `pages/seasons/index.tsx` is at 79.32% stmts / 85.71% branch / 20% funcs (uncovered: 35-57, 120-151) (found: 2026-09-01) (resolved: 2026-09-04, PR #438)
 - [x] `pages/seasons/[id].tsx` has no spec file at all — 0% coverage; add `__tests__/pages/seasons-id.spec.tsx` (found: 2026-09-01) (resolved: 2026-09-03, PR #437)
 - [x] `pages/account.tsx` is at 82.96% stmts / 87.5% branch / 25% funcs (uncovered: 27-42, 91-113) (found: 2026-09-01) (resolved: 2026-09-05, PR #440)
-- [ ] `pages/summary.tsx` is at 91.68% stmts / 84.61% branch (uncovered: 59-61, 68-108) (found: 2026-09-01)
+- [x] `pages/summary.tsx` is at 91.68% stmts / 84.61% branch (uncovered: 59-61, 68-108) (found: 2026-09-01) (resolved: 2026-09-09, PR #TBD)
 - [ ] `pages/index.tsx` is at 97.03% stmts / 78.57% branch (uncovered: 14-17, 39-41) (found: 2026-09-01)
 - [ ] `pages/teams.tsx` is at 100% stmts / 95.65% branch (uncovered: line 36) (found: 2026-09-01)
 - [ ] `pages/setup.tsx` is at 100% stmts / 96.15% branch (uncovered: line 58) (found: 2026-09-01)

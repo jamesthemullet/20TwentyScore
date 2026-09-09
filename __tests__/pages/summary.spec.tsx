@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { GameScoreContext } from '../../context/GameScoreContext';
 import type { GameScore, GameScoreContextType, TeamPlayer } from '../../context/GameContext';
 import SummaryPage from '../../pages/summary';
@@ -172,5 +172,94 @@ describe('SummaryPage', () => {
     expect(screen.getByText('2nd Innings')).toBeInTheDocument();
     expect(screen.getByText('Opener 1')).toBeInTheDocument();
     expect(screen.getByText('Opener 2')).toBeInTheDocument();
+  });
+
+  describe('copyScorecard', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      Object.assign(navigator, { clipboard: { writeText: jest.fn().mockResolvedValue(undefined) } });
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('copies the scorecard text and shows "Copied ✓" before reverting', async () => {
+      renderSummary();
+
+      fireEvent.click(screen.getByRole('button', { name: /copy scorecard/i }));
+
+      await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalled());
+      expect(await screen.findByRole('button', { name: /copied/i })).toBeInTheDocument();
+      expect(screen.getByRole('status')).toHaveTextContent('Scorecard copied to clipboard');
+
+      act(() => {
+        jest.advanceTimersByTime(2000);
+      });
+
+      expect(await screen.findByRole('button', { name: /copy scorecard/i })).toBeInTheDocument();
+    });
+  });
+
+  describe('saveToCloud', () => {
+    beforeEach(() => {
+      global.fetch = jest.fn();
+      useSession.mockReturnValue({ data: { user: { name: 'Alice' } }, status: 'authenticated' });
+    });
+
+    it('creates a new cloud save via POST and stores the returned id', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        status: 201,
+        json: async () => ({ id: 'new-save-id' }),
+      });
+
+      renderSummary();
+      fireEvent.click(screen.getByRole('button', { name: /save to cloud/i }));
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith('/api/saves', expect.objectContaining({ method: 'POST' }));
+      });
+      expect(await screen.findByText('Saved to cloud!')).toBeInTheDocument();
+      expect(localStorage.getItem('cloudSaveId')).toBe('new-save-id');
+    });
+
+    it('updates an existing cloud save via PATCH when a cloudSaveId is already stored', async () => {
+      localStorage.setItem('cloudSaveId', 'existing-save-id');
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ id: 'existing-save-id' }),
+      });
+
+      renderSummary();
+      fireEvent.click(screen.getByRole('button', { name: /update cloud save/i }));
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith(
+          '/api/saves/existing-save-id',
+          expect.objectContaining({ method: 'PATCH' })
+        );
+      });
+      expect(await screen.findByText('Saved to cloud!')).toBeInTheDocument();
+    });
+
+    it('shows the free-limit-reached upgrade prompt on a 402 response', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: false, status: 402 });
+
+      renderSummary();
+      fireEvent.click(screen.getByRole('button', { name: /save to cloud/i }));
+
+      expect(await screen.findByText(/reached the free save limit/i)).toBeInTheDocument();
+    });
+
+    it('shows a generic error message on a non-OK, non-402 response', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: false, status: 500 });
+
+      renderSummary();
+      fireEvent.click(screen.getByRole('button', { name: /save to cloud/i }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent(/something went wrong/i);
+    });
   });
 });
