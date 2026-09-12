@@ -11,6 +11,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - 2026-09-03 — scheduled maintenance: resolved "`pages/seasons/[id].tsx` has no spec file" (section 1) by adding `__tests__/pages/seasons-id.spec.tsx`, covering the season name/back-link, description, empty state, and rendered `SaveCard`s.
 - 2026-09-04 — scheduled maintenance: resolved "`pages/seasons/index.tsx` coverage gap" (section 1) by adding tests for `createSeason` (blank-name guard, success, API-error, and thrown-error paths) and `getServerSideProps` (unauthenticated redirect, free-tier short-circuit, premium-tier season mapping) to `__tests__/pages/seasons-index.spec.tsx`; file is now at 100% coverage.
 - 2026-09-05 — scheduled maintenance: resolved "`pages/account.tsx` coverage gap" (section 1) by adding tests for `openBillingPortal` (success, non-OK response, and thrown-error paths), the sign-out button's `onClick`, and `getServerSideProps` (unauthenticated redirect, authenticated tier/subscription mapping) to `__tests__/pages/account.spec.tsx`; file is now at 100% stmts/branch/funcs/lines coverage.
+- 2026-09-12 — scheduled maintenance: resolved "`pages/teams.tsx` coverage gap" (section 1) by adding a test covering the `battingTeamIndex = battingTeam?.index ?? 0` fallback branch (no team marked `currentBattingTeam`) to `__tests__/pages/teams.spec.tsx`; file is now at 100% stmts/branch/funcs/lines coverage. Skipped this run: `lib/gameSaveTitle.spec.ts` (open PR #447), `pages/dashboard.tsx` (open PR #443), `pages/summary.tsx` (open PR #445), `pages/index.tsx` (open PR #449), and `pages/match.tsx` (too large for one reviewable PR).
 
 ## 1. Test coverage — unit gaps and e2e
 
@@ -23,7 +24,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [x] `pages/account.tsx` is at 82.96% stmts / 87.5% branch / 25% funcs (uncovered: 27-42, 91-113) (found: 2026-09-01) (resolved: 2026-09-05, PR #440)
 - [ ] `pages/summary.tsx` is at 91.68% stmts / 84.61% branch (uncovered: 59-61, 68-108) (found: 2026-09-01)
 - [ ] `pages/index.tsx` is at 97.03% stmts / 78.57% branch (uncovered: 14-17, 39-41) (found: 2026-09-01)
-- [ ] `pages/teams.tsx` is at 100% stmts / 95.65% branch (uncovered: line 36) (found: 2026-09-01)
+- [x] `pages/teams.tsx` is at 100% stmts / 95.65% branch (uncovered: line 36) (found: 2026-09-01) (resolved: 2026-09-12, PR #451)
 - [ ] `pages/setup.tsx` is at 100% stmts / 96.15% branch (uncovered: line 58) (found: 2026-09-01)
 - [ ] `pages/_app.tsx` has no spec file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/_document.tsx` has no spec file — 0% coverage (found: 2026-09-01)
