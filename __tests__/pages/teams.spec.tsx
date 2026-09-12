@@ -127,4 +127,14 @@ describe('TeamsPage', () => {
     expect(screen.getByText('RC')).toBeInTheDocument();
     expect(screen.getByText('TX')).toBeInTheDocument();
   });
+
+  it('falls back to team 0 as the batting team when no team is marked as currently batting', () => {
+    const noBattingTeamScore: GameScore = [
+      { ...baseGameScore[0], currentBattingTeam: false },
+      { ...baseGameScore[1], currentBattingTeam: false },
+    ];
+    renderTeams({ gameScore: noBattingTeamScore });
+    expect(screen.getByText('STRIKE')).toBeInTheDocument();
+    expect(screen.getByText('NON')).toBeInTheDocument();
+  });
 });
