@@ -89,5 +89,61 @@ describe('Index page', () => {
       expect(setGameScore).not.toHaveBeenCalled();
       expect(mockPush).not.toHaveBeenCalled();
     });
+
+    it('shows error when saved game data is valid JSON but has the wrong shape', () => {
+      localStorage.setItem('gameData', JSON.stringify({ some: 'data' }));
+      renderIndex();
+      fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
+      expect(screen.getByRole('alert')).toHaveTextContent('Saved game data is corrupted');
+      expect(setGameScore).not.toHaveBeenCalled();
+      expect(mockPush).not.toHaveBeenCalled();
+    });
+
+    it('shows error when saved game data is missing a team', () => {
+      localStorage.setItem(
+        'gameData',
+        JSON.stringify([{ name: 'Team A', players: [] }])
+      );
+      renderIndex();
+      fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
+      expect(screen.getByRole('alert')).toHaveTextContent('Saved game data is corrupted');
+      expect(setGameScore).not.toHaveBeenCalled();
+      expect(mockPush).not.toHaveBeenCalled();
+    });
+
+    it('shows error when a team is missing its players array', () => {
+      localStorage.setItem(
+        'gameData',
+        JSON.stringify([{ name: 'Team A' }, { name: 'Team B', players: [] }])
+      );
+      renderIndex();
+      fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
+      expect(screen.getByRole('alert')).toHaveTextContent('Saved game data is corrupted');
+      expect(setGameScore).not.toHaveBeenCalled();
+      expect(mockPush).not.toHaveBeenCalled();
+    });
+  });
+});
+
+describe('Index page module load in development', () => {
+  const mutableEnv = process.env as { NODE_ENV: string };
+  const originalEnv = mutableEnv.NODE_ENV;
+
+  afterEach(() => {
+    mutableEnv.NODE_ENV = originalEnv;
+    jest.resetModules();
+    jest.dontMock('accented');
+  });
+
+  it('dynamically loads and initializes accented when running in development', async () => {
+    jest.resetModules();
+    mutableEnv.NODE_ENV = 'development';
+    const accented = jest.fn();
+    jest.doMock('accented', () => ({ accented }), { virtual: true });
+
+    await import('../../pages/index');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(accented).toHaveBeenCalledTimes(1);
   });
 });
