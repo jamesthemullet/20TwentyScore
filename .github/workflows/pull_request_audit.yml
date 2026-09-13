@@ -2,6 +2,9 @@ name: CI Tests For 20 Twenty Score
 on:
   pull_request:
     branches: [main]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   axe:
     runs-on: ubuntu-latest
@@ -10,34 +13,24 @@ jobs:
       GITHUB_API_SECRET: ${{ secrets.PIPELINE_GITHUB_API_SECRET }}
     steps:
       - uses: actions/checkout@v7
-      - name: Use Node.js 18.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
+          cache: yarn
       - run: yarn install
-      - name: Get Chromium version 🌐
-        run: |
-          CHROMIUM_VERSION=$(wget -qO- https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE | cut -d. -f1)
-          echo "Chromium version: $CHROMIUM_VERSION"
-          echo "CHROMIUM_VERSION=$CHROMIUM_VERSION" >> $GITHUB_ENV
       - name: Setup Chrome 🌐
         id: setup-chrome
         uses: browser-actions/setup-chrome@v2
         with:
-          chrome-version: ${{ env.CHROMIUM_VERSION }}
-      - name: Install chromedriver 🚗
-        run: |
-          echo "Installing chromedriver version: $CHROMIUM_VERSION"
-          yarn add chromedriver@$CHROMIUM_VERSION
-          echo "chromedriver version: $(chromedriver --version)"
+          chrome-version: stable
+          install-chromedriver: true
       - run: yarn run build
       - run: yarn dev & npx wait-on http://localhost:3000
       - name: Run axe
         run: |
           yarn add @axe-core/cli
-          CHROMIUM_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1)
-          yarn add chromedriver@$CHROMIUM_VERSION
-          npx axe --chromedriver-path $(yarn bin)/chromedriver http://localhost:3000/ --load-delay=1500 --exit
+          npx axe --chromedriver-path "${{ steps.setup-chrome.outputs.chromedriver-path }}" http://localhost:3000/ --load-delay=1500 --exit
   e2e:
     runs-on: ubuntu-latest
     env:
@@ -48,6 +41,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
+          cache: yarn
       - run: yarn install
       - name: Cache Playwright browsers
         uses: actions/cache@v6
@@ -71,6 +65,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
+          cache: yarn
       - run: yarn install
       - name: Run lint
         run: yarn lint
@@ -82,6 +77,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
+          cache: yarn
       - run: yarn install
       - name: Run knip
         run: yarn knip
@@ -91,6 +87,11 @@ jobs:
       POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
     steps:
       - uses: actions/checkout@v7
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: yarn
       - name: Install dependencies
         run: yarn install
       - name: Run unit tests
