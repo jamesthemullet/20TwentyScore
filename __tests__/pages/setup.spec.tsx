@@ -107,6 +107,13 @@ describe('Setup page', () => {
       expect(screen.getByLabelText('Team 1 player 1 name')).toHaveValue('');
     });
 
+    it('a single-value paste into the team name field is left to the default paste behaviour', () => {
+      renderSetup();
+      paste(screen.getByLabelText('Team 1 name'), 'Runswick CC');
+
+      expect(screen.getByLabelText('Team 1 name')).toHaveValue('');
+    });
+
     it('pasting a roster into the team name field sets the team name and all player names', () => {
       renderSetup();
       paste(screen.getByLabelText('Team 1 name'), 'Runswick CC, Alice, Bob');
