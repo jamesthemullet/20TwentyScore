@@ -17,6 +17,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - 2026-09-11 — scheduled maintenance: resolved "`pages/index.tsx` coverage gap" (section 1) by adding tests to `__tests__/pages/index.spec.tsx` covering the "corrupted saved data" structural-validation branches (wrong shape, missing team, missing players array) and the dev-mode-only `accented()` dynamic import at module load; file is now at 100% stmts/branch/funcs/lines coverage. Other unchecked items at the top of section 1 were skipped this run: `lib/gameSaveTitle.spec.ts` and `pages/dashboard.tsx`/`pages/summary.tsx` coverage gaps already have open, unmerged PRs (#447, #443, #445); `pages/match.tsx`'s coverage gap is too large for one reviewable PR.
 - 2026-09-12 — scheduled maintenance: resolved "`pages/teams.tsx` coverage gap" (section 1) by adding a test covering the `battingTeamIndex = battingTeam?.index ?? 0` fallback branch (no team marked `currentBattingTeam`) to `__tests__/pages/teams.spec.tsx`; file is now at 100% stmts/branch/funcs/lines coverage. Skipped this run: `lib/gameSaveTitle.spec.ts` (open PR #447), `pages/dashboard.tsx` (open PR #443), `pages/summary.tsx` (open PR #445), `pages/index.tsx` (open PR #449), and `pages/match.tsx` (too large for one reviewable PR).
 - 2026-09-16 — scheduled maintenance: resolved "`pages/setup.tsx` coverage gap" (section 1) by adding a test covering the `pasteTeamRoster` early-return branch (single-value paste into the team name field) to `__tests__/pages/setup.spec.tsx`; file is now at 100% stmts/branch/funcs/lines coverage. Skipped `pages/match.tsx` (too large for one reviewable PR, as in prior runs).
+- 2026-09-17 — scheduled maintenance: resolved "`pages/_app.tsx` has no spec file" (section 1) by adding `__tests__/pages/_app.spec.tsx`, covering rendering the wrapped page component and the `GameStatePersister`'s conditional `localStorage` write (no write before a bowler is set, write with the serialized game state once one is). `pages/_app.tsx` is now at 100% stmts/branch/funcs/lines coverage. Skipped `pages/match.tsx` (too large for one reviewable PR, as in prior runs).
 
 ## 1. Test coverage — unit gaps and e2e
 
@@ -31,7 +32,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [x] `pages/index.tsx` is at 97.03% stmts / 78.57% branch (uncovered: 14-17, 39-41) (found: 2026-09-01) (resolved: 2026-09-11, PR #449)
 - [x] `pages/teams.tsx` is at 100% stmts / 95.65% branch (uncovered: line 36) (found: 2026-09-01) (resolved: 2026-09-12, PR #451)
 - [x] `pages/setup.tsx` is at 100% stmts / 96.15% branch (uncovered: line 58) (found: 2026-09-01) (resolved: 2026-09-16, PR #456)
-- [ ] `pages/_app.tsx` has no spec file — 0% coverage (found: 2026-09-01)
+- [x] `pages/_app.tsx` has no spec file — 0% coverage (found: 2026-09-01) (resolved: 2026-09-17, PR #457)
 - [ ] `pages/_document.tsx` has no spec file — 0% coverage (found: 2026-09-01)
 - [ ] `context/GameContext.tsx` has no dedicated spec file (only incidentally covered via other tests); func coverage is 71.87% (uncovered: line 400) — add `context/GameContext.spec.tsx` (found: 2026-09-01)
 - [ ] `context/AccountContext.tsx` func coverage is only 66.66% despite 100% stmt/branch coverage (found: 2026-09-01)
