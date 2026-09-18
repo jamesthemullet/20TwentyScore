@@ -34,7 +34,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [x] `pages/teams.tsx` is at 100% stmts / 95.65% branch (uncovered: line 36) (found: 2026-09-01) (resolved: 2026-09-12, PR #451)
 - [x] `pages/setup.tsx` is at 100% stmts / 96.15% branch (uncovered: line 58) (found: 2026-09-01) (resolved: 2026-09-16, PR #456)
 - [x] `pages/_app.tsx` has no spec file — 0% coverage (found: 2026-09-01) (resolved: 2026-09-17, PR #457)
-- [x] `pages/_document.tsx` has no spec file — 0% coverage (found: 2026-09-01) (resolved: 2026-09-18, PR #TBD)
+- [x] `pages/_document.tsx` has no spec file — 0% coverage (found: 2026-09-01) (resolved: 2026-09-18, PR #459)
 - [ ] `context/GameContext.tsx` has no dedicated spec file (only incidentally covered via other tests); func coverage is 71.87% (uncovered: line 400) — add `context/GameContext.spec.tsx` (found: 2026-09-01)
 - [ ] `context/AccountContext.tsx` func coverage is only 66.66% despite 100% stmt/branch coverage (found: 2026-09-01)
 - [ ] `components/auth/UserMenu.tsx` is at 94.97% stmts / 90.9% branch / 57.14% funcs (uncovered: 37-41, 59, 65-67) (found: 2026-09-01)
