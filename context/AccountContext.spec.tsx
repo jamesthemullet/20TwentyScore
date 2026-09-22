@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { renderHook, render, screen, waitFor } from '@testing-library/react';
 import { AccountProvider, useAccount } from './AccountContext';
 
 const mockUseSession = jest.fn();
@@ -68,5 +68,17 @@ describe('AccountProvider', () => {
     expect(screen.getByTestId('user').textContent).toBe('Alice');
     expect(screen.getByTestId('subscription').textContent).toBe('active');
     expect(global.fetch).toHaveBeenCalledWith('/api/account');
+  });
+});
+
+describe('useAccount default context (no provider)', () => {
+  it('exposes free-tier defaults and a no-op refresh when rendered outside AccountProvider', () => {
+    const { result } = renderHook(() => useAccount());
+
+    expect(result.current.user).toBeNull();
+    expect(result.current.tier).toBe('free');
+    expect(result.current.subscription).toBeNull();
+    expect(result.current.isLoading).toBe(false);
+    expect(() => result.current.refresh()).not.toThrow();
   });
 });
