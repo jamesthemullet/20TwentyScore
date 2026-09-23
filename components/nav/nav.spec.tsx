@@ -47,4 +47,38 @@ describe('Nav Component', () => {
 
     expect(expandedMenu).toHaveClass('open');
   });
+
+  it('should close the dropdown menu when the Escape key is pressed', () => {
+    render(<Nav />);
+
+    const expandedMenu = document.getElementById('mobile-nav-menu') as HTMLElement;
+
+    act(() => {
+      fireEvent.click(screen.getByLabelText('Navigation Menu'));
+    });
+    expect(expandedMenu).toHaveClass('open');
+
+    act(() => {
+      fireEvent.keyDown(document, { key: 'Escape' });
+    });
+
+    expect(expandedMenu).not.toHaveClass('open');
+  });
+
+  it('should leave the dropdown menu open when a non-Escape key is pressed', () => {
+    render(<Nav />);
+
+    const expandedMenu = document.getElementById('mobile-nav-menu') as HTMLElement;
+
+    act(() => {
+      fireEvent.click(screen.getByLabelText('Navigation Menu'));
+    });
+    expect(expandedMenu).toHaveClass('open');
+
+    act(() => {
+      fireEvent.keyDown(document, { key: 'Enter' });
+    });
+
+    expect(expandedMenu).toHaveClass('open');
+  });
 });
