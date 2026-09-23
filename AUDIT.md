@@ -41,7 +41,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `context/GameContext.tsx` has no dedicated spec file (only incidentally covered via other tests); func coverage is 71.87% (uncovered: line 400) — add `context/GameContext.spec.tsx` (found: 2026-09-01)
 - [x] `components/auth/UserMenu.tsx` is at 94.97% stmts / 90.9% branch / 57.14% funcs (uncovered: 37-41, 59, 65-67) (found: 2026-09-01) (resolved: 2026-09-22, PR #465)
 - [x] `context/AccountContext.tsx` func coverage is only 66.66% despite 100% stmt/branch coverage (found: 2026-09-01) (resolved: 2026-09-21, PR #464)
-- [x] `components/nav/nav.tsx` is at 98.87% stmts / 68.42% branch / 75% funcs (uncovered: 21-22) (found: 2026-09-01) (resolved: 2026-09-23, PR #TBD)
+- [x] `components/nav/nav.tsx` is at 98.87% stmts / 68.42% branch / 75% funcs (uncovered: 21-22) (found: 2026-09-01) (resolved: 2026-09-23, PR #467)
 - [ ] `components/player/player.tsx` is at 94.85% stmts / 80% funcs (uncovered: 42-48) (found: 2026-09-01)
 - [ ] `components/premium/UpgradeCTA.tsx` is at 98.73% stmts / 81.81% branch (uncovered: 20-21) (found: 2026-09-01)
 - [ ] `components/saves/SaveCard.tsx` branch coverage is 55.55%, func coverage 66.66% despite 100% stmt coverage (uncovered: 28-37, 110) (found: 2026-09-01)
