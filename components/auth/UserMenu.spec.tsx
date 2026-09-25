@@ -78,4 +78,82 @@ describe('UserMenu', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: /sign out/i }));
     expect(mockSignOut).toHaveBeenCalledWith({ callbackUrl: '/' });
   });
+
+  it('closes the dropdown and refocuses the avatar button when Escape is pressed', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Bob Jones', image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    const btn = screen.getByRole('button', { name: /user menu/i });
+    fireEvent.click(btn);
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    expect(btn).toHaveFocus();
+  });
+
+  it('ignores non-Escape key presses while the dropdown is open', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Bob Jones', image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    fireEvent.click(screen.getByRole('button', { name: /user menu/i }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Enter' });
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+  });
+
+  it('falls back to "?" initials when authenticated with no name and no image', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: undefined, image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    const btn = screen.getByRole('button', { name: /user menu/i });
+    expect(btn).toHaveTextContent('?');
+  });
+
+  it('renders the session avatar image when one is available', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Alice Smith', image: 'https://example.com/avatar.png' } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    expect(screen.getByRole('img', { name: 'Alice Smith' })).toBeInTheDocument();
+  });
+
+  it('falls back to a "User Avatar" alt when the avatar image has no session name', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: undefined, image: 'https://example.com/avatar.png' } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    expect(screen.getByRole('img', { name: 'User Avatar' })).toBeInTheDocument();
+  });
+
+  it('closes the dropdown when the Dashboard link is clicked', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Bob Jones', image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    fireEvent.click(screen.getByRole('button', { name: /user menu/i }));
+    fireEvent.click(screen.getByRole('menuitem', { name: /dashboard/i }));
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
+
+  it('closes the dropdown when the Account link is clicked', () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { name: 'Bob Jones', image: null } },
+      status: 'authenticated',
+    });
+    render(<UserMenu />);
+    fireEvent.click(screen.getByRole('button', { name: /user menu/i }));
+    fireEvent.click(screen.getByRole('menuitem', { name: /account/i }));
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
 });
