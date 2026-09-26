@@ -40,4 +40,34 @@ describe('SaveCard', () => {
     fireEvent.change(screen.getByLabelText('Assign to season'), { target: { value: 'season-1' } });
     expect(onSeasonChange).toHaveBeenCalledWith('save-1', 'season-1');
   });
+
+  it('calls onSeasonChange with null when "No season" is chosen', () => {
+    const onSeasonChange = jest.fn();
+    const seasons = [{ id: 'season-1', name: 'Summer 2026' }];
+    render(<SaveCard {...baseProps} seasonId="season-1" seasons={seasons} onSeasonChange={onSeasonChange} />);
+
+    fireEvent.change(screen.getByLabelText('Assign to season'), { target: { value: '' } });
+    expect(onSeasonChange).toHaveBeenCalledWith('save-1', null);
+  });
+
+  it('stops the season row click from bubbling to the card link', () => {
+    const onSeasonChange = jest.fn();
+    const seasons = [{ id: 'season-1', name: 'Summer 2026' }];
+    render(<SaveCard {...baseProps} seasons={seasons} onSeasonChange={onSeasonChange} />);
+
+    const stopPropagation = jest.spyOn(Event.prototype, 'stopPropagation');
+    fireEvent.click(screen.getByLabelText('Assign to season').parentElement as HTMLElement);
+    expect(stopPropagation).toHaveBeenCalled();
+    stopPropagation.mockRestore();
+  });
+
+  it('renders the completed status badge when completed is true', () => {
+    render(<SaveCard {...baseProps} completed />);
+    expect(screen.getByText('Completed')).toBeInTheDocument();
+  });
+
+  it('falls back to "Untitled game" when title is null', () => {
+    render(<SaveCard {...baseProps} title={null} />);
+    expect(screen.getByText('Untitled game')).toBeInTheDocument();
+  });
 });
