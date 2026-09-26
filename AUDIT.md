@@ -45,7 +45,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `components/nav/nav.tsx` is at 98.87% stmts / 68.42% branch / 75% funcs (uncovered: 21-22) (found: 2026-09-01)
 - [ ] `components/player/player.tsx` is at 94.85% stmts / 80% funcs (uncovered: 42-48) (found: 2026-09-01)
 - [ ] `components/premium/UpgradeCTA.tsx` is at 98.73% stmts / 81.81% branch (uncovered: 20-21) (found: 2026-09-01)
-- [x] `components/saves/SaveCard.tsx` branch coverage is 55.55%, func coverage 66.66% despite 100% stmt coverage (uncovered: 28-37, 110) (found: 2026-09-01) (resolved: 2026-09-26, PR #TBD)
+- [x] `components/saves/SaveCard.tsx` branch coverage is 55.55%, func coverage 66.66% despite 100% stmt coverage (uncovered: 28-37, 110) (found: 2026-09-01) (resolved: 2026-09-26, PR #471)
 - [ ] `components/scorecard/scorecard.tsx` branch coverage is 94.73% (uncovered: line 106) (found: 2026-09-01)
 - [ ] `components/scoring/scoring.tsx` is at 99.44% stmts / 94.11% branch / 84.21% funcs (uncovered: 39-40) (found: 2026-09-01)
 - [ ] `components/team/team.tsx` branch coverage is 91.66% (uncovered: 34-35) (found: 2026-09-01)
