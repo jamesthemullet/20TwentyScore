@@ -852,6 +852,52 @@ describe('Scoring Component', () => {
     expect(setBattingPlayerScore).toHaveBeenCalledWith(0, 0, 4, null, true, true, null);
   });
 
+  it('should render nothing when there is no current batting or bowling team', () => {
+    const gameScore = [
+      {
+        players: [],
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
+        overs: 0,
+        currentBattingTeam: false,
+        currentBowlingTeam: false,
+        finishedBatting: false
+      },
+      {
+        players: [],
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
+        overs: 0,
+        currentBattingTeam: false,
+        currentBowlingTeam: false,
+        finishedBatting: false
+      }
+    ] as GameScore;
+    const { container } = render(
+      <GameScoreContext.Provider
+        value={{
+          setGameScore,
+          gameScore,
+          setBattingPlayerScore,
+          setBowlingPlayerScore,
+          setCurrentBowler,
+          swapBatsmen,
+          undo,
+          canUndo: false
+        }}>
+        <Scoring setSelectBowler={jest.fn()} />
+      </GameScoreContext.Provider>
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it('should set all buttons to disabled when the game is finished', () => {
     const currentOver = 19;
     const currentBallInThisOver = 6;
