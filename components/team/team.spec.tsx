@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { GameScoreProvider } from '../../context/GameScoreContext';
+import { type GameScore, GameScoreContext, GameScoreProvider } from '../../context/GameScoreContext';
 import Team from './team';
 
 const teamProps = {
@@ -51,5 +51,51 @@ describe('Team Component', () => {
     });
     expect(screen.queryByRole('textbox')).toBeNull();
     expect(screen.getByText('Team La La La')).toBeVisible();
+  });
+
+  it('should render nothing when there is no current batting team', () => {
+    const gameScore = [
+      {
+        players: [],
+        name: 'Team 1',
+        index: 0,
+        totalRuns: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
+        overs: 0,
+        currentBattingTeam: false,
+        currentBowlingTeam: false,
+        finishedBatting: false
+      },
+      {
+        players: [],
+        name: 'Team 2',
+        index: 1,
+        totalRuns: 0,
+        totalWicketsConceded: 0,
+        totalWicketsTaken: 0,
+        overs: 0,
+        currentBattingTeam: false,
+        currentBowlingTeam: false,
+        finishedBatting: false
+      }
+    ] as GameScore;
+    const { container } = render(
+      <GameScoreContext.Provider
+        value={{
+          gameScore,
+          setGameScore: jest.fn(),
+          setBattingPlayerScore: jest.fn(),
+          setBowlingPlayerScore: jest.fn(),
+          swapBatsmen: jest.fn(),
+          setCurrentBowler: jest.fn(),
+          undo: jest.fn(),
+          canUndo: false
+        }}>
+        <Team {...teamProps} />
+      </GameScoreContext.Provider>
+    );
+
+    expect(container).toBeEmptyDOMElement();
   });
 });
