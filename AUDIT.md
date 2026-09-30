@@ -50,7 +50,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `components/scorecard/scorecard.tsx` branch coverage is 94.73% (uncovered: line 106) (found: 2026-09-01)
 - [x] `components/scoring/scoring.tsx` is at 99.44% stmts / 94.11% branch / 84.21% funcs (uncovered: 39-40) (found: 2026-09-01) (resolved: 2026-09-28, PR #474)
 - [ ] `components/team/team.tsx` branch coverage is 91.66% (uncovered: 34-35) (found: 2026-09-01)
-- [x] `components/core/buttons.tsx`, `components/core/heading.tsx`, `components/core/home-container.tsx` each have no dedicated spec file — 100% coverage is incidental via other tests only, not directly asserted (found: 2026-09-01) (resolved: 2026-09-30, PR #TBD)
+- [x] `components/core/buttons.tsx`, `components/core/heading.tsx`, `components/core/home-container.tsx` each have no dedicated spec file — 100% coverage is incidental via other tests only, not directly asserted (found: 2026-09-01) (resolved: 2026-09-30, PR #476)
 - [ ] `pages/api/auth/[...nextauth].ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/account/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/saves/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
