@@ -52,7 +52,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `components/team/team.tsx` branch coverage is 91.66% (uncovered: 34-35) (found: 2026-09-01)
 - [ ] `components/core/buttons.tsx`, `components/core/heading.tsx`, `components/core/home-container.tsx` each have no dedicated spec file — 100% coverage is incidental via other tests only, not directly asserted (found: 2026-09-01)
 - [ ] `pages/api/auth/[...nextauth].ts` has no spec/test file — 0% coverage (found: 2026-09-01)
-- [x] `pages/api/account/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01) (resolved: 2026-10-02, PR #TBD)
+- [x] `pages/api/account/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01) (resolved: 2026-10-02, PR #478)
 - [ ] `pages/api/saves/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/saves/[id].ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/seasons/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
