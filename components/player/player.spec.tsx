@@ -70,6 +70,83 @@ describe('Player', () => {
     expect(screen.getByText('Player La La La')).toBeVisible();
   });
 
+  it('should save the player name when pressing Enter in the edit textbox', () => {
+    const props = {
+      index: 1,
+      runs: 10,
+      wicketsTaken: 0,
+      currentStriker: true,
+      allActions: [],
+      currentNonStriker: false,
+      status: 'Not out',
+      oversBowled: 0, runsConceded: 0
+    };
+    render(<Player {...props} />);
+    const editButton = screen.getByRole('button', { name: 'Edit name for Player 2' });
+    act(() => {
+      editButton.click();
+    });
+    const textbox = screen.getByRole('textbox');
+    act(() => {
+      fireEvent.change(textbox, { target: { value: 'Player Enter' } });
+    });
+    act(() => {
+      fireEvent.keyDown(textbox, { key: 'Enter' });
+    });
+    expect(screen.queryByRole('textbox')).toBeNull();
+    expect(screen.getByText('Player Enter')).toBeVisible();
+  });
+
+  it('should close the edit textbox when pressing Escape', () => {
+    const props = {
+      index: 1,
+      runs: 10,
+      wicketsTaken: 0,
+      currentStriker: true,
+      allActions: [],
+      currentNonStriker: false,
+      status: 'Not out',
+      oversBowled: 0, runsConceded: 0
+    };
+    render(<Player {...props} />);
+    const editButton = screen.getByRole('button', { name: 'Edit name for Player 2' });
+    act(() => {
+      editButton.click();
+    });
+    const textbox = screen.getByRole('textbox');
+    act(() => {
+      fireEvent.change(textbox, { target: { value: 'Player Escape' } });
+    });
+    act(() => {
+      fireEvent.keyDown(textbox, { key: 'Escape' });
+    });
+    expect(screen.queryByRole('textbox')).toBeNull();
+    expect(screen.getByText('Player Escape')).toBeVisible();
+  });
+
+  it('should ignore other keys pressed in the edit textbox', () => {
+    const props = {
+      index: 1,
+      runs: 10,
+      wicketsTaken: 0,
+      currentStriker: true,
+      allActions: [],
+      currentNonStriker: false,
+      status: 'Not out',
+      oversBowled: 0, runsConceded: 0
+    };
+    render(<Player {...props} />);
+    const editButton = screen.getByRole('button', { name: 'Edit name for Player 2' });
+    act(() => {
+      editButton.click();
+    });
+    const textbox = screen.getByRole('textbox');
+    act(() => {
+      fireEvent.keyDown(textbox, { key: 'Tab' });
+    });
+    expect(screen.getByRole('textbox')).toBeVisible();
+  });
+
   it('should show current striker icon if player is batting', () => {
     const props = {
       index: 1,
