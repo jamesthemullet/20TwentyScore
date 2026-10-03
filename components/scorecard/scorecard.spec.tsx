@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import type { Team, TeamPlayer } from '../../context/GameContext';
 import Scorecard from './scorecard';
 
@@ -75,6 +75,27 @@ describe('Scorecard', () => {
     expect(screen.getByText('Did not bat: Player 3')).toBeInTheDocument();
     expect(screen.getByText('45/1 (6.0 ov)')).toBeInTheDocument();
     expect(screen.getByText('Bowler 1')).toBeInTheDocument();
+  });
+
+  it('falls back to 0 runs conceded when a bowler has no runsConceded recorded', () => {
+    const battingTeam = baseTeam({ players: [basePlayer({ index: 0, name: 'Player 1' })] });
+    const bowlingTeam = baseTeam({
+      players: [
+        basePlayer({
+          index: 0,
+          name: 'Bowler 1',
+          runsConceded: undefined,
+          wicketsTaken: 2,
+          bowlingActions: ['0', '4', '0', '1', '0', 'Wicket']
+        })
+      ]
+    });
+
+    render(<Scorecard label="1st Innings" battingTeam={battingTeam} bowlingTeam={bowlingTeam} />);
+
+    const row = screen.getByText('Bowler 1').closest('tr') as HTMLElement;
+    const cells = within(row).getAllByRole('cell');
+    expect(cells[3]).toHaveTextContent('0');
   });
 
   it('omits the bowling table when nobody has bowled yet', () => {
