@@ -59,7 +59,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `pages/api/auth/[...nextauth].ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/account/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/saves/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
-- [x] `pages/api/saves/[id].ts` has no spec/test file — 0% coverage (found: 2026-09-01) (resolved: 2026-10-04, PR #TBD)
+- [x] `pages/api/saves/[id].ts` has no spec/test file — 0% coverage (found: 2026-09-01) (resolved: 2026-10-04, PR #481)
 - [ ] `pages/api/seasons/index.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/seasons/[id].ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `pages/api/stripe/create-checkout-session.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
