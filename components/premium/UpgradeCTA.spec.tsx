@@ -54,4 +54,29 @@ describe('UpgradeCTA', () => {
       );
     });
   });
+
+  it('resets the loading state without redirecting when the checkout request fails', async () => {
+    (global.fetch as jest.Mock).mockRejectedValue(new Error('network error'));
+    process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID = 'price_monthly';
+
+    render(<UpgradeCTA />);
+    fireEvent.click(screen.getByRole('button', { name: /subscribe monthly/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /subscribe monthly/i })).toBeEnabled();
+    });
+    expect(screen.getByRole('button', { name: /subscribe annually/i })).toBeEnabled();
+  });
+
+  it('does nothing when clicked with no configured priceId', async () => {
+    delete process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID;
+
+    render(<UpgradeCTA />);
+    fireEvent.click(screen.getByRole('button', { name: /subscribe monthly/i }));
+
+    await waitFor(() => {
+      expect(global.fetch).not.toHaveBeenCalled();
+    });
+    expect(screen.getByRole('button', { name: /subscribe monthly/i })).toBeEnabled();
+  });
 });
