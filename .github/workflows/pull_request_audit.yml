@@ -30,7 +30,7 @@ jobs:
       - name: Run axe
         run: |
           yarn add @axe-core/cli
-          npx axe --chrome-path "${{ steps.setup-chrome.outputs.chrome-path }}" --chromedriver-path "${{ steps.setup-chrome.outputs.chromedriver-path }}" http://localhost:3000/ --load-delay=1500 --exit
+          npx axe --chrome-options="no-sandbox,disable-dev-shm-usage" --chrome-path "${{ steps.setup-chrome.outputs.chrome-path }}" --chromedriver-path "${{ steps.setup-chrome.outputs.chromedriver-path }}" http://localhost:3000/ --load-delay=1500 --exit
   e2e:
     runs-on: ubuntu-latest
     env:
