@@ -73,7 +73,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [x] `pages/api/seasons/[id].ts` has no spec/test file — 0% coverage (found: 2026-09-01) (resolved: 2026-10-06, PR #484)
 - [x] `pages/api/stripe/create-checkout-session.ts` has no spec/test file — 0% coverage (found: 2026-09-01) (resolved: 2026-10-07, PR #486)
 - [ ] `pages/api/stripe/create-portal-session.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
-- [x] `pages/api/stripe/webhook.ts` has no spec/test file — 0% coverage; highest priority of the untested API routes since signature verification + event-handling logic spans 118 lines entirely untested (found: 2026-09-01) (resolved: 2026-10-09, PR #TBD)
+- [x] `pages/api/stripe/webhook.ts` has no spec/test file — 0% coverage; highest priority of the untested API routes since signature verification + event-handling logic spans 118 lines entirely untested (found: 2026-09-01) (resolved: 2026-10-09, PR #489)
 - [ ] `pages/api/stripe/sync-subscription.ts` has no spec/test file — 0% coverage (found: 2026-09-01)
 - [ ] `e2e/full-game.e2e.ts` is currently broken: clicking "Start New Match" navigates to `/setup` (per `newGame()` → `router.push("/setup")`), but the test asserts `toHaveURL('/match')` immediately after and never fills in the setup form or clicks "Start Match", so the scoreboard/scoring/summary steps never actually run — fix it to go through `/setup` first (found: 2026-09-01)
 - [ ] No e2e coverage for sign in via NextAuth (`pages/auth/signin.tsx`) or sign out — add `e2e/auth.e2e.ts` covering sign-in with a test credentials/OAuth provider, sign-out, and session-gated UI (e.g. Dashboard link) appearing/disappearing (found: 2026-09-01)
