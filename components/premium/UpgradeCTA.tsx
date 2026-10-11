@@ -4,19 +4,27 @@ import styled from '@emotion/styled';
 
 export default function UpgradeCTA(): React.JSX.Element {
   const [loading, setLoading] = useState<'monthly' | 'annual' | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const subscribe = async (priceId: string | undefined, plan: 'monthly' | 'annual'): Promise<void> => {
     if (!priceId) return;
     setLoading(plan);
+    setError(null);
     try {
       const res = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ priceId }),
       });
+      if (!res.ok) {
+        setError('Could not start checkout. Please try again.');
+        setLoading(null);
+        return;
+      }
       const { url } = await res.json() as { url: string };
       window.location.href = url;
     } catch {
+      setError('Something went wrong. Please try again.');
       setLoading(null);
     }
   };
@@ -25,6 +33,7 @@ export default function UpgradeCTA(): React.JSX.Element {
     <Card>
       <CardTitle>Upgrade to Premium</CardTitle>
       <CardDescription>Unlimited cloud saves, seasons, and more.</CardDescription>
+      {error && <ErrorMessage role="alert">{error}</ErrorMessage>}
       <PriceOptions>
         <PriceOption>
           <PriceAmount>£2.99</PriceAmount>
@@ -78,6 +87,13 @@ const CardDescription = styled.p`
   font-size: 0.9rem;
   color: #555;
   margin: 0 0 1.5rem;
+`;
+
+const ErrorMessage = styled.p`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #b83320;
+  margin: 0 0 1rem;
 `;
 
 const PriceOptions = styled.div`
