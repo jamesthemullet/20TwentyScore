@@ -125,7 +125,7 @@ const PriceAmount = styled.span`
 const PricePeriod = styled.span`
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
-  color: #767676;
+  color: #757575;
   letter-spacing: 0.05em;
 `;
 
