@@ -123,6 +123,7 @@ const SummaryPage: React.FC = () => {
           </PageTitleGroup>
         </PageHeader>
 
+        <h2 className="visually-hidden">Score comparison</h2>
         <ScorePanel>
           <TeamSide>
             <TeamMeta>
