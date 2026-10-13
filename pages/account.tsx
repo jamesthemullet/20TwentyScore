@@ -147,7 +147,7 @@ const SectionLabel = styled.h2`
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #767676;
+  color: #757575;
   margin: 0;
 `;
 
