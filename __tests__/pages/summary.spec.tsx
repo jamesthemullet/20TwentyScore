@@ -124,6 +124,11 @@ describe('SummaryPage', () => {
     expect(screen.getByRole('heading', { name: /match summary/i })).toBeInTheDocument();
   });
 
+  it('announces the score comparison section to screen readers', () => {
+    renderSummary();
+    expect(screen.getByRole('heading', { name: /score comparison/i, level: 2 })).toBeInTheDocument();
+  });
+
   it('shows only the first innings scorecard when the match is in progress', () => {
     const team1 = makeTeam({
       name: 'Team 1',
