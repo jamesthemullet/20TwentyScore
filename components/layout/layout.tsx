@@ -18,7 +18,7 @@ const Layout: React.FC<Props> = ({ children, title, description, noIndex }) => {
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Meta title={title} description={description} noIndex={noIndex} />
       <Header />
-      <BetaBanner role="note" aria-label="Beta notice">
+      <BetaBanner aria-label="Beta notice">
         This site is new and may have rough edges. For suggestions or issues, email{' '}
         <a href="mailto:hello@20twentyscore.co.uk">hello@20twentyscore.co.uk</a>
       </BetaBanner>
@@ -53,7 +53,7 @@ const SiteContainer = styled.div`
   min-height: 100vh;
 `;
 
-const BetaBanner = styled.div`
+const BetaBanner = styled.aside`
   background-color: #f5a623;
   color: #333;
   text-align: center;
