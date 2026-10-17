@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
 import { getServerSession } from 'next-auth/next';
 import { signOut } from 'next-auth/react';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import Layout from '../components/layout/layout';
-import UpgradeCTA from '../components/premium/UpgradeCTA';
 import { authOptions } from '../lib/authOptions';
 import { getUserTier } from '../lib/subscription';
 import { prisma } from '../lib/prisma';
+
+const UpgradeCTA = dynamic(() => import('../components/premium/UpgradeCTA'));
 
 type SubscriptionSummary = {
   status: string;
