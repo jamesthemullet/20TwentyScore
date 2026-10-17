@@ -113,7 +113,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 
 ## 4. SEO / metadata
 
-- [x] `public/` has no `sitemap.xml`, and `public/robots.txt` doesn't reference one — add a sitemap and a `Sitemap:` directive in `robots.txt` (found: 2026-09-01) (resolved: 2026-10-17, PR #TBD)
+- [x] `public/` has no `sitemap.xml`, and `public/robots.txt` doesn't reference one — add a sitemap and a `Sitemap:` directive in `robots.txt` (found: 2026-09-01) (resolved: 2026-10-17, PR #501)
 - [ ] `public/images/temp-seo-image.jpg` is used site-wide as the `og:image`/`twitter:image` via `components/meta/meta.tsx:13` — filename indicates it's a placeholder; replace with a real branded image (found: 2026-09-01)
 - [ ] `pages/seasons/[id].tsx:35-36` builds the page title/description from `season.name` with no visible guard for the loading/undefined state — verify `Meta` doesn't briefly render `undefined | 20Twenty Score` while the season is fetching (found: 2026-09-01)
 
