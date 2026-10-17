@@ -1,2 +1,4 @@
 User-agent: *
 Disallow: /api/
+
+Sitemap: https://20-twenty-score.vercel.app/sitemap.xml
