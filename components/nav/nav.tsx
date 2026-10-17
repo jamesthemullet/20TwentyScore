@@ -52,6 +52,11 @@ export default function Nav(): React.JSX.Element {
             Summary
           </Link>
         </li>
+        <li>
+          <Link href="/scoreboard" className={isActive('/scoreboard') ? 'active' : ''} aria-current={isActive('/scoreboard') ? 'page' : undefined}>
+            Scoreboard
+          </Link>
+        </li>
       </ul>
       <UserMenu />
     </StyledNav>
