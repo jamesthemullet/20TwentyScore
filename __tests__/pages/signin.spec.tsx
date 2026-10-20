@@ -27,4 +27,9 @@ describe('SignIn', () => {
     fireEvent.click(screen.getByRole('button', { name: /sign in with google/i }));
     expect(signIn).toHaveBeenCalledWith('google', { callbackUrl: '/' });
   });
+
+  it('renders a back-to-home link', () => {
+    render(<SignIn />);
+    expect(screen.getByRole('link', { name: /back to home/i })).toHaveAttribute('href', '/');
+  });
 });
