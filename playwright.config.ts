@@ -17,14 +17,21 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // Optional override for environments with a pre-installed Chromium.
+        launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined },
+      },
     },
   ],
+  // Run against a production build, not `next dev`: some failures (e.g. the CSP
+  // blocking Next's inline bootstrap script, which stops the app hydrating) only
+  // happen in production builds.
   webServer: {
-    command: 'yarn dev',
+    command: 'yarn build && yarn start',
     url: 'http://localhost:3000',
-    reuseExistingServer: true,
-    timeout: 60_000,
+    reuseExistingServer: !process.env.CI,
+    timeout: 300_000,
     stdout: 'ignore',
     stderr: 'pipe',
   },
