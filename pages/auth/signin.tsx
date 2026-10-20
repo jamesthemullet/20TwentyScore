@@ -1,5 +1,6 @@
 import { signIn } from 'next-auth/react';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import { PrimaryButton } from '../../components/core/buttons';
 import Meta from '../../components/meta/meta';
 
@@ -34,6 +35,18 @@ const ButtonGroup = styled.div`
   max-width: 280px;
 `;
 
+const BackLink = styled(Link)`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 700;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export default function SignIn() {
   return (
     <Container>
@@ -48,6 +61,9 @@ export default function SignIn() {
           Sign in with Google
         </PrimaryButton>
       </ButtonGroup>
+      <BackLink href="/">
+        <span aria-hidden="true">← </span>Back to home
+      </BackLink>
     </Container>
   );
 }
