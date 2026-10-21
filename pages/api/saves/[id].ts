@@ -30,6 +30,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       seasonId?: string | null;
     };
 
+    if (seasonId) {
+      const season = await prisma.season.findUnique({ where: { id: seasonId } });
+      if (!season || season.userId !== userId) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+    }
+
     const data: Prisma.GameSaveUncheckedUpdateInput = {};
     if (gameData !== undefined) data.gameData = gameData as Prisma.InputJsonValue;
     if (title !== undefined) data.title = title;
