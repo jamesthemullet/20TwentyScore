@@ -135,7 +135,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 
 ## 6. Security
 
-- [x] `pages/api/saves/[id].ts:37` — PATCH accepts an arbitrary `seasonId` in the request body and writes it via `prisma.gameSave.update` without verifying the referenced season belongs to `session.user.id`, letting a user attach their save to another user's season id if guessed (found: 2026-09-01) (resolved: 2026-10-21, PR #PENDING)
+- [x] `pages/api/saves/[id].ts:37` — PATCH accepts an arbitrary `seasonId` in the request body and writes it via `prisma.gameSave.update` without verifying the referenced season belongs to `session.user.id`, letting a user attach their save to another user's season id if guessed (found: 2026-09-01) (resolved: 2026-10-21, PR #508)
 - [ ] `pages/api/saves/index.ts:37` — POST similarly accepts a client-supplied `seasonId` when creating a save without verifying it belongs to the authenticated user (same issue class as above) (found: 2026-09-01)
 - [ ] `nanoid` (transitive via `next > postcss > nanoid`) — high-severity advisory: custom generators can loop indefinitely when size is zero, patched in >=3.3.18; no direct fix without a `next`/`postcss` bump or a `resolutions` override (found: 2026-09-01)
 - [ ] `deepmerge-ts` (transitive via `prisma > @prisma/config > deepmerge-ts`) — high-severity advisory: stack exhaustion when merging recursive object graphs, patched in >=8.0.0; no direct fix without a `prisma` bump or a `resolutions` override (found: 2026-09-01)
