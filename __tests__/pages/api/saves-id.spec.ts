@@ -7,6 +7,7 @@ jest.mock('../../../lib/apiAuth', () => ({ requireSession: jest.fn() }));
 jest.mock('../../../lib/prisma', () => ({
   prisma: {
     gameSave: { findUnique: jest.fn(), update: jest.fn(), delete: jest.fn() },
+    season: { findUnique: jest.fn() },
   },
 }));
 
@@ -112,8 +113,9 @@ describe('pages/api/saves/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(updated);
   });
 
-  it('PATCH forwards gameData, completed, and seasonId when all are provided', async () => {
+  it('PATCH forwards gameData, completed, and seasonId when all are provided and the season belongs to the user', async () => {
     (prisma.gameSave.findUnique as jest.Mock).mockResolvedValue({ id: 's1', userId: 'u1' });
+    (prisma.season.findUnique as jest.Mock).mockResolvedValue({ id: 'season1', userId: 'u1' });
     const updated = { id: 's1' };
     (prisma.gameSave.update as jest.Mock).mockResolvedValue(updated);
     const req = mockReq({
@@ -124,10 +126,37 @@ describe('pages/api/saves/[id]', () => {
 
     await handler(req, res);
 
+    expect(prisma.season.findUnique).toHaveBeenCalledWith({ where: { id: 'season1' } });
     expect(prisma.gameSave.update).toHaveBeenCalledWith({
       where: { id: 's1' },
       data: { gameData: { foo: 'bar' }, completed: true, seasonId: 'season1' },
     });
+  });
+
+  it('PATCH returns 403 and does not update when the given seasonId does not exist', async () => {
+    (prisma.gameSave.findUnique as jest.Mock).mockResolvedValue({ id: 's1', userId: 'u1' });
+    (prisma.season.findUnique as jest.Mock).mockResolvedValue(null);
+    const req = mockReq({ method: 'PATCH', body: { seasonId: 'someone-elses-season' } });
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Forbidden' });
+    expect(prisma.gameSave.update).not.toHaveBeenCalled();
+  });
+
+  it('PATCH returns 403 and does not update when the given seasonId belongs to another user', async () => {
+    (prisma.gameSave.findUnique as jest.Mock).mockResolvedValue({ id: 's1', userId: 'u1' });
+    (prisma.season.findUnique as jest.Mock).mockResolvedValue({ id: 'season1', userId: 'someone-else' });
+    const req = mockReq({ method: 'PATCH', body: { seasonId: 'season1' } });
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Forbidden' });
+    expect(prisma.gameSave.update).not.toHaveBeenCalled();
   });
 
   it('PATCH allows clearing seasonId by setting it to null', async () => {
