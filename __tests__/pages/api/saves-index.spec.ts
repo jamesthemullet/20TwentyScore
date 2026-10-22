@@ -12,6 +12,7 @@ jest.mock('../../../lib/subscription', () => ({
 jest.mock('../../../lib/prisma', () => ({
   prisma: {
     gameSave: { findMany: jest.fn(), create: jest.fn() },
+    season: { findUnique: jest.fn() },
   },
 }));
 
@@ -79,6 +80,7 @@ describe('pages/api/saves/index', () => {
   it('POST creates a save for a free-tier user under the limit', async () => {
     (getUserTier as jest.Mock).mockResolvedValue('free');
     (getGameSaveCount as jest.Mock).mockResolvedValue(0);
+    (prisma.season.findUnique as jest.Mock).mockResolvedValue({ id: 'season1', userId: 'u1' });
     const created = { id: 's2' };
     (prisma.gameSave.create as jest.Mock).mockResolvedValue(created);
     const req = mockReq({ method: 'POST', body: { gameData: { foo: 'bar' }, title: 'Title', seasonId: 'season1' } });
@@ -86,11 +88,38 @@ describe('pages/api/saves/index', () => {
 
     await handler(req, res);
 
+    expect(prisma.season.findUnique).toHaveBeenCalledWith({ where: { id: 'season1' } });
     expect(prisma.gameSave.create).toHaveBeenCalledWith({
       data: { userId: 'u1', gameData: { foo: 'bar' }, title: 'Title', seasonId: 'season1' },
     });
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith(created);
+  });
+
+  it('POST returns 403 and does not create a save when the given seasonId does not exist', async () => {
+    (getUserTier as jest.Mock).mockResolvedValue('premium');
+    (prisma.season.findUnique as jest.Mock).mockResolvedValue(null);
+    const req = mockReq({ method: 'POST', body: { gameData: { foo: 'bar' }, seasonId: 'someone-elses-season' } });
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Forbidden' });
+    expect(prisma.gameSave.create).not.toHaveBeenCalled();
+  });
+
+  it('POST returns 403 and does not create a save when the given seasonId belongs to another user', async () => {
+    (getUserTier as jest.Mock).mockResolvedValue('premium');
+    (prisma.season.findUnique as jest.Mock).mockResolvedValue({ id: 'season1', userId: 'someone-else' });
+    const req = mockReq({ method: 'POST', body: { gameData: { foo: 'bar' }, seasonId: 'season1' } });
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Forbidden' });
+    expect(prisma.gameSave.create).not.toHaveBeenCalled();
   });
 
   it('POST creates a save for a premium-tier user without checking the save count', async () => {
