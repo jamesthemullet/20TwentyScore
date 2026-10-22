@@ -23,8 +23,11 @@ module.exports = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
             key: 'Content-Security-Policy',
+            // 'unsafe-inline' is required in script-src: Next.js injects an inline
+            // bootstrap <script> into every page, and without it the client bundle
+            // never runs, so nothing hydrates and no button works. Covered by e2e/.
             value:
-              "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://va.vercel-scripts.com; img-src 'self' data:;"
+              "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com; img-src 'self' data:;"
           },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
         ]

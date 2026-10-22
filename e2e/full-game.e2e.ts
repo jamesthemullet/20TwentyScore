@@ -12,7 +12,8 @@
  *   - Navigation to /summary uses the nav link (client-side) to preserve React context.
  */
 
-import { expect, test, type Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 // ---------------------------------------------------------------------------
 // Helpers
