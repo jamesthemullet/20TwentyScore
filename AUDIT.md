@@ -140,7 +140,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [ ] `pages/api/saves/index.ts:37` — POST similarly accepts a client-supplied `seasonId` when creating a save without verifying it belongs to the authenticated user (same issue class as above) (found: 2026-09-01)
 - [ ] `nanoid` (transitive via `next > postcss > nanoid`) — high-severity advisory: custom generators can loop indefinitely when size is zero, patched in >=3.3.18; no direct fix without a `next`/`postcss` bump or a `resolutions` override (found: 2026-09-01)
 - [ ] `deepmerge-ts` (transitive via `prisma > @prisma/config > deepmerge-ts`) — high-severity advisory: stack exhaustion when merging recursive object graphs, patched in >=8.0.0; no direct fix without a `prisma` bump or a `resolutions` override (found: 2026-09-01)
-- [x] `next.config.js:16-33` sets `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and `Content-Security-Policy`, but no `Strict-Transport-Security` (HSTS) header (found: 2026-09-01) (resolved: 2026-10-24, PR #TBD)
+- [x] `next.config.js:16-33` sets `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and `Content-Security-Policy`, but no `Strict-Transport-Security` (HSTS) header (found: 2026-09-01) (resolved: 2026-10-24, PR #515)
 
 ## 7. README / feature alignment
 
