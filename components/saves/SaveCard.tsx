@@ -30,7 +30,7 @@ const SaveCard = memo(function SaveCard({ id, title, createdAt, completed, seaso
 
   return (
     <CardWrapper>
-      <Card href={`/api/saves/${id}`}>
+      <Card href={`/saves/${id}`}>
         <CardTitle>{title ?? 'Untitled game'}</CardTitle>
         <CardMeta>
           <DateLabel>{date}</DateLabel>
