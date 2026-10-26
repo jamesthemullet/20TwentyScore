@@ -9,6 +9,7 @@ A ball-by-ball scorecard app for Twenty20 (T20) cricket matches.
 - Batting and bowling player tracking
 - Extras (wides, no-balls, byes, leg-byes)
 - Save and load game state via localStorage
+- Sign in with Google (via NextAuth) to manage your account and access cloud-backed features
 - Responsive layout built with Emotion (CSS-in-JS)
 
 ## Tech stack
