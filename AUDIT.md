@@ -145,7 +145,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 ## 7. README / feature alignment
 
 - [ ] README.md line 11 ("Save and load game state via localStorage") is stale — the app now has a Postgres-backed saves system (`pages/api/saves/index.ts`, `pages/api/saves/[id].ts`) gated behind NextAuth sign-in; localStorage is no longer the (only) persistence mechanism (found: 2026-09-01)
-- [x] README "Features" section omits sign-in/accounts — a full NextAuth flow (`pages/api/auth/[...nextauth].ts`, `pages/auth/signin.tsx`, `pages/account.tsx`, `pages/api/account/index.ts`) isn't mentioned anywhere (found: 2026-09-01) (resolved: 2026-10-26, PR #TBD)
+- [x] README "Features" section omits sign-in/accounts — a full NextAuth flow (`pages/api/auth/[...nextauth].ts`, `pages/auth/signin.tsx`, `pages/account.tsx`, `pages/api/account/index.ts`) isn't mentioned anywhere (found: 2026-09-01) (resolved: 2026-10-26, PR #518)
 - [ ] README "Features" section omits seasons — `pages/seasons/index.tsx`, `pages/seasons/[id].tsx`, and `pages/api/seasons/*` implement a full seasons feature not documented (found: 2026-09-01)
 - [ ] README "Features" section omits Stripe billing/subscriptions — `pages/api/stripe/create-checkout-session.ts`, `create-portal-session.ts`, `sync-subscription.ts`, `webhook.ts`, and subscription management in `pages/account.tsx` are entirely undocumented (found: 2026-09-01)
 - [ ] README "Tech stack" section omits NextAuth, Prisma/Postgres, and Stripe — all now core dependencies of the app (found: 2026-09-01)
