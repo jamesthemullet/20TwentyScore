@@ -41,6 +41,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return res.status(400).json({ error: 'gameData is required' });
     }
 
+    if (seasonId) {
+      const season = await prisma.season.findUnique({ where: { id: seasonId } });
+      if (!season || season.userId !== userId) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+    }
+
     const save = await prisma.gameSave.create({
       data: { userId, gameData, title, seasonId },
     });
