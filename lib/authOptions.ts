@@ -9,6 +9,8 @@ let _authOptions: NextAuthOptions | undefined;
 function createAuthOptions(): NextAuthOptions {
   return {
     adapter: PrismaAdapter(prisma),
+    // Set explicitly: NextAuth's fallback assigns options.secret, which the Proxy below drops.
+    secret: requireEnv('NEXTAUTH_SECRET'),
     providers: [
       GoogleProvider({
         clientId: requireEnv('GOOGLE_CLIENT_ID'),
