@@ -16,7 +16,7 @@ jobs:
       - name: Use Node.js 24.x
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: yarn
       - run: yarn install
       - name: Setup Chrome 🌐
@@ -40,7 +40,7 @@ jobs:
       - name: Use Node.js 24.x
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: yarn
       - run: yarn install
       - name: Cache Playwright browsers
@@ -64,7 +64,7 @@ jobs:
       - name: Use Node.js 24.x
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: yarn
       - run: yarn install
       - name: Run lint
@@ -76,7 +76,7 @@ jobs:
       - name: Use Node.js 24.x
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: yarn
       - run: yarn install
       - name: Run knip
@@ -90,7 +90,7 @@ jobs:
       - name: Use Node.js 24.x
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: yarn
       - name: Install dependencies
         run: yarn install
