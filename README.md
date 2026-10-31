@@ -12,6 +12,7 @@ A ball-by-ball scorecard app for Twenty20 (T20) cricket matches.
 - Sign in with Google (via NextAuth) to manage your account and access cloud-backed features
 - In-progress game state is auto-saved to localStorage; signed-in users can additionally save completed/in-progress games to the cloud (Postgres-backed) and reload them later
 - Premium users can organize cloud saves into seasons, creating, viewing, and managing named seasons and the games within them
+- Premium subscriptions via Stripe Checkout, managed from the account page through the Stripe customer billing portal, with subscription status kept in sync via Stripe webhooks
 - Responsive layout built with Emotion (CSS-in-JS)
 
 ## Tech stack
