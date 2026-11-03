@@ -21,6 +21,9 @@ A ball-by-ball scorecard app for Twenty20 (T20) cricket matches.
 - [React](https://react.dev/) with TypeScript
 - [Emotion](https://emotion.sh/) — CSS-in-JS styling
 - React Context + `useReducer` — state management
+- [NextAuth](https://next-auth.js.org/) — Google sign-in and session management
+- [Prisma](https://www.prisma.io/) + [PostgreSQL](https://www.postgresql.org/) — cloud saves, seasons, and subscription data
+- [Stripe](https://stripe.com/) — premium subscription checkout and billing
 - [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/) — unit and integration tests
 
 ## Getting started
