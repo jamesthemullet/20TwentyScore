@@ -156,7 +156,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 - [x] README "Features" section omits seasons — `pages/seasons/index.tsx`, `pages/seasons/[id].tsx`, and `pages/api/seasons/*` implement a full seasons feature not documented (found: 2026-09-01) (resolved: 2026-10-30, PR #522)
 - [x] README "Features" section omits Stripe billing/subscriptions — `pages/api/stripe/create-checkout-session.ts`, `create-portal-session.ts`, `sync-subscription.ts`, `webhook.ts`, and subscription management in `pages/account.tsx` are entirely undocumented (found: 2026-09-01) (resolved: 2026-10-31, PR #524)
 - [x] README "Tech stack" section omits NextAuth, Prisma/Postgres, and Stripe — all now core dependencies of the app (found: 2026-09-01) (resolved: 2026-11-03, PR #527)
-- [x] README omits the `pages/dashboard.tsx` route, described in-app as where users "view and manage your cloud saves and cricket seasons" — a user-facing feature with no README mention (found: 2026-09-01) (resolved: 2026-11-04, PR #TBD)
+- [x] README omits the `pages/dashboard.tsx` route, described in-app as where users "view and manage your cloud saves and cricket seasons" — a user-facing feature with no README mention (found: 2026-09-01) (resolved: 2026-11-04, PR #528)
 
 ## 8. Code quality
 
