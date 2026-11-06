@@ -72,7 +72,10 @@ describe('Index page', () => {
     });
 
     it('loads saved game, calls setGameScore, and navigates to /match', () => {
-      const savedGame = [{ name: 'Team A', players: [] }, { name: 'Team B', players: [] }];
+      const savedGame = [
+        { name: 'Team A', index: 0, players: [{ name: 'Player 1', index: 0 }] },
+        { name: 'Team B', index: 1, players: [] },
+      ];
       localStorage.setItem('gameData', JSON.stringify(savedGame));
       renderIndex();
       fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
@@ -114,7 +117,52 @@ describe('Index page', () => {
     it('shows error when a team is missing its players array', () => {
       localStorage.setItem(
         'gameData',
-        JSON.stringify([{ name: 'Team A' }, { name: 'Team B', players: [] }])
+        JSON.stringify([{ name: 'Team A', index: 0 }, { name: 'Team B', index: 1, players: [] }])
+      );
+      renderIndex();
+      fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
+      expect(screen.getByRole('alert')).toHaveTextContent('Saved game data is corrupted');
+      expect(setGameScore).not.toHaveBeenCalled();
+      expect(mockPush).not.toHaveBeenCalled();
+    });
+
+    it('shows error when a team has an invalid index', () => {
+      localStorage.setItem(
+        'gameData',
+        JSON.stringify([
+          { name: 'Team A', index: 5, players: [] },
+          { name: 'Team B', index: 1, players: [] },
+        ])
+      );
+      renderIndex();
+      fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
+      expect(screen.getByRole('alert')).toHaveTextContent('Saved game data is corrupted');
+      expect(setGameScore).not.toHaveBeenCalled();
+      expect(mockPush).not.toHaveBeenCalled();
+    });
+
+    it('shows error when a team is missing its name', () => {
+      localStorage.setItem(
+        'gameData',
+        JSON.stringify([
+          { index: 0, players: [] },
+          { name: 'Team B', index: 1, players: [] },
+        ])
+      );
+      renderIndex();
+      fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
+      expect(screen.getByRole('alert')).toHaveTextContent('Saved game data is corrupted');
+      expect(setGameScore).not.toHaveBeenCalled();
+      expect(mockPush).not.toHaveBeenCalled();
+    });
+
+    it('shows error when a player entry is missing required fields', () => {
+      localStorage.setItem(
+        'gameData',
+        JSON.stringify([
+          { name: 'Team A', index: 0, players: [{ runs: 10 }] },
+          { name: 'Team B', index: 1, players: [] },
+        ])
       );
       renderIndex();
       fireEvent.click(screen.getByRole('button', { name: /resume saved match/i }));
