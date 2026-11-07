@@ -164,7 +164,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 
 - [ ] `context/GameContext.tsx:253,288,330,345,358` — five `[...teams] as GameScore` casts to force a spread `Team[]` back into the `[Team, Team]` tuple; extract a `cloneTeams(teams: GameScore): GameScore` helper instead of repeating the cast at each reducer branch (found: 2026-09-01)
 - [ ] `pages/index.tsx:42` — `setGameScore(parsedGameData as GameScore)` casts `unknown` JSON straight to `GameScore` after only a shallow `Array.isArray`/length/`players` check; corrupted localStorage data can silently reach state (found: 2026-09-01)
-- [x] `pages/api/seasons/index.ts:38` — `(seasons as SeasonWithCount[])` hand-declares Prisma's `include`-shaped result instead of deriving it via `Prisma.SeasonGetPayload<...>`, so the cast can silently drift from the real query shape (found: 2026-09-01) (resolved: 2026-11-07, PR #TBD)
+- [x] `pages/api/seasons/index.ts:38` — `(seasons as SeasonWithCount[])` hand-declares Prisma's `include`-shaped result instead of deriving it via `Prisma.SeasonGetPayload<...>`, so the cast can silently drift from the real query shape (found: 2026-09-01) (resolved: 2026-11-07, PR #532)
 - [ ] `pages/seasons/index.tsx:45` — `(await res.json()) as SeasonSummary & { gameCount?: number }` casts an API response with no runtime check (found: 2026-09-01)
 - [ ] `pages/dashboard.tsx:110` — `(await res.json()) as SaveSummary` — same unchecked fetch-response cast pattern (found: 2026-09-01)
 - [ ] `lib/authOptions.ts:40`, `lib/prisma.ts:21`, `lib/stripe.ts:15` — all three use `new Proxy({} as X, {...})` for lazy singletons, copy-pasted three times with no shared helper (e.g. `lazySingleton<T>(factory)`) (found: 2026-09-01)
