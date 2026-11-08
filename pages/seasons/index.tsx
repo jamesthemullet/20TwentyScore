@@ -24,6 +24,19 @@ type PageProps = {
   seasons: SeasonSummary[];
 };
 
+function isValidCreatedSeason(value: unknown): value is SeasonSummary & { gameCount?: number } {
+  if (typeof value !== 'object' || value === null) return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.id === 'string' &&
+    typeof v.name === 'string' &&
+    (typeof v.description === 'string' || v.description === null) &&
+    typeof v.createdAt === 'string' &&
+    typeof v.updatedAt === 'string' &&
+    (v.gameCount === undefined || typeof v.gameCount === 'number')
+  );
+}
+
 export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps): React.JSX.Element {
   const [seasons, setSeasons] = useState<SeasonSummary[]>(initialSeasons);
   const [creating, setCreating] = useState(false);
@@ -42,8 +55,12 @@ export default function SeasonsPage({ tier, seasons: initialSeasons }: PageProps
         body: JSON.stringify({ name: newName.trim() }),
       });
       if (res.ok) {
-        const season = (await res.json()) as SeasonSummary & { gameCount?: number };
-        setSeasons((prev) => [{ ...season, gameCount: season.gameCount ?? 0 }, ...prev]);
+        const body: unknown = await res.json();
+        if (!isValidCreatedSeason(body)) {
+          setCreateError('Something went wrong. Please try again.');
+          return;
+        }
+        setSeasons((prev) => [{ ...body, gameCount: body.gameCount ?? 0 }, ...prev]);
         setNewName('');
         setFormOpen(false);
       } else {
