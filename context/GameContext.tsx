@@ -156,6 +156,10 @@ function toTeamIndex(n: number): 0 | 1 {
   return n;
 }
 
+function cloneTeams(teams: GameScore): GameScore {
+  return [...teams] as GameScore;
+}
+
 function swapStrikers(players: TeamPlayer[]): TeamPlayer[] {
   return players.map((p) => ({
     ...p,
@@ -250,7 +254,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         battingTeamIndex !== -1 &&
         !teams[battingTeamIndex].players.find((p) => p.currentStriker)
       ) {
-        const updatedTeams = [...teams] as GameScore;
+        const updatedTeams = cloneTeams(teams);
         const bi = toTeamIndex(battingTeamIndex);
         updatedTeams[bi] = {
           ...updatedTeams[bi],
@@ -285,7 +289,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         mostRecentAction: state.mostRecentAction
       };
 
-      const teams = [...state.teams] as GameScore;
+      const teams = cloneTeams(state.teams);
       const ti = toTeamIndex(teamIndex);
       const team = teams[ti];
 
@@ -327,7 +331,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
       if (bowlingTeamIndex === -1) return state;
 
-      const teams = [...state.teams] as GameScore;
+      const teams = cloneTeams(state.teams);
       teams[bowlingTeamIndex] = {
         ...teams[bowlingTeamIndex],
         players: applyBowlingUpdate(teams[bowlingTeamIndex].players, ballAction, runs, endOfOver),
@@ -342,7 +346,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const battingTeamIndex = state.teams.findIndex((t) => t.currentBattingTeam);
       if (battingTeamIndex === -1) return state;
 
-      const teams = [...state.teams] as GameScore;
+      const teams = cloneTeams(state.teams);
       teams[battingTeamIndex] = {
         ...teams[battingTeamIndex],
         players: swapStrikers(teams[battingTeamIndex].players)
@@ -355,7 +359,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const { teamIndex, playerIndex } = action.payload;
       if (teamIndex < 0 || teamIndex > 1) return state;
 
-      const teams = [...state.teams] as GameScore;
+      const teams = cloneTeams(state.teams);
       const ti = toTeamIndex(teamIndex);
       teams[ti] = {
         ...teams[ti],
