@@ -345,6 +345,33 @@ describe('DashboardPage', () => {
       expect(screen.getByText('Untouched')).toBeInTheDocument();
     });
 
+    it('shows a generic error message when the response body has an invalid shape', async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        status: 201,
+        json: async () => ({ id: 'save-new', title: 'Test Save', createdAt: '2026-01-01T00:00:00.000Z' }),
+      });
+
+      renderDashboard();
+      fireEvent.click(screen.getByRole('button', { name: /save current game to cloud/i }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent(/something went wrong/i);
+      expect(localStorage.getItem('cloudSaveId')).toBeNull();
+    });
+
+    it('shows a generic error message when the response body is not an object', async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        status: 201,
+        json: async () => null,
+      });
+
+      renderDashboard();
+      fireEvent.click(screen.getByRole('button', { name: /save current game to cloud/i }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent(/something went wrong/i);
+    });
+
     it('shows an upgrade prompt when the free save limit is reached', async () => {
       global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 402 });
 
