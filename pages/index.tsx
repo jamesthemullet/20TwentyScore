@@ -16,6 +16,23 @@ if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   });
 }
 
+const isValidPlayer = (player: unknown): boolean =>
+  typeof player === "object" &&
+  player !== null &&
+  typeof (player as Record<string, unknown>).name === "string" &&
+  typeof (player as Record<string, unknown>).index === "number";
+
+const isValidTeam = (team: unknown): boolean =>
+  typeof team === "object" &&
+  team !== null &&
+  typeof (team as Record<string, unknown>).name === "string" &&
+  ((team as Record<string, unknown>).index === 0 || (team as Record<string, unknown>).index === 1) &&
+  Array.isArray((team as Record<string, unknown>).players) &&
+  ((team as Record<string, unknown>).players as unknown[]).every(isValidPlayer);
+
+const isValidGameScore = (data: unknown): data is GameScore =>
+  Array.isArray(data) && data.length === 2 && data.every(isValidTeam);
+
 const Index: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -31,15 +48,11 @@ const Index: React.FC = () => {
     }
     try {
       const parsedGameData: unknown = JSON.parse(gameData);
-      if (
-        !Array.isArray(parsedGameData) ||
-        parsedGameData.length !== 2 ||
-        !parsedGameData.every((team) => Array.isArray(team?.players))
-      ) {
+      if (!isValidGameScore(parsedGameData)) {
         setError("Saved game data is corrupted");
         return;
       }
-      setGameScore(parsedGameData as GameScore);
+      setGameScore(parsedGameData);
       router.push("/match");
     } catch {
       setError("Saved game data is corrupted");
