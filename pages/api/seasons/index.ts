@@ -1,18 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { Season } from '@prisma/client';
+import type { Prisma, Season } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
 
-type SeasonWithCount = {
-  id: string;
-  userId: string;
-  name: string;
-  description: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  _count: { gameSaves: number };
-};
+type SeasonWithCount = Prisma.SeasonGetPayload<{
+  include: { _count: { select: { gameSaves: true } } };
+}>;
 
 type SeasonListItem = Omit<SeasonWithCount, '_count'> & { gameCount: number };
 type SeasonsIndexResponse = SeasonListItem[] | Season | { error: string };
@@ -34,9 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       include: { _count: { select: { gameSaves: true } } },
       orderBy: { createdAt: 'desc' },
     });
-    return res.json(
-      (seasons as SeasonWithCount[]).map(({ _count, ...s }) => ({ ...s, gameCount: _count.gameSaves }))
-    );
+    return res.json(seasons.map(({ _count, ...s }) => ({ ...s, gameCount: _count.gameSaves })));
   }
 
   if (req.method === 'POST') {
