@@ -28,6 +28,18 @@ type SaveSummary = {
 
 type SeasonSummary = { id: string; name: string };
 
+function isValidSaveSummary(value: unknown): value is SaveSummary {
+  if (typeof value !== "object" || value === null) return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.id === "string" &&
+    (typeof v.title === "string" || v.title === null) &&
+    typeof v.createdAt === "string" &&
+    typeof v.completed === "boolean" &&
+    (typeof v.seasonId === "string" || v.seasonId === null)
+  );
+}
+
 type DashboardProps = {
   tier: "free" | "premium";
   initialSaves: SaveSummary[];
@@ -107,7 +119,12 @@ export default function DashboardPage({ tier, initialSaves, initialSeasons, chec
         return;
       }
 
-      const saved = (await res.json()) as SaveSummary;
+      const body: unknown = await res.json();
+      if (!isValidSaveSummary(body)) {
+        setSaveError("Something went wrong. Please try again.");
+        return;
+      }
+      const saved = body;
       if (!cloudSaveId) localStorage.setItem("cloudSaveId", saved.id);
       setSaves((prev) => {
         const idx = prev.findIndex((s) => s.id === saved.id);
