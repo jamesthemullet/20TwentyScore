@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { requireEnv } from './env';
+import { lazySingleton } from './lazySingleton';
 
 let _stripe: Stripe | undefined;
 
@@ -12,8 +13,4 @@ function getStripe(): Stripe {
   return _stripe;
 }
 
-export const stripe = new Proxy({} as Stripe, {
-  get(_target, prop, receiver) {
-    return Reflect.get(getStripe(), prop, receiver);
-  },
-});
+export const stripe = lazySingleton(getStripe);
