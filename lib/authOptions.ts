@@ -3,13 +3,14 @@ import GoogleProvider from 'next-auth/providers/google';
 import type { NextAuthOptions } from 'next-auth';
 import { prisma } from './prisma';
 import { requireEnv } from './env';
+import { lazySingleton } from './lazySingleton';
 
 let _authOptions: NextAuthOptions | undefined;
 
 function createAuthOptions(): NextAuthOptions {
   return {
     adapter: PrismaAdapter(prisma),
-    // Set explicitly: NextAuth's fallback assigns options.secret, which the Proxy below drops.
+    // Set explicitly: NextAuth's fallback assigns options.secret, which the lazySingleton Proxy drops.
     secret: requireEnv('NEXTAUTH_SECRET'),
     providers: [
       GoogleProvider({
@@ -39,8 +40,4 @@ function getAuthOptions(): NextAuthOptions {
   return _authOptions;
 }
 
-export const authOptions: NextAuthOptions = new Proxy({} as NextAuthOptions, {
-  get(_target, prop, receiver) {
-    return Reflect.get(getAuthOptions(), prop, receiver);
-  },
-});
+export const authOptions: NextAuthOptions = lazySingleton(getAuthOptions);

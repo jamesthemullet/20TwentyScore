@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { requireEnv } from "./env";
+import { lazySingleton } from "./lazySingleton";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
@@ -18,8 +19,4 @@ function getPrisma(): PrismaClient {
   return globalForPrisma.prisma;
 }
 
-export const prisma = new Proxy({} as PrismaClient, {
-  get(_target, prop, receiver) {
-    return Reflect.get(getPrisma(), prop, receiver);
-  },
-});
+export const prisma = lazySingleton(getPrisma);
