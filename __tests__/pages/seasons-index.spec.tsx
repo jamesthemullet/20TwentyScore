@@ -127,6 +127,53 @@ describe('SeasonsPage', () => {
       expect(await screen.findByRole('alert')).toHaveTextContent(/could not create season/i);
     });
 
+    it('shows a generic error message when the response body is not a valid season', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({ id: 's4' }),
+      });
+
+      render(<SeasonsPage tier="premium" seasons={[]} />);
+      fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+      fireEvent.change(screen.getByLabelText('Season name'), { target: { value: 'Autumn 2026' } });
+      fireEvent.click(screen.getByRole('button', { name: /^create$/i }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent(/something went wrong/i);
+      expect(screen.queryByTestId('season-card')).not.toBeInTheDocument();
+    });
+
+    it('shows a generic error message when the response body is null', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: true, json: async () => null });
+
+      render(<SeasonsPage tier="premium" seasons={[]} />);
+      fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+      fireEvent.change(screen.getByLabelText('Season name'), { target: { value: 'Autumn 2026' } });
+      fireEvent.click(screen.getByRole('button', { name: /^create$/i }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent(/something went wrong/i);
+    });
+
+    it('shows a generic error message when gameCount is present but not a number', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          id: 's5',
+          name: 'Autumn 2026',
+          description: null,
+          createdAt: '2026-09-01T00:00:00.000Z',
+          updatedAt: '2026-09-01T00:00:00.000Z',
+          gameCount: 'not-a-number',
+        }),
+      });
+
+      render(<SeasonsPage tier="premium" seasons={[]} />);
+      fireEvent.click(screen.getByRole('button', { name: /new season/i }));
+      fireEvent.change(screen.getByLabelText('Season name'), { target: { value: 'Autumn 2026' } });
+      fireEvent.click(screen.getByRole('button', { name: /^create$/i }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent(/something went wrong/i);
+    });
+
     it('shows a generic error message when the request throws', async () => {
       (global.fetch as jest.Mock).mockRejectedValue(new Error('network down'));
 
