@@ -3,6 +3,7 @@ import type { GameSave, Season } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
+import { getQueryId } from '../../../lib/queryId';
 
 type SaveListItem = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed' | 'seasonId'>;
 type SeasonDetail = Season & { gameSaves: SaveListItem[] };
@@ -19,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(402).json({ error: 'PREMIUM_REQUIRED' });
   }
 
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  const id = getQueryId(req);
   if (!id) return res.status(400).json({ error: 'Missing id' });
 
   const season = await prisma.season.findUnique({ where: { id } });

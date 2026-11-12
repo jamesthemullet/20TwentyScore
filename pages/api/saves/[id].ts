@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Prisma, GameSave } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { prisma } from '../../../lib/prisma';
+import { getQueryId } from '../../../lib/queryId';
 
 type SavesIdResponse = GameSave | { error: string };
 
@@ -9,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const session = await requireSession(req, res);
   if (!session) return;
 
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  const id = getQueryId(req);
   if (!id) return res.status(400).json({ error: 'Missing id' });
   const userId = session.user.id;
 
