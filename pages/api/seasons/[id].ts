@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { GameSave, Season } from '@prisma/client';
-import { requireSession } from '../../../lib/apiAuth';
-import { getUserTier } from '../../../lib/subscription';
+import { requirePremium, requireSession } from '../../../lib/apiAuth';
 import { prisma } from '../../../lib/prisma';
 
 type SaveListItem = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed' | 'seasonId'>;
@@ -14,10 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const userId = session.user.id;
 
-  const tier = await getUserTier(userId);
-  if (tier === 'free') {
-    return res.status(402).json({ error: 'PREMIUM_REQUIRED' });
-  }
+  if (!(await requirePremium(userId, res))) return;
 
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
   if (!id) return res.status(400).json({ error: 'Missing id' });

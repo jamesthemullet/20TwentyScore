@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Prisma, Season } from '@prisma/client';
-import { requireSession } from '../../../lib/apiAuth';
-import { getUserTier } from '../../../lib/subscription';
+import { requirePremium, requireSession } from '../../../lib/apiAuth';
 import { prisma } from '../../../lib/prisma';
 
 type SeasonWithCount = Prisma.SeasonGetPayload<{
@@ -17,10 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const userId = session.user.id;
 
-  const tier = await getUserTier(userId);
-  if (tier === 'free') {
-    return res.status(402).json({ error: 'PREMIUM_REQUIRED' });
-  }
+  if (!(await requirePremium(userId, res))) return;
 
   if (req.method === 'GET') {
     const seasons = await prisma.season.findMany({
