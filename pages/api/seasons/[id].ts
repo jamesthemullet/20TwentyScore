@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { GameSave, Season } from '@prisma/client';
+import type { Season } from '@prisma/client';
 import { requirePremium, requireSession } from '../../../lib/apiAuth';
 import { prisma } from '../../../lib/prisma';
+import { saveListItemSelect, type SaveListItem } from '../../../lib/saveListItem';
 
-type SaveListItem = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed' | 'seasonId'>;
 type SeasonDetail = Season & { gameSaves: SaveListItem[] };
 type SeasonsIdResponse = SeasonDetail | Season | { error: string };
 
@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (req.method === 'GET') {
     const saves = await prisma.gameSave.findMany({
       where: { seasonId: id },
-      select: { id: true, title: true, createdAt: true, completed: true, seasonId: true },
+      select: saveListItemSelect,
       orderBy: { createdAt: 'desc' },
     });
     return res.json({ ...season, gameSaves: saves });
