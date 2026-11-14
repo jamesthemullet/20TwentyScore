@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useGameScore } from '../../context/GameScoreContext';
 import { useMostRecentAction } from '../../context/MostRecentActionContext';
 import { useOvers } from '../../context/OversContext';
+import { BALLS_PER_OVER } from '../../lib/cricketRules';
 import { SquareButton } from '../core/buttons';
 import { HomeContainer } from '../core/home-container';
 
-const BALLS_PER_OVER = 6;
 const WICKETS_FOR_ALL_OUT = 9; // 9 conceded means 10th wicket falls next
 const FINAL_OVER_INDEX = 19; // T20: overs 0–19
 
