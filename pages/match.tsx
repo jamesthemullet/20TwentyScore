@@ -10,10 +10,10 @@ import Scoring from "../components/scoring/scoring";
 import { useGameScore } from "../context/GameScoreContext";
 import { useMostRecentAction } from "../context/MostRecentActionContext";
 import { useOvers } from "../context/OversContext";
+import { BALLS_PER_OVER } from "../lib/cricketRules";
 import { useMilestone } from "../utils/useMilestone";
 
 const TOTAL_OVERS = 20;
-const BALLS_PER_OVER = 6;
 const TOTAL_BALLS = TOTAL_OVERS * BALLS_PER_OVER;
 const MAX_RUN_RATE_DISPLAY = 12;
 const MAX_PROJECTED_SCORE = 300;
