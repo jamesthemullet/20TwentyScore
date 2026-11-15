@@ -3,8 +3,8 @@ import type { GameSave } from '@prisma/client';
 import { requireSession } from '../../../lib/apiAuth';
 import { getGameSaveCount, getUserTier } from '../../../lib/subscription';
 import { prisma } from '../../../lib/prisma';
+import { saveListItemSelect, type SaveListItem } from '../../../lib/saveListItem';
 
-type SaveListItem = Pick<GameSave, 'id' | 'title' | 'createdAt' | 'completed' | 'seasonId'>;
 type SavesIndexResponse = SaveListItem[] | GameSave | { error: string };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<SavesIndexResponse>) {
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (req.method === 'GET') {
     const saves = await prisma.gameSave.findMany({
       where: { userId },
-      select: { id: true, title: true, createdAt: true, completed: true, seasonId: true },
+      select: saveListItemSelect,
       orderBy: { createdAt: 'desc' },
     });
     return res.json(saves);

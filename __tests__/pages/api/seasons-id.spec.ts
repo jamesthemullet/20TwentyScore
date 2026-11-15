@@ -1,11 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import handler from '../../../pages/api/seasons/[id]';
-import { requireSession } from '../../../lib/apiAuth';
-import { getUserTier } from '../../../lib/subscription';
+import { requirePremium, requireSession } from '../../../lib/apiAuth';
 import { prisma } from '../../../lib/prisma';
 
-jest.mock('../../../lib/apiAuth', () => ({ requireSession: jest.fn() }));
-jest.mock('../../../lib/subscription', () => ({ getUserTier: jest.fn() }));
+jest.mock('../../../lib/apiAuth', () => ({ requireSession: jest.fn(), requirePremium: jest.fn() }));
 jest.mock('../../../lib/prisma', () => ({
   prisma: {
     season: { findUnique: jest.fn(), update: jest.fn(), delete: jest.fn() },
@@ -32,7 +30,7 @@ describe('pages/api/seasons/[id]', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (requireSession as jest.Mock).mockResolvedValue({ user: { id: 'u1' } });
-    (getUserTier as jest.Mock).mockResolvedValue('premium');
+    (requirePremium as jest.Mock).mockResolvedValue(true);
   });
 
   it('does nothing further when there is no session', async () => {
@@ -42,20 +40,19 @@ describe('pages/api/seasons/[id]', () => {
 
     await handler(req, res);
 
-    expect(getUserTier).not.toHaveBeenCalled();
+    expect(requirePremium).not.toHaveBeenCalled();
     expect(prisma.season.findUnique).not.toHaveBeenCalled();
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  it('returns 402 PREMIUM_REQUIRED for a free-tier user', async () => {
-    (getUserTier as jest.Mock).mockResolvedValue('free');
+  it('does nothing further when requirePremium rejects the request', async () => {
+    (requirePremium as jest.Mock).mockResolvedValue(false);
     const req = mockReq({ method: 'GET' });
     const res = mockRes();
 
     await handler(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(402);
-    expect(res.json).toHaveBeenCalledWith({ error: 'PREMIUM_REQUIRED' });
+    expect(requirePremium).toHaveBeenCalledWith('u1', res);
     expect(prisma.season.findUnique).not.toHaveBeenCalled();
   });
 
