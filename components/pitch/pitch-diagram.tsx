@@ -1,17 +1,21 @@
+import styled from '@emotion/styled';
 import type React from 'react';
+
+const DiagramSvg = styled.svg`
+  display: block;
+`;
 
 export default function PitchDiagram(): React.JSX.Element {
   const cx = 110;
   const cy = 110;
 
   return (
-    <svg
+    <DiagramSvg
       viewBox="0 0 220 220"
       width="220"
       height="220"
       role="img"
-      aria-label="Cricket ground diagram"
-      style={{ display: 'block' }}>
+      aria-label="Cricket ground diagram">
       <title>Cricket ground diagram</title>
       {/* Outfield */}
       <circle cx={cx} cy={cy} r="108" fill="#5a9e3a" stroke="#4a8530" strokeWidth="1.5" />
@@ -147,6 +151,6 @@ export default function PitchDiagram(): React.JSX.Element {
 
       {/* Centre spot */}
       <circle cx={cx} cy={cy} r="1.5" fill="#a87f4a" />
-    </svg>
+    </DiagramSvg>
   );
 }
