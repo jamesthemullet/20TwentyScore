@@ -17,6 +17,12 @@ const TOTAL_BALLS = TOTAL_OVERS * BALLS_PER_OVER;
 const MAX_RUN_RATE_DISPLAY = 12;
 const MAX_PROJECTED_SCORE = 300;
 
+const calculateRunRate = (runs: number, overs: number, balls: number): string => {
+  const decimalOvers = overs + balls / BALLS_PER_OVER;
+  if (decimalOvers === 0) return "0.00";
+  return (runs / decimalOvers).toFixed(2);
+};
+
 const MatchPage: React.FC = () => {
   const [selectBowler, setSelectBowler] = useState(false);
 
@@ -26,21 +32,15 @@ const MatchPage: React.FC = () => {
   const { mostRecentAction } = useMostRecentAction();
   const milestone = useMilestone(mostRecentAction, gameScore, currentOver);
 
+  const validBallsInOver = currentBallInThisOver - 1 - currentExtrasInThisOver;
+
   const formatOvers = (overs: number, isBatting: boolean): string => {
-    const balls = isBatting
-      ? currentBallInThisOver - 1 - currentExtrasInThisOver
-      : 0;
+    const balls = isBatting ? validBallsInOver : 0;
     return `${overs}.${balls}`;
   };
 
-  const formatRunRate = (runs: number, overs: number, isBatting: boolean): string => {
-    const balls = isBatting
-      ? currentBallInThisOver - 1 - currentExtrasInThisOver
-      : 0;
-    const decimalOvers = overs + balls / BALLS_PER_OVER;
-    if (decimalOvers === 0) return "0.00";
-    return (runs / decimalOvers).toFixed(2);
-  };
+  const formatRunRate = (runs: number, overs: number, isBatting: boolean): string =>
+    calculateRunRate(runs, overs, isBatting ? validBallsInOver : 0);
 
   const teamA = gameScore.find((team) => team.index === 0);
   const team1 = gameScore.find((team) => team.index === 1);
@@ -52,14 +52,15 @@ const MatchPage: React.FC = () => {
   const finishedTeam = gameScore.find((t) => t.finishedBatting);
   const target = finishedTeam ? finishedTeam.totalRuns + 1 : null;
 
-  const currentRunRate = useMemo(() => {
-    const runs = currentBattingTeam?.totalRuns ?? 0;
-    const overs = currentBattingTeam?.overs ?? 0;
-    const balls = currentBallInThisOver - 1 - currentExtrasInThisOver;
-    const decimalOvers = overs + balls / 6;
-    if (decimalOvers === 0) return "0.00";
-    return (runs / decimalOvers).toFixed(2);
-  }, [currentBattingTeam, currentBallInThisOver, currentExtrasInThisOver]);
+  const currentRunRate = useMemo(
+    () =>
+      calculateRunRate(
+        currentBattingTeam?.totalRuns ?? 0,
+        currentBattingTeam?.overs ?? 0,
+        validBallsInOver
+      ),
+    [currentBattingTeam, validBallsInOver]
+  );
 
   const batterStats = useMemo(() => {
     const derive = (actions: (string | null)[] | undefined): { balls: number; fours: number; sixes: number } => ({
@@ -432,17 +433,13 @@ const MatchPage: React.FC = () => {
                   <RunsSummary>
                     {currentBattingTeam?.totalRuns ?? 0} runs from{" "}
                     {(currentBattingTeam?.overs ?? 0) * BALLS_PER_OVER +
-                      (currentBallInThisOver -
-                        1 -
-                        currentExtrasInThisOver)}{" "}
+                      validBallsInOver}{" "}
                     balls
                   </RunsSummary>
                 </BottomBox>
                 <BottomBox>
                   {(() => {
                     const rr = parseFloat(currentRunRate);
-                    const validBallsInOver =
-                      currentBallInThisOver - 1 - currentExtrasInThisOver;
                     const ballsUsed =
                       (currentBattingTeam?.overs ?? 0) * BALLS_PER_OVER + validBallsInOver;
                     const ballsRemaining = TOTAL_BALLS - ballsUsed;
