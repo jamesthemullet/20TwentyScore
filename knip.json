@@ -9,8 +9,7 @@
     "@testing-library/user-event",
     "babel-jest",
     "pg",
-    "@types/pg",
-    "ts-node"
+    "@types/pg"
   ],
   "ignore": ["prisma/schema.prisma"],
   "tags": ["-lintignore"]
