@@ -6,7 +6,6 @@
   },
   "ignoreDependencies": [
     "@babel/preset-env",
-    "@testing-library/user-event",
     "babel-jest",
     "pg",
     "@types/pg"
