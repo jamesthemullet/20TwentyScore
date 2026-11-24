@@ -5,7 +5,6 @@
     "type": true
   },
   "ignoreDependencies": [
-    "@babel/preset-env",
     "babel-jest",
     "pg",
     "@types/pg"
