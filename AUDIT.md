@@ -139,7 +139,7 @@ audit adds new findings to the bottom of each section and leaves checked items a
 
 ## 3. Performance
 
-- [x] `yarn build` (Turbopack) no longer prints a First-Load-JS/route size table the way the older webpack build did — bundle-size regressions are harder to spot in CI output; nice-to-have: add `@next/bundle-analyzer` or read `.next/static/chunks` sizes in CI (found: 2026-09-01) (resolved: 2026-11-28, PR #TBD)
+- [x] `yarn build` (Turbopack) no longer prints a First-Load-JS/route size table the way the older webpack build did — bundle-size regressions are harder to spot in CI output; nice-to-have: add `@next/bundle-analyzer` or read `.next/static/chunks` sizes in CI (found: 2026-09-01) (resolved: 2026-11-28, PR #560)
 - [ ] Largest JS chunk after build is ~204KB, next largest ~100KB — no action needed now, just a baseline to watch as features grow (found: 2026-09-01)
 - [x] `components/premium/UpgradeCTA.tsx` only renders for free-tier users on `/account` — nice-to-have candidate for `dynamic()` code-splitting since no components currently use it (found: 2026-09-01) (resolved: 2026-10-16, PR #498)
 - [ ] `context/AccountContext.tsx` fetches `/api/account` via `useEffect` on every authenticated page load, since `AccountProvider` wraps the whole app in `pages/_app.tsx` — nice-to-have: scope/defer this fetch to routes that actually need tier/subscription data (`/account`, premium-gated flows) (found: 2026-09-01)
