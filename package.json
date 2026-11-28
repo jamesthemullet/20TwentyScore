@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "postbuild": "node scripts/print-bundle-sizes.js",
     "start": "next start",
     "lint": "tsc --noEmit && biome lint .",
     "lint:fix": "biome lint --write .",
